@@ -1,0 +1,9 @@
+c:\users\hudso\onedrive\documents\visual studio 2015\Projects\GPLexTutorial\GPLexTutorial\bin\Debug\GPLexTutorial.exe.config
+c:\users\hudso\onedrive\documents\visual studio 2015\Projects\GPLexTutorial\GPLexTutorial\bin\Debug\GPLexTutorial.exe
+c:\users\hudso\onedrive\documents\visual studio 2015\Projects\GPLexTutorial\GPLexTutorial\bin\Debug\GPLexTutorial.pdb
+c:\users\hudso\onedrive\documents\visual studio 2015\Projects\GPLexTutorial\GPLexTutorial\obj\Debug\GPLexTutorial.csprojResolveAssemblyReference.cache
+c:\users\hudso\onedrive\documents\visual studio 2015\Projects\GPLexTutorial\GPLexTutorial\obj\Debug\GPLexTutorial.exe
+c:\users\hudso\onedrive\documents\visual studio 2015\Projects\GPLexTutorial\GPLexTutorial\obj\Debug\GPLexTutorial.pdb
+C:\Users\hudso\Desktop\IFN660 - Repo\IFN660-T5J\Project Folder\GPLexTutorial\bin\Debug\GPLexTutorial.exe.config
+C:\Users\hudso\Desktop\IFN660 - Repo\IFN660-T5J\Project Folder\GPLexTutorial\obj\Debug\GPLexTutorial.exe
+C:\Users\hudso\Desktop\IFN660 - Repo\IFN660-T5J\Project Folder\GPLexTutorial\obj\Debug\GPLexTutorial.pdb
