@@ -5,10 +5,10 @@
 //  See accompanying file GPLEXcopyright.rtf.
 //
 //  GPLEX Version:  1.2.2
-//  Machine:  VDI-VL05-001
-//  DateTime: 2/03/2017 5:00:00 PM
+//  Machine:  VDI-VL17-022
+//  DateTime: 7/03/2017 10:04:55 PM
 //  UserName: n9768653
-//  GPLEX input file <scanner.lex - 2/03/2017 4:54:41 PM>
+//  GPLEX input file <scanner.lex - 7/03/2017 10:00:18 PM>
 //  GPLEX frame file <embedded resource>
 //
 //  Option settings: unicode, parser, minimize
@@ -21,7 +21,6 @@
 // Version 1.2.1 of 24-June-2013
 //
 //
-#define BACKUP
 #define PERSIST
 
 using System;
@@ -124,8 +123,8 @@ namespace IFN660_Java_ECMAScript
         
         enum Result {accept, noMatch, contextFound};
 
-        const int maxAccept = 14;
-        const int initial = 15;
+        const int maxAccept = 12;
+        const int initial = 13;
         const int eofNum = 0;
         const int goStart = -1;
         const int INITIAL = 0;
@@ -162,62 +161,55 @@ namespace IFN660_Java_ECMAScript
         }
     };
 
-    static int[] startState = new int[] {15, 0};
+    static int[] startState = new int[] {13, 0};
 
 #region CompressedCharacterMap
     //
-    // There are 15 equivalence classes
+    // There are 13 equivalence classes
     // There are 2 character sequence regions
     // There are 1 tables, 123 entries
     // There are 1 runs, 0 singletons
     // Decision tree depth is 1
     //
     static sbyte[] mapC0 = new sbyte[123] {
-/*     '\0' */ 3, 3, 3, 3, 3, 3, 3, 3, 3, 14, 0, 3, 3, 14, 3, 3, 
-/*   '\x10' */ 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 
-/*   '\x20' */ 14, 3, 3, 3, 3, 3, 3, 3, 3, 3, 2, 3, 11, 3, 3, 1, 
-/*      '0' */ 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 3, 3, 3, 13, 12, 3, 
-/*      '@' */ 3, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 
-/*      'P' */ 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 3, 3, 3, 3, 3, 
-/*      '`' */ 3, 9, 9, 9, 9, 8, 9, 9, 5, 6, 9, 9, 7, 9, 9, 9, 
-/*      'p' */ 9, 9, 9, 9, 9, 9, 9, 4, 9, 9, 9 };
+/*     '\0' */ 0, 0, 0, 0, 0, 0, 0, 0, 0, 12, 11, 0, 0, 12, 0, 0, 
+/*   '\x10' */ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+/*   '\x20' */ 12, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 8, 0, 0, 0, 
+/*      '0' */ 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 0, 0, 0, 10, 9, 0, 
+/*      '@' */ 0, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 
+/*      'P' */ 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 0, 0, 0, 0, 0, 
+/*      '`' */ 0, 6, 6, 6, 6, 5, 6, 6, 2, 3, 6, 6, 4, 6, 6, 6, 
+/*      'p' */ 6, 6, 6, 6, 6, 6, 6, 1, 6, 6, 6 };
 
     static sbyte MapC(int code)
     { // '\0' <= code <= '\U0010FFFF'
       if (code < 123) // '\0' <= code <= 'z'
         return mapC0[code - 0];
       else // '{' <= code <= '\U0010FFFF'
-        return (sbyte)3;
+        return (sbyte)0;
     }
 #endregion
 
-    static Table[] NxS = new Table[19] {
+    static Table[] NxS = new Table[14] {
 /* NxS[   0] */ new Table(0, 0, 0, null),
 /* NxS[   1] */ new Table(0, 0, -1, null),
-/* NxS[   2] */ new Table(2, 1, -1, new sbyte[] {16}),
-/* NxS[   3] */ new Table(0, 0, -1, null),
-/* NxS[   4] */ new Table(4, 7, -1, new sbyte[] {5, 10, 5, 5, 5, 5, 
-          5}),
-/* NxS[   5] */ new Table(4, 7, -1, new sbyte[] {5, 5, 5, 5, 5, 5, 
-          5}),
-/* NxS[   6] */ new Table(10, 1, -1, new sbyte[] {6}),
+/* NxS[   2] */ new Table(1, 7, -1, new sbyte[] {3, 9, 3, 3, 3, 3, 
+          3}),
+/* NxS[   3] */ new Table(8, 6, 3, new sbyte[] {-1, -1, -1, -1, -1, -1}),
+/* NxS[   4] */ new Table(7, 1, -1, new sbyte[] {4}),
+/* NxS[   5] */ new Table(0, 0, -1, null),
+/* NxS[   6] */ new Table(10, 1, -1, new sbyte[] {8}),
 /* NxS[   7] */ new Table(0, 0, -1, null),
-/* NxS[   8] */ new Table(13, 1, -1, new sbyte[] {9}),
-/* NxS[   9] */ new Table(0, 0, -1, null),
-/* NxS[  10] */ new Table(4, 7, -1, new sbyte[] {5, 5, 11, 5, 5, 5, 
-          5}),
-/* NxS[  11] */ new Table(4, 7, -1, new sbyte[] {5, 5, 5, 12, 5, 5, 
-          5}),
-/* NxS[  12] */ new Table(4, 7, -1, new sbyte[] {5, 5, 5, 5, 13, 5, 
-          5}),
-/* NxS[  13] */ new Table(4, 7, -1, new sbyte[] {5, 5, 5, 5, 5, 5, 
-          5}),
-/* NxS[  14] */ new Table(0, 0, -1, null),
-/* NxS[  15] */ new Table(10, 10, 5, new sbyte[] {6, 7, 8, 3, 1, 1, 
-          2, 3, 3, 4}),
-/* NxS[  16] */ new Table(0, 1, 17, new sbyte[] {-1}),
-/* NxS[  17] */ new Table(2, 1, -1, new sbyte[] {18}),
-/* NxS[  18] */ new Table(1, 1, -1, new sbyte[] {14}),
+/* NxS[   8] */ new Table(0, 0, -1, null),
+/* NxS[   9] */ new Table(1, 7, -1, new sbyte[] {3, 3, 10, 3, 3, 3, 
+          3}),
+/* NxS[  10] */ new Table(1, 7, -1, new sbyte[] {3, 3, 3, 11, 3, 3, 
+          3}),
+/* NxS[  11] */ new Table(1, 7, -1, new sbyte[] {3, 3, 3, 3, 12, 3, 
+          3}),
+/* NxS[  12] */ new Table(8, 6, 3, new sbyte[] {-1, -1, -1, -1, -1, -1}),
+/* NxS[  13] */ new Table(7, 8, 3, new sbyte[] {4, 5, 6, 1, 7, 7, 
+          1, 2}),
     };
 
 int NextState() {
@@ -227,7 +219,7 @@ int NextState() {
         unchecked {
             int rslt;
             int idx = MapC(code) - NxS[state].min;
-            if (idx < 0) idx += 15;
+            if (idx < 0) idx += 13;
             if ((uint)idx >= (uint)NxS[state].rng) rslt = NxS[state].dflt;
             else rslt = NxS[state].nxt[idx];
             return rslt;
@@ -651,38 +643,34 @@ int NextState() {
                 return (int)Tokens.EOF;
             break;
         case 1:
-/* skip whitespace */
-            break;
-        case 2:
-        case 3:
 throw new Exception(
                                      String.Format(
                                          "unexpected character '{0}'", yytext));
             break;
-        case 4:
-        case 5:
+        case 2:
+        case 3:
+        case 9:
         case 10:
         case 11:
-        case 12:
 yylval.name = yytext; return (int)Tokens.IDENT;
             break;
-        case 6:
+        case 4:
 yylval.num = int.Parse(yytext); return (int)Tokens.NUMBER;
             break;
-        case 7:
+        case 5:
 return ',';
             break;
-        case 8:
+        case 6:
 return '>';
             break;
-        case 9:
+        case 7:
+/* skip whitespace */
+            break;
+        case 8:
 return (int)Tokens.GE;
             break;
-        case 13:
+        case 12:
 return (int)Tokens.WHILE;
-            break;
-        case 14:
-/* Comments */
             break;
         default:
             break;

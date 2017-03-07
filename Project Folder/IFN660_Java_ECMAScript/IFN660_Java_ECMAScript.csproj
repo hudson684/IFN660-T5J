@@ -50,8 +50,6 @@
   <ItemGroup>
     <None Include="App.config" />
     <None Include="scanner.lex" />
-    <None Include="Test\test1.j" />
-    <None Include="Test\test_Comments.j" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

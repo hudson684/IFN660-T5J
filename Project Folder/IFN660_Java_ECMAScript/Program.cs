@@ -24,12 +24,12 @@ namespace IFN660_Java_ECMAScript
         protected virtual bool yywrap() { return true; }
     }
 
-    class Program
+        class Program
     {
         static void Main(string[] args)
         {
             Scanner scanner = new Scanner(
-    new System.IO.FileStream(args[0], System.IO.FileMode.Open));
+                new System.IO.FileStream(args[0], System.IO.FileMode.Open));
 
             Tokens token;
             do
@@ -58,8 +58,6 @@ namespace IFN660_Java_ECMAScript
                 }
             }
             while (token != Tokens.EOF);
-
         }
     }
-
 }
