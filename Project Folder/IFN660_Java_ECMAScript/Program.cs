@@ -1,14 +1,19 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace IFN660_Java_ECMAScript
 {
     public enum Tokens
     {
-        EOF = 264, WHILE = 265, IDENT = 266, GE = 267, NUMBER = 268
+        IF = 260,
+        ELSE = 261,
+        INT = 262,
+        BOOL = 263,
+        EOF = 264,
+        WHILE = 265,
+        IDENT = 266,
+        GE = 267,
+        NUMBER = 268
+
     };
 
     public struct MyValueType
@@ -43,8 +48,20 @@ namespace IFN660_Java_ECMAScript
                     case Tokens.IDENT:
                         Console.WriteLine("IDENT ({0})", scanner.yylval.name);
                         break;
+                    case Tokens.IF:
+                        Console.WriteLine("IF");
+                        break;
+                    case Tokens.ELSE:
+                        Console.WriteLine("ELSE");
+                        break;
+                    case Tokens.INT:
+                        Console.WriteLine("INT");
+                        break;
                     case Tokens.WHILE:
                         Console.WriteLine("WHILE");
+                        break;
+                    case Tokens.BOOL:
+                        Console.WriteLine("BOOL");
                         break;
                     case Tokens.GE:
                         Console.WriteLine("GE");
@@ -53,11 +70,12 @@ namespace IFN660_Java_ECMAScript
                         Console.WriteLine("EOF");
                         break;
                     default:
-                        Console.WriteLine("'{0}'", token);
+                        Console.WriteLine("'{0}'", (char) token);
                         break;
                 }
             }
             while (token != Tokens.EOF);
+            Console.ReadLine();
         }
     }
 }

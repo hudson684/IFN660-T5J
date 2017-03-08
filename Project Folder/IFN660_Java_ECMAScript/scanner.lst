@@ -1,0 +1,127 @@
+
+// ==========================================================================
+//  GPLEX error listing for lex source file <scanner.lex>
+// ==========================================================================
+//  Version:  1.2.2
+//  Machine:  MSI
+//  DateTime: 8/03/2017 11:46:58 AM
+//  UserName: Tri Phan
+// ==========================================================================
+
+
+%namespace IFN660_Java_ECMAScript
+// Error: Too many errors
+// Error: Too many errors, abandoning
+// ----------------------------------
+
+digit [0-9]
+letter [a-zA-Z]
+
+%%
+
+if                           { return (int)Tokens.IF; }
+else                         { return (int)Tokens.ELSE; }
+int                          { return (int)Tokens.INT; }
+bool                         { return (int)Tokens.BOOL; }
+while                        { return (int)Tokens.WHILE; }
+
+{letter}({letter}|{digit})* { yylval.name = yytext; return (int)Tokens.IDENT; }
+{digit}+	    { yylval.num = int.Parse(yytext); return (int)Tokens.NUMBER; }
+
+=                            { return '='; }
++                            { return '+'; }
+<                            { return '<'; }
+//---------------------------^--------^^
+// Error: Illegal character in this context
+// Error: Illegal character in this context
+// Error: Illegal character in this context
+// ----------------------------------------
+(                            { return '('; }
+//---------------------------^-^^^^^^-^^^^-^
+// Error: Parser error <Syntax error, unexpected pattern> 
+// Error: Invalid or empty namelist
+// Error: Invalid or empty namelist
+// Error: Invalid or empty namelist
+// Error: Invalid or empty namelist
+// Error: Invalid or empty namelist
+// Error: Invalid or empty namelist
+// Error: Invalid or empty namelist
+// -------------------------------------------------------
+)                            { return ')'; }
+//---------------------------^-^^^^^^-^^^^-^
+// Error: Invalid or empty namelist
+// Error: Invalid or empty namelist
+// Error: Invalid or empty namelist
+// Error: Invalid or empty namelist
+// Error: Invalid or empty namelist
+// Error: Invalid or empty namelist
+// --------------------------------
+{                            { return '{'; }
+//---------------------------^^^^^^^^^^^^^^^
+// Error: Invalid or empty namelist
+// Error: Expected end-of-line here
+// --------------------------------
+}                            { return '}'; }
+//---------------------------^^^^^^^^^^^^^^^
+// Error: Invalid or empty namelist
+// Error: Expected end-of-line here
+// --------------------------------
+;                            { return ';'; }
+//---------------------------^-^^^^^^-^^^^-^
+// Error: Invalid or empty namelist
+// Error: Invalid or empty namelist
+// Error: Invalid or empty namelist
+// Error: Invalid or empty namelist
+// Error: Invalid or empty namelist
+// Error: Invalid or empty namelist
+// --------------------------------
+,                            { return ','; }
+//---------------------------^-^^^^^^-^^^^-^
+// Error: Invalid or empty namelist
+// Error: Invalid or empty namelist
+// Error: Invalid or empty namelist
+// Error: Invalid or empty namelist
+// Error: Invalid or empty namelist
+// Error: Invalid or empty namelist
+// --------------------------------
+>=                           { return (int)Tokens.GE; }
+//---------------------------^-^^^^^^-^^^^^^^^^^^^^^^-^
+// Error: Invalid or empty namelist
+// Error: Invalid or empty namelist
+// Error: Invalid or empty namelist
+// Error: Invalid or empty namelist
+// Error: Invalid or empty namelist
+// Error: Invalid or empty namelist
+// Error: Invalid or empty namelist
+// Error: Invalid or empty namelist
+// Error: Invalid or empty namelist
+// Error: Invalid or empty namelist
+// Error: Invalid or empty namelist
+// --------------------------------
+>                            { return '>'; }
+//---------------------------^-^^^^^^-^^^^-^
+// Error: Invalid or empty namelist
+// Error: Invalid or empty namelist
+// Error: Invalid or empty namelist
+// Error: Invalid or empty namelist
+// Error: Invalid or empty namelist
+// Error: Invalid or empty namelist
+// --------------------------------
+
+
+
+[ \r\n\t]                    /* skip whitespace */
+//^^^^^^^
+// Error: Invalid or empty namelist
+// Error: Too many errors, abandoning
+// ----------------------------------
+
+.                            { 
+                                 throw new Exception(
+                                     String.Format(
+                                         "unexpected character '{0}'", yytext)); 
+                             }
+
+%%
+// ==========================================================================
+
