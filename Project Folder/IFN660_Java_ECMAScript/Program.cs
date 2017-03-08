@@ -61,9 +61,13 @@ namespace IFN660_Java_ECMAScript
 		TRANSIENT = 314,
 		TRY = 315,
 		VOID = 316,
-		VOLATILE = 317}
-
-	;
+		VOLATILE = 317,
+		INTERGER_LITERALS = 318,
+		FLOATING_POINT_LITERALS = 319,
+		BOOLEAN_LITERALS = 320,
+		NULL_LITERAL = 321,
+			
+	};
 
 	public struct MyValueType
 	{
@@ -256,6 +260,18 @@ namespace IFN660_Java_ECMAScript
 					break;
 				case Tokens.VOLATILE:
 					Console.WriteLine ("VOLATILE");
+					break;
+				case Tokens.INTERGER_LITERALS:
+					Console.WriteLine ("INT");
+					break;
+				case Tokens.FLOATING_POINT_LITERALS:
+					Console.WriteLine ("FLOAT");
+					break;
+				case Tokens.BOOLEAN_LITERALS:
+					Console.WriteLine ("BOOL");
+					break;
+				case Tokens.NULL_LITERAL:
+					Console.WriteLine ("NULL");
 					break;
 				default:
 					Console.WriteLine ("'{0}'", token);

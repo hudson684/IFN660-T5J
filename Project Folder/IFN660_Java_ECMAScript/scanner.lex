@@ -83,8 +83,7 @@ decimalNumeral|hexNumeral|octalNumeral|binaryNumeral[lL]	{return (int)Tokens.INT
 |((hexNumeral.?|[0][x]hexDigit?.hexDigit+)[pP][+-]?[0-9]+[fFdD]?)				{return (int)Tokens.FLOATING_POINT_LITERALS}
 
 /* Boolean Literals */
-true										{return (int)Tokens.LITERAL_TRUE}
-false										{return (int)Tokens.LITERAL_FALSE}
+"true"|"false"								{return (int)Tokens.BOOLEAN_LITERAL}
 
 /* String Literal */
 \"(.|[^\\"])*\"								{return (int)Tokens.LITERAL_STRING}
