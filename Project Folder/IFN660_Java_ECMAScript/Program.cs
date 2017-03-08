@@ -43,7 +43,7 @@ namespace IFN660_Java_ECMAScript
                 switch (token)
                 {
                     case Tokens.NUMBER:
-                        Console.WriteLine("NUMBER ({0})", scanner.yylval.num);
+                        Console.WriteLine("NUMBER ({0})", scanner.yylval.name);
                         break;
                     case Tokens.IDENT:
                         Console.WriteLine("IDENT ({0})", scanner.yylval.name);
