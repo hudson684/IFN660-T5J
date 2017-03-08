@@ -74,84 +74,88 @@ volatile									{return (int)Tokens.VOLATILE;}
 while										{return (int)Tokens.WHILE;}
 										/* 3.10 LITERALS */
 /* Interger Literals */
-decimalNumeral|hexNumeral|octalNumeral|binaryNumeral[lL]	{return INTERGER_LITERALS}
+decimalNumeral|hexNumeral|octalNumeral|binaryNumeral[lL]	{return (int)Tokens.INTERGER_LITERALS}
+
 /* Floating-Point Literals */
 (((([0-9]+.[0-9]*|.[0.9]+)([eE][+-]?[0-9]+)?)
 |[0-9]+[eE][+-]?[0-9]+)([fFdD]?)|
 [0-9]+([eE][+-]?[0-9]+)?[fFdD])
-|((hexNumeral.?|[0][x]hexDigit?.hexDigit+)[pP][+-]?[0-9]+[fFdD]?)				{return FLOATING_POINT_LITERALS}
+|((hexNumeral.?|[0][x]hexDigit?.hexDigit+)[pP][+-]?[0-9]+[fFdD]?)				{return (int)Tokens.FLOATING_POINT_LITERALS}
+
 /* Boolean Literals */
-true									{return LITERAL_TRUE}
-false									{return LITERAL_FALSE}
+true										{return (int)Tokens.LITERAL_TRUE}
+false										{return (int)Tokens.LITERAL_FALSE}
+
 /* String Literal */
-\"(.|[^\\"])*\"							{return LITERAL_STRING}
+\"(.|[^\\"])*\"								{return (int)Tokens.LITERAL_STRING}
+
 /* Null Literal */
-null									{return LITERAL_NULL}
+null										{return (int)Tokens.LITERAL_NULL}
 
 										/* 3.11 SEPARATORS */
 										
-(										{return LEFT_PAREN;}	
-)										{return RIGHT_PAREN;}	
-{										{return LEFT_BRACE;}	
-}										{return RIGHT_BRACE;}	
-[										{return ASSIGNMENT;}	
-]										{return RIGHT_BRACKET;}	
-;										{return SEMICOLON;}	
-,										{return COLON;}	
-.										{return DOT;}	
-...										{return ELLIPSIS;}	
-@										{return AT;}	
-::										{return DOUBLE_COLON;}	
+"("											{return '(';}	
+")"											{return ')';}	
+"{"											{return '{';}	
+"}"											{return '}';}	
+"["											{return '[';}	
+"]"											{return ']';}	
+";"											{return ';';}	
+","											{return ',';}	
+"."											{return '.';}	
+"..."										{return '...';}	
+"@"											{return '@';}	
+"::"										{return '::';}	
 										
 
 										/* 3.12 OPERATOR */
 										
-=										{return ASSIGNMENT;}
->										{return GREATER_THAN;}
-<										{return LESS_THAN;}
+"="											{return =;}
+">"											{return >;}
+"<"											{return <;}
 
-==										{return EQUAL;}
->=										{return GREATER_OR_EQUAL;}
-<=										{return LESS_THAN_OR_EQUAL;}
-!=										{return NOT_EQUAL;}
+"=="										{return '==';}
+">="										{return '>=';}
+"<="										{return '=<';}
+"!="										{return '!=';}
 
-?										{return QUESTION_MARK;}
-:										{return COLON;}
-->										{return ARROW_TOKEN;}
+"?"											{return '?';}
+":"											{return ':';}
+"->"										{return '->';}
 
-&&										{return LOGICAL_AND;}
-||										{return LOGICAL_OR;}
-!										{return LOGICAL_NOT;}
+"&&"										{return '&&';}
+"||"										{return '||';}
+"!"											{return '!';}
 
-++										{return INCREMENT;}
---										{return DECREMENT;}
+"++"										{return '++';}
+"--"										{return '--';}
 
-+										{return ADDITION;}
--										{return SUBTRACTION;}
-*										{return MULTIPLICATION;}
-/										{return DIVISION;}
-%										{return MODULO;}
+"+"											{return '+';}
+"-"											{return '-';}
+"*"											{return '*';}
+"/"											{return '/';}
+"%"											{return '%';}
 
-&										{return BITWISE_AND;}
-|										{return BITWISE_OR;}
-^										{return BITWISE_XOR;}
-~										{return BITWISE_COMPLIMENT;}
+"&"											{return '&';}
+"|"											{return '|';}
+"^"											{return '^';}
+"~"											{return '~';}
 
-<<										{return LEFT_SHIFT;}
->>										{return SIGNED_RIGHT_SHIFT;}
->>>										{return UNSIGNED_RIGHT_SHIFT;}
+"<<"										{return '<<';}
+">>"										{return '>>';}
+">>>"										{return '>>>';}
 
-+=										{return ADDITION_ASSIGNMENT;}
--=										{return SUBTRACTION_ASSIGNMENT;}
-*=										{return MULTIPLICATION_ASSIGNMENT;}		
-/=										{return DIVISION_ASSIGNMENT;}
-%=										{return MODULUS_ASSIGNMENT;}
-&=										{return BITWISE_AND_ASSIGNMENT;}
-|=										{return BITWISE_OR_ASSIGNMENT;}
-^=										{return BITWISE_XOR_ASSIGNMENT;}
-<<=										{return LEFT_SHIFT_ASSIGNMENT;}
->>=										{return UNSIGNED_RIGHT_SHIFT_ASSIGNMENT;}
->>>=									{return SIGNED_RIGHT_SHIFT_ASSIGNMENT;}
+"+="										{return '+=';}
+"-="										{return '-=';}
+"*="										{return '*=';}	
+"/="										{return '/=';}
+"%="										{return '%=';}
+"&="										{return '&=';}
+"|="										{return '|=';}
+"^="										{return '^=';}
+"<<="										{return '<<=';}
+">>="										{return '>>=';}
+">>>="										{return '>>>=';}
 
 [ \r\n\tSPHTFF]                    			/* skip whitespace */
 
