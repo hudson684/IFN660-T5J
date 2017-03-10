@@ -1,8 +1,22 @@
-﻿%namespace IFN660_Java_ECMAScript
+
+// ==========================================================================
+//  GPLEX error listing for lex source file <scanner.lex>
+// ==========================================================================
+//  Version:  1.2.2
+//  Machine:  VDI-VL17-037
+//  DateTime: 10/03/2017 12:37:32 PM
+//  UserName: n9768653
+// ==========================================================================
+
+
+%namespace IFN660_Java_ECMAScript
 
 digit 										[0-9_]
 letter 										[$_a-zA-Z]
 E											[eE][+-]?{digit}+
+//---------------^^
+// Warning: No upper bound to range, "'+','-'" included as set class members
+// -------------------------------------------------------------------------
 LT											(LF|CR)LF?
 nonZeroDigit								[1-9]
 digits										[0-9]+|(([0-9]+[0-9_]+)?[0-9]+)
@@ -21,6 +35,9 @@ IS											[lL]
 ([/][*]([^*]|[\r\n]|([*]*([^*/]|[\r\n])))*[*]+[/])|("//".*)		{/* Comment */}
 
 										/* 3.9 KEYWORDS */
+//--------^^^^^^^^^^^^^^^^^^
+// Warning: Code between rules, ignored
+// ------------------------------------
 abstract									{return (int)Tokens.ABSTRACT;}
 assert										{return (int)Tokens.ASSERT;}
 boolean										{return (int)Tokens.BOOLEAN;}
@@ -72,6 +89,9 @@ void										{return (int)Tokens.VOID;}
 volatile									{return (int)Tokens.VOLATILE;}
 while										{return (int)Tokens.WHILE;}
 										/* 3.10 LITERALS */
+//--------^^^^^^^^^^^^^^^^^^^
+// Warning: Code between rules, ignored
+// ------------------------------------
 /* Interger Literals */
 ({decimalNumeral}|{hexNumeral}|{octalNumeral}|{binaryNumeral})[lL]?	{return (int)Tokens.INTERGER_LITERALS;}
 
@@ -94,6 +114,9 @@ while										{return (int)Tokens.WHILE;}
 null										{return (int)Tokens.NULL_LITERAL;}
 
 										/* 3.11 SEPARATORS */
+//--------^^^^^^^^^^^^^^^^^^^^^
+// Warning: Code between rules, ignored
+// ------------------------------------
 										
 "("											{return '(';}	
 ")"											{return ')';}	
@@ -110,6 +133,9 @@ null										{return (int)Tokens.NULL_LITERAL;}
 										
 
 										/* 3.12 OPERATOR */
+//--------^^^^^^^^^^^^^^^^^^^
+// Warning: Code between rules, ignored
+// ------------------------------------
 										
 "="											{return '=';}
 ">"											{return '>';}
@@ -176,3 +202,5 @@ null										{return (int)Tokens.NULL_LITERAL;}
 
 
 %%
+// ==========================================================================
+

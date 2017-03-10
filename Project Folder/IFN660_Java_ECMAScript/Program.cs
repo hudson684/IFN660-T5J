@@ -38,7 +38,7 @@ namespace IFN660_Java_ECMAScript
 		GOTO = 291,
 		IMPLEMENTS = 292,
 		IMPORT = 293,
-		INSTANCEOF = 294,
+		INSTANCE_OF = 294,
 		INT = 295,
 		INTERFACE = 296,
 		LONG = 297,
@@ -62,11 +62,36 @@ namespace IFN660_Java_ECMAScript
 		TRY = 315,
 		VOID = 316,
 		VOLATILE = 317,
-		INTERGER_LITERALS = 318,
+        INTERGER_LITERALS = 318,
 		FLOATING_POINT_LITERALS = 319,
 		BOOLEAN_LITERALS = 320,
 		NULL_LITERAL = 321,
-			
+		ELLIPSIS = 322,
+		DOUBLE_COLON = 323,
+		EQUAL = 324,
+		GREATER_OR_EQUAL = 325,
+		LESS_THAN_OR_EQUAL = 326,
+		NOT_EQUAL = 327,
+		LOGICAL_AND = 328,
+		LOGICAL_OR = 329,
+		LOGICAL_NOT = 330,
+		INCREMENT = 331,
+		DECREMENT = 332,
+		LEFT_SHIFT = 333,
+		SIGNED_RIGHT_SHIFT = 334,
+		UNSIGNED_RIGHT_SHIFT = 335,
+		ADDITION_ASSIGNMENT = 336,
+		SUBTRACTION_ASSIGNMENT = 337,
+		MULTIPLICATION_ASSIGNMENT = 338,
+		DIVISION_ASSIGNMENT = 339,
+		MODULUS_ASSIGNMENT = 340,
+		BITWISE_AND_ASSIGNMENT = 341,
+		BITWISE_OR_ASSIGNMENT = 342,
+		BITWISE_XOR_ASSIGNMENT = 343,
+		LEFT_SHIFT_ASSIGNMENT = 344,
+		UNSIGNED_RIGHT_SHIFT_ASSIGNMENT = 345,
+		SIGNED_RIGHT_SHIFT_ASSIGNMENT = 346,
+        ARROW = 347,
 	};
 
 	public struct MyValueType
@@ -91,8 +116,14 @@ namespace IFN660_Java_ECMAScript
 	{
 		static void Main (string[] args)
 		{
+            try
+            {
+                using (var input = System.IO.File.OpenRead(args[0]))
+                {
+
+               
 			Scanner scanner = new Scanner (
-				                  new System.IO.FileStream (args [0], System.IO.FileMode.Open));
+				                  input);
 			#region Tokens
 			Tokens token;
 			do {
@@ -189,7 +220,7 @@ namespace IFN660_Java_ECMAScript
 				case Tokens.IMPORT:
 					Console.WriteLine ("IMPORT");
 					break;
-				case Tokens.INSTANCEOF:
+				case Tokens.INSTANCE_OF:
 					Console.WriteLine ("INSTANCEOF");
 					break;
 				case Tokens.INT:
@@ -261,6 +292,8 @@ namespace IFN660_Java_ECMAScript
 				case Tokens.VOLATILE:
 					Console.WriteLine ("VOLATILE");
 					break;
+				#endregion
+				#region Literals
 				case Tokens.INTERGER_LITERALS:
 					Console.WriteLine ("INT");
 					break;
@@ -273,13 +306,99 @@ namespace IFN660_Java_ECMAScript
 				case Tokens.NULL_LITERAL:
 					Console.WriteLine ("NULL");
 					break;
+				#endregion
+				#region Operators
+				case Tokens.ELLIPSIS:
+					Console.WriteLine ("ELLIPSIS");
+					break;
+				case Tokens.DOUBLE_COLON:
+					Console.WriteLine ("DOUBLE_COLON");
+					break;
+				case Tokens.EQUAL:
+					Console.WriteLine ("EQUAL");
+					break;
+				case Tokens.GREATER_OR_EQUAL:
+					Console.WriteLine ("GREATER_OR_EQUAL");
+					break;
+				case Tokens.LESS_THAN_OR_EQUAL:
+					Console.WriteLine ("LESS_THAN_OR_EQUAL");
+					break;
+				case Tokens.NOT_EQUAL:
+					Console.WriteLine ("NOT_EQUAL");
+					break;
+                case Tokens.ARROW:
+                    Console.WriteLine("ARROW");
+                        break;
+                case Tokens.LOGICAL_AND:
+					Console.WriteLine ("LOGICAL_AND");
+					break;
+				case Tokens.LOGICAL_OR:
+					Console.WriteLine ("LOGICAL_OR");
+					break;
+				case Tokens.LOGICAL_NOT:
+					Console.WriteLine ("LOGICAL_NOT");
+					break;
+				case Tokens.INCREMENT:
+					Console.WriteLine ("INCREMENT");
+					break;
+				case Tokens.DECREMENT:
+					Console.WriteLine ("DECREMENT");
+					break;
+				case Tokens.LEFT_SHIFT:
+					Console.WriteLine ("LEFT_SHIFT");
+					break;
+				case Tokens.SIGNED_RIGHT_SHIFT:
+					Console.WriteLine ("SIGNED_RIGHT_SHIFT");
+					break;
+				case Tokens.UNSIGNED_RIGHT_SHIFT:
+					Console.WriteLine ("UNSIGNED_RIGHT_SHIFT");
+					break;
+				case Tokens.ADDITION_ASSIGNMENT:
+					Console.WriteLine ("ADDITION_ASSIGNMENT");
+					break;
+				case Tokens.SUBTRACTION_ASSIGNMENT:
+					Console.WriteLine ("SUBTRACTION_ASSIGNMENT");
+					break;
+				case Tokens.MULTIPLICATION_ASSIGNMENT:
+					Console.WriteLine ("MULTIPLICATION_ASSIGNMENT");
+					break;
+				case Tokens.DIVISION_ASSIGNMENT:
+					Console.WriteLine ("DIVISION_ASSIGNMENT");
+					break;
+				case Tokens.MODULUS_ASSIGNMENT:
+					Console.WriteLine ("MODULUS_ASSIGNMENT");
+					break;
+				case Tokens.BITWISE_AND_ASSIGNMENT:
+					Console.WriteLine ("BITWISE_AND_ASSIGNMENT");
+					break;
+				case Tokens.BITWISE_OR_ASSIGNMENT:
+					Console.WriteLine ("BITWISE_OR_ASSIGNMENT");
+					break;
+				case Tokens.BITWISE_XOR_ASSIGNMENT:
+					Console.WriteLine ("BITWISE_XOR_ASSIGNMENT");
+					break;
+				case Tokens.LEFT_SHIFT_ASSIGNMENT:
+					Console.WriteLine ("LEFT_SHIFT_ASSIGNMENT");
+					break;
+				case Tokens.UNSIGNED_RIGHT_SHIFT_ASSIGNMENT:
+					Console.WriteLine ("UNSIGNED_RIGHT_SHIFT_ASSIGNMENT");
+					break;
+				case Tokens.SIGNED_RIGHT_SHIFT_ASSIGNMENT:
+					Console.WriteLine ("SIGNED_RIGHT_SHIFT_ASSIGNMENT");
+					break;
+				#endregion	
 				default:
 					Console.WriteLine ("'{0}'", token);
 					break;
-				#endregion
+				
 				}
 			} while (token != Tokens.EOF);
-			#endregion
-		}
+                }
+            }catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+            #endregion
+        }
 	}
 }
