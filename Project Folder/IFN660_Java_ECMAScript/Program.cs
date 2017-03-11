@@ -9,6 +9,7 @@ namespace IFN660_Java_ECMAScript
 	public enum Tokens
 	{
 		EOF = 264,
+		#region Keywords
 		WHILE = 265,
 		IDENT = 266,
 		GE = 267,
@@ -62,12 +63,17 @@ namespace IFN660_Java_ECMAScript
 		TRY = 315,
 		VOID = 316,
 		VOLATILE = 317,
-        INTERGER_LITERALS = 318,
-		FLOATING_POINT_LITERALS = 319,
-		BOOLEAN_LITERALS = 320,
-		NULL_LITERAL = 321,
+		#endregion
+		
+        // INTERGER_LITERALS = 318,
+		// FLOATING_POINT_LITERALS = 319,
+		// BOOLEAN_LITERALS = 320,
+		// NULL_LITERAL = 321,
+		LITERALS = 318,
 		ELLIPSIS = 322,
 		DOUBLE_COLON = 323,
+
+		#region Operator
 		EQUAL = 324,
 		GREATER_OR_EQUAL = 325,
 		LESS_THAN_OR_EQUAL = 326,
@@ -92,6 +98,7 @@ namespace IFN660_Java_ECMAScript
 		UNSIGNED_RIGHT_SHIFT_ASSIGNMENT = 345,
 		SIGNED_RIGHT_SHIFT_ASSIGNMENT = 346,
         ARROW = 347,
+		#endregion
 	};
 
 	public struct MyValueType
@@ -294,18 +301,18 @@ namespace IFN660_Java_ECMAScript
 					break;
 				#endregion
 				#region Literals
-				case Tokens.INTERGER_LITERALS:
-					Console.WriteLine ("INT");
+				case Tokens.LITERALS:
+					Console.WriteLine ("LITERALS");
 					break;
-				case Tokens.FLOATING_POINT_LITERALS:
-					Console.WriteLine ("FLOAT");
-					break;
-				case Tokens.BOOLEAN_LITERALS:
-					Console.WriteLine ("BOOL");
-					break;
-				case Tokens.NULL_LITERAL:
-					Console.WriteLine ("NULL");
-					break;
+				// case Tokens.FLOATING_POINT_LITERALS:
+				// 	Console.WriteLine ("FLOAT");
+				// 	break;
+				// case Tokens.BOOLEAN_LITERALS:
+				// 	Console.WriteLine ("BOOL");
+				// 	break;
+				// case Tokens.NULL_LITERAL:
+				// 	Console.WriteLine ("NULL");
+				// 	break;
 				#endregion
 				#region Operators
 				case Tokens.ELLIPSIS:
