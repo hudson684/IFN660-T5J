@@ -98,6 +98,8 @@ namespace IFN660_Java_ECMAScript
 		UNSIGNED_RIGHT_SHIFT_ASSIGNMENT = 345,
 		SIGNED_RIGHT_SHIFT_ASSIGNMENT = 346,
         ARROW = 347,
+        BINARY = 348,
+        OCTAL = 349
 		#endregion
 	};
 
@@ -393,8 +395,14 @@ namespace IFN660_Java_ECMAScript
 				case Tokens.SIGNED_RIGHT_SHIFT_ASSIGNMENT:
 					Console.WriteLine ("SIGNED_RIGHT_SHIFT_ASSIGNMENT");
 					break;
-				#endregion	
-				default:
+                case Tokens.OCTAL:
+                     Console.WriteLine("OCTAL ({0})", scanner.yylval.name);
+                     break;
+                case Tokens.BINARY:
+                     Console.WriteLine("BINARY ({0})", scanner.yylval.name);
+                     break;
+                    #endregion
+                default:
 					Console.WriteLine ("'{0}'", token);
 					break;
 				
@@ -406,6 +414,8 @@ namespace IFN660_Java_ECMAScript
                 Console.WriteLine(e.Message);
             }
             #endregion
+
+            Console.Read();
         }
 	}
 }

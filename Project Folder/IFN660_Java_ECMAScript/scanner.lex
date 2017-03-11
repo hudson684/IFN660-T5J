@@ -5,24 +5,25 @@ Digit 										[0-9_]
 OctalDigit									[0-7]
 TetraDigit									[0-3]
 NonZeroDigit								[1-9]
+BinaryDigit									[0-1]
 Letter 										[$_a-zA-Z]
 
 IntSuffix									[lL]
-Digits										[0-9]+([0-9_]+)?[0-9]+)
-DecinalNumeral								0|{NonZeroDigit}+({Digits}?|[\_]+{Digits}+)
+Digits										[0-9]+([0-9_]+)?[0-9]+
+DecimalNumeral								0|{NonZeroDigit}+({Digits}?|[\_]+{Digits}+)
 HexNumeral									0[xX]({HexDigit}+([{HexDigit}|_]+)?{HexDigit}+)
-OctalDigits									{OctalDigit}+((({octalDigit}|_)+)?){octalDigit}*
-OctalNumeral								0([\_]+({OctalDigits}+|{OctalDigits})
+OctalDigits									{OctalDigit}+((({OctalDigit}|_)+)?){OctalDigit}*
+OctalNumeral								0([\_]+({OctalDigits}+|{OctalDigits}))
 BinaryNumeral								0[bB]([01]+|([01]+([01]|_)+)?[01]+)
 IntergerLiteral								({DecimalNumeral}|{HexNumeral}|{OctalNumeral}|{BinaryNumeral}){IntSuffix}?
 
-E											[eE][+-]?{digit}+
+E											[eE][+-]?{Digit}+
 FloatSuffix									[fFdD]
 Float1										(({Digit}+.{Digit}*|.{Digit}+)({E})?){FloatSuffix}?
 Float2										{Digit}+{E}{FloatSuffix}?
 Float3										{Digit}+{E}?{FloatSuffix}					
 DecimalFloatingPointLiteral					({Float1}|{Float2}|{Float3})
-HexFloatingPointLiteral						({hexNumeral}[\.]?|[0][x]{HexDigit}?[\.]{HexDigit}+)[pP][+-]?{Digit}+{FloatSuffix}?)
+HexFloatingPointLiteral						({HexNumeral}[\.]?|[0][x]{HexDigit}?[\.]{HexDigit}+)[pP][+-]?{Digit}+{FloatSuffix}?
 FloatingPoint								({DecimalFloatingPointLiteral}|{HexFloatingPointLiteral})
 
 BooleanLiteral								"true"|"false"	
@@ -40,9 +41,33 @@ Literals										({Numberic}|{Character}|{String}|{BooleanLiteral}|{Null})
 Separator									[\(\)\{\}\[\]\;\,\.\@]
 Delimiter									[\=\>\<\!\~\?\:\+\-\*\/\&\|\^\%]
 
+Octaldigits									({OctalDigit}|{OctalDigit}[(OctalDigit|"_")+]{OctalDigit})
+BinaryDigits {BinaryDigit}((({BinaryDigit}|_)+)?){BinaryDigit}	
+
 %%
-										/* 3.7 COMMENTS */
-([/][*]([^*]|[\r\n]|([*]*([^*/]|[\r\n])))*[*]+[/])|("//".*)		{/* Comment */}
+
+// 3.6 Whitespace
+[ \r\n\t\f]                  /* skip whitespace */
+
+// 3.7 Comments
+\/\*([^*]|[\r\n]|(\*+([^*/]|[\r\n])))*\*+\/		/* skip multiline comments */
+
+\/\/[^\n]*                /* skip the line comment  */
+
+// 3.10.1 - Integer Literals
+// Decimals
+(({NonZeroDigit}({Digit}|"_")*{Digit}+)|{Digit})[lL]*  { yylval.name = yytext; return (int)Tokens.NUMBER; }
+
+// Hexadecimals
+0[xX](({HexDigit}({HexDigit}|"_")*{HexDigit}+)|{HexDigit})[lL]*  { yylval.name = yytext; return (int)Tokens.NUMBER; }
+
+
+//OctalNumerals
+0({Octaldigits}|[\_]+{Octaldigits})[lL]?  {yylval.name = yytext; return (int)Tokens.OCTAL; }
+
+//Binary
+//Binary numerals
+0[bB]{BinaryDigits} {yylval.name = yytext; return (int)Tokens.BINARY; }
 
 										/* 3.9 KEYWORDS */
 abstract									{return (int)Tokens.ABSTRACT;}
@@ -98,7 +123,7 @@ while										{return (int)Tokens.WHILE;}
 
 										/* 3.10 LITERALS */
 										
-Literals									{return (int)Tokens.LITERALS}
+Literals									{return (int)Tokens.LITERALS;}
 
 										/* 3.11 SEPARATORS */
 										
@@ -139,12 +164,9 @@ Separator									{return yytext[0];}
 ">>>="										{return (int)Tokens.SIGNED_RIGHT_SHIFT_ASSIGNMENT;}
 
 /* 3.8 IDENTIFIERS */
-{letter}({letter}|{digit})* 			{ yylval.name = yytext; return (int)Tokens.IDENT; }
+{Letter}({Letter}|{Digit})* 			{ yylval.name = yytext; return (int)Tokens.IDENT; }
 
-{digit}+	    						{ yylval.num = int.Parse(yytext); return (int)Tokens.NUMBER; }
-
-[ \r\n\t\f\b]                    			/* skip whitespace */
-
+{Digit}+	    						{ yylval.num = int.Parse(yytext); return (int)Tokens.NUMBER; }
 			
 
 .                            			{ 
