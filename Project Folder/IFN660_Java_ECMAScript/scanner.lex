@@ -13,6 +13,8 @@ letter [a-zA-Z]
 // 3.7 Comments
 \/\*([^*]|[\r\n]|(\*+([^*/]|[\r\n])))*\*+\/		/* skip multiline comments */
 
+\/\/[^\n]*                /* skip the line comment  */
+
 // 3.10.1 - Integer Literals
 // Decimals
 (({nonZeroDigit}({digit}|"_")*{digit}+)|{digit})[lL]*  { yylval.name = yytext; return (int)Tokens.NUMBER; }

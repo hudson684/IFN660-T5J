@@ -5,10 +5,10 @@
 //  See accompanying file GPLEXcopyright.rtf.
 //
 //  GPLEX Version:  1.2.2
-//  Machine:  MSI
-//  DateTime: 8/03/2017 11:49:13 AM
-//  UserName: Tri Phan
-//  GPLEX input file <scanner.lex - 8/03/2017 11:48:29 AM>
+//  Machine:  LAPTOP-24NGQU2J
+//  DateTime: 11-03-2017 12:58:42
+//  UserName: sneha
+//  GPLEX input file <scanner.lex - 11-03-2017 12:58:30>
 //  GPLEX frame file <embedded resource>
 //
 //  Option settings: unicode, parser, minimize
@@ -21,6 +21,7 @@
 // Version 1.2.1 of 24-June-2013
 //
 //
+#define BACKUP
 #define PERSIST
 
 using System;
@@ -123,8 +124,8 @@ namespace IFN660_Java_ECMAScript
         
         enum Result {accept, noMatch, contextFound};
 
-        const int maxAccept = 32;
-        const int initial = 33;
+        const int maxAccept = 39;
+        const int initial = 40;
         const int eofNum = 0;
         const int goStart = -1;
         const int INITIAL = 0;
@@ -161,25 +162,25 @@ namespace IFN660_Java_ECMAScript
         }
     };
 
-    static int[] startState = new int[] {33, 0};
+    static int[] startState = new int[] {40, 0};
 
 #region CompressedCharacterMap
     //
-    // There are 26 equivalence classes
+    // There are 34 equivalence classes
     // There are 2 character sequence regions
     // There are 1 tables, 126 entries
     // There are 1 runs, 0 singletons
     // Decision tree depth is 1
     //
     static sbyte[] mapC0 = new sbyte[126] {
-/*     '\0' */ 0, 0, 0, 0, 0, 0, 0, 0, 0, 25, 24, 0, 0, 25, 0, 0, 
+/*     '\0' */ 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 4, 0, 1, 5, 0, 0, 
 /*   '\x10' */ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
-/*   '\x20' */ 25, 0, 0, 0, 0, 0, 0, 0, 17, 18, 0, 15, 22, 0, 0, 0, 
-/*      '0' */ 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 0, 21, 16, 14, 23, 0, 
-/*      '@' */ 0, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 
-/*      'P' */ 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 0, 0, 0, 0, 0, 
-/*      '`' */ 0, 12, 8, 12, 12, 3, 2, 12, 11, 1, 12, 12, 4, 12, 6, 9, 
-/*      'p' */ 12, 12, 12, 5, 7, 12, 12, 10, 12, 12, 12, 19, 0, 20 };
+/*   '\x20' */ 1, 0, 0, 0, 0, 0, 0, 0, 27, 28, 3, 25, 32, 0, 0, 2, 
+/*      '0' */ 7, 6, 6, 6, 6, 6, 6, 6, 6, 6, 0, 31, 26, 24, 33, 0, 
+/*      '@' */ 0, 11, 11, 11, 11, 11, 11, 23, 23, 23, 23, 23, 9, 23, 23, 23, 
+/*      'P' */ 23, 23, 23, 23, 23, 23, 23, 23, 10, 23, 23, 0, 0, 0, 0, 8, 
+/*      '`' */ 0, 11, 19, 11, 11, 14, 13, 23, 22, 12, 23, 23, 15, 23, 17, 20, 
+/*      'p' */ 23, 23, 23, 16, 18, 23, 23, 21, 10, 23, 23, 29, 0, 30 };
 
     static sbyte MapC(int code)
     { // '\0' <= code <= '\U0010FFFF'
@@ -190,60 +191,80 @@ namespace IFN660_Java_ECMAScript
     }
 #endregion
 
-    static Table[] NxS = new Table[34] {
+    static Table[] NxS = new Table[46] {
 /* NxS[   0] */ new Table(0, 0, 0, null),
 /* NxS[   1] */ new Table(0, 0, -1, null),
-/* NxS[   2] */ new Table(1, 13, -1, new sbyte[] {3, 30, 3, 3, 3, 31, 
-          3, 3, 3, 3, 3, 3, 3}),
-/* NxS[   3] */ new Table(14, 13, 3, new sbyte[] {-1, -1, -1, -1, -1, -1, 
-          -1, -1, -1, -1, -1, -1, -1}),
-/* NxS[   4] */ new Table(1, 13, -1, new sbyte[] {3, 3, 3, 27, 3, 3, 
-          3, 3, 3, 3, 3, 3, 3}),
-/* NxS[   5] */ new Table(1, 13, -1, new sbyte[] {3, 3, 3, 3, 3, 3, 
-          3, 3, 24, 3, 3, 3, 3}),
-/* NxS[   6] */ new Table(1, 13, -1, new sbyte[] {3, 3, 3, 3, 3, 3, 
-          3, 3, 3, 3, 20, 3, 3}),
-/* NxS[   7] */ new Table(13, 1, -1, new sbyte[] {7}),
-/* NxS[   8] */ new Table(0, 0, -1, null),
-/* NxS[   9] */ new Table(0, 0, -1, null),
-/* NxS[  10] */ new Table(0, 0, -1, null),
+/* NxS[   2] */ new Table(0, 0, -1, null),
+/* NxS[   3] */ new Table(2, 2, -1, new sbyte[] {38, 44}),
+/* NxS[   4] */ new Table(6, 10, -1, new sbyte[] {4, 4, 43, 35, -1, -1, 
+          -1, -1, -1, 35}),
+/* NxS[   5] */ new Table(9, 7, -1, new sbyte[] {35, 41, -1, -1, -1, -1, 
+          35}),
+/* NxS[   6] */ new Table(6, 18, -1, new sbyte[] {6, 6, -1, 6, 6, 6, 
+          6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6}),
+/* NxS[   7] */ new Table(6, 18, -1, new sbyte[] {6, 6, -1, 6, 6, 6, 
+          6, 32, 6, 6, 6, 33, 6, 6, 6, 6, 6, 6}),
+/* NxS[   8] */ new Table(6, 18, -1, new sbyte[] {6, 6, -1, 6, 6, 6, 
+          6, 6, 6, 29, 6, 6, 6, 6, 6, 6, 6, 6}),
+/* NxS[   9] */ new Table(6, 18, -1, new sbyte[] {6, 6, -1, 6, 6, 6, 
+          6, 6, 6, 6, 6, 6, 6, 6, 26, 6, 6, 6}),
+/* NxS[  10] */ new Table(6, 18, -1, new sbyte[] {6, 6, -1, 6, 6, 6, 
+          6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 22, 6}),
 /* NxS[  11] */ new Table(0, 0, -1, null),
 /* NxS[  12] */ new Table(0, 0, -1, null),
 /* NxS[  13] */ new Table(0, 0, -1, null),
 /* NxS[  14] */ new Table(0, 0, -1, null),
 /* NxS[  15] */ new Table(0, 0, -1, null),
 /* NxS[  16] */ new Table(0, 0, -1, null),
-/* NxS[  17] */ new Table(14, 1, -1, new sbyte[] {19}),
+/* NxS[  17] */ new Table(0, 0, -1, null),
 /* NxS[  18] */ new Table(0, 0, -1, null),
 /* NxS[  19] */ new Table(0, 0, -1, null),
-/* NxS[  20] */ new Table(1, 13, -1, new sbyte[] {21, 3, 3, 3, 3, 3, 
-          3, 3, 3, 3, 3, 3, 3}),
-/* NxS[  21] */ new Table(1, 13, -1, new sbyte[] {3, 3, 3, 22, 3, 3, 
-          3, 3, 3, 3, 3, 3, 3}),
-/* NxS[  22] */ new Table(1, 13, -1, new sbyte[] {3, 3, 23, 3, 3, 3, 
-          3, 3, 3, 3, 3, 3, 3}),
-/* NxS[  23] */ new Table(14, 13, 3, new sbyte[] {-1, -1, -1, -1, -1, -1, 
-          -1, -1, -1, -1, -1, -1, -1}),
-/* NxS[  24] */ new Table(1, 13, -1, new sbyte[] {3, 3, 3, 3, 3, 3, 
-          3, 3, 25, 3, 3, 3, 3}),
-/* NxS[  25] */ new Table(1, 13, -1, new sbyte[] {3, 3, 3, 26, 3, 3, 
-          3, 3, 3, 3, 3, 3, 3}),
-/* NxS[  26] */ new Table(14, 13, 3, new sbyte[] {-1, -1, -1, -1, -1, -1, 
-          -1, -1, -1, -1, -1, -1, -1}),
-/* NxS[  27] */ new Table(1, 13, -1, new sbyte[] {3, 3, 3, 3, 28, 3, 
-          3, 3, 3, 3, 3, 3, 3}),
-/* NxS[  28] */ new Table(1, 13, -1, new sbyte[] {3, 3, 29, 3, 3, 3, 
-          3, 3, 3, 3, 3, 3, 3}),
-/* NxS[  29] */ new Table(14, 13, 3, new sbyte[] {-1, -1, -1, -1, -1, -1, 
-          -1, -1, -1, -1, -1, -1, -1}),
-/* NxS[  30] */ new Table(14, 13, 3, new sbyte[] {-1, -1, -1, -1, -1, -1, 
-          -1, -1, -1, -1, -1, -1, -1}),
-/* NxS[  31] */ new Table(1, 13, -1, new sbyte[] {3, 3, 3, 3, 3, 3, 
-          32, 3, 3, 3, 3, 3, 3}),
-/* NxS[  32] */ new Table(14, 13, 3, new sbyte[] {-1, -1, -1, -1, -1, -1, 
-          -1, -1, -1, -1, -1, -1, -1}),
-/* NxS[  33] */ new Table(8, 22, 3, new sbyte[] {5, 3, 6, 3, 3, 7, 
-          8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 18, 1, 2, 3, 4}),
+/* NxS[  20] */ new Table(24, 1, -1, new sbyte[] {21}),
+/* NxS[  21] */ new Table(0, 0, -1, null),
+/* NxS[  22] */ new Table(6, 18, -1, new sbyte[] {6, 6, -1, 6, 6, 6, 
+          23, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6}),
+/* NxS[  23] */ new Table(6, 18, -1, new sbyte[] {6, 6, -1, 6, 6, 6, 
+          6, 6, 6, 24, 6, 6, 6, 6, 6, 6, 6, 6}),
+/* NxS[  24] */ new Table(6, 18, -1, new sbyte[] {6, 6, -1, 6, 6, 6, 
+          6, 6, 25, 6, 6, 6, 6, 6, 6, 6, 6, 6}),
+/* NxS[  25] */ new Table(6, 18, -1, new sbyte[] {6, 6, -1, 6, 6, 6, 
+          6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6}),
+/* NxS[  26] */ new Table(6, 18, -1, new sbyte[] {6, 6, -1, 6, 6, 6, 
+          6, 6, 6, 6, 6, 6, 6, 6, 27, 6, 6, 6}),
+/* NxS[  27] */ new Table(6, 18, -1, new sbyte[] {6, 6, -1, 6, 6, 6, 
+          6, 6, 6, 28, 6, 6, 6, 6, 6, 6, 6, 6}),
+/* NxS[  28] */ new Table(6, 18, -1, new sbyte[] {6, 6, -1, 6, 6, 6, 
+          6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6}),
+/* NxS[  29] */ new Table(6, 18, -1, new sbyte[] {6, 6, -1, 6, 6, 6, 
+          6, 6, 6, 6, 30, 6, 6, 6, 6, 6, 6, 6}),
+/* NxS[  30] */ new Table(6, 18, -1, new sbyte[] {6, 6, -1, 6, 6, 6, 
+          6, 6, 31, 6, 6, 6, 6, 6, 6, 6, 6, 6}),
+/* NxS[  31] */ new Table(6, 18, -1, new sbyte[] {6, 6, -1, 6, 6, 6, 
+          6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6}),
+/* NxS[  32] */ new Table(6, 18, -1, new sbyte[] {6, 6, -1, 6, 6, 6, 
+          6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6}),
+/* NxS[  33] */ new Table(6, 18, -1, new sbyte[] {6, 6, -1, 6, 6, 6, 
+          6, 6, 6, 6, 6, 6, 34, 6, 6, 6, 6, 6}),
+/* NxS[  34] */ new Table(6, 18, -1, new sbyte[] {6, 6, -1, 6, 6, 6, 
+          6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6}),
+/* NxS[  35] */ new Table(9, 7, -1, new sbyte[] {35, -1, -1, -1, -1, -1, 
+          35}),
+/* NxS[  36] */ new Table(6, 14, -1, new sbyte[] {36, 36, 42, 37, -1, 36, 
+          -1, 36, 36, 37, -1, -1, -1, 36}),
+/* NxS[  37] */ new Table(9, 7, -1, new sbyte[] {37, -1, -1, -1, -1, -1, 
+          37}),
+/* NxS[  38] */ new Table(4, 1, 38, new sbyte[] {-1}),
+/* NxS[  39] */ new Table(0, 0, -1, null),
+/* NxS[  40] */ new Table(19, 30, 6, new sbyte[] {9, 6, 10, 6, 6, 11, 
+          12, 13, 14, 15, 16, 17, 18, 19, 20, 1, 2, 3, 1, 2, 2, 4, 
+          5, 1, 6, 6, 6, 7, 6, 8}),
+/* NxS[  41] */ new Table(6, 14, -1, new sbyte[] {36, 36, -1, -1, -1, 36, 
+          -1, 36, 36, -1, -1, -1, -1, 36}),
+/* NxS[  42] */ new Table(6, 14, -1, new sbyte[] {36, 36, 42, -1, -1, 36, 
+          -1, 36, 36, -1, -1, -1, -1, 36}),
+/* NxS[  43] */ new Table(6, 3, -1, new sbyte[] {4, 4, 43}),
+/* NxS[  44] */ new Table(3, 1, 44, new sbyte[] {45}),
+/* NxS[  45] */ new Table(2, 2, 44, new sbyte[] {39, 45}),
     };
 
 int NextState() {
@@ -253,7 +274,7 @@ int NextState() {
         unchecked {
             int rslt;
             int idx = MapC(code) - NxS[state].min;
-            if (idx < 0) idx += 26;
+            if (idx < 0) idx += 34;
             if ((uint)idx >= (uint)NxS[state].rng) rslt = NxS[state].dflt;
             else rslt = NxS[state].nxt[idx];
             return rslt;
@@ -677,78 +698,91 @@ int NextState() {
                 return (int)Tokens.EOF;
             break;
         case 1:
+        case 3:
 throw new Exception(
                                      String.Format(
                                          "unexpected character '{0}'", yytext));
             break;
         case 2:
-        case 3:
-        case 4:
-        case 5:
-        case 6:
-        case 20:
-        case 21:
-        case 22:
-        case 24:
-        case 25:
-        case 27:
-        case 28:
-        case 31:
-yylval.name = yytext; return (int)Tokens.IDENT;
-            break;
-        case 7:
-yylval.num = int.Parse(yytext); return (int)Tokens.NUMBER;
-            break;
-        case 8:
-return '=';
-            break;
-        case 9:
-return '+';
-            break;
-        case 10:
-return '<';
-            break;
-        case 11:
-return '(';
-            break;
-        case 12:
-return ')';
-            break;
-        case 13:
-return '{';
-            break;
-        case 14:
-return '}';
-            break;
-        case 15:
-return ';';
-            break;
-        case 16:
-return ',';
-            break;
-        case 17:
-return '>';
-            break;
-        case 18:
 /* skip whitespace */
             break;
+        case 4:
+        case 5:
+        case 35:
+yylval.name = yytext; return (int)Tokens.NUMBER;
+            break;
+        case 6:
+        case 7:
+        case 8:
+        case 9:
+        case 10:
+        case 22:
+        case 23:
+        case 24:
+        case 26:
+        case 27:
+        case 29:
+        case 30:
+        case 33:
+yylval.name = yytext; return (int)Tokens.IDENT;
+            break;
+        case 11:
+return '=';
+            break;
+        case 12:
+return '+';
+            break;
+        case 13:
+return '<';
+            break;
+        case 14:
+return '(';
+            break;
+        case 15:
+return ')';
+            break;
+        case 16:
+return '{';
+            break;
+        case 17:
+return '}';
+            break;
+        case 18:
+return ';';
+            break;
         case 19:
+return ',';
+            break;
+        case 20:
+return '>';
+            break;
+        case 21:
 return (int)Tokens.GE;
             break;
-        case 23:
+        case 25:
 return (int)Tokens.WHILE;
             break;
-        case 26:
+        case 28:
 return (int)Tokens.BOOL;
             break;
-        case 29:
+        case 31:
 return (int)Tokens.ELSE;
             break;
-        case 30:
+        case 32:
 return (int)Tokens.IF;
             break;
-        case 32:
+        case 34:
 return (int)Tokens.INT;
+            break;
+        case 36:
+        case 37:
+yylval.name = yytext; return (int)Tokens.NUMBER;
+            break;
+        case 38:
+/* skip the line comment  */
+            break;
+        case 39:
+/* skip multiline comments */
             break;
         default:
             break;

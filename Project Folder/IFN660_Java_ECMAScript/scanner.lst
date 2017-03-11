@@ -3,21 +3,34 @@
 //  GPLEX error listing for lex source file <scanner.lex>
 // ==========================================================================
 //  Version:  1.2.2
-//  Machine:  MSI
-//  DateTime: 8/03/2017 11:46:58 AM
-//  UserName: Tri Phan
+//  Machine:  LAPTOP-24NGQU2J
+//  DateTime: 11-03-2017 12:52:21
+//  UserName: sneha
 // ==========================================================================
 
 
 %namespace IFN660_Java_ECMAScript
-// Error: Too many errors
-// Error: Too many errors, abandoning
-// ----------------------------------
 
 digit [0-9]
+nonZeroDigit [1-9]
+hexDigit [a-fA-F0-9]
 letter [a-zA-Z]
 
 %%
+
+// 3.6 Whitespace
+[ \r\n\t\f]                  /* skip whitespace */
+
+// 3.7 Comments
+\/\*([^*]|[\r\n]|(\*+([^*/]|[\r\n])))*\*+\/		/* skip multiline comments */
+
+\/\/[^*][\n]*                /* skip the line comment
+
+// 3.10.1 - Integer Literals
+// Decimals
+(({nonZeroDigit}({digit}|"_")*{digit}+)|{digit})[lL]*  { yylval.name = yytext; return (int)Tokens.NUMBER; }
+// Hexadecimals
+0[xX](({hexDigit}({hexDigit}|"_")*{hexDigit}+)|{hexDigit})[lL]*  { yylval.name = yytext; return (int)Tokens.NUMBER; }
 
 if                           { return (int)Tokens.IF; }
 else                         { return (int)Tokens.ELSE; }
@@ -26,95 +39,22 @@ bool                         { return (int)Tokens.BOOL; }
 while                        { return (int)Tokens.WHILE; }
 
 {letter}({letter}|{digit})* { yylval.name = yytext; return (int)Tokens.IDENT; }
-{digit}+	    { yylval.num = int.Parse(yytext); return (int)Tokens.NUMBER; }
+//{digit}+	    { yylval.num = int.Parse(yytext); return (int)Tokens.NUMBER; }
 
-=                            { return '='; }
-+                            { return '+'; }
-<                            { return '<'; }
-//---------------------------^--------^^
-// Error: Illegal character in this context
-// Error: Illegal character in this context
-// Error: Illegal character in this context
-// ----------------------------------------
-(                            { return '('; }
-//---------------------------^-^^^^^^-^^^^-^
-// Error: Parser error <Syntax error, unexpected pattern> 
-// Error: Invalid or empty namelist
-// Error: Invalid or empty namelist
-// Error: Invalid or empty namelist
-// Error: Invalid or empty namelist
-// Error: Invalid or empty namelist
-// Error: Invalid or empty namelist
-// Error: Invalid or empty namelist
-// -------------------------------------------------------
-)                            { return ')'; }
-//---------------------------^-^^^^^^-^^^^-^
-// Error: Invalid or empty namelist
-// Error: Invalid or empty namelist
-// Error: Invalid or empty namelist
-// Error: Invalid or empty namelist
-// Error: Invalid or empty namelist
-// Error: Invalid or empty namelist
-// --------------------------------
-{                            { return '{'; }
-//---------------------------^^^^^^^^^^^^^^^
-// Error: Invalid or empty namelist
-// Error: Expected end-of-line here
-// --------------------------------
-}                            { return '}'; }
-//---------------------------^^^^^^^^^^^^^^^
-// Error: Invalid or empty namelist
-// Error: Expected end-of-line here
-// --------------------------------
-;                            { return ';'; }
-//---------------------------^-^^^^^^-^^^^-^
-// Error: Invalid or empty namelist
-// Error: Invalid or empty namelist
-// Error: Invalid or empty namelist
-// Error: Invalid or empty namelist
-// Error: Invalid or empty namelist
-// Error: Invalid or empty namelist
-// --------------------------------
-,                            { return ','; }
-//---------------------------^-^^^^^^-^^^^-^
-// Error: Invalid or empty namelist
-// Error: Invalid or empty namelist
-// Error: Invalid or empty namelist
-// Error: Invalid or empty namelist
-// Error: Invalid or empty namelist
-// Error: Invalid or empty namelist
-// --------------------------------
->=                           { return (int)Tokens.GE; }
-//---------------------------^-^^^^^^-^^^^^^^^^^^^^^^-^
-// Error: Invalid or empty namelist
-// Error: Invalid or empty namelist
-// Error: Invalid or empty namelist
-// Error: Invalid or empty namelist
-// Error: Invalid or empty namelist
-// Error: Invalid or empty namelist
-// Error: Invalid or empty namelist
-// Error: Invalid or empty namelist
-// Error: Invalid or empty namelist
-// Error: Invalid or empty namelist
-// Error: Invalid or empty namelist
-// --------------------------------
->                            { return '>'; }
-//---------------------------^-^^^^^^-^^^^-^
-// Error: Invalid or empty namelist
-// Error: Invalid or empty namelist
-// Error: Invalid or empty namelist
-// Error: Invalid or empty namelist
-// Error: Invalid or empty namelist
-// Error: Invalid or empty namelist
-// --------------------------------
+"="                            { return '='; }
+"+"                            { return '+'; }
+"<"                            { return '<'; }
+"("                            { return '('; }
+")"                            { return ')'; }
+"{"                            { return '{'; }
+"}"                            { return '}'; }
+";"                            { return ';'; }
+","                            { return ','; }
+">="                           { return (int)Tokens.GE; }
+">"                            { return '>'; }
 
 
 
-[ \r\n\t]                    /* skip whitespace */
-//^^^^^^^
-// Error: Invalid or empty namelist
-// Error: Too many errors, abandoning
-// ----------------------------------
 
 .                            { 
                                  throw new Exception(
@@ -123,5 +63,8 @@ while                        { return (int)Tokens.WHILE; }
                              }
 
 %%
+// Error: Invalid single-line action
+// Error: Parser error <Syntax error, unexpected %%, expecting /*, or /*, or /*...*/, or /*...*/> 
+// -----------------------------------------------------------------------------------------------
 // ==========================================================================
 
