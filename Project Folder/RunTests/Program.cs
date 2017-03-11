@@ -69,6 +69,7 @@ namespace RunTests
                 process.StandardOutput.Close();
                 process.Close();
 
+               
             }
         }
     }

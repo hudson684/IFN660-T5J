@@ -25,7 +25,7 @@ while 42 >= foo19
 1234
 333_77_906
 45
-456789L
+456789LL
 0l
 0x00FFab7
 0X8
@@ -33,3 +33,16 @@ while 42 >= foo19
 0xABCD_EF01_2345L
 0X5C
 0xFfF
+
+//Octal numerals
+0123l
+0_123
+0_1_2_3
+
+
+//Binary numerals
+0b01
+0B10111
+0b02
+
+
