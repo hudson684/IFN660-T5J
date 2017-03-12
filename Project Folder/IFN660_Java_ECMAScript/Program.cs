@@ -10,6 +10,7 @@ namespace IFN660_Java_ECMAScript
     {
         EOF = 264,
         #region Keywords
+        // An code
         WHILE = 265,
         IDENT = 266,
         GE = 267,
@@ -74,6 +75,7 @@ namespace IFN660_Java_ECMAScript
         DOUBLE_COLON = 323,
 
         #region Operator
+        // An code
         EQUAL = 324,
         GREATER_OR_EQUAL = 325,
         LESS_THAN_OR_EQUAL = 326,
@@ -142,10 +144,7 @@ namespace IFN660_Java_ECMAScript
             {
                 using (var input = System.IO.File.OpenRead(args[0]))
                 {
-
-
-                    Scanner scanner = new Scanner(
-                                          input);
+                    Scanner scanner = new Scanner(input);
                     #region Tokens
                     Tokens token;
                     do
@@ -170,6 +169,7 @@ namespace IFN660_Java_ECMAScript
                                 break;
                             #endregion
                             #region Keywords
+                            // Code by An
                             case Tokens.ABSTRACT:
                                 Console.WriteLine("ABSTRACT");
                                 break;
@@ -322,6 +322,7 @@ namespace IFN660_Java_ECMAScript
                             case Tokens.LITERALS:
                                 Console.WriteLine("LITERALS");
                                 break;
+                            // Code by Nathan & Sneha
                             case Tokens.DecimalIntegerLiteral:
                                 Console.WriteLine("DecimalIntegerLiteral ({0})", scanner.yylval.name);
                                 break;
@@ -343,6 +344,7 @@ namespace IFN660_Java_ECMAScript
                              	break;
                             #endregion
                             #region Operators
+                            // Code by An
                             case Tokens.ELLIPSIS:
                                 Console.WriteLine("ELLIPSIS");
                                 break;
