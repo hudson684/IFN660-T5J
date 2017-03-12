@@ -52,6 +52,7 @@
     <None Include="scanner.lex" />
     <None Include="Tests\test_EscapeSequence.j" />
     <None Include="Tests\test_CharacterLiteral.j" />
+    <None Include="Tests\test_LineTerminators.j" />
     <None Include="Tests\test_StringLiteral.j" />
     <None Include="Tests\test_BooleanLiteral.j" />
     <None Include="Tests\test_Comments.j" />
