@@ -59,6 +59,7 @@
     <None Include="Tests\test_OctalLiteral.j" />
     <None Include="Tests\test_Operators.j" />
     <None Include="Tests\test_Separators.j" />
+    <None Include="Tests\test_Unicode_Escape.j" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Tests\test1.j" />

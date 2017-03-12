@@ -442,5 +442,9 @@ namespace IFN660_Java_ECMAScript
 
             Console.Read();
         }
+<<<<<<< Updated upstream
     }
+=======
+	}
+>>>>>>> Stashed changes
 }
