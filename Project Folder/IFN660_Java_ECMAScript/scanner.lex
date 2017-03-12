@@ -41,7 +41,7 @@ Literals										({Numberic}|{Character}|{String}|{BooleanLiteral}|{Null})
 Separator									[\(\)\{\}\[\]\;\,\.\@]
 Delimiter									[\=\>\<\!\~\?\:\+\-\*\/\&\|\^\%]
 
-Octaldigits									({OctalDigit}|{OctalDigit}[(OctalDigit|"_")+]{OctalDigit})
+//Octaldigits									({OctalDigit}|{OctalDigit}[(OctalDigit|"_")+]{OctalDigit})
 BinaryDigits {BinaryDigit}((({BinaryDigit}|_)+)?){BinaryDigit}	
 
 %%
