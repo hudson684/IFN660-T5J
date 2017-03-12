@@ -110,6 +110,12 @@ namespace IFN660_Java_ECMAScript
         BOOLEAN_LITERAL = 352,
         NULL_LITERAL = 353,
 
+        //Tri
+        CHARACTER_LITERAL = 354,
+        STRING_LITERAL = 355,
+        OCTAL_ESCAPE = 356,
+        ESCAPE_SEQUENCE = 358,
+
         //3.3 Unicode escapes Vivian
         UNICODE_ESCAPE = 360,
         UNICODE_INPUT_CHAR = 361,
@@ -332,7 +338,19 @@ namespace IFN660_Java_ECMAScript
                             // case Tokens.FLOATING_POINT_LITERALS:
                             // 	Console.WriteLine ("FLOAT");
                             // 	break;
-
+                            //Code by Tri
+                            case Tokens.CHARACTER_LITERAL:
+                                Console.WriteLine("Character Literal ({0})", scanner.yylval.name);
+                                break;
+                            case Tokens.STRING_LITERAL:
+                                Console.WriteLine("String Literal ({0})", scanner.yylval.name);
+                                break;
+                            case Tokens.OCTAL_ESCAPE:
+                                Console.WriteLine("Octal Escape ({0})", scanner.yylval.name);
+                                break;
+                            case Tokens.ESCAPE_SEQUENCE:
+                                Console.WriteLine("Escape Sequence ({0})", scanner.yylval.name);
+                                break;
                             // Code by Vivian
                             case Tokens.BOOLEAN_LITERAL:
                              	Console.WriteLine ("Boolean Literal ({0})", scanner.yylval.name);
