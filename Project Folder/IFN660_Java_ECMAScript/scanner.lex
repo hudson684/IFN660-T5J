@@ -127,7 +127,7 @@ Literals									{return (int)Tokens.LITERALS;}
 
 										/* 3.11 SEPARATORS */
 										
-Separator									{return yytext[0];}
+{Separator}									{return yytext[0];}
 "..."										{return (int)Tokens.ELLIPSIS;}	
 "::"										{return (int)Tokens.DOUBLE_COLON;}	
 										
