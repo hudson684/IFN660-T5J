@@ -70,6 +70,8 @@ namespace IFN660_Java_ECMAScript
 		// BOOLEAN_LITERALS = 320,
 		// NULL_LITERAL = 321,
 		LITERALS = 318,
+        DecimalIntegerLiteral = 319,
+        HexIntegerLiteral = 320,
 		ELLIPSIS = 322,
 		DOUBLE_COLON = 323,
 
@@ -306,102 +308,108 @@ namespace IFN660_Java_ECMAScript
 				case Tokens.LITERALS:
 					Console.WriteLine ("LITERALS");
 					break;
-				// case Tokens.FLOATING_POINT_LITERALS:
-				// 	Console.WriteLine ("FLOAT");
-				// 	break;
-				// case Tokens.BOOLEAN_LITERALS:
-				// 	Console.WriteLine ("BOOL");
-				// 	break;
-				// case Tokens.NULL_LITERAL:
-				// 	Console.WriteLine ("NULL");
-				// 	break;
-				#endregion
-				#region Operators
-				case Tokens.ELLIPSIS:
-					Console.WriteLine ("ELLIPSIS");
-					break;
-				case Tokens.DOUBLE_COLON:
-					Console.WriteLine ("DOUBLE_COLON");
-					break;
-				case Tokens.EQUAL:
-					Console.WriteLine ("EQUAL");
-					break;
-				case Tokens.GREATER_OR_EQUAL:
-					Console.WriteLine ("GREATER_OR_EQUAL");
-					break;
-				case Tokens.LESS_THAN_OR_EQUAL:
-					Console.WriteLine ("LESS_THAN_OR_EQUAL");
-					break;
-				case Tokens.NOT_EQUAL:
-					Console.WriteLine ("NOT_EQUAL");
-					break;
-                case Tokens.ARROW:
-                    Console.WriteLine("ARROW");
-                        break;
-                case Tokens.LOGICAL_AND:
-					Console.WriteLine ("LOGICAL_AND");
-					break;
-				case Tokens.LOGICAL_OR:
-					Console.WriteLine ("LOGICAL_OR");
-					break;
-				case Tokens.LOGICAL_NOT:
-					Console.WriteLine ("LOGICAL_NOT");
-					break;
-				case Tokens.INCREMENT:
-					Console.WriteLine ("INCREMENT");
-					break;
-				case Tokens.DECREMENT:
-					Console.WriteLine ("DECREMENT");
-					break;
-				case Tokens.LEFT_SHIFT:
-					Console.WriteLine ("LEFT_SHIFT");
-					break;
-				case Tokens.SIGNED_RIGHT_SHIFT:
-					Console.WriteLine ("SIGNED_RIGHT_SHIFT");
-					break;
-				case Tokens.UNSIGNED_RIGHT_SHIFT:
-					Console.WriteLine ("UNSIGNED_RIGHT_SHIFT");
-					break;
-				case Tokens.ADDITION_ASSIGNMENT:
-					Console.WriteLine ("ADDITION_ASSIGNMENT");
-					break;
-				case Tokens.SUBTRACTION_ASSIGNMENT:
-					Console.WriteLine ("SUBTRACTION_ASSIGNMENT");
-					break;
-				case Tokens.MULTIPLICATION_ASSIGNMENT:
-					Console.WriteLine ("MULTIPLICATION_ASSIGNMENT");
-					break;
-				case Tokens.DIVISION_ASSIGNMENT:
-					Console.WriteLine ("DIVISION_ASSIGNMENT");
-					break;
-				case Tokens.MODULUS_ASSIGNMENT:
-					Console.WriteLine ("MODULUS_ASSIGNMENT");
-					break;
-				case Tokens.BITWISE_AND_ASSIGNMENT:
-					Console.WriteLine ("BITWISE_AND_ASSIGNMENT");
-					break;
-				case Tokens.BITWISE_OR_ASSIGNMENT:
-					Console.WriteLine ("BITWISE_OR_ASSIGNMENT");
-					break;
-				case Tokens.BITWISE_XOR_ASSIGNMENT:
-					Console.WriteLine ("BITWISE_XOR_ASSIGNMENT");
-					break;
-				case Tokens.LEFT_SHIFT_ASSIGNMENT:
-					Console.WriteLine ("LEFT_SHIFT_ASSIGNMENT");
-					break;
-				case Tokens.UNSIGNED_RIGHT_SHIFT_ASSIGNMENT:
-					Console.WriteLine ("UNSIGNED_RIGHT_SHIFT_ASSIGNMENT");
-					break;
-				case Tokens.SIGNED_RIGHT_SHIFT_ASSIGNMENT:
-					Console.WriteLine ("SIGNED_RIGHT_SHIFT_ASSIGNMENT");
-					break;
-                case Tokens.OCTAL:
-                     Console.WriteLine("OCTAL ({0})", scanner.yylval.name);
-                     break;
-                case Tokens.BINARY:
-                     Console.WriteLine("BINARY ({0})", scanner.yylval.name);
-                     break;
-                    #endregion
+            case Tokens.DecimalIntegerLiteral:
+                Console.WriteLine("DecimalIntegerLiteral ({0})", scanner.yylval.name);
+                break;
+            case Tokens.HexIntegerLiteral:
+                Console.WriteLine("HexIntegerLiteral ({0})", scanner.yylval.name);
+                break;
+            // case Tokens.FLOATING_POINT_LITERALS:
+            // 	Console.WriteLine ("FLOAT");
+            // 	break;
+            // case Tokens.BOOLEAN_LITERALS:
+            // 	Console.WriteLine ("BOOL");
+            // 	break;
+            // case Tokens.NULL_LITERAL:
+            // 	Console.WriteLine ("NULL");
+            // 	break;
+            #endregion
+            #region Operators
+            case Tokens.ELLIPSIS:
+				Console.WriteLine ("ELLIPSIS");
+				break;
+			case Tokens.DOUBLE_COLON:
+				Console.WriteLine ("DOUBLE_COLON");
+				break;
+			case Tokens.EQUAL:
+				Console.WriteLine ("EQUAL");
+				break;
+			case Tokens.GREATER_OR_EQUAL:
+				Console.WriteLine ("GREATER_OR_EQUAL");
+				break;
+			case Tokens.LESS_THAN_OR_EQUAL:
+				Console.WriteLine ("LESS_THAN_OR_EQUAL");
+				break;
+			case Tokens.NOT_EQUAL:
+				Console.WriteLine ("NOT_EQUAL");
+				break;
+            case Tokens.ARROW:
+                Console.WriteLine("ARROW");
+                    break;
+            case Tokens.LOGICAL_AND:
+				Console.WriteLine ("LOGICAL_AND");
+				break;
+			case Tokens.LOGICAL_OR:
+				Console.WriteLine ("LOGICAL_OR");
+				break;
+			case Tokens.LOGICAL_NOT:
+				Console.WriteLine ("LOGICAL_NOT");
+				break;
+			case Tokens.INCREMENT:
+				Console.WriteLine ("INCREMENT");
+				break;
+			case Tokens.DECREMENT:
+				Console.WriteLine ("DECREMENT");
+				break;
+			case Tokens.LEFT_SHIFT:
+				Console.WriteLine ("LEFT_SHIFT");
+				break;
+			case Tokens.SIGNED_RIGHT_SHIFT:
+				Console.WriteLine ("SIGNED_RIGHT_SHIFT");
+				break;
+			case Tokens.UNSIGNED_RIGHT_SHIFT:
+				Console.WriteLine ("UNSIGNED_RIGHT_SHIFT");
+				break;
+			case Tokens.ADDITION_ASSIGNMENT:
+				Console.WriteLine ("ADDITION_ASSIGNMENT");
+				break;
+			case Tokens.SUBTRACTION_ASSIGNMENT:
+				Console.WriteLine ("SUBTRACTION_ASSIGNMENT");
+				break;
+			case Tokens.MULTIPLICATION_ASSIGNMENT:
+				Console.WriteLine ("MULTIPLICATION_ASSIGNMENT");
+				break;
+			case Tokens.DIVISION_ASSIGNMENT:
+				Console.WriteLine ("DIVISION_ASSIGNMENT");
+				break;
+			case Tokens.MODULUS_ASSIGNMENT:
+				Console.WriteLine ("MODULUS_ASSIGNMENT");
+				break;
+			case Tokens.BITWISE_AND_ASSIGNMENT:
+				Console.WriteLine ("BITWISE_AND_ASSIGNMENT");
+				break;
+			case Tokens.BITWISE_OR_ASSIGNMENT:
+				Console.WriteLine ("BITWISE_OR_ASSIGNMENT");
+				break;
+			case Tokens.BITWISE_XOR_ASSIGNMENT:
+				Console.WriteLine ("BITWISE_XOR_ASSIGNMENT");
+				break;
+			case Tokens.LEFT_SHIFT_ASSIGNMENT:
+				Console.WriteLine ("LEFT_SHIFT_ASSIGNMENT");
+				break;
+			case Tokens.UNSIGNED_RIGHT_SHIFT_ASSIGNMENT:
+				Console.WriteLine ("UNSIGNED_RIGHT_SHIFT_ASSIGNMENT");
+				break;
+			case Tokens.SIGNED_RIGHT_SHIFT_ASSIGNMENT:
+				Console.WriteLine ("SIGNED_RIGHT_SHIFT_ASSIGNMENT");
+				break;
+            case Tokens.OCTAL:
+                    Console.WriteLine("OCTAL ({0})", scanner.yylval.name);
+                    break;
+            case Tokens.BINARY:
+                    Console.WriteLine("BINARY ({0})", scanner.yylval.name);
+                    break;
+                #endregion
                 default:
 					Console.WriteLine ("'{0}'", token);
 					break;
