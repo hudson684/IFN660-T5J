@@ -414,9 +414,9 @@ namespace IFN660_Java_ECMAScript
                 case Tokens.BINARY:
                      Console.WriteLine("BINARY ({0})", scanner.yylval.name);
                      break;
-
-                #region Line Terminators
-                                //Line terminators by Joshua Hudson
+                            #endregion
+                            #region Line Terminators
+                            //Line terminators by Joshua Hudson
                             case Tokens.LINE_FEED:
                                 Console.WriteLine("LINE FEED");
                                 break;
@@ -439,7 +439,7 @@ namespace IFN660_Java_ECMAScript
             {
                 Console.WriteLine(e.Message);
             }
-            #endregion
+           
 
             Console.Read();
         }
