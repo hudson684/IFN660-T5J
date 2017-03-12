@@ -63,7 +63,7 @@ BinaryDigits {BinaryDigit}((({BinaryDigit}|_)+)?){BinaryDigit}
 
 
 //OctalNumerals
-0({Octaldigits}|[\_]+{Octaldigits})[lL]?  {yylval.name = yytext; return (int)Tokens.OCTAL; }
+0({OctalDigits}|[\_]+{OctalDigits})[lL]?  {yylval.name = yytext; return (int)Tokens.OCTAL; }
 
 //Binary
 //Binary numerals
