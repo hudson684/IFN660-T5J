@@ -99,9 +99,14 @@ namespace IFN660_Java_ECMAScript
 		SIGNED_RIGHT_SHIFT_ASSIGNMENT = 346,
         ARROW = 347,
         BINARY = 348,
-        OCTAL = 349
-		#endregion
-	};
+        OCTAL = 349,
+        #endregion
+        #region Line Terminators
+        LINE_FEED = 350,
+            CARRIAGE_RETURN = 351,
+            CR_LF = 352
+        #endregion
+    };
 
 	public struct MyValueType
 	{
@@ -401,8 +406,21 @@ namespace IFN660_Java_ECMAScript
                 case Tokens.BINARY:
                      Console.WriteLine("BINARY ({0})", scanner.yylval.name);
                      break;
-                    #endregion
-                default:
+                            #endregion
+                #region Line Terminators
+                                //Line terminators by Joshua Hudson
+                            case Tokens.LINE_FEED:
+                                Console.WriteLine("LINE FEED");
+                                break;
+                            case Tokens.CARRIAGE_RETURN:
+                                Console.WriteLine("CARRIAGE RETURN");
+                                break;
+                            case Tokens.CR_LF:
+                                Console.WriteLine("CARRIAGE RETURN FOLLOWED BY LINE FEED");
+                                break;
+                            #endregion
+                            
+                            default:
 					Console.WriteLine ("'{0}'", token);
 					break;
 				

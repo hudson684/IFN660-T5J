@@ -50,7 +50,6 @@
   <ItemGroup>
     <None Include="App.config" />
     <None Include="scanner.lex" />
-    <None Include="Tests\test1.j" />
     <None Include="Tests\test_Comments.j" />
     <None Include="Tests\test_DecLiteral.j" />
     <None Include="Tests\test_floatingPointLiterals.j" />
@@ -62,7 +61,7 @@
     <None Include="Tests\test_Separators.j" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="test1.txt" />
+    <None Include="Tests\test1.j" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
