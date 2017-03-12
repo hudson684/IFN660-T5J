@@ -160,8 +160,9 @@ namespace IFN660_Java_ECMAScript
 				case Tokens.EOF:
 					Console.WriteLine ("EOF");
 					break;
-				#region Keywords
-				case Tokens.ABSTRACT:
+                            #endregion
+                            #region Keywords
+                            case Tokens.ABSTRACT:
 					Console.WriteLine ("ABSTRACT");
 					break;
 				case Tokens.ASSERT:
@@ -308,9 +309,9 @@ namespace IFN660_Java_ECMAScript
 				case Tokens.VOLATILE:
 					Console.WriteLine ("VOLATILE");
 					break;
-				#endregion
-				#region Literals
-				case Tokens.LITERALS:
+                            #endregion
+                            #region Literals
+                            case Tokens.LITERALS:
 					Console.WriteLine ("LITERALS");
 					break;
             case Tokens.DecimalIntegerLiteral:
@@ -414,8 +415,8 @@ namespace IFN660_Java_ECMAScript
                 case Tokens.BINARY:
                      Console.WriteLine("BINARY ({0})", scanner.yylval.name);
                      break;
-                            #endregion
-                            #region Line Terminators
+                #endregion
+                #region Line Terminators
                             //Line terminators by Joshua Hudson
                             case Tokens.LINE_FEED:
                                 Console.WriteLine("LINE FEED");
@@ -426,7 +427,7 @@ namespace IFN660_Java_ECMAScript
                             case Tokens.CR_LF:
                                 Console.WriteLine("CARRIAGE RETURN FOLLOWED BY LINE FEED");
                                 break;
-                            #endregion
+                 #endregion
                             
                             default:
 					Console.WriteLine ("'{0}'", token);
