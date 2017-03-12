@@ -4,7 +4,7 @@
 // ==========================================================================
 //  Version:  1.2.2
 //  Machine:  DESKTOP-1VMC0S8
-//  DateTime: 12/03/2017 5:11:03 PM
+//  DateTime: 12/03/2017 5:43:33 PM
 //  UserName: hudso
 // ==========================================================================
 
@@ -47,6 +47,9 @@ BooleanLiteral								"true"|"false"
 OctalEscape									\\(?:[1-7][0-7]{0,2}|[0-7]{2,3})
 EscapeSequence								[\\]([r]|[n]|[b]|[f]|[t]|[\\]|[\']|[\"]|{OctalEscape})
 
+//Not Sure about this line - Josh
+UnicodeEscape								([\\u+]{HexDigit}{HexDigit}{HexDigit}{HexDigit})
+
 Numberic									({IntergerLiteral}|{FloatingPoint})
 Character									\'(.|EscapeSequence|[^\\'])*\'
 String										\"(.|EscapeSequence|[^\\"])*\"
@@ -58,16 +61,21 @@ Separator									[\(\)\{\}\[\]\;\,\.\@]
 Delimiter									[\=\>\<\!\~\?\:\+\-\*\/\&\|\^\%]
 
 //Octaldigits									({OctalDigit}|{OctalDigit}[(OctalDigit|"_")+]{OctalDigit})
-BinaryDigits {BinaryDigit}((({BinaryDigit}|_)+)?){BinaryDigit}	
+BinaryDigits									 {BinaryDigit}((({BinaryDigit}|_)+)?){BinaryDigit}	
 
 
 
 %%
 
-// 3.3 Unicode Escapes - Joshua Hudson
+// 3.3 Unicode Escapes - Vivian Lee
+\*u+{HexDigit}{HexDigit}{HexDigit}{HexDigit}		{return (int)Tokens.UNICODE_INPUT_CHAR;}
+{UnicodeEscape}										{return (int)Tokens.UNICODE_ESCAPE;}
+u+{HexDigit}{HexDigit}{HexDigit}{HexDigit}			{return (int)Tokens.UNICODE_RAW_INPUT;}
+{HexDigit}											{return (int)Tokens.HEXDIGIT;}////
+u+													{return (int)Tokens.UNICODE_MARKER;}
+
 
 // 3.4  Line Terminators - Joshua Hudson
-
 \LF  { yylval.name = yytext; return (int)Tokens.LINE_TERMINATOR; }
 \CR  { yylval.name = yytext; return (int)Tokens.LINE_TERMINATOR; }
 [\CR][\LF]  { yylval.name = yytext; return (int)Tokens.LINE_TERMINATOR; }
@@ -213,8 +221,7 @@ Literals									{return (int)Tokens.LITERALS;}
 												String.Format(
 													"unexpected character '{0}'", yytext)); 
 										}
-
-
-
-%%// ==========================================================================
+										
+%%
+// ==========================================================================
 
