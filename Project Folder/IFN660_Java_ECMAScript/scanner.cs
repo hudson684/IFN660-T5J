@@ -6,9 +6,9 @@
 //
 //  GPLEX Version:  1.2.2
 //  Machine:  DESKTOP-1VMC0S8
-//  DateTime: 12/03/2017 4:20:36 PM
+//  DateTime: 12/03/2017 5:11:02 PM
 //  UserName: hudso
-//  GPLEX input file <scanner.lex - 12/03/2017 2:12:04 PM>
+//  GPLEX input file <scanner.lex - 12/03/2017 5:08:56 PM>
 //  GPLEX frame file <embedded resource>
 //
 //  Option settings: unicode, parser, minimize
@@ -2024,13 +2024,13 @@ return (int)Tokens.DIVISION_ASSIGNMENT;
 /* skip multiline comments */
             break;
         case 296:
-yylval.name = yytext; return (int)Tokens.CR_LF;
+yylval.name = yytext; return (int)Tokens.LINE_TERMINATOR;
             break;
         case 297:
-yylval.name = yytext; return (int)Tokens.CARRIAGE_RETURN;
+yylval.name = yytext; return (int)Tokens.LINE_TERMINATOR;
             break;
         case 298:
-yylval.name = yytext; return (int)Tokens.LINE_FEED;
+yylval.name = yytext; return (int)Tokens.LINE_TERMINATOR;
             break;
         case 305:
 return (int)Tokens.LITERALS;

@@ -104,9 +104,7 @@ namespace IFN660_Java_ECMAScript
         OCTAL = 349,
         #endregion
         #region Line Terminators
-        LINE_FEED = 350,
-            CARRIAGE_RETURN = 351,
-            CR_LF = 352
+        LINE_TERMINATOR
         #endregion
     };
 
@@ -418,15 +416,10 @@ namespace IFN660_Java_ECMAScript
                 #endregion
                 #region Line Terminators
                             //Line terminators by Joshua Hudson
-                            case Tokens.LINE_FEED:
-                                Console.WriteLine("LINE FEED");
+                            case Tokens.LINE_TERMINATOR:
+                                Console.WriteLine("LINE TERMINATOR");
                                 break;
-                            case Tokens.CARRIAGE_RETURN:
-                                Console.WriteLine("CARRIAGE RETURN");
-                                break;
-                            case Tokens.CR_LF:
-                                Console.WriteLine("CARRIAGE RETURN FOLLOWED BY LINE FEED");
-                                break;
+
                  #endregion
                             
                             default:
