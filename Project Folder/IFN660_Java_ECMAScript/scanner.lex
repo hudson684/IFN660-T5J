@@ -56,10 +56,10 @@ BinaryDigits {BinaryDigit}((({BinaryDigit}|_)+)?){BinaryDigit}
 
 // 3.10.1 - Integer Literals
 // Decimals
-(({NonZeroDigit}({Digit}|"_")*{Digit}+)|{Digit})[lL]*  { yylval.name = yytext; return (int)Tokens.NUMBER; }
+(({NonZeroDigit}({Digit}|"_")*{Digit}+)|{Digit})[lL]?  { yylval.name = yytext; return (int)Tokens.DecimalIntegerLiteral; }
 
 // Hexadecimals
-0[xX](({HexDigit}({HexDigit}|"_")*{HexDigit}+)|{HexDigit})[lL]*  { yylval.name = yytext; return (int)Tokens.NUMBER; }
+0[xX](({HexDigit}({HexDigit}|"_")*{HexDigit}+)|{HexDigit})[lL]?  { yylval.name = yytext; return (int)Tokens.HexIntegerLiteral; }
 
 
 //OctalNumerals
@@ -67,7 +67,7 @@ BinaryDigits {BinaryDigit}((({BinaryDigit}|_)+)?){BinaryDigit}
 
 //Binary
 //Binary numerals
-0[bB]{BinaryDigits} {yylval.name = yytext; return (int)Tokens.BINARY; }
+0[bB]{BinaryDigits}[lL]? {yylval.name = yytext; return (int)Tokens.BINARY; }
 
 										/* 3.9 KEYWORDS */
 abstract									{return (int)Tokens.ABSTRACT;}
