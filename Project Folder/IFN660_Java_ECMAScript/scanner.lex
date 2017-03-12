@@ -31,15 +31,16 @@ BooleanLiteral								"true"|"false"
 OctalEscape									\\(?:[1-7][0-7]{0,2}|[0-7]{2,3})
 EscapeSequence								[\\]([r]|[n]|[b]|[f]|[t]|[\\]|[\']|[\"]|{OctalEscape})
 
-//Not Sure about this line - Josh
-UnicodeEscape								([\\u+]{HexDigit}{HexDigit}{HexDigit}{HexDigit})
+//3.3 Deffinition - Joshua & Vivian
+UnicodeEscape								(\\[u+]{HexDigit}{HexDigit}{HexDigit}{HexDigit})
 
 Numberic									({IntergerLiteral}|{FloatingPoint})
 Character									\'(.|EscapeSequence|[^\\'])*\'
 String										\"(.|EscapeSequence|[^\\"])*\"
-Null										"null"
+//Changed to NullLiteral to fit Oracle Documentation - Josh
+NullLiteral										"null"
 
-Literals										({Numberic}|{Character}|{String}|{BooleanLiteral}|{Null})
+Literals										({Numberic}|{Character}|{String}|{BooleanLiteral}|{NullLiteral})
 
 Separator									[\(\)\{\}\[\]\;\,\.\@]
 Delimiter									[\=\>\<\!\~\?\:\+\-\*\/\&\|\^\%]
@@ -51,18 +52,21 @@ BinaryDigits									 {BinaryDigit}((({BinaryDigit}|_)+)?){BinaryDigit}
 
 %%
 
-// 3.3 Unicode Escapes - Vivian Lee
+// 3.3 Unicode Escapes -  Joshua Hudson &  Vivian Lee
+\\  /* IGNORE */
+\" /* IGNORE */
 \*u+{HexDigit}{HexDigit}{HexDigit}{HexDigit}		{return (int)Tokens.UNICODE_INPUT_CHAR;}
 {UnicodeEscape}										{return (int)Tokens.UNICODE_ESCAPE;}
 u+{HexDigit}{HexDigit}{HexDigit}{HexDigit}			{return (int)Tokens.UNICODE_RAW_INPUT;}
-{HexDigit}											{return (int)Tokens.HEXDIGIT;}////
+{HexDigit}											{return (int)Tokens.HEXDIGIT;}
 u+													{return (int)Tokens.UNICODE_MARKER;}
 
 
-// 3.4  Line Terminators - Joshua Hudson
+// 3.4  Line Terminators - Joshua Hudson &  Vivian Lee
 \LF  { yylval.name = yytext; return (int)Tokens.LINE_TERMINATOR; }
 \CR  { yylval.name = yytext; return (int)Tokens.LINE_TERMINATOR; }
 [\CR][\LF]  { yylval.name = yytext; return (int)Tokens.LINE_TERMINATOR; }
+
 
 // 3.6 Whitespace
 [ \r\n\t\f]                  /* skip whitespace */
@@ -143,6 +147,15 @@ while										{return (int)Tokens.WHILE;}
 										
 Literals									{return (int)Tokens.LITERALS;}
 
+
+										/* 3.10.3 Boolean Literal - Vivan*/
+
+{BooleanLiteral}							{yylval.name = yytext; return (int)Tokens.BOOLEAN_LITERAL;}
+
+
+										/* 3.10.7 Null Literal - Joshua*/
+
+{NullLiteral}							{return (int)Tokens.NULL_LITERAL;}
 
 										/* 3.11 SEPARATORS */
 										

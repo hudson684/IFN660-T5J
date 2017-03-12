@@ -67,8 +67,6 @@ namespace IFN660_Java_ECMAScript
 
         // INTERGER_LITERALS = 318,
         // FLOATING_POINT_LITERALS = 319,
-        // BOOLEAN_LITERALS = 320,
-        // NULL_LITERAL = 321,
         LITERALS = 318,
         DecimalIntegerLiteral = 319,
         HexIntegerLiteral = 320,
@@ -106,11 +104,15 @@ namespace IFN660_Java_ECMAScript
         #region Line Terminators
         LINE_TERMINATOR = 350,
         #endregion
+
+        BOOLEAN_LITERAL = 352,
+        NULL_LITERAL = 353,
+
         //3.3 Unicode escapes Vivian
-        UNICODE_ESCAPE = 353,
-        UNICODE_INPUT_CHAR = 354,
-        UNICODE_RAW_INPUT = 355,
-        HEXDIGIT = 356,
+        UNICODE_ESCAPE = 360,
+        UNICODE_INPUT_CHAR = 361,
+        UNICODE_RAW_INPUT = 362,
+        HEXDIGIT = 363,
         UNICODE_MARKER = 357,
     };
 
@@ -329,12 +331,16 @@ namespace IFN660_Java_ECMAScript
                             // case Tokens.FLOATING_POINT_LITERALS:
                             // 	Console.WriteLine ("FLOAT");
                             // 	break;
-                            // case Tokens.BOOLEAN_LITERALS:
-                            // 	Console.WriteLine ("BOOL");
-                            // 	break;
-                            // case Tokens.NULL_LITERAL:
-                            // 	Console.WriteLine ("NULL");
-                            // 	break;
+
+                            // Code by Vivian
+                            case Tokens.BOOLEAN_LITERAL:
+                             	Console.WriteLine ("Boolean Literal ({0})", scanner.yylval.name);
+                             	break;
+
+                            // Code by Josh
+                            case Tokens.NULL_LITERAL:
+                             	Console.WriteLine ("Null Literal");
+                             	break;
                             #endregion
                             #region Operators
                             case Tokens.ELLIPSIS:
@@ -423,12 +429,31 @@ namespace IFN660_Java_ECMAScript
                                 break;
                             #endregion
                             #region Line Terminators
-                            //Line terminators by Joshua Hudson
+                            //Line terminators by Joshua Hudson and Vivan Lee
                             case Tokens.LINE_TERMINATOR:
                                 Console.WriteLine("LINE TERMINATOR");
                                 break;
                             #endregion
 
+                            #region Unicode Escapes
+                            //Unicode Escapes by Joshua Hudson and Vivan Lee
+                            case Tokens.UNICODE_ESCAPE:
+                                Console.WriteLine("UNICODE ESCAPE");
+                                break;
+                           case Tokens.UNICODE_INPUT_CHAR:
+                                Console.WriteLine("UNICODE INPUT CHAR");
+                                break;
+
+                            case Tokens.UNICODE_RAW_INPUT:
+                                Console.WriteLine("UNICODE RAW INPUT");
+                                break;
+                            case Tokens.HEXDIGIT:
+                                Console.WriteLine("HEXDIGIT");
+                                break;
+                            case Tokens.UNICODE_MARKER:
+                                Console.WriteLine("UNICODE MARKER");
+                                break;
+                            #endregion
                             default:
                                 Console.WriteLine("'{0}'", token);
                                 break;
