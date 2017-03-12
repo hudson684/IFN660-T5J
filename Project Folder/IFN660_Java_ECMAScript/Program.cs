@@ -70,6 +70,8 @@ namespace IFN660_Java_ECMAScript
 		// BOOLEAN_LITERALS = 320,
 		// NULL_LITERAL = 321,
 		LITERALS = 318,
+        DecimalIntegerLiteral = 319,
+        HexIntegerLiteral = 320,
 		ELLIPSIS = 322,
 		DOUBLE_COLON = 323,
 
@@ -311,6 +313,12 @@ namespace IFN660_Java_ECMAScript
 				case Tokens.LITERALS:
 					Console.WriteLine ("LITERALS");
 					break;
+            case Tokens.DecimalIntegerLiteral:
+                Console.WriteLine("DecimalIntegerLiteral ({0})", scanner.yylval.name);
+                break;
+            case Tokens.HexIntegerLiteral:
+                Console.WriteLine("HexIntegerLiteral ({0})", scanner.yylval.name);
+                break;
 				// case Tokens.FLOATING_POINT_LITERALS:
 				// 	Console.WriteLine ("FLOAT");
 				// 	break;
@@ -406,7 +414,7 @@ namespace IFN660_Java_ECMAScript
                 case Tokens.BINARY:
                      Console.WriteLine("BINARY ({0})", scanner.yylval.name);
                      break;
-                            #endregion
+
                 #region Line Terminators
                                 //Line terminators by Joshua Hudson
                             case Tokens.LINE_FEED:
