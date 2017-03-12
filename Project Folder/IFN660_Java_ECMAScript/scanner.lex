@@ -1,5 +1,5 @@
 %namespace IFN660_Java_ECMAScript
-
+// Nathan - Senha - An
 HexDigit									[0-9a-fA-F]
 Digit 										[0-9_]
 OctalDigit									[0-7]
@@ -8,6 +8,7 @@ NonZeroDigit								[1-9]
 BinaryDigit									[0-1]
 Letter 										[$_a-zA-Z]
 
+// Nathan - Sneha - An
 IntSuffix									[lL]
 Digits										[0-9]+([0-9_]+)?[0-9]+
 DecimalNumeral								0|{NonZeroDigit}+({Digits}?|[\_]+{Digits}+)
@@ -17,6 +18,7 @@ OctalNumeral								0([\_]+({OctalDigits}+|{OctalDigits}))
 BinaryNumeral								0[bB]([01]+|([01]+([01]|_)+)?[01]+)
 IntergerLiteral								({DecimalNumeral}|{HexNumeral}|{OctalNumeral}|{BinaryNumeral}){IntSuffix}?
 
+// An - Sneha -fixed bug
 E											[eE][+-]?{Digit}+
 FloatSuffix									[fFdD]
 Float1										(({Digit}+.{Digit}*|.{Digit}+)({E})?){FloatSuffix}?
@@ -25,34 +27,35 @@ Float3										{Digit}+{E}?{FloatSuffix}
 DecimalFloatingPointLiteral					({Float1}|{Float2}|{Float3})
 HexFloatingPointLiteral						({HexNumeral}[\.]?|[0][x]{HexDigit}?[\.]{HexDigit}+)[pP][+-]?{Digit}+{FloatSuffix}?
 FloatingPoint								({DecimalFloatingPointLiteral}|{HexFloatingPointLiteral})
-
 BooleanLiteral								"true"|"false"	
 
+// An
 OctalEscape									\\(?:[1-7][0-7]{0,2}|[0-7]{2,3})
 EscapeSequence								[\\]([r]|[n]|[b]|[f]|[t]|[\\]|[\']|[\"]|{OctalEscape})
 
 //3.3 Deffinition - Joshua & Vivian
 UnicodeEscape								(\\[u+]{HexDigit}{HexDigit}{HexDigit}{HexDigit})
 
+// An
 Numberic									({IntergerLiteral}|{FloatingPoint})
 Character									\'(.|EscapeSequence|[^\\'])*\'
 String										\"(.|EscapeSequence|[^\\"])*\"
 //Changed to NullLiteral to fit Oracle Documentation - Josh
-NullLiteral										"null"
+NullLiteral									"null"
+Literals									({Numberic}|{Character}|{String}|{BooleanLiteral}|{NullLiteral})
 
-Literals										({Numberic}|{Character}|{String}|{BooleanLiteral}|{NullLiteral})
-
+// An
 Separator									[\(\)\{\}\[\]\;\,\.\@]
 Delimiter									[\=\>\<\!\~\?\:\+\-\*\/\&\|\^\%]
 
-//Octaldigits									({OctalDigit}|{OctalDigit}[(OctalDigit|"_")+]{OctalDigit})
-BinaryDigits									 {BinaryDigit}((({BinaryDigit}|_)+)?){BinaryDigit}	
+// Sneha
+BinaryDigits								{BinaryDigit}((({BinaryDigit}|_)+)?){BinaryDigit}	
 
 
 
 %%
 
-// 3.3 Unicode Escapes -  Joshua Hudson &  Vivian Lee
+										/* 3.3 Unicode Escapes -  Joshua Hudson &  Vivian Lee */
 \\  /* IGNORE */
 \" /* IGNORE */
 \*u+{HexDigit}{HexDigit}{HexDigit}{HexDigit}		{return (int)Tokens.UNICODE_INPUT_CHAR;}
@@ -61,37 +64,34 @@ u+{HexDigit}{HexDigit}{HexDigit}{HexDigit}			{return (int)Tokens.UNICODE_RAW_INP
 {HexDigit}											{return (int)Tokens.HEXDIGIT;}
 u+													{return (int)Tokens.UNICODE_MARKER;}
 
+										/* 3.4  Line Terminators - Joshua Hudson &  Vivian Lee */
+\LF  												{ yylval.name = yytext; return (int)Tokens.LINE_TERMINATOR; }
+\CR  												{ yylval.name = yytext; return (int)Tokens.LINE_TERMINATOR; }
+[\CR][\LF]  										{ yylval.name = yytext; return (int)Tokens.LINE_TERMINATOR; }
 
-// 3.4  Line Terminators - Joshua Hudson &  Vivian Lee
-\LF  { yylval.name = yytext; return (int)Tokens.LINE_TERMINATOR; }
-\CR  { yylval.name = yytext; return (int)Tokens.LINE_TERMINATOR; }
-[\CR][\LF]  { yylval.name = yytext; return (int)Tokens.LINE_TERMINATOR; }
 
+										/* 3.6 Whitespace*/
+[ \r\n\t\f]                  						/* skip whitespace */
 
-// 3.6 Whitespace
-[ \r\n\t\f]                  /* skip whitespace */
-
-// 3.7 Comments
+										/* 3.7 Comments - Nathan & Sneha */
 \/\*([^*]|[\r\n]|(\*+([^*/]|[\r\n])))*\*+\/		/* skip multiline comments */
+\/\/[^\n]*                						/* skip the line comment  */
 
-\/\/[^\n]*                /* skip the line comment  */
+										/* 3.10.1 - Integer Literals */
+// Decimals -Nathan
+(({NonZeroDigit}({Digit}|"_")*{Digit}+)|{Digit})[lL]?  				{ yylval.name = yytext; return (int)Tokens.DecimalIntegerLiteral; }
 
-// 3.10.1 - Integer Literals
-// Decimals
-(({NonZeroDigit}({Digit}|"_")*{Digit}+)|{Digit})[lL]?  { yylval.name = yytext; return (int)Tokens.DecimalIntegerLiteral; }
+// Hexadecimals - Nathan
+0[xX](({HexDigit}({HexDigit}|"_")*{HexDigit}+)|{HexDigit})[lL]?  	{ yylval.name = yytext; return (int)Tokens.HexIntegerLiteral; }
 
-// Hexadecimals
-0[xX](({HexDigit}({HexDigit}|"_")*{HexDigit}+)|{HexDigit})[lL]?  { yylval.name = yytext; return (int)Tokens.HexIntegerLiteral; }
-
-
-//OctalNumerals
-0({OctalDigits}|[\_]+{OctalDigits})[lL]?  {yylval.name = yytext; return (int)Tokens.OCTAL; }
+//OctalNumerals - Senha
+0({OctalDigits}|[\_]+{OctalDigits})[lL]?  							{yylval.name = yytext; return (int)Tokens.OCTAL; }
 
 //Binary
-//Binary numerals
+//Binary numerals - Sneha
 0[bB]{BinaryDigits}[lL]? {yylval.name = yytext; return (int)Tokens.BINARY; }
 
-										/* 3.9 KEYWORDS */
+										/* 3.9 KEYWORDS An */
 abstract									{return (int)Tokens.ABSTRACT;}
 assert										{return (int)Tokens.ASSERT;}
 boolean										{return (int)Tokens.BOOLEAN;}
@@ -143,28 +143,28 @@ void										{return (int)Tokens.VOID;}
 volatile									{return (int)Tokens.VOLATILE;}
 while										{return (int)Tokens.WHILE;}
 
-										/* 3.10 LITERALS */
+										/* 3.10 LITERALS An */
 										
 Literals									{return (int)Tokens.LITERALS;}
 
 
 										/* 3.10.3 Boolean Literal - Vivan*/
 
-{BooleanLiteral}							{yylval.name = yytext; return (int)Tokens.BOOLEAN_LITERAL;}
+{BooleanLiteral}						{yylval.name = yytext; return (int)Tokens.BOOLEAN_LITERAL;}
 
 
 										/* 3.10.7 Null Literal - Joshua*/
 
 {NullLiteral}							{return (int)Tokens.NULL_LITERAL;}
 
-										/* 3.11 SEPARATORS */
+										/* 3.11 SEPARATORS  - An */
 										
 {Separator}									{return yytext[0];}
 "..."										{return (int)Tokens.ELLIPSIS;}	
 "::"										{return (int)Tokens.DOUBLE_COLON;}	
 										
 
-										/* 3.12 OPERATOR */
+										/* 3.12 OPERATOR  - An */
 
 {Delimiter}									{return yytext[0];}
 "=="										{return (int)Tokens.EQUAL;}
