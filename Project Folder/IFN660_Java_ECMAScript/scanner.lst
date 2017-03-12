@@ -3,22 +3,13 @@
 //  GPLEX error listing for lex source file <scanner.lex>
 // ==========================================================================
 //  Version:  1.2.2
-<<<<<<< Updated upstream
 //  Machine:  DESKTOP-1VMC0S8
-//  DateTime: 12/03/2017 5:48:56 PM
+//  DateTime: 12/03/2017 5:53:43 PM
 //  UserName: hudso
-=======
-//  Machine:  VDI-VL17-119
-//  DateTime: 12/03/2017 5:16:31 PM
-//  UserName: n9004548
->>>>>>> Stashed changes
 // ==========================================================================
 
 
 %namespace IFN660_Java_ECMAScript
-// Error: Too many errors
-// Error: Too many errors, abandoning
-// ----------------------------------
 
 HexDigit									[0-9a-fA-F]
 Digit 										[0-9_]
@@ -55,10 +46,6 @@ BooleanLiteral								"true"|"false"
 
 OctalEscape									\\(?:[1-7][0-7]{0,2}|[0-7]{2,3})
 EscapeSequence								[\\]([r]|[n]|[b]|[f]|[t]|[\\]|[\']|[\"]|{OctalEscape})
-UnicodeEscape								(\u+{HexDigit}{HexDigit}{HexDigit}{HexDigit})
-//-------------------^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-// Error: Illegal escape sequence <\u+{He> 
-// ----------------------------------------
 
 //Not Sure about this line - Josh
 UnicodeEscape								([\\u+]{HexDigit}{HexDigit}{HexDigit}{HexDigit})
@@ -81,19 +68,11 @@ BinaryDigits									 {BinaryDigit}((({BinaryDigit}|_)+)?){BinaryDigit}
 %%
 
 // 3.3 Unicode Escapes - Vivian Lee
-<<<<<<< Updated upstream
 \*u+{HexDigit}{HexDigit}{HexDigit}{HexDigit}		{return (int)Tokens.UNICODE_INPUT_CHAR;}
 {UnicodeEscape}										{return (int)Tokens.UNICODE_ESCAPE;}
 u+{HexDigit}{HexDigit}{HexDigit}{HexDigit}			{return (int)Tokens.UNICODE_RAW_INPUT;}
 {HexDigit}											{return (int)Tokens.HEXDIGIT;}////
 u+													{return (int)Tokens.UNICODE_MARKER;}
-=======
-\*u+{HexDigit}{HexDigit}{HexDigit}{HexDigit}		{return (int)Tokens.UNICODE_INPUT_CHAR}
-{UnicodeEscape}										{return (int)Tokens.UNICODE_ESCAPE;}
-u+{HexDigit}{HexDigit}{HexDigit}{HexDigit}			{return (int)Tokens.UNICODE_RAW_INPUT}
-{HexDigit}											{return (int)Tokens.HEXDIGIT;}
-u+													{return (int)Tokens.UNICODE_MARKER}
->>>>>>> Stashed changes
 
 
 // 3.4  Line Terminators - Joshua Hudson
@@ -242,215 +221,7 @@ Literals									{return (int)Tokens.LITERALS;}
 												String.Format(
 													"unexpected character '{0}'", yytext)); 
 										}
-<<<<<<< Updated upstream
 										
 %%
 // ==========================================================================
-=======
-
-
-
-%%                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          ÿÿ
-//^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-// Error: Expected end-of-line here
-// --------------------------------
-ÿÿÿ  ÿÿÿÿÿÿ  ÿÿÿÿÿ  ÿÿÿÿÿ  ÿÿÿÿÿ  ÿÿÿÿÿ  ÿÿ	ÿÿÿ  ÿ  0   b  I  
-// Error: Illegal character in this context
-// Error: Illegal character in this context
-// Error: Illegal character in this context
-// ----------------------------------------
-Ê      Z  %Ð (ø  
-// Error: Illegal character in this context
-// Error: Illegal character in this context
-// Error: Illegal character in this context
-// ----------------------------------------
-Ë  ,  Z  ¢Z  %Ð (ø  
-// Error: Illegal character in this context
-// Error: Illegal character in this context
-// Error: Illegal character in this context
-// ----------------------------------------
-¢Z  %Ð (ø  
-// Error: Illegal character in this context
-// Error: Illegal character in this context
-// Error: Illegal character in this context
-// ----------------------------------------
-¢Z  %Ð (ø  
-// Error: Illegal character in this context
-// Error: Illegal character in this context
-// Error: Illegal character in this context
-// ----------------------------------------
-¢Z  %Ð (ø  
-// Error: Illegal character in this context
-// Error: Illegal character in this context
-// Error: Illegal character in this context
-// ----------------------------------------
-¢Z  %Ð (ø  
-// Error: Illegal character in this context
-// Error: Illegal character in this context
-// Error: Illegal character in this context
-// ----------------------------------------
-¢Z  %Ð (ø  
-// Error: Illegal character in this context
-// Error: Illegal character in this context
-// Error: Illegal character in this context
-// ----------------------------------------
-¢Z  %Ð (ø  
-// Error: Illegal character in this context
-// Error: Illegal character in this context
-// Error: Illegal character in this context
-// ----------------------------------------
-¢Z  %Ð (ø  
-// Error: Illegal character in this context
-// Error: Illegal character in this context
-// Error: Illegal character in this context
-// ----------------------------------------
-¢Ì   ~Ì  ~Ì  ¢~Ì  	~Ì  ¢~Ì  
-// Error: Illegal character in this context
-// Error: Illegal character in this context
-// Error: Illegal character in this context
-// ----------------------------------------
-~Ì  ¢ *   0 3      {É  þþ-
-// Error: Illegal character in this context
-// Error: Illegal character in this context
-// Error: Illegal character in this context
-// ----------------------------------------
-+~Ì  {Ç  ~Ë  {É  
-//-^
-// Error: Illegal character in this context
-// Error: Illegal character in this context
-// Error: Illegal character in this context
-// ----------------------------------------
-+ *~~Ê  }È  (  
-//--^
-// Error: Illegal character in this context
-// Error: Illegal character in this context
-// Error: Illegal character in this context
-// ----------------------------------------
-  (8   *~ s }Ä  {Ä  o }É  * 0 ²  c   8£   {È  }Ç  +{Ä  o }É  (6 %
-// Error: Illegal character in this context
-// Error: Too many errors, abandoning
-// ----------------------------------------
-þ-à}Ç  {Ä  o }É  + }Ç  {Ä  o }É   (6 %
-þ-×{Ç  
-þ:   {Ç  	E      k   k   k   k   |         ¯   À   Ñ   8Ý   {È  	.+Q{Å  j3{Æ  jþþ+ -8´   {Æ  
-jZ{Å  þþ-8    éý  8   8   %{Æ  jX}Æ  +h%{Æ  jX}Æ  +W%{Æ  jX}Æ  +F%{Å  jX}Å  +5%{Æ  jX}Æ  +$%{Å  jX}Å  +%{Å  jX}Å  ++   8Vþÿÿ*  0       {Í  
-+ *& }Í  *  0       {Î  
-+ *& }Î  *  0       {Ï  
-+ *& }Ï  *  0       {Ñ  où  
-
-+ *   0    d   {Ñ  oú  
-oû  
-
-+ *> {Ñ  oü  
- *  0    e   sý  
-
-}  {Ñ  oü  
- *   0 ,   e   {  
-{Ñ  oþ  
- %{Ï  Y}Ï  oB  *r(  
-  }Í  sÿ  
-}Ñ   *   0 J       s  
-}Ó  s 
-}Ö  s 
-}×  (  
-  }Ò  (G }Ô  (G }Õ   *  0 %   f   {Ò  oª  sE 
-{×  o 
- + *   0 X  g   
-{Ò  o  
-}u  8    o  
-{  þ-
-(I 
-+oß  þ-	{Õ  
-+{Ô  
-oC  }  +$ 	oØ  þ-
-	oä    	X	{Ò  oª  þ-È Xo  
-þ:]ÿÿÿ(G 
-{Ö  o 
- o  
-oC  o  
-}  {Ó  {Õ  o 
- {Ó  {Ô  o 
-  {Ö  o 
-+( 
-{Ó  o 
- ( 
--ÜÞþ1  o,  
- Ü *   (G    0   h    {Ö  o 
-8Ç   ( 
-
- oA {  {4  {  {4  (¶  þ:   oÕ  -oÕ  + -Ý«    {  1{  {  þþ+ - }  }  Þs{  1{  {  þþ+ - }  }  Þ<  ( 
-:)ÿÿÿÞþ1  o,  
- Ü (G {Ö  o 
- +  	*    Þí     0 ,   i   {  u-  
-o@ þþ-+	oA + *0 ;  j   
-8   {Ó  o 
-o: Y	þþ- {Ó  o 
-&8ä  X
-s  
- {Ñ  o	 
-8á   (
- 
- oÝ  þ:Ã    	oÛ  ,o  
-þþ+ :    o 
-+n( 
-{  þ-U {  u-  }  o< þ- o=  o?   o  
- %o> Xo?   ( 
--Þþ3  o,  
- Ü   ( 
-:ÿÿÿÞþ2  o,  
- Ü %o: Yo;  o  
-þ:¢   s 
- o 
-8   ( 
-	 
-	{  u-  o> o@ þ-T {Ð  
-
-þþ-& (G 
-
-o 
- 
-}Ð  
-}Ð   	
-oD  	
-}    ( 
-:jÿÿÿÞþ3  o,  
- Ü  o 
-8²   ( 
-
- 
-{Ð  o: þþ-' o@ 
-o@ þþ-+
- +C 
-o@ 
-o@ þþ-$ 
-o: o;  {Ò  oª  o;    {Ó  o 
- }Ð  
-}Ð   ( 
-:>ÿÿÿÞþ1  o,  
- Ü   {Ó  o 
-þ:Îüÿÿ* 4   ¬ +     W øO     .     HÉ    rs 
-}Ú  (  
-  }Ø   *   0   k   
-(w  
-o  0  }Ù   {  o(  
-8µ  ()  
- (*  
-( 
-	oC  :   	sP {Ù  %X
-¢}Ü  8I   	{*  o2  
-oQ  {6  þ- oU 			oY   8û    oV 
-oV {N  	þþ-! oW 
-ob  t  {S   +oU 
-ob  {N  þþ-4 }8  {4  }Ý  
-oY  oX   +\{N  
-þþ-, t  {S  
-oY  (N   + 
-oY  oX     X	{*  o1  
-þ:þÿÿ  (+  
-:;þÿÿÞþ  o,  
- Ü {Ø  o þ-Y r¾K p( 
- {Ø  o$ -r p+r p ( 
- {Ø  o) -rÃ p+râK p ( 
- (:// ==========================================================================
->>>>>>> Stashed changes
 
