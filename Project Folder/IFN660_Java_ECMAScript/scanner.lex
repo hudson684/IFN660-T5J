@@ -34,7 +34,7 @@ OctalEscape									(\\)([0-7]|[0-7][0-7]|[0-3][0-7][0-7])
 EscapeSequence								{OctalEscape}|(\\)([r]|[n]|[b]|[f]|[t]|[\\]|[\']|[\"])
 
 //3.3 Deffinition - Joshua & Vivian
-UnicodeEscape								(\\[u+]{HexDigit}{HexDigit}{HexDigit}{HexDigit})
+UnicodeEscape								(\\[u]{HexDigit}{4})
 
 //Tri
 CharacterLiteral							\'({EscapeSequence}|[^\\'])\'								
@@ -62,16 +62,16 @@ BinaryDigits								{BinaryDigit}((({BinaryDigit}|_)+)?){BinaryDigit}
 										/* 3.3 Unicode Escapes -  Joshua Hudson &  Vivian Lee */
 \\  /* IGNORE */
 \" /* IGNORE */
-\*u+{HexDigit}{HexDigit}{HexDigit}{HexDigit}		{return (int)Tokens.UNICODE_INPUT_CHAR;}
+\*u{HexDigit}{4}									{return (int)Tokens.UNICODE_INPUT_CHAR;}
 {UnicodeEscape}										{return (int)Tokens.UNICODE_ESCAPE;}
-u+{HexDigit}{HexDigit}{HexDigit}{HexDigit}			{return (int)Tokens.UNICODE_RAW_INPUT;}
+u{HexDigit}{4}										{return (int)Tokens.UNICODE_RAW_INPUT;}
 {HexDigit}											{return (int)Tokens.HEXDIGIT;}
 u+													{return (int)Tokens.UNICODE_MARKER;}
 
 										/* 3.4  Line Terminators - Joshua Hudson &  Vivian Lee */
-\LF  												{ yylval.name = yytext; return (int)Tokens.LINE_TERMINATOR; }
-\CR  												{ yylval.name = yytext; return (int)Tokens.LINE_TERMINATOR; }
-[\CR][\LF]  										{ yylval.name = yytext; return (int)Tokens.LINE_TERMINATOR; }
+[\n|\r|\r\n]							{return (int)Tokens.LINE_TERMINATOR; }
+//catches someone typing in /n in string form ect - Ask Wayne - Josh
+//[\\n|\\r|\\r\\n]						{return (int)Tokens.LINE_TERMINATOR; }
 
 
 										/* 3.6 Whitespace*/
