@@ -3,14 +3,14 @@
 //  GPLEX error listing for lex source file <scanner.lex>
 // ==========================================================================
 //  Version:  1.2.2
-//  Machine:  DESKTOP-1VMC0S8
-//  DateTime: 12/03/2017 6:40:36 PM
-//  UserName: hudso
+//  Machine:  MSI
+//  DateTime: 12/03/2017 11:35:12 PM
+//  UserName: Tri Phan
 // ==========================================================================
 
 
 %namespace IFN660_Java_ECMAScript
-
+// Nathan - Senha - An
 HexDigit									[0-9a-fA-F]
 Digit 										[0-9_]
 OctalDigit									[0-7]
@@ -19,6 +19,7 @@ NonZeroDigit								[1-9]
 BinaryDigit									[0-1]
 Letter 										[$_a-zA-Z]
 
+// Nathan - Sneha - An
 IntSuffix									[lL]
 Digits										[0-9]+([0-9_]+)?[0-9]+
 DecimalNumeral								0|{NonZeroDigit}+({Digits}?|[\_]+{Digits}+)
@@ -28,6 +29,7 @@ OctalNumeral								0([\_]+({OctalDigits}+|{OctalDigits}))
 BinaryNumeral								0[bB]([01]+|([01]+([01]|_)+)?[01]+)
 IntergerLiteral								({DecimalNumeral}|{HexNumeral}|{OctalNumeral}|{BinaryNumeral}){IntSuffix}?
 
+// An - Sneha -fixed bug
 E											[eE][+-]?{Digit}+
 //---------------^^
 // Warning: No upper bound to range, "'+','-'" included as set class members
@@ -41,33 +43,39 @@ HexFloatingPointLiteral						({HexNumeral}[\.]?|[0][x]{HexDigit}?[\.]{HexDigit}+
 // Warning: No upper bound to range, "'+','-'" included as set class members
 // -------------------------------------------------------------------------
 FloatingPoint								({DecimalFloatingPointLiteral}|{HexFloatingPointLiteral})
-
 BooleanLiteral								"true"|"false"	
 
-OctalEscape									\\(?:[1-7][0-7]{0,2}|[0-7]{2,3})
-EscapeSequence								[\\]([r]|[n]|[b]|[f]|[t]|[\\]|[\']|[\"]|{OctalEscape})
+// An - Tri
+OctalEscape									(\\)([0-7]|[0-7][0-7]|[0-3][0-7][0-7])
+EscapeSequence								{OctalEscape}|(\\)([r]|[n]|[b]|[f]|[t]|[\\]|[\']|[\"])
 
 //3.3 Deffinition - Joshua & Vivian
 UnicodeEscape								(\\[u+]{HexDigit}{HexDigit}{HexDigit}{HexDigit})
 
+//Tri
+CharacterLiteral							\'({EscapeSequence}|[^\\'])\'								
+StringLiteral								\"({EscapeSequence}|[^\\"])*\"
+
+// An
 Numberic									({IntergerLiteral}|{FloatingPoint})
 Character									\'(.|EscapeSequence|[^\\'])*\'
 String										\"(.|EscapeSequence|[^\\"])*\"
-NullLiteral										"null"
+//Changed to NullLiteral to fit Oracle Documentation - Josh
+NullLiteral									"null"
+Literals									({Numberic}|{Character}|{String}|{BooleanLiteral}|{NullLiteral})
 
-Literals										({Numberic}|{Character}|{String}|{BooleanLiteral}|{NullLiteral})
-
+// An
 Separator									[\(\)\{\}\[\]\;\,\.\@]
 Delimiter									[\=\>\<\!\~\?\:\+\-\*\/\&\|\^\%]
 
-//Octaldigits									({OctalDigit}|{OctalDigit}[(OctalDigit|"_")+]{OctalDigit})
-BinaryDigits									 {BinaryDigit}((({BinaryDigit}|_)+)?){BinaryDigit}	
+// Sneha
+BinaryDigits								{BinaryDigit}((({BinaryDigit}|_)+)?){BinaryDigit}	
 
 
 
 %%
 
-// 3.3 Unicode Escapes -  Joshua Hudson &  Vivian Lee
+										/* 3.3 Unicode Escapes -  Joshua Hudson &  Vivian Lee */
 \\  /* IGNORE */
 \" /* IGNORE */
 \*u+{HexDigit}{HexDigit}{HexDigit}{HexDigit}		{return (int)Tokens.UNICODE_INPUT_CHAR;}
@@ -76,38 +84,47 @@ u+{HexDigit}{HexDigit}{HexDigit}{HexDigit}			{return (int)Tokens.UNICODE_RAW_INP
 {HexDigit}											{return (int)Tokens.HEXDIGIT;}
 u+													{return (int)Tokens.UNICODE_MARKER;}
 
+										/* 3.4  Line Terminators - Joshua Hudson &  Vivian Lee */
+//--------^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+// Warning: Code between rules, ignored
+// ------------------------------------
+\LF  												{ yylval.name = yytext; return (int)Tokens.LINE_TERMINATOR; }
+\CR  												{ yylval.name = yytext; return (int)Tokens.LINE_TERMINATOR; }
+[\CR][\LF]  										{ yylval.name = yytext; return (int)Tokens.LINE_TERMINATOR; }
 
-// 3.4  Line Terminators - Joshua Hudson &  Vivian Lee
-\LF  { yylval.name = yytext; return (int)Tokens.LINE_TERMINATOR; }
-\CR  { yylval.name = yytext; return (int)Tokens.LINE_TERMINATOR; }
-[\CR][\LF]  { yylval.name = yytext; return (int)Tokens.LINE_TERMINATOR; }
 
+										/* 3.6 Whitespace*/
+//--------^^^^^^^^^^^^^^^^^^^
+// Warning: Code between rules, ignored
+// ------------------------------------
+[ \r\n\t\f]                  						/* skip whitespace */
 
-// 3.6 Whitespace
-[ \r\n\t\f]                  /* skip whitespace */
-
-// 3.7 Comments
+										/* 3.7 Comments - Nathan & Sneha */
+//--------^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+// Warning: Code between rules, ignored
+// ------------------------------------
 \/\*([^*]|[\r\n]|(\*+([^*/]|[\r\n])))*\*+\/		/* skip multiline comments */
+\/\/[^\n]*                						/* skip the line comment  */
 
-\/\/[^\n]*                /* skip the line comment  */
+										/* 3.10.1 - Integer Literals */
+//--------^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+// Warning: Code between rules, ignored
+// ------------------------------------
+// Decimals -Nathan
+(({NonZeroDigit}({Digit}|"_")*{Digit}+)|{Digit})[lL]?  				{ yylval.name = yytext; return (int)Tokens.DecimalIntegerLiteral; }
 
-// 3.10.1 - Integer Literals
-// Decimals
-(({NonZeroDigit}({Digit}|"_")*{Digit}+)|{Digit})[lL]?  { yylval.name = yytext; return (int)Tokens.DecimalIntegerLiteral; }
+// Hexadecimals - Nathan
+0[xX](({HexDigit}({HexDigit}|"_")*{HexDigit}+)|{HexDigit})[lL]?  	{ yylval.name = yytext; return (int)Tokens.HexIntegerLiteral; }
 
-// Hexadecimals
-0[xX](({HexDigit}({HexDigit}|"_")*{HexDigit}+)|{HexDigit})[lL]?  { yylval.name = yytext; return (int)Tokens.HexIntegerLiteral; }
-
-
-//OctalNumerals
-0({OctalDigits}|[\_]+{OctalDigits})[lL]?  {yylval.name = yytext; return (int)Tokens.OCTAL; }
+//OctalNumerals - Senha
+0({OctalDigits}|[\_]+{OctalDigits})[lL]?  							{yylval.name = yytext; return (int)Tokens.OCTAL; }
 
 //Binary
-//Binary numerals
+//Binary numerals - Sneha
 0[bB]{BinaryDigits}[lL]? {yylval.name = yytext; return (int)Tokens.BINARY; }
 
-										/* 3.9 KEYWORDS */
-//--------^^^^^^^^^^^^^^^^^^
+										/* 3.9 KEYWORDS An */
+//--------^^^^^^^^^^^^^^^^^^^^^
 // Warning: Code between rules, ignored
 // ------------------------------------
 abstract									{return (int)Tokens.ABSTRACT;}
@@ -161,31 +178,51 @@ void										{return (int)Tokens.VOID;}
 volatile									{return (int)Tokens.VOLATILE;}
 while										{return (int)Tokens.WHILE;}
 
-										/* 3.10 LITERALS */
-//--------^^^^^^^^^^^^^^^^^^^
+										/* 3.10 LITERALS An */
+//--------^^^^^^^^^^^^^^^^^^^^^^
 // Warning: Code between rules, ignored
 // ------------------------------------
 										
 Literals									{return (int)Tokens.LITERALS;}
 
 
-										/* 3.10.3 Boolean Literal - Joshua and Vivan*/
-//--------^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+										/* 3.10.3 Boolean Literal - Vivan*/
+//--------^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 // Warning: Code between rules, ignored
 // ------------------------------------
 
-{BooleanLiteral}							{yylval.name = yytext; return (int)Tokens.BOOLEAN_LITERAL;}
+{BooleanLiteral}						{yylval.name = yytext; return (int)Tokens.BOOLEAN_LITERAL;}
+
+										/* 3.10.4 Character Literal - Tri*/
+//--------^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+// Warning: Code between rules, ignored
+// ------------------------------------
+{CharacterLiteral}						{yylval.name = yytext; return (int)Tokens.CHARACTER_LITERAL;}
+
+										/* 3.10.5 String Literal - Tri*/
+//--------^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+// Warning: Code between rules, ignored
+// ------------------------------------
+{StringLiteral}							{yylval.name = yytext; return (int)Tokens.STRING_LITERAL;}
+
+										/* 3.10.6 Escape sequences for Character and String Literals - Tri*/
+//--------^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+// Warning: Code between rules, ignored
+// ------------------------------------
+{OctalEscape}							{yylval.name = yytext; return (int)Tokens.OCTAL_ESCAPE;}
+{EscapeSequence}						{yylval.name = yytext; return (int)Tokens.ESCAPE_SEQUENCE;}
 
 
-										/* 3.10.7 Null Literal - Joshua and Vivan*/
-//--------^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+										/* 3.10.7 Null Literal - Joshua*/
+//--------^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 // Warning: Code between rules, ignored
 // ------------------------------------
 
 {NullLiteral}							{return (int)Tokens.NULL_LITERAL;}
 
-										/* 3.11 SEPARATORS */
-//--------^^^^^^^^^^^^^^^^^^^^^
+										/* 3.11 SEPARATORS  - An */
+//--------^^^^^^^^^^^^^^^^^^^^^^^^^^^
 // Warning: Code between rules, ignored
 // ------------------------------------
 										
@@ -194,8 +231,8 @@ Literals									{return (int)Tokens.LITERALS;}
 "::"										{return (int)Tokens.DOUBLE_COLON;}	
 										
 
-										/* 3.12 OPERATOR */
-//--------^^^^^^^^^^^^^^^^^^^
+										/* 3.12 OPERATOR  - An */
+//--------^^^^^^^^^^^^^^^^^^^^^^^^^
 // Warning: Code between rules, ignored
 // ------------------------------------
 

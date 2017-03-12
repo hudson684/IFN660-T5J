@@ -29,12 +29,16 @@ HexFloatingPointLiteral						({HexNumeral}[\.]?|[0][x]{HexDigit}?[\.]{HexDigit}+
 FloatingPoint								({DecimalFloatingPointLiteral}|{HexFloatingPointLiteral})
 BooleanLiteral								"true"|"false"	
 
-// An
-OctalEscape									\\(?:[1-7][0-7]{0,2}|[0-7]{2,3})
-EscapeSequence								[\\]([r]|[n]|[b]|[f]|[t]|[\\]|[\']|[\"]|{OctalEscape})
+// An - Tri
+OctalEscape									(\\)([0-7]|[0-7][0-7]|[0-3][0-7][0-7])
+EscapeSequence								{OctalEscape}|(\\)([r]|[n]|[b]|[f]|[t]|[\\]|[\']|[\"])
 
 //3.3 Deffinition - Joshua & Vivian
 UnicodeEscape								(\\[u+]{HexDigit}{HexDigit}{HexDigit}{HexDigit})
+
+//Tri
+CharacterLiteral							\'({EscapeSequence}|[^\\'])\'								
+StringLiteral								\"({EscapeSequence}|[^\\"])*\"
 
 // An
 Numberic									({IntergerLiteral}|{FloatingPoint})
@@ -151,6 +155,17 @@ Literals									{return (int)Tokens.LITERALS;}
 										/* 3.10.3 Boolean Literal - Vivan*/
 
 {BooleanLiteral}						{yylval.name = yytext; return (int)Tokens.BOOLEAN_LITERAL;}
+
+										/* 3.10.4 Character Literal - Tri*/
+{CharacterLiteral}						{yylval.name = yytext; return (int)Tokens.CHARACTER_LITERAL;}
+
+										/* 3.10.5 String Literal - Tri*/
+{StringLiteral}							{yylval.name = yytext; return (int)Tokens.STRING_LITERAL;}
+
+										/* 3.10.6 Escape sequences for Character and String Literals - Tri*/
+{OctalEscape}							{yylval.name = yytext; return (int)Tokens.OCTAL_ESCAPE;}
+{EscapeSequence}						{yylval.name = yytext; return (int)Tokens.ESCAPE_SEQUENCE;}
+
 
 
 										/* 3.10.7 Null Literal - Joshua*/
