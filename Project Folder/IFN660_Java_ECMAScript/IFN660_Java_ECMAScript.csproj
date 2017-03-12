@@ -50,12 +50,14 @@
   <ItemGroup>
     <None Include="App.config" />
     <None Include="scanner.lex" />
+    <None Include="Tests\test_BooleanLiteral.j" />
     <None Include="Tests\test_Comments.j" />
     <None Include="Tests\test_DecLiteral.j" />
     <None Include="Tests\test_floatingPointLiterals.j" />
     <None Include="Tests\test_HexLiteral.j" />
     <None Include="Tests\test_intLiterals.j" />
     <None Include="Tests\test_Keywords.j" />
+    <None Include="Tests\test_NullLiteral.j" />
     <None Include="Tests\test_OctalLiteral.j" />
     <None Include="Tests\test_Operators.j" />
     <None Include="Tests\test_Separators.j" />
