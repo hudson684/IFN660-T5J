@@ -104,8 +104,16 @@ namespace IFN660_Java_ECMAScript
         OCTAL = 349,
         #endregion
         #region Line Terminators
-        LINE_TERMINATOR
+        LINE_FEED = 350,
+            CARRIAGE_RETURN = 351,
+            CR_LF = 352,
         #endregion
+            //3.3 Unicode escapes Vivian
+        UNICODE_ESCAPE = 353,
+        UNICODE_INPUT_CHAR = 354,
+        UNICODE_RAW_INPUT = 355,
+        HEXDIGIT = 356,
+        UNICODE_MARKER = 357,
     };
 
 	public struct MyValueType
@@ -416,10 +424,15 @@ namespace IFN660_Java_ECMAScript
                 #endregion
                 #region Line Terminators
                             //Line terminators by Joshua Hudson
-                            case Tokens.LINE_TERMINATOR:
-                                Console.WriteLine("LINE TERMINATOR");
+                            case Tokens.LINE_FEED:
+                                Console.WriteLine("LINE FEED");
                                 break;
-
+                            case Tokens.CARRIAGE_RETURN:
+                                Console.WriteLine("CARRIAGE RETURN");
+                                break;
+                            case Tokens.CR_LF:
+                                Console.WriteLine("CARRIAGE RETURN FOLLOWED BY LINE FEED");
+                                break;
                  #endregion
                             
                             default:
@@ -439,3 +452,4 @@ namespace IFN660_Java_ECMAScript
         }
 	}
 }
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      
