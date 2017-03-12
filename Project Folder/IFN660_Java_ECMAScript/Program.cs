@@ -146,9 +146,11 @@ namespace IFN660_Java_ECMAScript
                                           input);
                     #region Tokens
                     Tokens token;
-                    do {
+                    do
+                    {
                         token = (Tokens)scanner.yylex();
-                        switch (token) {
+                        switch (token)
+                        {
                             case Tokens.NUMBER:
                                 Console.WriteLine("NUMBER ({0})", scanner.yylval.num);
                                 break;
@@ -434,7 +436,8 @@ namespace IFN660_Java_ECMAScript
                         }
                     } while (token != Tokens.EOF);
                 }
-            } catch (Exception e)
+            }
+            catch (Exception e)
             {
                 Console.WriteLine(e.Message);
             }
@@ -442,9 +445,5 @@ namespace IFN660_Java_ECMAScript
 
             Console.Read();
         }
-<<<<<<< Updated upstream
     }
-=======
-	}
->>>>>>> Stashed changes
 }
