@@ -3,9 +3,9 @@
 //  GPLEX error listing for lex source file <scanner.lex>
 // ==========================================================================
 //  Version:  1.2.2
-//  Machine:  LAPTOP-24NGQU2J
-//  DateTime: 11-03-2017 19:59:47
-//  UserName: sneha
+//  Machine:  DESKTOP-1VMC0S8
+//  DateTime: 12/03/2017 2:08:56 PM
+//  UserName: hudso
 // ==========================================================================
 
 
@@ -57,10 +57,19 @@ Literals										({Numberic}|{Character}|{String}|{BooleanLiteral}|{Null})
 Separator									[\(\)\{\}\[\]\;\,\.\@]
 Delimiter									[\=\>\<\!\~\?\:\+\-\*\/\&\|\^\%]
 
-Octaldigits									({OctalDigit}|{OctalDigit}[(OctalDigit|"_")+]{OctalDigit})
+//Octaldigits									({OctalDigit}|{OctalDigit}[(OctalDigit|"_")+]{OctalDigit})
 BinaryDigits {BinaryDigit}((({BinaryDigit}|_)+)?){BinaryDigit}	
 
+
+
 %%
+
+// 3.3 Unicode Escapes - Joshua Hudson
+
+// 3.4  Line Terminators - Joshua Hudson
+\LF  { yylval.name = yytext; return (int)Tokens.LINE_FEED; }
+\CR  { yylval.name = yytext; return (int)Tokens.CARRIAGE_RETURN; }
+[\CR][\LF]  { yylval.name = yytext; return (int)Tokens.CR_LF; }
 
 // 3.6 Whitespace
 [ \r\n\t\f]                  /* skip whitespace */
@@ -79,7 +88,7 @@ BinaryDigits {BinaryDigit}((({BinaryDigit}|_)+)?){BinaryDigit}
 
 
 //OctalNumerals
-0({Octaldigits}|[\_]+{Octaldigits})[lL]?  {yylval.name = yytext; return (int)Tokens.OCTAL; }
+0({OctalDigits}|[\_]+{OctalDigits})[lL]?  {yylval.name = yytext; return (int)Tokens.OCTAL; }
 
 //Binary
 //Binary numerals
@@ -146,6 +155,7 @@ while										{return (int)Tokens.WHILE;}
 // ------------------------------------
 										
 Literals									{return (int)Tokens.LITERALS;}
+
 
 										/* 3.11 SEPARATORS */
 //--------^^^^^^^^^^^^^^^^^^^^^

@@ -44,7 +44,16 @@ Delimiter									[\=\>\<\!\~\?\:\+\-\*\/\&\|\^\%]
 //Octaldigits									({OctalDigit}|{OctalDigit}[(OctalDigit|"_")+]{OctalDigit})
 BinaryDigits {BinaryDigit}((({BinaryDigit}|_)+)?){BinaryDigit}	
 
+
+
 %%
+
+// 3.3 Unicode Escapes - Joshua Hudson
+
+// 3.4  Line Terminators - Joshua Hudson
+\LF  { yylval.name = yytext; return (int)Tokens.LINE_FEED; }
+\CR  { yylval.name = yytext; return (int)Tokens.CARRIAGE_RETURN; }
+[\CR][\LF]  { yylval.name = yytext; return (int)Tokens.CR_LF; }
 
 // 3.6 Whitespace
 [ \r\n\t\f]                  /* skip whitespace */
@@ -124,6 +133,7 @@ while										{return (int)Tokens.WHILE;}
 										/* 3.10 LITERALS */
 										
 Literals									{return (int)Tokens.LITERALS;}
+
 
 										/* 3.11 SEPARATORS */
 										
