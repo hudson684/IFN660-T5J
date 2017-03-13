@@ -68,9 +68,10 @@ namespace IFN660_Java_ECMAScript
 
         // INTERGER_LITERALS = 318,
         // FLOATING_POINT_LITERALS = 319,
-        LITERALS = 318,
-        DecimalIntegerLiteral = 319,
-        HexIntegerLiteral = 320,
+        DecimalIntegerLiteral = 318,
+        HexIntegerLiteral = 319,
+        OctalIntegerLiteral = 320,
+        BinaryIntegerLiteral = 321,
         ELLIPSIS = 322,
         DOUBLE_COLON = 323,
 
@@ -100,21 +101,19 @@ namespace IFN660_Java_ECMAScript
         UNSIGNED_RIGHT_SHIFT_ASSIGNMENT = 345,
         SIGNED_RIGHT_SHIFT_ASSIGNMENT = 346,
         ARROW = 347,
-        BINARY = 348,
-        OCTAL = 349,
         #endregion
         #region Line Terminators
         LINE_TERMINATOR = 350,
         #endregion
 
-        BOOLEAN_LITERAL = 352,
-        NULL_LITERAL = 353,
+        BooleanLiteral = 352,
+        NullLiteral = 353,
 
         //Tri
-        CHARACTER_LITERAL = 354,
-        STRING_LITERAL = 355,
-        OCTAL_ESCAPE = 356,
-        ESCAPE_SEQUENCE = 358,
+        CharacterLiteral = 354,
+        StringLiteral = 355,
+        OctalEscape = 356,
+        EscapeSequence = 358,
 
         //3.3 Unicode escapes Vivian
         UNICODE_ESCAPE = 360,
@@ -325,9 +324,6 @@ namespace IFN660_Java_ECMAScript
                                 break;
                             #endregion
                             #region Literals
-                            case Tokens.LITERALS:
-                                Console.WriteLine("LITERALS");
-                                break;
                             // Code by Nathan & Sneha
                             case Tokens.DecimalIntegerLiteral:
                                 Console.WriteLine("DecimalIntegerLiteral ({0})", scanner.yylval.name);
@@ -335,29 +331,35 @@ namespace IFN660_Java_ECMAScript
                             case Tokens.HexIntegerLiteral:
                                 Console.WriteLine("HexIntegerLiteral ({0})", scanner.yylval.name);
                                 break;
+                            case Tokens.OctalIntegerLiteral:
+                                Console.WriteLine("OctalIntegerLiteral ({0})", scanner.yylval.name);
+                                break;
+                            case Tokens.BinaryIntegerLiteral:
+                                Console.WriteLine("BinaryIntegerLiteral ({0})", scanner.yylval.name);
+                                break;
                             // case Tokens.FLOATING_POINT_LITERALS:
                             // 	Console.WriteLine ("FLOAT");
                             // 	break;
                             //Code by Tri
-                            case Tokens.CHARACTER_LITERAL:
+                            case Tokens.CharacterLiteral:
                                 Console.WriteLine("Character Literal ({0})", scanner.yylval.name);
                                 break;
-                            case Tokens.STRING_LITERAL:
+                            case Tokens.StringLiteral:
                                 Console.WriteLine("String Literal ({0})", scanner.yylval.name);
                                 break;
-                            case Tokens.OCTAL_ESCAPE:
+                            case Tokens.OctalEscape:
                                 Console.WriteLine("Octal Escape ({0})", scanner.yylval.name);
                                 break;
-                            case Tokens.ESCAPE_SEQUENCE:
+                            case Tokens.EscapeSequence:
                                 Console.WriteLine("Escape Sequence ({0})", scanner.yylval.name);
                                 break;
                             // Code by Vivian
-                            case Tokens.BOOLEAN_LITERAL:
+                            case Tokens.BooleanLiteral:
                              	Console.WriteLine ("Boolean Literal ({0})", scanner.yylval.name);
                              	break;
 
                             // Code by Josh
-                            case Tokens.NULL_LITERAL:
+                            case Tokens.NullLiteral:
                              	Console.WriteLine ("Null Literal");
                              	break;
                             #endregion
@@ -440,12 +442,6 @@ namespace IFN660_Java_ECMAScript
                                 break;
                             case Tokens.SIGNED_RIGHT_SHIFT_ASSIGNMENT:
                                 Console.WriteLine("SIGNED_RIGHT_SHIFT_ASSIGNMENT");
-                                break;
-                            case Tokens.OCTAL:
-                                Console.WriteLine("OCTAL ({0})", scanner.yylval.name);
-                                break;
-                            case Tokens.BINARY:
-                                Console.WriteLine("BINARY ({0})", scanner.yylval.name);
                                 break;
                             #endregion
                             #region Line Terminators

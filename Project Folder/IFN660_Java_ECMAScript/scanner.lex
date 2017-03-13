@@ -81,20 +81,6 @@ u+													{return (int)Tokens.UNICODE_MARKER;}
 \/\*([^*]|[\r\n]|(\*+([^*/]|[\r\n])))*\*+\/		/* skip multiline comments */
 \/\/[^\n]*                						/* skip the line comment  */
 
-										/* 3.10.1 - Integer Literals */
-// Decimals -Nathan
-(({NonZeroDigit}({Digit}|"_")*{Digit}+)|{Digit})[lL]?  				{ yylval.name = yytext; return (int)Tokens.DecimalIntegerLiteral; }
-
-// Hexadecimals - Nathan
-0[xX](({HexDigit}({HexDigit}|"_")*{HexDigit}+)|{HexDigit})[lL]?  	{ yylval.name = yytext; return (int)Tokens.HexIntegerLiteral; }
-
-//OctalNumerals - Senha
-0({OctalDigits}|[\_]+{OctalDigits})[lL]?  							{yylval.name = yytext; return (int)Tokens.OCTAL; }
-
-//Binary
-//Binary numerals - Sneha
-0[bB]{BinaryDigits}[lL]? {yylval.name = yytext; return (int)Tokens.BINARY; }
-
 										/* 3.9 KEYWORDS An */
 abstract									{return (int)Tokens.ABSTRACT;}
 assert										{return (int)Tokens.ASSERT;}
@@ -149,31 +135,40 @@ while										{return (int)Tokens.WHILE;}
 
 										/* 3.10 LITERALS An */
 										
-Literals									{return (int)Tokens.LITERALS;}
+// Literals									{return (int)Tokens.LITERALS;}
 
+										/* 3.10.1 - Integer Literals */
+// Decimals -Nathan
+(({NonZeroDigit}({Digit}|"_")*{Digit}+)|{Digit})[lL]?  				{ yylval.name = yytext; return (int)Tokens.DecimalIntegerLiteral; }
+
+// Hexadecimals - Nathan
+0[xX](({HexDigit}({HexDigit}|"_")*{HexDigit}+)|{HexDigit})[lL]?  	{ yylval.name = yytext; return (int)Tokens.HexIntegerLiteral; }
+
+//OctalNumerals - Sneha
+0({OctalDigits}|[\_]+{OctalDigits})[lL]?  							{yylval.name = yytext; return (int)Tokens.OctalIntegerLiteral; }
+
+//Binary numerals - Sneha
+0[bB]{BinaryDigits}[lL]?											{yylval.name = yytext; return (int)Tokens.BinaryIntegerLiteral; }
+
+										/* 3.10.2 FloatingPoint Literal - Adon*/
 
 										/* 3.10.3 Boolean Literal - Vivan*/
-
-{BooleanLiteral}						{yylval.name = yytext; return (int)Tokens.BOOLEAN_LITERAL;}
+{BooleanLiteral}						{yylval.name = yytext; return (int)Tokens.BooleanLiteral;}
 
 										/* 3.10.4 Character Literal - Tri*/
-{CharacterLiteral}						{yylval.name = yytext; return (int)Tokens.CHARACTER_LITERAL;}
+{CharacterLiteral}						{yylval.name = yytext; return (int)Tokens.CharacterLiteral;}
 
 										/* 3.10.5 String Literal - Tri*/
-{StringLiteral}							{yylval.name = yytext; return (int)Tokens.STRING_LITERAL;}
+{StringLiteral}							{yylval.name = yytext; return (int)Tokens.StringLiteral;}
 
 										/* 3.10.6 Escape sequences for Character and String Literals - Tri*/
-{OctalEscape}							{yylval.name = yytext; return (int)Tokens.OCTAL_ESCAPE;}
-{EscapeSequence}						{yylval.name = yytext; return (int)Tokens.ESCAPE_SEQUENCE;}
-
-
+{OctalEscape}							{yylval.name = yytext; return (int)Tokens.OctalEscape;}
+{EscapeSequence}						{yylval.name = yytext; return (int)Tokens.EscapeSequence;}
 
 										/* 3.10.7 Null Literal - Joshua*/
+{NullLiteral}							{return (int)Tokens.NullLiteral;}
 
-{NullLiteral}							{return (int)Tokens.NULL_LITERAL;}
-
-										/* 3.11 SEPARATORS  - An */
-										
+										/* 3.11 SEPARATORS  - An */	
 {Separator}									{return yytext[0];}
 "..."										{return (int)Tokens.ELLIPSIS;}	
 "::"										{return (int)Tokens.DOUBLE_COLON;}	
