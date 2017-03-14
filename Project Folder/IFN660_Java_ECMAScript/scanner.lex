@@ -69,7 +69,7 @@ u{HexDigit}{4}										{return (int)Tokens.UNICODE_RAW_INPUT;}
 u+													{return (int)Tokens.UNICODE_MARKER;}
 
 										/* 3.4  Line Terminators - Joshua Hudson &  Vivian Lee */
-[\n|\r|\r\n]							{return (int)Tokens.LINE_TERMINATOR; }
+[\n|\r|\r\n]							/* skip whitespace */
 //catches someone typing in /n in string form ect - Ask Wayne - Josh
 //[\\n|\\r|\\r\\n]						{return (int)Tokens.LINE_TERMINATOR; }
 
@@ -151,6 +151,8 @@ while										{return (int)Tokens.WHILE;}
 0[bB]{BinaryDigits}[lL]?											{yylval.name = yytext; return (int)Tokens.BinaryIntegerLiteral; }
 
 										/* 3.10.2 FloatingPoint Literal - Adon*/
+{DecimalFloatingPointLiteral}			{yylval.name = yytext; return (int)Tokens.DecimalFloatingPointLiteral;}
+{HexFloatingPointLiteral}			{yylval.name = yytext; return (int)Tokens.HexFloatingPointLiteral;}
 
 										/* 3.10.3 Boolean Literal - Vivan*/
 {BooleanLiteral}						{yylval.name = yytext; return (int)Tokens.BooleanLiteral;}

@@ -3,9 +3,9 @@
 //  GPLEX error listing for lex source file <scanner.lex>
 // ==========================================================================
 //  Version:  1.2.2
-//  Machine:  DESKTOP-1VMC0S8
-//  DateTime: 13/03/2017 9:41:14 AM
-//  UserName: hudso
+//  Machine:  WING-PC
+//  DateTime: 3/14/2017 12:00:26 PM
+//  UserName: wInG
 // ==========================================================================
 
 
@@ -45,8 +45,8 @@ HexFloatingPointLiteral						({HexNumeral}[\.]?|[0][x]{HexDigit}?[\.]{HexDigit}+
 FloatingPoint								({DecimalFloatingPointLiteral}|{HexFloatingPointLiteral})
 BooleanLiteral								"true"|"false"	
 
-// An - Tri
-OctalEscape									(\\)([0-7]|[0-7][0-7]|[0-3][0-7][0-7])
+// Tri
+OctalEscape									(\\)({OctalDigit}|{OctalDigit}{OctalDigit}|{TetraDigit}{OctalDigit}{OctalDigit})
 EscapeSequence								{OctalEscape}|(\\)([r]|[n]|[b]|[f]|[t]|[\\]|[\']|[\"])
 
 //3.3 Deffinition - Joshua & Vivian
@@ -88,7 +88,7 @@ u+													{return (int)Tokens.UNICODE_MARKER;}
 //--------^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 // Warning: Code between rules, ignored
 // ------------------------------------
-[\n|\r|\r\n]							{return (int)Tokens.LINE_TERMINATOR; }
+[\n|\r|\r\n]							/* skip whitespace */
 //catches someone typing in /n in string form ect - Ask Wayne - Josh
 //[\\n|\\r|\\r\\n]						{return (int)Tokens.LINE_TERMINATOR; }
 
@@ -105,23 +105,6 @@ u+													{return (int)Tokens.UNICODE_MARKER;}
 // ------------------------------------
 \/\*([^*]|[\r\n]|(\*+([^*/]|[\r\n])))*\*+\/		/* skip multiline comments */
 \/\/[^\n]*                						/* skip the line comment  */
-
-										/* 3.10.1 - Integer Literals */
-//--------^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-// Warning: Code between rules, ignored
-// ------------------------------------
-// Decimals -Nathan
-(({NonZeroDigit}({Digit}|"_")*{Digit}+)|{Digit})[lL]?  				{ yylval.name = yytext; return (int)Tokens.DecimalIntegerLiteral; }
-
-// Hexadecimals - Nathan
-0[xX](({HexDigit}({HexDigit}|"_")*{HexDigit}+)|{HexDigit})[lL]?  	{ yylval.name = yytext; return (int)Tokens.HexIntegerLiteral; }
-
-//OctalNumerals - Senha
-0({OctalDigits}|[\_]+{OctalDigits})[lL]?  							{yylval.name = yytext; return (int)Tokens.OCTAL; }
-
-//Binary
-//Binary numerals - Sneha
-0[bB]{BinaryDigits}[lL]? {yylval.name = yytext; return (int)Tokens.BINARY; }
 
 										/* 3.9 KEYWORDS An */
 //--------^^^^^^^^^^^^^^^^^^^^^
@@ -179,53 +162,74 @@ volatile									{return (int)Tokens.VOLATILE;}
 while										{return (int)Tokens.WHILE;}
 
 										/* 3.10 LITERALS An */
-//--------^^^^^^^^^^^^^^^^^^^^^^
+//--------^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 // Warning: Code between rules, ignored
 // ------------------------------------
 										
-Literals									{return (int)Tokens.LITERALS;}
+// Literals									{return (int)Tokens.LITERALS;}
 
+										/* 3.10.1 - Integer Literals */
+// Decimals -Nathan
+(({NonZeroDigit}({Digit}|"_")*{Digit}+)|{Digit})[lL]?  				{ yylval.name = yytext; return (int)Tokens.DecimalIntegerLiteral; }
+
+// Hexadecimals - Nathan
+0[xX](({HexDigit}({HexDigit}|"_")*{HexDigit}+)|{HexDigit})[lL]?  	{ yylval.name = yytext; return (int)Tokens.HexIntegerLiteral; }
+
+//OctalNumerals - Sneha
+0({OctalDigits}|[\_]+{OctalDigits})[lL]?  							{yylval.name = yytext; return (int)Tokens.OctalIntegerLiteral; }
+
+//Binary numerals - Sneha
+0[bB]{BinaryDigits}[lL]?											{yylval.name = yytext; return (int)Tokens.BinaryIntegerLiteral; }
+
+										/* 3.10.2 FloatingPoint Literal - Adon*/
+//--------^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+// Warning: Code between rules, ignored
+// ------------------------------------
+{DecimalFloatingPointLiteral}			{yylval.name = yytext; return (int)Tokens.DecimalFloatingPointLiteral;}
+//^^^^^^^^^^^^^^^^^^^^^^^^^^^
+// Warning: This pattern always overrides "{Digit}+" 
+// Warning: This pattern always overrides "{OctalEscape}" 
+// -------------------------------------------------------
+{HexFloatingPointLiteral}			{yylval.name = yytext; return (int)Tokens.HexFloatingPointLiteral;}
 
 										/* 3.10.3 Boolean Literal - Vivan*/
 //--------^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 // Warning: Code between rules, ignored
 // ------------------------------------
-
-{BooleanLiteral}						{yylval.name = yytext; return (int)Tokens.BOOLEAN_LITERAL;}
+{BooleanLiteral}						{yylval.name = yytext; return (int)Tokens.BooleanLiteral;}
 
 										/* 3.10.4 Character Literal - Tri*/
 //--------^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 // Warning: Code between rules, ignored
 // ------------------------------------
-{CharacterLiteral}						{yylval.name = yytext; return (int)Tokens.CHARACTER_LITERAL;}
+{CharacterLiteral}						{yylval.name = yytext; return (int)Tokens.CharacterLiteral;}
 
 										/* 3.10.5 String Literal - Tri*/
 //--------^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 // Warning: Code between rules, ignored
 // ------------------------------------
-{StringLiteral}							{yylval.name = yytext; return (int)Tokens.STRING_LITERAL;}
+{StringLiteral}							{yylval.name = yytext; return (int)Tokens.StringLiteral;}
 
 										/* 3.10.6 Escape sequences for Character and String Literals - Tri*/
 //--------^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 // Warning: Code between rules, ignored
 // ------------------------------------
-{OctalEscape}							{yylval.name = yytext; return (int)Tokens.OCTAL_ESCAPE;}
-{EscapeSequence}						{yylval.name = yytext; return (int)Tokens.ESCAPE_SEQUENCE;}
-
-
+{OctalEscape}							{yylval.name = yytext; return (int)Tokens.OctalEscape;}
+//^^^^^^^^^^^
+// Warning: This pattern always overridden by "{DecimalFloatingPointLiteral}" 
+// ---------------------------------------------------------------------------
+{EscapeSequence}						{yylval.name = yytext; return (int)Tokens.EscapeSequence;}
 
 										/* 3.10.7 Null Literal - Joshua*/
 //--------^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 // Warning: Code between rules, ignored
 // ------------------------------------
+{NullLiteral}							{return (int)Tokens.NullLiteral;}
 
-{NullLiteral}							{return (int)Tokens.NULL_LITERAL;}
-
-										/* 3.11 SEPARATORS  - An */
+										/* 3.11 SEPARATORS  - An */	
 //--------^^^^^^^^^^^^^^^^^^^^^^^^^^^
 // Warning: Code between rules, ignored
 // ------------------------------------
-										
 {Separator}									{return yytext[0];}
 "..."										{return (int)Tokens.ELLIPSIS;}	
 "::"										{return (int)Tokens.DOUBLE_COLON;}	
@@ -269,6 +273,9 @@ Literals									{return (int)Tokens.LITERALS;}
 {Letter}({Letter}|{Digit})* 			{ yylval.name = yytext; return (int)Tokens.IDENT; }
 
 {Digit}+	    						{ yylval.num = int.Parse(yytext); return (int)Tokens.NUMBER; }
+//^^^^^^
+// Warning: This pattern always overridden by "{DecimalFloatingPointLiteral}" 
+// ---------------------------------------------------------------------------
 			
 
 .                            			{ 
