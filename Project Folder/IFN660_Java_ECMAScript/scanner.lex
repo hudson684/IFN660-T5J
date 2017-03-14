@@ -69,7 +69,7 @@ Delimiter									[\=\>\<\!\~\?\:\+\-\*\/\&\|\^\%]
 										/* 3.3 Unicode Escapes -  Joshua Hudson &  Vivian Lee */
 \\  /* IGNORE */
 \" /* IGNORE */
-\*u{HexDigit}{4}									{return (int)Tokens.UNICODE_INPUT_CHAR;}
+\\ \*u{HexDigit}{4}									{return (int)Tokens.UNICODE_INPUT_CHAR;}
 {UnicodeEscape}										{return (int)Tokens.UNICODE_ESCAPE;}
 u{HexDigit}{4}										{return (int)Tokens.UNICODE_RAW_INPUT;}
 // not a token do not return - nathan {HexDigit}	{return (int)Tokens.HEXDIGIT;}
