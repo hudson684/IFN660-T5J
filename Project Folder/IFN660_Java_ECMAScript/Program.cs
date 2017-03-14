@@ -109,10 +109,10 @@ namespace IFN660_Java_ECMAScript
         NullLiteral = 353,
 
         //Tri
-        CharacterLiteral = 354,
-        StringLiteral = 355,
-        OctalEscape = 356,
-        EscapeSequence = 399,
+        CHARACTER_LITERAL = 354,
+        STRING_LITERAL = 355,
+        OCTAL_ESCAPE = 356,
+        ESCAPE_SEQUENCE = 399,
 
         //3.3 Unicode escapes Vivian
         UNICODE_ESCAPE = 360,
@@ -344,17 +344,17 @@ namespace IFN660_Java_ECMAScript
                                 Console.WriteLine("HexFloatingPointLiteral ({0})", scanner.yylval.name);
                                 break;
                             //Code by Tri
-                            case Tokens.CharacterLiteral:
-                                Console.WriteLine("Character Literal ({0})", scanner.yylval.name);
+                            case Tokens.CHARACTER_LITERAL:
+                                Console.WriteLine("CharacterLiteral ({0})", scanner.yylval.name);
                                 break;
-                            case Tokens.StringLiteral:
-                                Console.WriteLine("String Literal ({0})", scanner.yylval.name);
+                            case Tokens.STRING_LITERAL:
+                                Console.WriteLine("StringLiteral ({0})", scanner.yylval.name);
                                 break;
-                            case Tokens.OctalEscape:
-                                Console.WriteLine("Octal Escape ({0})", scanner.yylval.name);
+                            case Tokens.OCTAL_ESCAPE:
+                                Console.WriteLine("OctalEscape ({0})", scanner.yylval.name);
                                 break;
-                            case Tokens.EscapeSequence:
-                                Console.WriteLine("Escape Sequence ({0})", scanner.yylval.name);
+                            case Tokens.ESCAPE_SEQUENCE:
+                                Console.WriteLine("EscapeSequence ({0})", scanner.yylval.name);
                                 break;
                             // Code by Vivian
                             case Tokens.BooleanLiteral:
