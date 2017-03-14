@@ -3,7 +3,7 @@
 HexDigit									[0-9a-fA-F]
 Digit 										[0-9_]
 OctalDigit									[0-7]
-TetraDigit									[0-3]
+ZeroToThree									[0-3]
 NonZeroDigit								[1-9]
 BinaryDigit									[0-1]
 Letter 										[$_a-zA-Z]
@@ -30,7 +30,7 @@ FloatingPoint								({DecimalFloatingPointLiteral}|{HexFloatingPointLiteral})
 BooleanLiteral								"true"|"false"	
 
 // Tri
-OctalEscape									(\\)({OctalDigit}|{OctalDigit}{OctalDigit}|{TetraDigit}{OctalDigit}{OctalDigit})
+OctalEscape									(\\)({OctalDigit}|{OctalDigit}{OctalDigit}|{ZeroToThree}{OctalDigit}{OctalDigit})
 EscapeSequence								{OctalEscape}|(\\)([r]|[n]|[b]|[f]|[t]|[\\]|[\']|[\"])
 
 //3.3 Deffinition - Joshua & Vivian
@@ -158,14 +158,14 @@ while										{return (int)Tokens.WHILE;}
 {BooleanLiteral}						{yylval.name = yytext; return (int)Tokens.BooleanLiteral;}
 
 										/* 3.10.4 Character Literal - Tri*/
-{CharacterLiteral}						{yylval.name = yytext; return (int)Tokens.CharacterLiteral;}
+{CharacterLiteral}						{yylval.name = yytext; return (int)Tokens.CHARACTER_LITERAL;}
 
 										/* 3.10.5 String Literal - Tri*/
-{StringLiteral}							{yylval.name = yytext; return (int)Tokens.StringLiteral;}
+{StringLiteral}							{yylval.name = yytext; return (int)Tokens.STRING_LITERAL;}
 
 										/* 3.10.6 Escape sequences for Character and String Literals - Tri*/
-{OctalEscape}							{yylval.name = yytext; return (int)Tokens.OctalEscape;}
-{EscapeSequence}						{yylval.name = yytext; return (int)Tokens.EscapeSequence;}
+{OctalEscape}							{yylval.name = yytext; return (int)Tokens.OCTAL_ESCAPE;}
+{EscapeSequence}						{yylval.name = yytext; return (int)Tokens.ESCAPE_SEQUENCE;}
 
 										/* 3.10.7 Null Literal - Joshua*/
 {NullLiteral}							{return (int)Tokens.NullLiteral;}
