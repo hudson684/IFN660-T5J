@@ -29,8 +29,8 @@ HexFloatingPointLiteral						({HexNumeral}[\.]?|[0][x]{HexDigit}?[\.]{HexDigit}+
 FloatingPoint								({DecimalFloatingPointLiteral}|{HexFloatingPointLiteral})
 BooleanLiteral								"true"|"false"	
 
-// An - Tri
-OctalEscape									(\\)([0-7]|[0-7][0-7]|[0-3][0-7][0-7])
+// Tri
+OctalEscape									(\\)({OctalDigit}|{OctalDigit}{OctalDigit}|{TetraDigit}{OctalDigit}{OctalDigit})
 EscapeSequence								{OctalEscape}|(\\)([r]|[n]|[b]|[f]|[t]|[\\]|[\']|[\"])
 
 //3.3 Deffinition - Joshua & Vivian
