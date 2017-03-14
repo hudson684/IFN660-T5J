@@ -67,8 +67,7 @@ namespace IFN660_Java_ECMAScript
         #endregion
 
         // INTERGER_LITERALS = 318,
-        DecimalFloatingPointLiteral = 500,
-        HexFloatingPointLiteral = 501,
+        FloatingPointLiteral = 358,
         DecimalIntegerLiteral = 318,
         HexIntegerLiteral = 319,
         OctalIntegerLiteral = 320,
@@ -337,11 +336,8 @@ namespace IFN660_Java_ECMAScript
                                 Console.WriteLine("BinaryIntegerLiteral ({0})", scanner.yylval.name);
                                 break;
                             // Code by Adon
-                            case Tokens.DecimalFloatingPointLiteral:
-                                Console.WriteLine("DecimalFloatingPointLiteral ({0})", scanner.yylval.name);
-                                break;
-                            case Tokens.HexFloatingPointLiteral:
-                                Console.WriteLine("HexFloatingPointLiteral ({0})", scanner.yylval.name);
+                            case Tokens.FloatingPointLiteral:
+                                Console.WriteLine("FloatingPointLiteral ({0})", scanner.yylval.name);
                                 break;
                             //Code by Tri
                             case Tokens.CHARACTER_LITERAL:

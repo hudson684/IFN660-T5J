@@ -3,9 +3,9 @@
 //  GPLEX error listing for lex source file <scanner.lex>
 // ==========================================================================
 //  Version:  1.2.2
-//  Machine:  WING-PC
-//  DateTime: 3/14/2017 12:00:26 PM
-//  UserName: wInG
+//  Machine:  AIR
+//  DateTime: 3/14/2017 16:46:05
+//  UserName: Air
 // ==========================================================================
 
 
@@ -19,17 +19,19 @@ NonZeroDigit								[1-9]
 BinaryDigit									[0-1]
 Letter 										[$_a-zA-Z]
 
-// Nathan - Sneha - An
+// Nathan - Sneha - An - Adon
 IntSuffix									[lL]
 Digits										[0-9]+([0-9_]+)?[0-9]+
 DecimalNumeral								0|{NonZeroDigit}+({Digits}?|[\_]+{Digits}+)
-HexNumeral									0[xX]({HexDigit}+([{HexDigit}|_]+)?{HexDigit}+)
+HexDigits									{HexDigit}+(({HexDigit}|[\_])+{HexDigit}+)?
+HexNumeral									[0][xX]{HexDigits}
+//HexNumeral									0[xX]({HexDigit}+([{HexDigit}|_]+)?{HexDigit}+)
 OctalDigits									{OctalDigit}+((({OctalDigit}|_)+)?){OctalDigit}*
 OctalNumeral								0([\_]+({OctalDigits}+|{OctalDigits}))
 BinaryNumeral								0[bB]([01]+|([01]+([01]|_)+)?[01]+)
 IntergerLiteral								({DecimalNumeral}|{HexNumeral}|{OctalNumeral}|{BinaryNumeral}){IntSuffix}?
 
-// An - Sneha -fixed bug
+// An - Sneha - Adon -fixed bug
 E											[eE][+-]?{Digit}+
 //---------------^^
 // Warning: No upper bound to range, "'+','-'" included as set class members
@@ -39,10 +41,12 @@ Float1										(({Digit}+.{Digit}*|.{Digit}+)({E})?){FloatSuffix}?
 Float2										{Digit}+{E}{FloatSuffix}?
 Float3										{Digit}+{E}?{FloatSuffix}					
 DecimalFloatingPointLiteral					({Float1}|{Float2}|{Float3})
-HexFloatingPointLiteral						({HexNumeral}[\.]?|[0][x]{HexDigit}?[\.]{HexDigit}+)[pP][+-]?{Digit}+{FloatSuffix}?
+//HexFloatingPointLiteral						({HexNumeral}[\.]?)|([0][xX]{HexDigit}?[\.]{HexDigit}+)[pP][+-]?{Digit}+{FloatSuffix}?
+//HexFloatingPointLiteral						[0][xX](({HexDigits}+[\.]?)|({HexDigits}*[\.]{HexDigits}+))[pP][+-]?{Digit}+{FloatSuffix}?
+HexFloatingPointLiteral						(({HexNumeral}[\.]?)|([0][xX]{HexDigits}*[\.]{HexDigits}+))[pP][+-]?{Digit}+{FloatSuffix}?
 // Warning: No upper bound to range, "'+','-'" included as set class members
 // -------------------------------------------------------------------------
-FloatingPoint								({DecimalFloatingPointLiteral}|{HexFloatingPointLiteral})
+FloatingPointLiteral						({DecimalFloatingPointLiteral}|{HexFloatingPointLiteral})
 BooleanLiteral								"true"|"false"	
 
 // Tri
@@ -57,7 +61,7 @@ CharacterLiteral							\'({EscapeSequence}|[^\\'])\'
 StringLiteral								\"({EscapeSequence}|[^\\"])*\"
 
 // An
-Numberic									({IntergerLiteral}|{FloatingPoint})
+Numberic									({IntergerLiteral}|{FloatingPointLiteral})
 Character									\'(.|EscapeSequence|[^\\'])*\'
 String										\"(.|EscapeSequence|[^\\"])*\"
 //Changed to NullLiteral to fit Oracle Documentation - Josh
@@ -185,12 +189,11 @@ while										{return (int)Tokens.WHILE;}
 //--------^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 // Warning: Code between rules, ignored
 // ------------------------------------
-{DecimalFloatingPointLiteral}			{yylval.name = yytext; return (int)Tokens.DecimalFloatingPointLiteral;}
-//^^^^^^^^^^^^^^^^^^^^^^^^^^^
+{FloatingPointLiteral}							{yylval.name = yytext; return (int)Tokens.FloatingPointLiteral;}
+//^^^^^^^^^^^^^^^^^^^^
 // Warning: This pattern always overrides "{Digit}+" 
 // Warning: This pattern always overrides "{OctalEscape}" 
 // -------------------------------------------------------
-{HexFloatingPointLiteral}			{yylval.name = yytext; return (int)Tokens.HexFloatingPointLiteral;}
 
 										/* 3.10.3 Boolean Literal - Vivan*/
 //--------^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -216,8 +219,8 @@ while										{return (int)Tokens.WHILE;}
 // ------------------------------------
 {OctalEscape}							{yylval.name = yytext; return (int)Tokens.OctalEscape;}
 //^^^^^^^^^^^
-// Warning: This pattern always overridden by "{DecimalFloatingPointLiteral}" 
-// ---------------------------------------------------------------------------
+// Warning: This pattern always overridden by "{FloatingPointLiteral}" 
+// --------------------------------------------------------------------
 {EscapeSequence}						{yylval.name = yytext; return (int)Tokens.EscapeSequence;}
 
 										/* 3.10.7 Null Literal - Joshua*/
@@ -274,8 +277,8 @@ while										{return (int)Tokens.WHILE;}
 
 {Digit}+	    						{ yylval.num = int.Parse(yytext); return (int)Tokens.NUMBER; }
 //^^^^^^
-// Warning: This pattern always overridden by "{DecimalFloatingPointLiteral}" 
-// ---------------------------------------------------------------------------
+// Warning: This pattern always overridden by "{FloatingPointLiteral}" 
+// --------------------------------------------------------------------
 			
 
 .                            			{ 

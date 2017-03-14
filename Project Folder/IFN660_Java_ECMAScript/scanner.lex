@@ -8,25 +8,29 @@ NonZeroDigit								[1-9]
 BinaryDigit									[0-1]
 Letter 										[$_a-zA-Z]
 
-// Nathan - Sneha - An
+// Nathan - Sneha - An - Adon
 IntSuffix									[lL]
 Digits										[0-9]+([0-9_]+)?[0-9]+
 DecimalNumeral								0|{NonZeroDigit}+({Digits}?|[\_]+{Digits}+)
-HexNumeral									0[xX]({HexDigit}+([{HexDigit}|_]+)?{HexDigit}+)
+HexDigits									{HexDigit}+(({HexDigit}|[\_])+{HexDigit}+)?
+HexNumeral									[0][xX]{HexDigits}
+//HexNumeral									0[xX]({HexDigit}+([{HexDigit}|_]+)?{HexDigit}+)
 OctalDigits									{OctalDigit}+((({OctalDigit}|_)+)?){OctalDigit}*
 OctalNumeral								0([\_]+({OctalDigits}+|{OctalDigits}))
 BinaryNumeral								0[bB]([01]+|([01]+([01]|_)+)?[01]+)
 IntergerLiteral								({DecimalNumeral}|{HexNumeral}|{OctalNumeral}|{BinaryNumeral}){IntSuffix}?
 
-// An - Sneha -fixed bug
+// An - Sneha - Adon -fixed bug
 E											[eE][+-]?{Digit}+
 FloatSuffix									[fFdD]
 Float1										(({Digit}+.{Digit}*|.{Digit}+)({E})?){FloatSuffix}?
 Float2										{Digit}+{E}{FloatSuffix}?
 Float3										{Digit}+{E}?{FloatSuffix}					
 DecimalFloatingPointLiteral					({Float1}|{Float2}|{Float3})
-HexFloatingPointLiteral						({HexNumeral}[\.]?|[0][x]{HexDigit}?[\.]{HexDigit}+)[pP][+-]?{Digit}+{FloatSuffix}?
-FloatingPoint								({DecimalFloatingPointLiteral}|{HexFloatingPointLiteral})
+//HexFloatingPointLiteral						({HexNumeral}[\.]?)|([0][xX]{HexDigit}?[\.]{HexDigit}+)[pP][+-]?{Digit}+{FloatSuffix}?
+//HexFloatingPointLiteral						[0][xX](({HexDigits}+[\.]?)|({HexDigits}*[\.]{HexDigits}+))[pP][+-]?{Digit}+{FloatSuffix}?
+HexFloatingPointLiteral						(({HexNumeral}[\.]?)|([0][xX]{HexDigits}*[\.]{HexDigits}+))[pP][+-]?{Digit}+{FloatSuffix}?
+FloatingPointLiteral						({DecimalFloatingPointLiteral}|{HexFloatingPointLiteral})
 BooleanLiteral								"true"|"false"	
 
 // Tri
@@ -41,7 +45,7 @@ CharacterLiteral							\'({EscapeSequence}|[^\\'])\'
 StringLiteral								\"({EscapeSequence}|[^\\"])*\"
 
 // An
-Numberic									({IntergerLiteral}|{FloatingPoint})
+Numberic									({IntergerLiteral}|{FloatingPointLiteral})
 Character									\'(.|EscapeSequence|[^\\'])*\'
 String										\"(.|EscapeSequence|[^\\"])*\"
 //Changed to NullLiteral to fit Oracle Documentation - Josh
@@ -151,8 +155,7 @@ while										{return (int)Tokens.WHILE;}
 0[bB]{BinaryDigits}[lL]?											{yylval.name = yytext; return (int)Tokens.BinaryIntegerLiteral; }
 
 										/* 3.10.2 FloatingPoint Literal - Adon*/
-{DecimalFloatingPointLiteral}			{yylval.name = yytext; return (int)Tokens.DecimalFloatingPointLiteral;}
-{HexFloatingPointLiteral}			{yylval.name = yytext; return (int)Tokens.HexFloatingPointLiteral;}
+{FloatingPointLiteral}							{yylval.name = yytext; return (int)Tokens.FloatingPointLiteral;}
 
 										/* 3.10.3 Boolean Literal - Vivan*/
 {BooleanLiteral}						{yylval.name = yytext; return (int)Tokens.BooleanLiteral;}
