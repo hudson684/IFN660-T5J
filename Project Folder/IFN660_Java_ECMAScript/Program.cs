@@ -67,7 +67,8 @@ namespace IFN660_Java_ECMAScript
         #endregion
 
         // INTERGER_LITERALS = 318,
-        // FLOATING_POINT_LITERALS = 319,
+        DecimalFloatingPointLiteral = 500,
+        HexFloatingPointLiteral = 501,
         DecimalIntegerLiteral = 318,
         HexIntegerLiteral = 319,
         OctalIntegerLiteral = 320,
@@ -102,9 +103,7 @@ namespace IFN660_Java_ECMAScript
         SIGNED_RIGHT_SHIFT_ASSIGNMENT = 346,
         ARROW = 347,
         #endregion
-        #region Line Terminators
-        LINE_TERMINATOR = 350,
-        #endregion
+
 
         BooleanLiteral = 352,
         NullLiteral = 353,
@@ -113,7 +112,7 @@ namespace IFN660_Java_ECMAScript
         CharacterLiteral = 354,
         StringLiteral = 355,
         OctalEscape = 356,
-        EscapeSequence = 358,
+        EscapeSequence = 399,
 
         //3.3 Unicode escapes Vivian
         UNICODE_ESCAPE = 360,
@@ -337,9 +336,13 @@ namespace IFN660_Java_ECMAScript
                             case Tokens.BinaryIntegerLiteral:
                                 Console.WriteLine("BinaryIntegerLiteral ({0})", scanner.yylval.name);
                                 break;
-                            // case Tokens.FLOATING_POINT_LITERALS:
-                            // 	Console.WriteLine ("FLOAT");
-                            // 	break;
+                            // Code by Adon
+                            case Tokens.DecimalFloatingPointLiteral:
+                                Console.WriteLine("DecimalFloatingPointLiteral ({0})", scanner.yylval.name);
+                                break;
+                            case Tokens.HexFloatingPointLiteral:
+                                Console.WriteLine("HexFloatingPointLiteral ({0})", scanner.yylval.name);
+                                break;
                             //Code by Tri
                             case Tokens.CharacterLiteral:
                                 Console.WriteLine("Character Literal ({0})", scanner.yylval.name);
@@ -444,12 +447,7 @@ namespace IFN660_Java_ECMAScript
                                 Console.WriteLine("SIGNED_RIGHT_SHIFT_ASSIGNMENT");
                                 break;
                             #endregion
-                            #region Line Terminators
-                            //Line terminators by Joshua Hudson and Vivan Lee
-                            case Tokens.LINE_TERMINATOR:
-                                Console.WriteLine("LINE TERMINATOR");
-                                break;
-                            #endregion
+
 
                             #region Unicode Escapes
                             //Unicode Escapes by Joshua Hudson and Vivan Lee
