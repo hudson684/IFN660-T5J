@@ -66,9 +66,9 @@ namespace IFN660_Java_ECMAScript
         VOLATILE = 317,
         #endregion
 
-        // INTERGER_LITERALS = 318,
+        IntegerLiteral = 318,
         FloatingPointLiteral = 358,
-        DecimalIntegerLiteral = 318,
+        // DecimalIntegerLiteral = 318,
         HexIntegerLiteral = 319,
         OctalIntegerLiteral = 320,
         BinaryIntegerLiteral = 321,
@@ -323,8 +323,8 @@ namespace IFN660_Java_ECMAScript
                             #endregion
                             #region Literals
                             // Code by Nathan & Sneha
-                            case Tokens.DecimalIntegerLiteral:
-                                Console.WriteLine("DecimalIntegerLiteral ({0})", scanner.yylval.name);
+                            case Tokens.IntegerLiteral:
+                                Console.WriteLine("IntegerLiteral ({0})", scanner.yylval.name);
                                 break;
                             case Tokens.HexIntegerLiteral:
                                 Console.WriteLine("HexIntegerLiteral ({0})", scanner.yylval.name);
