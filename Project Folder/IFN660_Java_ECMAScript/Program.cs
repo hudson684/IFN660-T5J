@@ -66,10 +66,10 @@ namespace IFN660_Java_ECMAScript
         VOLATILE = 317,
         #endregion
 
-        // INTERGER_LITERALS = 318,
+        IntegerLiteral = 318,
         FloatingPointLiteral = 358,
-        DecimalIntegerLiteral = 318,
-        HexIntegerLiteral = 319,
+        DecimalIntegerLiteral = 319,
+        // HexIntegerLiteral = 319,
         OctalIntegerLiteral = 320,
         BinaryIntegerLiteral = 321,
         ELLIPSIS = 322,
@@ -123,7 +123,7 @@ namespace IFN660_Java_ECMAScript
 
     public struct MyValueType
     {
-        public int num;
+        public long num;
         public string name;
     };
 
@@ -323,11 +323,11 @@ namespace IFN660_Java_ECMAScript
                             #endregion
                             #region Literals
                             // Code by Nathan & Sneha
-                            case Tokens.DecimalIntegerLiteral:
-                                Console.WriteLine("DecimalIntegerLiteral ({0})", scanner.yylval.name);
+                            case Tokens.IntegerLiteral:
+                                Console.WriteLine("IntegerLiteral ({0})", scanner.yylval.num);
                                 break;
-                            case Tokens.HexIntegerLiteral:
-                                Console.WriteLine("HexIntegerLiteral ({0})", scanner.yylval.name);
+                            case Tokens.DecimalIntegerLiteral:
+                                Console.WriteLine("DecimalIntegerLiteral ({0})", scanner.yylval.num);
                                 break;
                             case Tokens.OctalIntegerLiteral:
                                 Console.WriteLine("OctalIntegerLiteral ({0})", scanner.yylval.name);
@@ -469,14 +469,14 @@ namespace IFN660_Java_ECMAScript
                                 break;
 
                         }
-                    } while (token != Tokens.EOF);
+                    } 
+                    while (token != Tokens.EOF);
                 }
             }
             catch (Exception e)
             {
                 Console.WriteLine(e.Message);
             }
-
 
             Console.Read();
         }

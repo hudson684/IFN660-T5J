@@ -1,36 +1,48 @@
 %namespace IFN660_Java_ECMAScript
+/* Literal definitions */
 // Nathan - Senha - An
 HexDigit									[0-9a-fA-F]
-Digit 										[0-9_]
+Digit 										[0-9] // Nathan removed "_"
 OctalDigit									[0-7]
 ZeroToThree									[0-3]
 NonZeroDigit								[1-9]
 BinaryDigit									[0-1]
 Letter 										[$_a-zA-Z]
 
-// Nathan - Sneha - An - Adon
-IntSuffix									[lL]
-Digits										[0-9]+([0-9_]+)?[0-9]+
-DecimalNumeral								0|{NonZeroDigit}+({Digits}?|[\_]+{Digits}+)
-HexDigits									{HexDigit}+(({HexDigit}|[\_])+{HexDigit}+)?
-HexNumeral									[0][xX]{HexDigits}
-//HexNumeral									0[xX]({HexDigit}+([{HexDigit}|_]+)?{HexDigit}+)
-OctalDigits									{OctalDigit}+((({OctalDigit}|_)+)?){OctalDigit}*
-OctalNumeral								0([\_]+({OctalDigits}+|{OctalDigits}))
-BinaryNumeral								0[bB]([01]+|([01]+([01]|_)+)?[01]+)
-IntergerLiteral								({DecimalNumeral}|{HexNumeral}|{OctalNumeral}|{BinaryNumeral}){IntSuffix}?
+// Nathan - Sneha - An - Adon - Nathan-updated to match Java spec
+IntegerTypeSuffix							[lL]
+Underscores									\_+
+Digits										{Digit}|{Digit}([0-9_]*){Digit}
+DecimalNumeral								0|{NonZeroDigit}{Digits}?|{NonZeroDigit}{Underscores}{Digits}
+HexDigitOrUnderscore						{HexDigit}|_
+HexDigitsAndUnderscores						{HexDigitOrUnderscore}+
+HexDigits									{HexDigit}|{HexDigit}{HexDigitsAndUnderscores}?{HexDigit}
+HexNumeral									0[xX]{HexDigits}
+OctalDigits									{OctalDigit}|{OctalDigit}([0-7_]*){OctalDigit}
+OctalNumeral								0{Underscores}?{OctalDigits}
+BinaryDigits								{BinaryDigit}|{BinaryDigit}([01_]*){BinaryDigit} 
+BinaryNumeral								0[bB]{BinaryDigits}
+DecimalIntegerLiteral						{DecimalNumeral}{IntegerTypeSuffix}?
+HexIntegerLiteral							{HexNumeral}{IntegerTypeSuffix}?
+OctalIntegerLiteral							{OctalNumeral}{IntegerTypeSuffix}?
+BinaryIntegerLiteral						{BinaryNumeral}{IntegerTypeSuffix}?
+IntegerLiteral								({DecimalNumeral}|{HexNumeral}|{OctalNumeral}|{BinaryNumeral}){IntegerTypeSuffix}?
 
-// An - Sneha - Adon -fixed bug
-E											[eE][+-]?{Digit}+
-FloatSuffix									[fFdD]
-Float1										(({Digit}+.{Digit}*|.{Digit}+)({E})?){FloatSuffix}?
-Float2										{Digit}+{E}{FloatSuffix}?
-Float3										{Digit}+{E}?{FloatSuffix}					
-DecimalFloatingPointLiteral					({Float1}|{Float2}|{Float3})
-//HexFloatingPointLiteral						({HexNumeral}[\.]?)|([0][xX]{HexDigit}?[\.]{HexDigit}+)[pP][+-]?{Digit}+{FloatSuffix}?
-//HexFloatingPointLiteral						[0][xX](({HexDigits}+[\.]?)|({HexDigits}*[\.]{HexDigits}+))[pP][+-]?{Digit}+{FloatSuffix}?
-HexFloatingPointLiteral						(({HexNumeral}[\.]?)|([0][xX]{HexDigits}*[\.]{HexDigits}+))[pP][+-]?{Digit}+{FloatSuffix}?
-FloatingPointLiteral						({DecimalFloatingPointLiteral}|{HexFloatingPointLiteral})
+// An - Sneha - Adon-fixed bug - Nathan-updated to match Java spec
+FloatTypeSuffix								[fFdD]
+SignedInteger								[\+\-]?{Digits}
+ExponentIndicator							[eE]
+ExponentPart								{ExponentIndicator}{SignedInteger}
+Float1										{Digits}\.{Digits}?{ExponentPart}?{FloatTypeSuffix}?
+Float2										\.{Digits}{ExponentPart}?{FloatTypeSuffix}?
+Float3										{Digits}{ExponentPart}{FloatTypeSuffix}?
+Float4										{Digits}{ExponentPart}?{FloatTypeSuffix}					
+DecimalFloatingPointLiteral					({Float1}|{Float2}|{Float3}|{Float4})
+BinaryExponentIndicator						[pP]
+BinaryExponent								{BinaryExponentIndicator}{SignedInteger}
+HexSignificand								({HexNumeral}\.?)|(0[xX]{HexDigits}?\.{HexDigits})
+HexFloatingPointLiteral						{HexSignificand}{BinaryExponent}{FloatTypeSuffix}?
+FloatingPointLiteral						{DecimalFloatingPointLiteral}|{HexFloatingPointLiteral}
 BooleanLiteral								"true"|"false"	
 
 // Tri
@@ -45,7 +57,7 @@ CharacterLiteral							\'({EscapeSequence}|[^\\'])\'
 StringLiteral								\"({EscapeSequence}|[^\\"])*\"
 
 // An
-Numberic									({IntergerLiteral}|{FloatingPointLiteral})
+Numberic									({IntegerLiteral}|{FloatingPointLiteral})
 Character									\'(.|EscapeSequence|[^\\'])*\'
 String										\"(.|EscapeSequence|[^\\"])*\"
 //Changed to NullLiteral to fit Oracle Documentation - Josh
@@ -54,32 +66,27 @@ Literals									({Numberic}|{Character}|{String}|{BooleanLiteral}|{NullLiteral}
 
 // An
 Separator									[\(\)\{\}\[\]\;\,\.\@]
-Delimiter									[\=\>\<\!\~\?\:\+\-\*\/\&\|\^\%]
-
-// Sneha
-BinaryDigits								{BinaryDigit}((({BinaryDigit}|_)+)?){BinaryDigit}	
-
-
+Delimiter									[\=\>\<\!\~\?\:\+\-\*\/\&\|\^\%]	
 
 %%
 
 										/* 3.3 Unicode Escapes -  Joshua Hudson &  Vivian Lee */
 \\  /* IGNORE */
 \" /* IGNORE */
-\*u{HexDigit}{4}									{return (int)Tokens.UNICODE_INPUT_CHAR;}
+// \*u{HexDigit}{4}									{return (int)Tokens.UNICODE_INPUT_CHAR;}
 {UnicodeEscape}										{return (int)Tokens.UNICODE_ESCAPE;}
 u{HexDigit}{4}										{return (int)Tokens.UNICODE_RAW_INPUT;}
-{HexDigit}											{return (int)Tokens.HEXDIGIT;}
+// not a token do not return - nathan {HexDigit}	{return (int)Tokens.HEXDIGIT;}
 u+													{return (int)Tokens.UNICODE_MARKER;}
 
 										/* 3.4  Line Terminators - Joshua Hudson &  Vivian Lee */
-[\n|\r|\r\n]							/* skip whitespace */
+\n|\r|\n\r								/* skip whitespace */
 //catches someone typing in /n in string form ect - Ask Wayne - Josh
 //[\\n|\\r|\\r\\n]						{return (int)Tokens.LINE_TERMINATOR; }
 
 
 										/* 3.6 Whitespace*/
-[ \r\n\t\f]                  						/* skip whitespace */
+[ \r\n\t\f]                  			/* skip whitespace */
 
 										/* 3.7 Comments - Nathan & Sneha */
 \/\*([^*]|[\r\n]|(\*+([^*/]|[\r\n])))*\*+\/		/* skip multiline comments */
@@ -137,43 +144,93 @@ void										{return (int)Tokens.VOID;}
 volatile									{return (int)Tokens.VOLATILE;}
 while										{return (int)Tokens.WHILE;}
 
-										/* 3.10 LITERALS An */
-										
-// Literals									{return (int)Tokens.LITERALS;}
+/* 3.10 LITERALS */
 
-										/* 3.10.1 - Integer Literals */
-// Decimals -Nathan
-(({NonZeroDigit}({Digit}|"_")*{Digit}+)|{Digit})[lL]?  				{ yylval.name = yytext; return (int)Tokens.DecimalIntegerLiteral; }
-
+/* 3.10.1 - Integer Literals - Nathan and Sneha */
+// Decimals - Nathan
+{DecimalIntegerLiteral}							{	string inString;
+													int outInt;
+													long outLong;
+													inString = yytext;
+													inString = inString.ToUpper().Replace("_","");
+													if (inString.EndsWith("L"))
+													{
+														inString = inString.TrimEnd('L');
+														outLong = Convert.ToInt64(inString);
+														yylval.num = outLong; 
+													}
+													else
+													{
+														outInt = Convert.ToInt32(inString);
+														yylval.num = outInt;
+													}
+													return (int)Tokens.IntegerLiteral; }
 // Hexadecimals - Nathan
-0[xX](({HexDigit}({HexDigit}|"_")*{HexDigit}+)|{HexDigit})[lL]?  	{ yylval.name = yytext; return (int)Tokens.HexIntegerLiteral; }
+{HexIntegerLiteral}								{	inString = yytext;
+													inString = inString.ToUpper().Replace("_","").TrimStart('0','X');
+													if (inString.EndsWith("L"))
+													{
+														inString = inString.TrimEnd('L');
+														outLong = Convert.ToInt64(inString, 16);
+														yylval.num = outLong; 
+													}
+													else
+													{
+														outInt = Convert.ToInt32(inString, 16);
+														yylval.num = outInt;
+													}
+													return (int)Tokens.IntegerLiteral; }
+// Octals - Sneha
+{OctalIntegerLiteral}							{	inString = yytext;
+													inString = inString.ToUpper().Replace("_","");
+													if (inString.EndsWith("L"))
+													{
+														inString = inString.TrimEnd('L');
+														outLong = Convert.ToInt64(inString, 8);
+														yylval.num = outLong; 
+													}
+													else
+													{
+														outInt = Convert.ToInt32(inString, 8);
+														yylval.num = outInt;
+													}
+													return (int)Tokens.IntegerLiteral; }
+// Binarys - Sneha
+{BinaryIntegerLiteral}							{	inString = yytext;
+													inString = inString.ToUpper().Replace("_","").TrimStart('0','B');
+													if (inString.EndsWith("L"))
+													{
+														inString = inString.TrimEnd('L');
+														outLong = Convert.ToInt64(inString, 2);
+														yylval.num = outLong; 
+													}
+													else
+													{
+														outInt = Convert.ToInt32(inString, 2);
+														yylval.num = outInt;
+													}
+													return (int)Tokens.IntegerLiteral; }
 
-//OctalNumerals - Sneha
-0({OctalDigits}|[\_]+{OctalDigits})[lL]?  							{yylval.name = yytext; return (int)Tokens.OctalIntegerLiteral; }
+/* 3.10.2 FloatingPoint Literal - Adon*/
+{FloatingPointLiteral}						{yylval.name = yytext; return (int)Tokens.FloatingPointLiteral;}
 
-//Binary numerals - Sneha
-0[bB]{BinaryDigits}[lL]?											{yylval.name = yytext; return (int)Tokens.BinaryIntegerLiteral; }
+/* 3.10.3 Boolean Literal - Vivan*/
+{BooleanLiteral}							{yylval.name = yytext; return (int)Tokens.BooleanLiteral;}
 
-										/* 3.10.2 FloatingPoint Literal - Adon*/
-{FloatingPointLiteral}							{yylval.name = yytext; return (int)Tokens.FloatingPointLiteral;}
+/* 3.10.4 Character Literal - Tri*/
+{CharacterLiteral}							{yylval.name = yytext; return (int)Tokens.CHARACTER_LITERAL;}
 
-										/* 3.10.3 Boolean Literal - Vivan*/
-{BooleanLiteral}						{yylval.name = yytext; return (int)Tokens.BooleanLiteral;}
+/* 3.10.5 String Literal - Tri*/
+{StringLiteral}								{yylval.name = yytext; return (int)Tokens.STRING_LITERAL;}
 
-										/* 3.10.4 Character Literal - Tri*/
-{CharacterLiteral}						{yylval.name = yytext; return (int)Tokens.CHARACTER_LITERAL;}
+/* 3.10.6 Escape sequences for Character and String Literals - Tri*/
+{OctalEscape}								{yylval.name = yytext; return (int)Tokens.OCTAL_ESCAPE;}
+{EscapeSequence}							{yylval.name = yytext; return (int)Tokens.ESCAPE_SEQUENCE;}
 
-										/* 3.10.5 String Literal - Tri*/
-{StringLiteral}							{yylval.name = yytext; return (int)Tokens.STRING_LITERAL;}
+/* 3.10.7 Null Literal - Joshua*/
+{NullLiteral}								{return (int)Tokens.NullLiteral;}
 
-										/* 3.10.6 Escape sequences for Character and String Literals - Tri*/
-{OctalEscape}							{yylval.name = yytext; return (int)Tokens.OCTAL_ESCAPE;}
-{EscapeSequence}						{yylval.name = yytext; return (int)Tokens.ESCAPE_SEQUENCE;}
-
-										/* 3.10.7 Null Literal - Joshua*/
-{NullLiteral}							{return (int)Tokens.NullLiteral;}
-
-										/* 3.11 SEPARATORS  - An */	
+/* 3.11 SEPARATORS  - An */	
 {Separator}									{return yytext[0];}
 "..."										{return (int)Tokens.ELLIPSIS;}	
 "::"										{return (int)Tokens.DOUBLE_COLON;}	
@@ -213,7 +270,7 @@ while										{return (int)Tokens.WHILE;}
 /* 3.8 IDENTIFIERS */
 {Letter}({Letter}|{Digit})* 			{ yylval.name = yytext; return (int)Tokens.IDENT; }
 
-{Digit}+	    						{ yylval.num = int.Parse(yytext); return (int)Tokens.NUMBER; }
+//{Digit}+	    						{ yylval.num = int.Parse(yytext); return (int)Tokens.NUMBER; }
 			
 
 .                            			{ 
