@@ -50,6 +50,8 @@
   <ItemGroup>
     <None Include="App.config" />
     <None Include="scanner.lex" />
+    <None Include="Tests\auto\test_intLiterals.j" />
+    <None Include="Tests\auto\test_intLiterals.j.expected" />
     <None Include="Tests\test_EscapeSequence.j" />
     <None Include="Tests\test_CharacterLiteral.j" />
     <None Include="Tests\test_LineTerminators.j" />
