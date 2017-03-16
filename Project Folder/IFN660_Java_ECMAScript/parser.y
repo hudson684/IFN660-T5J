@@ -7,7 +7,7 @@
 
 %token <num> NUMBER
 %token <name> IDENT
-%token IF ELSE INT BOOL GE
+%token IF ELSE INT BOOL
 
 %left '='
 %nonassoc '<'
@@ -38,6 +38,25 @@ Expression : NUMBER
            | Expression '+' Expression
            | Expression '<' Expression
            ;
+
+		  // Unanntype - Vivian
+UnannType : UnannReferenceType
+		  ;
+
+		  // VariableDeclaratorId - Vivian
+VariableDeclaratorId : Identifier
+					 | Dims
+					 ;
+
+		  // Identifier - Vivian
+Identifier : "args"
+		   | String
+		   | "main"
+		   ;
+
+		  // Dims - Vivian
+Dims :  /* empty */
+     ;
 
 %%
 
