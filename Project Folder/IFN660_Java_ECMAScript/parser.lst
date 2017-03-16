@@ -1,11 +1,11 @@
 
 // ==========================================================================
-//  GPPG error listing for yacc source file <parser.y - 14/03/2017 8:47:52 PM>
+//  GPPG error listing for yacc source file <parser.y - 3/16/2017 3:58:39 PM>
 // ==========================================================================
 //  Version:  1.5.2
-//  Machine:  LAB-GPV600-12
-//  DateTime: 14/03/2017 9:00:20 PM
-//  UserName: n9768653
+//  Machine:  WING-PC
+//  DateTime: 3/16/2017 4:01:18 PM
+//  UserName: wInG
 // ==========================================================================
 
 
@@ -18,21 +18,16 @@
 
 %token <num> NUMBER
 %token <name> IDENT
-%token IF ELSE INT BOOL GE
+%token IF ELSE INT BOOL
 
 %left '='
 %nonassoc '<'
 %left '+'
 
 %%
-// Warning: NonTerminal symbol "StatementList" is unreachable
-// Warning: NonTerminal symbol "Type" is unreachable
-// Warning: NonTerminal symbol "Statement" is unreachable
-// Warning: NonTerminal symbol "Expression" is unreachable
-// ----------------------------------------------------------
 
-Program: 
-       ;
+Program : Statement
+        ;
 
 Statement : IF '(' Expression ')' Statement ELSE Statement
           | '{' StatementList '}'
@@ -55,9 +50,35 @@ Expression : NUMBER
            | Expression '<' Expression
            ;
 
+		  // Unanntype - Vivian
+UnannType : UnannReferenceType
+		  ;
+
+		  // VariableDeclaratorId - Vivian
+VariableDeclaratorId : Identifier
+					 | Dims
+					 ;
+
+		  // Identifier - Vivian
+Identifier : "args"
+//----------^^^^^^^
+// Error: Key "args" was not found in token alias list
+// ---------------------------------------------------
+		   | String
+		   | "main"
+//----^^^^^^^
+// Error: Key "main" was not found in token alias list
+// ---------------------------------------------------
+		   ;
+
+		  // Dims - Vivian
+Dims :  /* empty */
+     ;
+
 %%
 
 public Parser(Scanner scanner) : base(scanner)
 {
-}// ==========================================================================
+}
+// ==========================================================================
 
