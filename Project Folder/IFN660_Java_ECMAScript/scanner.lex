@@ -26,7 +26,6 @@ bool                         { return (int)Tokens.BOOL; }
 "}"                            { return '}'; }
 ";"                            { return ';'; }
 ","                            { return ','; }
-">="                           { return (int)Tokens.GE; }
 ">"                            { return '>'; }
 
 

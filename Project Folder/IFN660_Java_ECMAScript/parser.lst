@@ -1,10 +1,10 @@
 
 // ==========================================================================
-//  GPPG error listing for yacc source file <parser.y - 3/16/2017 3:58:39 PM>
+//  GPPG error listing for yacc source file <parser.y - 3/16/2017 5:00:36 PM>
 // ==========================================================================
 //  Version:  1.5.2
 //  Machine:  WING-PC
-//  DateTime: 3/16/2017 4:01:18 PM
+//  DateTime: 3/16/2017 5:01:29 PM
 //  UserName: wInG
 // ==========================================================================
 
@@ -19,12 +19,21 @@
 %token <num> NUMBER
 %token <name> IDENT
 %token IF ELSE INT BOOL
+%token ARGS
+%token MAIN
 
 %left '='
 %nonassoc '<'
 %left '+'
 
 %%
+// Warning: NonTerminal symbol "Identifier" is unreachable
+// Warning: NonTerminal symbol "Dims" is unreachable
+// Warning: NonTerminal symbol "String" is unreachable
+// Warning: NonTerminal symbol "UnannType" is unreachable
+// Warning: NonTerminal symbol "UnannReferenceType" is unreachable
+// Warning: NonTerminal symbol "VariableDeclaratorId" is unreachable
+// -----------------------------------------------------------------
 
 Program : Statement
         ;
@@ -54,26 +63,28 @@ Expression : NUMBER
 UnannType : UnannReferenceType
 		  ;
 
+UnannReferenceType : /* empty */
+					;
+
 		  // VariableDeclaratorId - Vivian
 VariableDeclaratorId : Identifier
 					 | Dims
 					 ;
 
 		  // Identifier - Vivian
-Identifier : "args"
-//----------^^^^^^^
-// Error: Key "args" was not found in token alias list
-// ---------------------------------------------------
+Identifier : ARGS
 		   | String
-		   | "main"
-//----^^^^^^^
-// Error: Key "main" was not found in token alias list
-// ---------------------------------------------------
+		   | MAIN
 		   ;
+
+String : /* empty*/
+       ;
 
 		  // Dims - Vivian
 Dims :  /* empty */
      ;
+
+	 
 
 %%
 
