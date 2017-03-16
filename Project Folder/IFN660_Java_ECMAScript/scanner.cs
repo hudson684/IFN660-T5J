@@ -6,9 +6,9 @@
 //
 //  GPLEX Version:  1.2.2
 //  Machine:  WING-PC
-//  DateTime: 3/16/2017 4:01:18 PM
+//  DateTime: 3/16/2017 5:01:29 PM
 //  UserName: wInG
-//  GPLEX input file <scanner.lex - 3/16/2017 3:39:04 PM>
+//  GPLEX input file <scanner.lex - 3/16/2017 4:51:46 PM>
 //  GPLEX frame file <embedded resource>
 //
 //  Option settings: unicode, parser, minimize
@@ -123,8 +123,8 @@ namespace IFN660_Java_ECMAScript
         
         enum Result {accept, noMatch, contextFound};
 
-        const int maxAccept = 28;
-        const int initial = 29;
+        const int maxAccept = 27;
+        const int initial = 28;
         const int eofNum = 0;
         const int goStart = -1;
         const int INITIAL = 0;
@@ -162,7 +162,7 @@ int lines = 0;
         }
     };
 
-    static int[] startState = new int[] {29, 0};
+    static int[] startState = new int[] {28, 0};
 
 #region CompressedCharacterMap
     //
@@ -191,17 +191,17 @@ int lines = 0;
     }
 #endregion
 
-    static Table[] NxS = new Table[30] {
+    static Table[] NxS = new Table[29] {
 /* NxS[   0] */ new Table(0, 0, 0, null),
 /* NxS[   1] */ new Table(0, 0, -1, null),
-/* NxS[   2] */ new Table(1, 11, -1, new sbyte[] {3, 26, 3, 3, 3, 27, 
+/* NxS[   2] */ new Table(1, 11, -1, new sbyte[] {3, 25, 3, 3, 3, 26, 
           3, 3, 3, 3, 3}),
 /* NxS[   3] */ new Table(1, 11, -1, new sbyte[] {3, 3, 3, 3, 3, 3, 
           3, 3, 3, 3, 3}),
-/* NxS[   4] */ new Table(1, 11, -1, new sbyte[] {3, 3, 3, 23, 3, 3, 
+/* NxS[   4] */ new Table(1, 11, -1, new sbyte[] {3, 3, 3, 22, 3, 3, 
           3, 3, 3, 3, 3}),
 /* NxS[   5] */ new Table(1, 11, -1, new sbyte[] {3, 3, 3, 3, 3, 3, 
-          3, 3, 20, 3, 3}),
+          3, 3, 19, 3, 3}),
 /* NxS[   6] */ new Table(11, 1, -1, new sbyte[] {6}),
 /* NxS[   7] */ new Table(0, 0, -1, null),
 /* NxS[   8] */ new Table(0, 0, -1, null),
@@ -212,29 +212,28 @@ int lines = 0;
 /* NxS[  13] */ new Table(0, 0, -1, null),
 /* NxS[  14] */ new Table(0, 0, -1, null),
 /* NxS[  15] */ new Table(0, 0, -1, null),
-/* NxS[  16] */ new Table(12, 1, -1, new sbyte[] {19}),
+/* NxS[  16] */ new Table(0, 0, -1, null),
 /* NxS[  17] */ new Table(0, 0, -1, null),
 /* NxS[  18] */ new Table(0, 0, -1, null),
-/* NxS[  19] */ new Table(0, 0, -1, null),
-/* NxS[  20] */ new Table(1, 11, -1, new sbyte[] {3, 3, 3, 3, 3, 3, 
-          3, 3, 21, 3, 3}),
-/* NxS[  21] */ new Table(1, 11, -1, new sbyte[] {3, 3, 3, 22, 3, 3, 
+/* NxS[  19] */ new Table(1, 11, -1, new sbyte[] {3, 3, 3, 3, 3, 3, 
+          3, 3, 20, 3, 3}),
+/* NxS[  20] */ new Table(1, 11, -1, new sbyte[] {3, 3, 3, 21, 3, 3, 
           3, 3, 3, 3, 3}),
-/* NxS[  22] */ new Table(1, 11, -1, new sbyte[] {3, 3, 3, 3, 3, 3, 
+/* NxS[  21] */ new Table(1, 11, -1, new sbyte[] {3, 3, 3, 3, 3, 3, 
           3, 3, 3, 3, 3}),
-/* NxS[  23] */ new Table(1, 11, -1, new sbyte[] {3, 3, 3, 3, 24, 3, 
+/* NxS[  22] */ new Table(1, 11, -1, new sbyte[] {3, 3, 3, 3, 23, 3, 
           3, 3, 3, 3, 3}),
-/* NxS[  24] */ new Table(1, 11, -1, new sbyte[] {3, 3, 25, 3, 3, 3, 
+/* NxS[  23] */ new Table(1, 11, -1, new sbyte[] {3, 3, 24, 3, 3, 3, 
+          3, 3, 3, 3, 3}),
+/* NxS[  24] */ new Table(1, 11, -1, new sbyte[] {3, 3, 3, 3, 3, 3, 
           3, 3, 3, 3, 3}),
 /* NxS[  25] */ new Table(1, 11, -1, new sbyte[] {3, 3, 3, 3, 3, 3, 
           3, 3, 3, 3, 3}),
 /* NxS[  26] */ new Table(1, 11, -1, new sbyte[] {3, 3, 3, 3, 3, 3, 
-          3, 3, 3, 3, 3}),
+          27, 3, 3, 3, 3}),
 /* NxS[  27] */ new Table(1, 11, -1, new sbyte[] {3, 3, 3, 3, 3, 3, 
-          28, 3, 3, 3, 3}),
-/* NxS[  28] */ new Table(1, 11, -1, new sbyte[] {3, 3, 3, 3, 3, 3, 
           3, 3, 3, 3, 3}),
-/* NxS[  29] */ new Table(8, 20, 3, new sbyte[] {5, 3, 3, 6, 7, 8, 
+/* NxS[  28] */ new Table(8, 20, 3, new sbyte[] {5, 3, 3, 6, 7, 8, 
           9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 1, 2, 3, 4}),
     };
 
@@ -677,11 +676,11 @@ throw new Exception(
         case 3:
         case 4:
         case 5:
+        case 19:
         case 20:
-        case 21:
+        case 22:
         case 23:
-        case 24:
-        case 27:
+        case 26:
 yylval.name = yytext; return (int)Tokens.IDENT;
             break;
         case 6:
@@ -723,19 +722,16 @@ lines++;
         case 18:
 /* ignore other whitespace */
             break;
-        case 19:
-return (int)Tokens.GE;
-            break;
-        case 22:
+        case 21:
 return (int)Tokens.BOOL;
             break;
-        case 25:
+        case 24:
 return (int)Tokens.ELSE;
             break;
-        case 26:
+        case 25:
 return (int)Tokens.IF;
             break;
-        case 28:
+        case 27:
 return (int)Tokens.INT;
             break;
         default:

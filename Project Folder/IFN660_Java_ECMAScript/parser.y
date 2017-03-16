@@ -8,6 +8,8 @@
 %token <num> NUMBER
 %token <name> IDENT
 %token IF ELSE INT BOOL
+%token ARGS
+%token MAIN
 
 %left '='
 %nonassoc '<'
@@ -43,20 +45,28 @@ Expression : NUMBER
 UnannType : UnannReferenceType
 		  ;
 
+UnannReferenceType : /* empty */
+					;
+
 		  // VariableDeclaratorId - Vivian
 VariableDeclaratorId : Identifier
 					 | Dims
 					 ;
 
 		  // Identifier - Vivian
-Identifier : "args"
+Identifier : ARGS
 		   | String
-		   | "main"
+		   | MAIN
 		   ;
+
+String : /* empty*/
+       ;
 
 		  // Dims - Vivian
 Dims :  /* empty */
      ;
+
+	 
 
 %%
 
