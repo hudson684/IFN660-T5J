@@ -3,10 +3,10 @@
 // (see accompanying GPPGcopyright.rtf)
 
 // GPPG version 1.5.2
-// Machine:  LAB-GPV600-12
-// DateTime: 14/03/2017 9:04:44 PM
-// UserName: n9768653
-// Input file <parser.y - 14/03/2017 9:01:33 PM>
+// Machine:  DESKTOP-1VMC0S8
+// DateTime: 18/03/2017 11:25:43 PM
+// UserName: hudso
+// Input file <parser.y - 18/03/2017 11:25:37 PM>
 
 // options: lines gplex
 
@@ -21,7 +21,7 @@ namespace IFN660_Java_ECMAScript
 {
 public enum Tokens {
     error=127,EOF=128,NUMBER=129,IDENT=130,IF=131,ELSE=132,
-    INT=133,BOOL=134,GE=135};
+    INT=133,BOOL=134,GE=135,Void=136,Main=137};
 
 public struct ValueType
 #line 3 "parser.y"
@@ -55,11 +55,12 @@ public class Parser: ShiftReduceParser<ValueType, LexLocation>
 #pragma warning disable 649
   private static Dictionary<int, string> aliases;
 #pragma warning restore 649
-  private static Rule[] rules = new Rule[16];
+  private static Rule[] rules = new Rule[23];
   private static State[] states = new State[30];
   private static string[] nonTerms = new string[] {
       "Program", "$accept", "Statement", "Expression", "StatementList", "Type", 
-      };
+      "Empty", "Result", "Throws", "MethodDeclorator", "Identifyer", "FormalParameterList_Opt", 
+      "Dims_Opt", };
 
   static Parser() {
     states[0] = new State(new int[]{131,4,123,11,129,23,130,24,133,28,134,29},new int[]{-1,1,-3,3,-4,15,-6,25});
@@ -110,6 +111,13 @@ public class Parser: ShiftReduceParser<ValueType, LexLocation>
     rules[13] = new Rule(-4, new int[]{-4,61,-4});
     rules[14] = new Rule(-4, new int[]{-4,43,-4});
     rules[15] = new Rule(-4, new int[]{-4,60,-4});
+    rules[16] = new Rule(-7, new int[]{});
+    rules[17] = new Rule(-8, new int[]{136});
+    rules[18] = new Rule(-9, new int[]{-7});
+    rules[19] = new Rule(-10, new int[]{-11,40,-12,41,-13});
+    rules[20] = new Rule(-11, new int[]{137});
+    rules[21] = new Rule(-12, new int[]{-7});
+    rules[22] = new Rule(-13, new int[]{-7});
   }
 
   protected override void Initialize() {
@@ -138,7 +146,7 @@ public class Parser: ShiftReduceParser<ValueType, LexLocation>
         return CharToString((char)terminal);
   }
 
-#line 43 "parser.y"
+#line 69 "parser.y"
 
 public Parser(Scanner scanner) : base(scanner)
 {

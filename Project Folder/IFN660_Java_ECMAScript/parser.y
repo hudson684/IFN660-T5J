@@ -8,6 +8,7 @@
 %token <num> NUMBER
 %token <name> IDENT
 %token IF ELSE INT BOOL GE
+%token Void Main
 
 %left '='
 %nonassoc '<'
@@ -38,6 +39,31 @@ Expression : NUMBER
            | Expression '+' Expression
            | Expression '<' Expression
            ;
+
+Empty:
+	 ;
+
+//WORK BY JOSH HUDSON
+Result : Void
+	   ;
+
+Throws: Empty
+	  ;
+	 
+MethodDeclorator: Identifyer '(' FormalParameterList_Opt ')' Dims_Opt
+				;
+
+Identifyer: Main
+		  ;
+
+//PLACEHOLDER - Josh
+FormalParameterList_Opt: Empty
+					   ;
+
+Dims_Opt : Empty
+		 ;
+
+// JOSHUA'S WORK END
 
 %%
 
