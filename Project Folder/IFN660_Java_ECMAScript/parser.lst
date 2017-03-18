@@ -1,11 +1,11 @@
 
 // ==========================================================================
-//  GPPG error listing for yacc source file <parser.y - 14/03/2017 8:47:52 PM>
+//  GPPG error listing for yacc source file <parser.y - 18/03/2017 11:25:37 PM>
 // ==========================================================================
 //  Version:  1.5.2
-//  Machine:  LAB-GPV600-12
-//  DateTime: 14/03/2017 9:00:20 PM
-//  UserName: n9768653
+//  Machine:  DESKTOP-1VMC0S8
+//  DateTime: 18/03/2017 11:25:43 PM
+//  UserName: hudso
 // ==========================================================================
 
 
@@ -19,20 +19,24 @@
 %token <num> NUMBER
 %token <name> IDENT
 %token IF ELSE INT BOOL GE
+%token Void Main
 
 %left '='
 %nonassoc '<'
 %left '+'
 
 %%
-// Warning: NonTerminal symbol "StatementList" is unreachable
-// Warning: NonTerminal symbol "Type" is unreachable
-// Warning: NonTerminal symbol "Statement" is unreachable
-// Warning: NonTerminal symbol "Expression" is unreachable
-// ----------------------------------------------------------
+// Warning: NonTerminal symbol "Identifyer" is unreachable
+// Warning: NonTerminal symbol "FormalParameterList_Opt" is unreachable
+// Warning: NonTerminal symbol "Dims_Opt" is unreachable
+// Warning: NonTerminal symbol "MethodDeclorator" is unreachable
+// Warning: NonTerminal symbol "Empty" is unreachable
+// Warning: NonTerminal symbol "Result" is unreachable
+// Warning: NonTerminal symbol "Throws" is unreachable
+// --------------------------------------------------------------------
 
-Program: 
-       ;
+Program : Statement
+        ;
 
 Statement : IF '(' Expression ')' Statement ELSE Statement
           | '{' StatementList '}'
@@ -55,9 +59,35 @@ Expression : NUMBER
            | Expression '<' Expression
            ;
 
+Empty:
+	 ;
+
+//WORK BY JOSH HUDSON
+Result : Void
+	   ;
+
+Throws: Empty
+	  ;
+	 
+MethodDeclorator: Identifyer '(' FormalParameterList_Opt ')' Dims_Opt
+				;
+
+Identifyer: Main
+		  ;
+
+//PLACEHOLDER - Josh
+FormalParameterList_Opt: Empty
+					   ;
+
+Dims_Opt : Empty
+		 ;
+
+// JOSHUA'S WORK END
+
 %%
 
 public Parser(Scanner scanner) : base(scanner)
 {
-}// ==========================================================================
+}
+// ==========================================================================
 
