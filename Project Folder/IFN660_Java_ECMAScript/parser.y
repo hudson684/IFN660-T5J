@@ -16,28 +16,67 @@
 %left '+'
 
 %%
+
+Program : Statement
+        ;
+
+Statement 
+		: IF '(' Expression ')' Statement ELSE Statement
+        | '{' StatementList '}'
+        | Expression ';'
+        | Type IDENT ';'
+        ;
+
+Type 
+		: INT
+     	| BOOL
+     	;
+
+StatementList 
+		: StatementList Statement
+    	| /* empty */
+        ;
+
+Expression 
+		: NUMBER
+        | IDENT
+        | Expression '=' Expression
+        | Expression '+' Expression
+        | Expression '<' Expression
+        ;
+
+Empty:
+	 ;
+
 // Group A Start
-CompilationUnit : TypeDeclarations /* need to add PackageDeclaration_opt and ImportDeclarations */
+CompilationUnit 
+		: TypeDeclarations /* need to add PackageDeclaration_opt and ImportDeclarations */
 		;
 
-TypeDeclarations : TypeDeclarations TypeDeclaration
+TypeDeclarations 
+		: TypeDeclarations TypeDeclaration
 		| /* empty */
 		;
 
-TypeDeclaration : ClassDeclaration /* need to add InterfaceDeclaration */
+TypeDeclaration 
+		: ClassDeclaration /* need to add InterfaceDeclaration */
 		;
 
-ClassDeclaration : NormalClassDeclaration /* need to add EnumDeclaration */
+ClassDeclaration 
+		: NormalClassDeclaration /* need to add EnumDeclaration */
 		;
 
-NormalClassDeclaration : ClassModifiers CLASS IDENT TypeParameters_opt SuperClass_opt Superinterfaces_opt ClassBody
+NormalClassDeclaration 
+		: ClassModifiers CLASS IDENT TypeParameters_opt SuperClass_opt Superinterfaces_opt ClassBody
 		;
 
-ClassModifiers : ClassModifiers ClassModifier
+ClassModifiers 
+		: ClassModifiers ClassModifier
 		| /* empty */
 		;
 
-ClassModifier : Annotation
+ClassModifier 
+		: Annotation
 		| PUBLIC
 		; /* more need to be added here */
 
@@ -53,58 +92,154 @@ SuperClass_opt : /* empty */
 Superinterfaces_opt : /* empty */
 		;
 
-ClassBody : Statement /* not really. This will hook into GroupB's work. Just for testing */
+ClassBody 
+		: '{' ClassBodyDeclaration '}' /* not really. This will hook into GroupB's work. Just for testing */
 		;
 // Group A End
 
-Program : Statement
+// PartB by Adon
+ClassBodyDeclarations
+		: ClassBodyDeclaration
+		| /* Empty */
         ;
 
-Statement : IF '(' Expression ')' Statement ELSE Statement
-          | '{' StatementList '}'
-          | Expression ';'
-          | Type IDENT ';'
-          ;
+ClassBodyDeclaration
+		: ClassMemberDeclaration
+        ;
 
-Type : INT
-     | BOOL
-     ;
+// Fixed by An
+ClassMemberDeclaration
+		:MethodDeclaration
+		;
+// Change ClassMemberDeclaration to MethodDeclaration	
+MethodDeclaration
+		: MethodModifiers MethodHeaders MethodBody
+        ;
 
-StatementList : StatementList Statement
-              | /* empty */
-              ;
+MethodModifiers
+		: MethodModifier
+        | MethodModifier MethodModifiers
+        ;
 
-Expression : NUMBER
-           | IDENT
-           | Expression '=' Expression
-           | Expression '+' Expression
-           | Expression '<' Expression
-           ;
+MethodModifier
+		: Annotation
+		| PUBLIC
+        | STATIC
+        ;
 
-Empty:
-	 ;
+MethodHeader
+		: Result MethodDeclorator Throws_opt
+        ;
+
+// End Fix
+// Start work by An
+MethodBody
+		: Block 
+		| ';'
+		;
+// End GroupB
 
 //WORK BY JOSH HUDSON
-Result : Void
-	   ;
+Result 
+		: Void
+	   	;
 
-Throws: Empty
-	  ;
+Throws_opt
+		: Empty
+	  	;
 	 
-MethodDeclorator: Identifyer '(' FormalParameterList_Opt ')' Dims_Opt
-				;
+// Fixed spelling error	 
+MethodDeclorator
+		: IDENT '(' FormalParameterList_Opt ')' Dims_Opt
+		;
 
-Identifyer: Main
-		  ;
+Identifyer
+		: Main
+		;
 
 //PLACEHOLDER - Josh
-FormalParameterList_Opt: Empty
+FormalParameterList_Opt
+		: Empty
 					   ;
 
-Dims_Opt : Empty
-		 ;
+Dims_Opt 
+		: Dims
+		;
 
 // JOSHUA'S WORK END
+
+// Work by An
+UnannType
+		:UnannReferenceType
+		;
+
+VariableDeclaratorId
+		: IDENT
+		;
+
+UnannReferenceType
+		: UnannArrayType
+		;
+
+UnannArrayType
+		: UnannTypeVariable Dims
+		;		
+UnannTypeVariable
+		: IDENT
+		;	
+Dims
+		: Anotations '['']'
+
+Anotations
+		: Anotation
+		| Empty
+		;
+Block 
+		: '{' BlockStatements_Opt '}'
+BlockStatements_Opt
+		: BlockStatements
+		| Empty
+		;
+BlockStatements
+		: BlockStatement BlockStatement_s
+		;
+
+BlockStatement_s
+		: BlockStatement BlockStatement_s
+		| Empty
+		;
+
+BlockStatement
+		: LocalVariableDeclarationsAndStatement
+		;
+LocalVariableDeclarationsAndStatement
+		: LocalVariableDeclaration ';'
+		;
+LocalVariableDeclaration
+		: VariableModifers UnannType VariableDeclaratorList
+		;
+VariableModifers
+		: VariableModifer VariableModifers
+		| Empty
+		;
+VariableModifer
+		: Anotation
+		| FINAL
+		;
+VariableDeclaratorList
+		: VariableDeclarator
+		;
+VariableDeclarator
+		: VariableDeclaratorId VariableDeclarator_opt
+VariableDeclarator_opt
+		: '=' VariableInitializer
+VariableDeclaratorId
+		: Identifyer Dims_Opt
+		;
+VariableInitializer
+		: Expression
+
+//
 
 %%
 
