@@ -17,15 +17,16 @@
 
 %%
 
-Program : Statement
-        ;
+Program
+		: Statement
+		;
 
 Statement 
 		: IF '(' Expression ')' Statement ELSE Statement
-        | '{' StatementList '}'
-        | Expression ';'
-        | Type IDENT ';'
-        ;
+		| '{' StatementList '}'
+		| Expression ';'
+		| Type IDENT ';'
+		;
 
 Type 
 		: INT
@@ -93,19 +94,22 @@ Superinterfaces_opt : /* empty */
 		;
 
 ClassBody 
-		: '{' ClassBodyDeclaration '}' /* not really. This will hook into GroupB's work. Just for testing */
+		: '{' ClassBodyDeclarations '}'
 		;
 // Group A End
 
 // PartB by Adon
 ClassBodyDeclarations
 		: ClassBodyDeclaration
-		| /* Empty */
         ;
 
 ClassBodyDeclaration
-		: ClassMemberDeclaration
+		: ClassMemberDeclarations
         ;
+
+ClassMemberDeclarations 
+		: ClassMemberDeclaration
+		;
 
 // Fixed by An
 ClassMemberDeclaration
@@ -113,8 +117,12 @@ ClassMemberDeclaration
 		;
 // Change ClassMemberDeclaration to MethodDeclaration -An	
 MethodDeclaration
-		: MethodModifiers MethodHeader MethodBody
+		: MethodModifiers MethodHeaders MethodBody
         ;
+
+MethodHeaders
+		: MethodHeader
+		;
 
 MethodModifiers
 		: MethodModifier
@@ -166,22 +174,27 @@ Dims_Opt
 // JOSHUA'S WORK END
 
 //Work by Tri
-FormalParameterList : FormalParameters 
-					;
+FormalParameterList 
+		: FormalParameters 
+		;
 
-FormalParameters : FormalParameter FormalParameters
-				 | /* empty */
-				 ;
+FormalParameters 
+		: FormalParameter FormalParameters
+		| /* empty */
+		;
 
-FormalParameter : VariableModifiers UnannType VariableDeclaratorId
-				;
+FormalParameter 
+		: VariableModifiers UnannType VariableDeclaratorId
+		;
 
-VariableModifiers : VariableModifier VariableModifiers
-				  | /* empty */
-				  ;
+VariableModifiers 
+		: VariableModifier VariableModifiers
+		| /* empty */
+		;
 
-VariableModifier : /* empty */ /* TODO */
-				 ;
+VariableModifier 
+		: /* empty */ /* TODO */
+		;
 
 //End work by Tri
 
