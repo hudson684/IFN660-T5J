@@ -152,9 +152,10 @@ Identifier
 		: Main
 		;
 
-//PLACEHOLDER - Josh
+//PLACEHOLDER - Josh - Tri
 FormalParameterList_Opt
-		: Empty
+		: FormalParameterList
+		| /* empty */
 		;
 
 Dims_Opt 
@@ -163,6 +164,27 @@ Dims_Opt
 		;
 
 // JOSHUA'S WORK END
+
+//Work by Tri
+FormalParameterList : FormalParameters 
+					;
+
+FormalParameters : FormalParameter FormalParameters
+				 | /* empty */
+				 ;
+
+FormalParameter : VariableModifiers UnannType VariableDeclaratorId
+				;
+
+VariableModifiers : VariableModifier VariableModifiers
+				  | /* empty */
+				  ;
+
+VariableModifier : /* empty */ /* TODO */
+				 ;
+
+//End work by Tri
+
 // Work by Vivian
 Dims
 		: Annotations '['']'
