@@ -66,59 +66,57 @@ namespace IFN660_Java_ECMAScript
         VOLATILE = 317,
         #endregion
 
+        #region Literals
         IntegerLiteral = 318,
-        FloatingPointLiteral = 358,
-        DecimalIntegerLiteral = 319,
-        // HexIntegerLiteral = 319,
-        OctalIntegerLiteral = 320,
-        BinaryIntegerLiteral = 321,
-        ELLIPSIS = 322,
-        DOUBLE_COLON = 323,
+        FloatingPointLiteral = 319,
+        CharacterLiteral = 321,
+        StringLiteral = 322,
+        BooleanLiteral = 323,
+        NullLiteral = 324,
+        EscapeSequence = 325,
+        #endregion
+
+        #region Separators
+        ELLIPSIS = 330,
+        DOUBLE_COLON = 331,
+        #endregion
 
         #region Operator
         // An code
-        EQUAL = 324,
-        GREATER_OR_EQUAL = 325,
-        LESS_THAN_OR_EQUAL = 326,
-        NOT_EQUAL = 327,
-        LOGICAL_AND = 328,
-        LOGICAL_OR = 329,
-        LOGICAL_NOT = 330,
-        INCREMENT = 331,
-        DECREMENT = 332,
-        LEFT_SHIFT = 333,
-        SIGNED_RIGHT_SHIFT = 334,
-        UNSIGNED_RIGHT_SHIFT = 335,
-        ADDITION_ASSIGNMENT = 336,
-        SUBTRACTION_ASSIGNMENT = 337,
-        MULTIPLICATION_ASSIGNMENT = 338,
-        DIVISION_ASSIGNMENT = 339,
-        MODULUS_ASSIGNMENT = 340,
-        BITWISE_AND_ASSIGNMENT = 341,
-        BITWISE_OR_ASSIGNMENT = 342,
-        BITWISE_XOR_ASSIGNMENT = 343,
-        LEFT_SHIFT_ASSIGNMENT = 344,
-        UNSIGNED_RIGHT_SHIFT_ASSIGNMENT = 345,
-        SIGNED_RIGHT_SHIFT_ASSIGNMENT = 346,
-        ARROW = 347,
+        EQUAL = 340,
+        GREATER_OR_EQUAL = 341,
+        LESS_THAN_OR_EQUAL = 342,
+        NOT_EQUAL = 343,
+        LOGICAL_AND = 344,
+        LOGICAL_OR = 345,
+        LOGICAL_NOT = 346,
+        INCREMENT = 347,
+        DECREMENT = 348,
+        LEFT_SHIFT = 349,
+        SIGNED_RIGHT_SHIFT = 350,
+        UNSIGNED_RIGHT_SHIFT = 351,
+        ADDITION_ASSIGNMENT = 352,
+        SUBTRACTION_ASSIGNMENT = 353,
+        MULTIPLICATION_ASSIGNMENT = 354,
+        DIVISION_ASSIGNMENT = 355,
+        MODULUS_ASSIGNMENT = 356,
+        BITWISE_AND_ASSIGNMENT = 357,
+        BITWISE_OR_ASSIGNMENT = 358,
+        BITWISE_XOR_ASSIGNMENT = 359,
+        LEFT_SHIFT_ASSIGNMENT = 360,
+        UNSIGNED_RIGHT_SHIFT_ASSIGNMENT = 361,
+        SIGNED_RIGHT_SHIFT_ASSIGNMENT = 362,
+        ARROW = 363,
         #endregion
 
-
-        BooleanLiteral = 352,
-        NullLiteral = 353,
-
-        //Tri
-        CHARACTER_LITERAL = 354,
-        STRING_LITERAL = 355,
-        OCTAL_ESCAPE = 356,
-        ESCAPE_SEQUENCE = 399,
-
-        //3.3 Unicode escapes Vivian
-        UNICODE_ESCAPE = 360,
-        UNICODE_INPUT_CHAR = 361,
-        UNICODE_RAW_INPUT = 362,
-        HEXDIGIT = 363,
-        UNICODE_MARKER = 357,
+        ////3.3 Unicode escapes Vivian
+        //UNICODE_ESCAPE = 360,
+        UnicodeInputCharacter = 370,
+        //UNICODE_RAW_INPUT = 362,
+        //HEXDIGIT = 363,
+        //UNICODE_MARKER = 357,
+        //LITERAL = 358,
+        //A = 359,
     };
 
     public struct MyValueType
@@ -155,17 +153,8 @@ namespace IFN660_Java_ECMAScript
                         token = (Tokens)scanner.yylex();
                         switch (token)
                         {
-                            case Tokens.NUMBER:
-                                Console.WriteLine("NUMBER ({0})", scanner.yylval.num);
-                                break;
                             case Tokens.IDENT:
                                 Console.WriteLine("IDENT ({0})", scanner.yylval.name);
-                                break;
-                            case Tokens.WHILE:
-                                Console.WriteLine("WHILE");
-                                break;
-                            case Tokens.GE:
-                                Console.WriteLine("GE");
                                 break;
                             case Tokens.EOF:
                                 Console.WriteLine("EOF");
@@ -320,56 +309,62 @@ namespace IFN660_Java_ECMAScript
                             case Tokens.VOLATILE:
                                 Console.WriteLine("VOLATILE");
                                 break;
+                            case Tokens.WHILE:
+                                Console.WriteLine("WHILE");
+                                break;
                             #endregion
                             #region Literals
                             // Code by Nathan & Sneha
                             case Tokens.IntegerLiteral:
                                 Console.WriteLine("IntegerLiteral ({0})", scanner.yylval.num);
                                 break;
-                            case Tokens.DecimalIntegerLiteral:
-                                Console.WriteLine("DecimalIntegerLiteral ({0})", scanner.yylval.num);
-                                break;
-                            case Tokens.OctalIntegerLiteral:
-                                Console.WriteLine("OctalIntegerLiteral ({0})", scanner.yylval.name);
-                                break;
-                            case Tokens.BinaryIntegerLiteral:
-                                Console.WriteLine("BinaryIntegerLiteral ({0})", scanner.yylval.name);
-                                break;
+                            //case Tokens.DecimalIntegerLiteral:
+                            //    Console.WriteLine("DecimalIntegerLiteral ({0})", scanner.yylval.num);
+                            //    break;
+                            //case Tokens.OctalIntegerLiteral:
+                            //    Console.WriteLine("OctalIntegerLiteral ({0})", scanner.yylval.name);
+                            //    break;
+                            
+                            //case Tokens.BinaryIntegerLiteral:
+                            //    Console.WriteLine("BinaryIntegerLiteral ({0})", scanner.yylval.name);
+                            //    break;
                             // Code by Adon
                             case Tokens.FloatingPointLiteral:
                                 Console.WriteLine("FloatingPointLiteral ({0})", scanner.yylval.name);
                                 break;
                             //Code by Tri
-                            case Tokens.CHARACTER_LITERAL:
+                            case Tokens.CharacterLiteral:
                                 Console.WriteLine("CharacterLiteral ({0})", scanner.yylval.name);
                                 break;
-                            case Tokens.STRING_LITERAL:
-                                Console.WriteLine("StringLiteral ({0})", scanner.yylval.name);
+                            case Tokens.StringLiteral:
+                                Console.WriteLine("StringLiteral ({0})",scanner.yylval.name);
                                 break;
-                            case Tokens.OCTAL_ESCAPE:
-                                Console.WriteLine("OctalEscape ({0})", scanner.yylval.name);
-                                break;
-                            case Tokens.ESCAPE_SEQUENCE:
+                            //case Tokens.OCTAL_ESCAPE:
+                            //    Console.WriteLine("OctalEscape ({0})", scanner.yylval.name);
+                            //    break;
+                            case Tokens.EscapeSequence:
                                 Console.WriteLine("EscapeSequence ({0})", scanner.yylval.name);
                                 break;
                             // Code by Vivian
                             case Tokens.BooleanLiteral:
-                             	Console.WriteLine ("Boolean Literal ({0})", scanner.yylval.name);
+                             	Console.WriteLine ("BooleanLiteral");
                              	break;
 
                             // Code by Josh
                             case Tokens.NullLiteral:
-                             	Console.WriteLine ("Null Literal");
+                             	Console.WriteLine ("NullLiteral");
                              	break;
                             #endregion
-                            #region Operators
-                            // Code by An
+                            #region Separators
                             case Tokens.ELLIPSIS:
                                 Console.WriteLine("ELLIPSIS");
                                 break;
                             case Tokens.DOUBLE_COLON:
                                 Console.WriteLine("DOUBLE_COLON");
                                 break;
+                            #endregion
+                            #region Operators
+                            // Code by An
                             case Tokens.EQUAL:
                                 Console.WriteLine("EQUAL");
                                 break;
@@ -443,29 +438,11 @@ namespace IFN660_Java_ECMAScript
                                 Console.WriteLine("SIGNED_RIGHT_SHIFT_ASSIGNMENT");
                                 break;
                             #endregion
-
-
-                            #region Unicode Escapes
-                            //Unicode Escapes by Joshua Hudson and Vivan Lee
-                            case Tokens.UNICODE_ESCAPE:
-                                Console.WriteLine("UNICODE ESCAPE");
+                            case Tokens.UnicodeInputCharacter:
+                                Console.WriteLine("UnicodeInputCharacter ({0})", scanner.yylval.name);
                                 break;
-                           case Tokens.UNICODE_INPUT_CHAR:
-                                Console.WriteLine("UNICODE INPUT CHAR");
-                                break;
-
-                            case Tokens.UNICODE_RAW_INPUT:
-                                Console.WriteLine("UNICODE RAW INPUT");
-                                break;
-                            case Tokens.HEXDIGIT:
-                                Console.WriteLine("HEXDIGIT");
-                                break;
-                            case Tokens.UNICODE_MARKER:
-                                Console.WriteLine("UNICODE MARKER");
-                                break;
-                            #endregion
                             default:
-                                Console.WriteLine("'{0}'", token);
+                                Console.WriteLine("'{0}'",(char) token);
                                 break;
 
                         }

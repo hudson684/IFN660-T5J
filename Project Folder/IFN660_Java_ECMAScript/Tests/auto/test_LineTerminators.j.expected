@@ -1,0 +1,7 @@
+﻿IDENT (asaadaded)
+IDENT (Enter)
+IDENT (whitespace)
+IDENT (text)
+EscapeSequence (\f)
+IDENT (text)
+EOF

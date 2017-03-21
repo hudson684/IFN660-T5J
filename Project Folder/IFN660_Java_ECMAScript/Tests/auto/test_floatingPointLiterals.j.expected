@@ -1,0 +1,13 @@
+FloatingPointLiteral (1e1f)
+FloatingPointLiteral (2.f)
+FloatingPointLiteral (.3f)
+FloatingPointLiteral (0f)
+FloatingPointLiteral (3.14f)
+FloatingPointLiteral (6.022137e+23f)
+FloatingPointLiteral (0x.9p+812)
+FloatingPointLiteral (0x.9p+815521321321)
+FloatingPointLiteral (0x2p+88F)
+FloatingPointLiteral (0x1.p+88F)
+FloatingPointLiteral (0x1111_32A9_B338.123p+88F)
+FloatingPointLiteral (0x1.9p-69f)
+EOF
