@@ -20,24 +20,24 @@
 Program : Statement
         ;
 
-Statement 
+Statement
 		: IF '(' Expression ')' Statement ELSE Statement
         | '{' StatementList '}'
         | Expression ';'
         | Type IDENT ';'
         ;
 
-Type 
+Type
 		: INT
      	| BOOL
      	;
 
-StatementList 
+StatementList
 		: StatementList Statement
     	| /* empty */
         ;
 
-Expression 
+Expression
 		: NUMBER
         | IDENT
         | Expression '=' Expression
@@ -49,33 +49,33 @@ Empty:
 	 ;
 
 // Group A Start
-CompilationUnit 
+CompilationUnit
 		: TypeDeclarations /* need to add PackageDeclaration_opt and ImportDeclarations */
 		;
 
-TypeDeclarations 
+TypeDeclarations
 		: TypeDeclarations TypeDeclaration
 		| /* empty */
 		;
 
-TypeDeclaration 
+TypeDeclaration
 		: ClassDeclaration /* need to add InterfaceDeclaration */
 		;
 
-ClassDeclaration 
+ClassDeclaration
 		: NormalClassDeclaration /* need to add EnumDeclaration */
 		;
 
-NormalClassDeclaration 
+NormalClassDeclaration
 		: ClassModifiers CLASS IDENT TypeParameters_opt SuperClass_opt Superinterfaces_opt ClassBody
 		;
 
-ClassModifiers 
+ClassModifiers
 		: ClassModifiers ClassModifier
 		| /* empty */
 		;
 
-ClassModifier 
+ClassModifier
 		: Annotation
 		| PUBLIC
 		; /* more need to be added here */
@@ -92,7 +92,7 @@ SuperClass_opt : /* empty */
 Superinterfaces_opt : /* empty */
 		;
 
-ClassBody 
+ClassBody
 		: '{' ClassBodyDeclaration '}' /* not really. This will hook into GroupB's work. Just for testing */
 		;
 // Group A End
@@ -111,7 +111,7 @@ ClassBodyDeclaration
 ClassMemberDeclaration
 		:MethodDeclaration
 		;
-// Change ClassMemberDeclaration to MethodDeclaration	
+// Change ClassMemberDeclaration to MethodDeclaration
 MethodDeclaration
 		: MethodModifiers MethodHeaders MethodBody
         ;
@@ -134,21 +134,21 @@ MethodHeader
 // End Fix
 // Start work by An
 MethodBody
-		: Block 
+		: Block
 		| ';'
 		;
 // End GroupB
 
 //WORK BY JOSH HUDSON
-Result 
+Result
 		: Void
 	   	;
 
 Throws_opt
 		: Empty
 	  	;
-	 
-// Fixed spelling error	 
+
+// Fixed spelling error
 MethodDeclorator
 		: IDENT '(' FormalParameterList_Opt ')' Dims_Opt
 		;
@@ -162,7 +162,7 @@ FormalParameterList_Opt
 		: Empty
 					   ;
 
-Dims_Opt 
+Dims_Opt
 		: Dims
 		;
 
@@ -183,10 +183,10 @@ UnannReferenceType
 
 UnannArrayType
 		: UnannTypeVariable Dims
-		;		
+		;
 UnannTypeVariable
 		: IDENT
-		;	
+		;
 Dims
 		: Anotations '['']'
 
@@ -194,7 +194,7 @@ Anotations
 		: Anotation
 		| Empty
 		;
-Block 
+Block
 		: '{' BlockStatements_Opt '}'
 BlockStatements_Opt
 		: BlockStatements
@@ -239,6 +239,23 @@ VariableDeclaratorId
 VariableInitializer
 		: Expression
 
+    // Top of 2nd page by Khoa
+    UnannReferenceType: UnannArrayTypes
+                      ;
+
+    UnannArrayTypes: UnannArrayType
+                   ;
+
+    UnannArrayType: UnannTypeVariable
+                  ;
+
+    UnannTypeVariable: Identifier Dims
+                     ;
+
+    Identifier: String
+              ;
+
+    Dims: {Annotation} [ ]
 //
 
 %%
