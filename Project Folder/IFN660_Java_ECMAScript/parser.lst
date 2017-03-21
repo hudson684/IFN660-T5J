@@ -1,11 +1,20 @@
 
 // ==========================================================================
+<<<<<<< HEAD
 //  GPPG error listing for yacc source file <parser.y - 3/16/2017 5:00:36 PM>
 // ==========================================================================
 //  Version:  1.5.2
 //  Machine:  WING-PC
 //  DateTime: 3/16/2017 5:01:29 PM
 //  UserName: wInG
+=======
+//  GPPG error listing for yacc source file <parser.y - 18/03/2017 11:25:37 PM>
+// ==========================================================================
+//  Version:  1.5.2
+//  Machine:  DESKTOP-1VMC0S8
+//  DateTime: 18/03/2017 11:25:43 PM
+//  UserName: hudso
+>>>>>>> origin/parser
 // ==========================================================================
 
 
@@ -18,15 +27,21 @@
 
 %token <num> NUMBER
 %token <name> IDENT
+<<<<<<< HEAD
 %token IF ELSE INT BOOL
 %token ARGS
 %token MAIN
+=======
+%token IF ELSE INT BOOL GE
+%token Void Main
+>>>>>>> origin/parser
 
 %left '='
 %nonassoc '<'
 %left '+'
 
 %%
+<<<<<<< HEAD
 // Warning: NonTerminal symbol "Identifier" is unreachable
 // Warning: NonTerminal symbol "Dims" is unreachable
 // Warning: NonTerminal symbol "String" is unreachable
@@ -34,6 +49,16 @@
 // Warning: NonTerminal symbol "UnannReferenceType" is unreachable
 // Warning: NonTerminal symbol "VariableDeclaratorId" is unreachable
 // -----------------------------------------------------------------
+=======
+// Warning: NonTerminal symbol "Identifyer" is unreachable
+// Warning: NonTerminal symbol "FormalParameterList_Opt" is unreachable
+// Warning: NonTerminal symbol "Dims_Opt" is unreachable
+// Warning: NonTerminal symbol "MethodDeclorator" is unreachable
+// Warning: NonTerminal symbol "Empty" is unreachable
+// Warning: NonTerminal symbol "Result" is unreachable
+// Warning: NonTerminal symbol "Throws" is unreachable
+// --------------------------------------------------------------------
+>>>>>>> origin/parser
 
 Program : Statement
         ;
@@ -59,6 +84,7 @@ Expression : NUMBER
            | Expression '<' Expression
            ;
 
+<<<<<<< HEAD
 		  // Unanntype - Vivian
 UnannType : UnannReferenceType
 		  ;
@@ -85,6 +111,32 @@ Dims :  /* empty */
      ;
 
 	 
+=======
+Empty:
+	 ;
+
+//WORK BY JOSH HUDSON
+Result : Void
+	   ;
+
+Throws: Empty
+	  ;
+	 
+MethodDeclorator: Identifyer '(' FormalParameterList_Opt ')' Dims_Opt
+				;
+
+Identifyer: Main
+		  ;
+
+//PLACEHOLDER - Josh
+FormalParameterList_Opt: Empty
+					   ;
+
+Dims_Opt : Empty
+		 ;
+
+// JOSHUA'S WORK END
+>>>>>>> origin/parser
 
 %%
 
