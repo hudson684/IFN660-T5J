@@ -1,20 +1,11 @@
 
 // ==========================================================================
-<<<<<<< HEAD
-//  GPPG error listing for yacc source file <parser.y - 3/16/2017 5:00:36 PM>
+//  GPPG error listing for yacc source file <parser.y - 21/03/2017 4:42:49 PM>
 // ==========================================================================
 //  Version:  1.5.2
-//  Machine:  WING-PC
-//  DateTime: 3/16/2017 5:01:29 PM
-//  UserName: wInG
-=======
-//  GPPG error listing for yacc source file <parser.y - 18/03/2017 11:25:37 PM>
-// ==========================================================================
-//  Version:  1.5.2
-//  Machine:  DESKTOP-1VMC0S8
-//  DateTime: 18/03/2017 11:25:43 PM
-//  UserName: hudso
->>>>>>> origin/parser
+//  Machine:  MSI
+//  DateTime: 21/03/2017 4:44:40 PM
+//  UserName: Tri Phan
 // ==========================================================================
 
 
@@ -27,116 +18,300 @@
 
 %token <num> NUMBER
 %token <name> IDENT
-<<<<<<< HEAD
-%token IF ELSE INT BOOL
-%token ARGS
-%token MAIN
-=======
-%token IF ELSE INT BOOL GE
+%token IF ELSE INT BOOL GE STATIC FINAL
 %token Void Main
->>>>>>> origin/parser
+%token PUBLIC CLASS
 
 %left '='
 %nonassoc '<'
 %left '+'
 
 %%
-<<<<<<< HEAD
-// Warning: NonTerminal symbol "Identifier" is unreachable
-// Warning: NonTerminal symbol "Dims" is unreachable
-// Warning: NonTerminal symbol "String" is unreachable
-// Warning: NonTerminal symbol "UnannType" is unreachable
+// Warning: NonTerminal symbol "UnannTypeVariable" is unreachable
+// Warning: NonTerminal symbol "UnannArrayType" is unreachable
 // Warning: NonTerminal symbol "UnannReferenceType" is unreachable
-// Warning: NonTerminal symbol "VariableDeclaratorId" is unreachable
-// -----------------------------------------------------------------
-=======
-// Warning: NonTerminal symbol "Identifyer" is unreachable
-// Warning: NonTerminal symbol "FormalParameterList_Opt" is unreachable
+// Warning: NonTerminal symbol "BlockStatements" is unreachable
+// Warning: NonTerminal symbol "BlockStatements_Opt" is unreachable
+// Warning: NonTerminal symbol "Block" is unreachable
+// Warning: NonTerminal symbol "UnannType" is unreachable
+// Warning: NonTerminal symbol "Identifier" is unreachable
 // Warning: NonTerminal symbol "Dims_Opt" is unreachable
-// Warning: NonTerminal symbol "MethodDeclorator" is unreachable
+// Warning: NonTerminal symbol "FormalParameterList_Opt" is unreachable
+// Warning: NonTerminal symbol "VariableDeclaratorId" is unreachable
+// Warning: NonTerminal symbol "Annotations" is unreachable
+// Warning: NonTerminal symbol "Dims" is unreachable
+// Warning: NonTerminal symbol "VariableInitializer" is unreachable
+// Warning: NonTerminal symbol "VariableDeclarator_opt" is unreachable
+// Warning: NonTerminal symbol "VariableDeclarator" is unreachable
+// Error: Too many errors, abandoning
+// Error: NonTerminal symbol "Identifyer" has no productions
+// Warning: NonTerminal symbol "Identifyer" is unreachable
+// Warning: NonTerminal symbol "VariableModifer" is unreachable
+// Warning: NonTerminal symbol "LocalVariableDeclarationsAndStatement" is unreachable
+// Warning: NonTerminal symbol "BlockStatement_s" is unreachable
+// Warning: NonTerminal symbol "BlockStatement" is unreachable
+// Warning: NonTerminal symbol "VariableDeclaratorList" is unreachable
+// Warning: NonTerminal symbol "VariableModifers" is unreachable
+// Warning: NonTerminal symbol "LocalVariableDeclaration" is unreachable
+// Warning: NonTerminal symbol "TypeParameters_opt" is unreachable
+// Warning: NonTerminal symbol "ClassModifiers" is unreachable
+// Warning: NonTerminal symbol "NormalClassDeclaration" is unreachable
+// Warning: NonTerminal symbol "ClassBody" is unreachable
+// Warning: NonTerminal symbol "Superinterfaces_opt" is unreachable
+// Warning: NonTerminal symbol "SuperClass_opt" is unreachable
+// Warning: NonTerminal symbol "ClassDeclaration" is unreachable
 // Warning: NonTerminal symbol "Empty" is unreachable
+// Warning: Terminating Identifyer fixes the following size-1 NonTerminal set
+   // {Identifyer}
+// Error: There are 1 non-terminating NonTerminal Symbols
+   //  {Identifyer}
+// Warning: NonTerminal symbol "TypeDeclaration" is unreachable
+// Warning: NonTerminal symbol "TypeDeclarations" is unreachable
+// Warning: NonTerminal symbol "CompilationUnit" is unreachable
+// Warning: NonTerminal symbol "MethodModifier" is unreachable
+// Warning: NonTerminal symbol "MethodBody" is unreachable
+// Warning: NonTerminal symbol "MethodHeader" is unreachable
+// Warning: NonTerminal symbol "Throws_opt" is unreachable
+// Warning: NonTerminal symbol "MethodDeclarator" is unreachable
 // Warning: NonTerminal symbol "Result" is unreachable
-// Warning: NonTerminal symbol "Throws" is unreachable
-// --------------------------------------------------------------------
->>>>>>> origin/parser
+// Warning: NonTerminal symbol "MethodModifiers" is unreachable
+// Warning: NonTerminal symbol "ClassBodyDeclaration" is unreachable
+// Warning: NonTerminal symbol "Annotation" is unreachable
+// Warning: NonTerminal symbol "ClassModifier" is unreachable
+// Warning: NonTerminal symbol "MethodDeclaration" is unreachable
+// Warning: NonTerminal symbol "ClassMemberDeclaration" is unreachable
+// Warning: NonTerminal symbol "ClassBodyDeclarations" is unreachable
+// ----------------------------------------------------------------------------------
 
 Program : Statement
         ;
 
-Statement : IF '(' Expression ')' Statement ELSE Statement
-          | '{' StatementList '}'
-          | Expression ';'
-          | Type IDENT ';'
-          ;
+Statement 
+		: IF '(' Expression ')' Statement ELSE Statement
+        | '{' StatementList '}'
+        | Expression ';'
+        | Type IDENT ';'
+        ;
 
-Type : INT
-     | BOOL
-     ;
+Type 
+		: INT
+     	| BOOL
+     	;
 
-StatementList : StatementList Statement
-              | /* empty */
-              ;
+StatementList 
+		: StatementList Statement
+    	| /* empty */
+        ;
 
-Expression : NUMBER
-           | IDENT
-           | Expression '=' Expression
-           | Expression '+' Expression
-           | Expression '<' Expression
-           ;
+Expression 
+		: NUMBER
+        | IDENT
+        | Expression '=' Expression
+        | Expression '+' Expression
+        | Expression '<' Expression
+        ;
 
-<<<<<<< HEAD
-		  // Unanntype - Vivian
-UnannType : UnannReferenceType
-		  ;
-
-UnannReferenceType : /* empty */
-					;
-
-		  // VariableDeclaratorId - Vivian
-VariableDeclaratorId : Identifier
-					 | Dims
-					 ;
-
-		  // Identifier - Vivian
-Identifier : ARGS
-		   | String
-		   | MAIN
-		   ;
-
-String : /* empty*/
-       ;
-
-		  // Dims - Vivian
-Dims :  /* empty */
-     ;
-
-	 
-=======
 Empty:
 	 ;
 
+// Group A Start
+CompilationUnit 
+		: TypeDeclarations /* need to add PackageDeclaration_opt and ImportDeclarations */
+		;
+
+TypeDeclarations 
+		: TypeDeclarations TypeDeclaration
+		| /* empty */
+		;
+
+TypeDeclaration 
+		: ClassDeclaration /* need to add InterfaceDeclaration */
+		;
+
+ClassDeclaration 
+		: NormalClassDeclaration /* need to add EnumDeclaration */
+		;
+
+NormalClassDeclaration 
+		: ClassModifiers CLASS IDENT TypeParameters_opt SuperClass_opt Superinterfaces_opt ClassBody
+		;
+
+ClassModifiers 
+		: ClassModifiers ClassModifier
+		| /* empty */
+		;
+
+ClassModifier 
+		: Annotation
+		| PUBLIC
+		; /* more need to be added here */
+
+Annotation : /* empty */
+		;
+
+TypeParameters_opt : /* empty */
+		;
+
+SuperClass_opt : /* empty */
+		;
+
+Superinterfaces_opt : /* empty */
+		;
+
+ClassBody 
+		: '{' ClassBodyDeclaration '}' /* not really. This will hook into GroupB's work. Just for testing */
+		;
+// Group A End
+
+// PartB by Adon
+ClassBodyDeclarations
+		: ClassBodyDeclaration
+		| /* Empty */
+        ;
+
+ClassBodyDeclaration
+		: ClassMemberDeclaration
+        ;
+
+// Fixed by An
+ClassMemberDeclaration
+		:MethodDeclaration
+		;
+// Change ClassMemberDeclaration to MethodDeclaration -An	
+MethodDeclaration
+		: MethodModifiers MethodHeader MethodBody
+        ;
+
+MethodModifiers
+		: MethodModifier
+        | MethodModifier MethodModifiers
+        ;
+
+MethodModifier
+		: Annotation
+		| PUBLIC
+        | STATIC
+        ;
+
+MethodHeader
+		: Result MethodDeclarator Throws_opt
+        ;
+
+// End Fix
+// End GroupB
+
 //WORK BY JOSH HUDSON
-Result : Void
-	   ;
+Result 
+		: Void
+	   	;
 
-Throws: Empty
-	  ;
+Throws_opt
+		: Empty
+	  	;
 	 
-MethodDeclorator: Identifyer '(' FormalParameterList_Opt ')' Dims_Opt
-				;
+// Fixed spelling error	 
+MethodDeclarator
+		: IDENT '(' FormalParameterList_Opt ')' Dims_Opt
+		;
 
-Identifyer: Main
-		  ;
+Identifier
+		: Main
+		;
 
 //PLACEHOLDER - Josh
-FormalParameterList_Opt: Empty
-					   ;
+FormalParameterList_Opt
+		: Empty
+		;
 
-Dims_Opt : Empty
-		 ;
+Dims_Opt 
+		: Dims
+		| /* Empty */
+		;
 
 // JOSHUA'S WORK END
->>>>>>> origin/parser
+// Work by Vivian
+Dims
+		: Annotations '['']'
+		;
+
+VariableDeclaratorId
+		: IDENT Dims_Opt
+		;
+UnannType
+		:UnannReferenceType
+		;
+
+UnannReferenceType
+		: UnannArrayType
+		;
+// Vivian's work end
+// Work by Khoa - Fixed by An
+UnannArrayType
+		: UnannTypeVariable Dims
+		;		
+UnannTypeVariable
+		: IDENT
+		;	
+
+// Start work by An
+MethodBody
+		: Block 
+		| ';'
+		;
+Annotations
+		: Annotation
+		| Empty
+		;
+Block 
+		: '{' BlockStatements_Opt '}'
+		;
+BlockStatements_Opt
+		: BlockStatements
+		| Empty
+		;
+BlockStatements
+		: BlockStatement BlockStatement_s
+		;
+
+BlockStatement_s
+		: BlockStatement BlockStatement_s
+		| Empty
+		;
+
+BlockStatement
+		: LocalVariableDeclarationsAndStatement
+		;
+LocalVariableDeclarationsAndStatement
+		: LocalVariableDeclaration ';'
+		;
+LocalVariableDeclaration
+		: VariableModifers UnannType VariableDeclaratorList
+		;
+VariableModifers
+		: VariableModifer VariableModifers
+		| Empty
+		;
+VariableModifer
+		: Annotation
+		| FINAL
+		;
+VariableDeclaratorList
+		: VariableDeclarator
+		;
+VariableDeclarator
+		: VariableDeclaratorId VariableDeclarator_opt
+		;
+VariableDeclarator_opt
+		: '=' VariableInitializer
+		;
+VariableDeclaratorId
+		: Identifyer Dims_Opt
+		;
+VariableInitializer
+		: Expression
+		;
+
+// End work by An
 
 %%
 
