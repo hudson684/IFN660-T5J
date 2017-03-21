@@ -6,7 +6,7 @@
 }
 
 %token <num> NUMBER
-%token <name> IDENT
+%token <name> IDENTIFIER
 %token IF ELSE INT BOOL GE STATIC FINAL
 %token Void Main
 %token PUBLIC CLASS
@@ -25,7 +25,7 @@ Statement
 		: IF '(' Expression ')' Statement ELSE Statement
 		| '{' StatementList '}'
 		| Expression ';'
-		| Type IDENT ';'
+		| Type IDENTIFIER ';'
 		;
 
 Type 
@@ -40,7 +40,7 @@ StatementList
 
 Expression 
 		: NUMBER
-        | IDENT
+        | IDENTIFIER
         | Expression '=' Expression
         | Expression '+' Expression
         | Expression '<' Expression
@@ -51,12 +51,23 @@ Empty:
 
 // Group A Start
 CompilationUnit 
-		: TypeDeclarations /* need to add PackageDeclaration_opt and ImportDeclarations */
+		: PackageDeclaration_opt ImportDeclarations TypeDeclarations
+		;
+
+PackageDeclaration_opt\
+		: /* empty */
+		| /* follow up */
+		;
+		
+ImportDeclarations
+		: /*empty*/
+		| /* follow up */
 		;
 
 TypeDeclarations 
-		: TypeDeclarations TypeDeclaration
+		: TypeDeclaration TypeDeclarations
 		| /* empty */
+		| /* follow up */
 		;
 
 TypeDeclaration 
@@ -68,22 +79,25 @@ ClassDeclaration
 		;
 
 NormalClassDeclaration 
-		: ClassModifiers CLASS IDENT TypeParameters_opt SuperClass_opt Superinterfaces_opt ClassBody
+		: ClassModifiers CLASS IDENTIFIER TypeParameters_opt SuperClass_opt Superinterfaces_opt ClassBody
 		;
 
 ClassModifiers 
-		: ClassModifiers ClassModifier
+		: ClassModifier ClassModifiers
 		| /* empty */
 		;
 
 ClassModifier 
 		: Annotation
 		| PUBLIC
-		; /* more need to be added here */
+		; /* follow up*/
 
-Annotation : /* empty */
+Annotation
+		: /* empty */
+		| /* follow up*/
 		;
 
+//GROUP C TRACKING
 TypeParameters_opt : /* empty */
 		;
 
@@ -153,7 +167,7 @@ Throws_opt
 	 
 // Fixed spelling error	 
 MethodDeclarator
-		: IDENT '(' FormalParameterList_Opt ')' Dims_Opt
+		: IDENTIFIER '(' FormalParameterList_Opt ')' Dims_Opt
 		;
 
 Identifier
@@ -204,7 +218,7 @@ Dims
 		;
 
 VariableDeclaratorId
-		: IDENT Dims_Opt
+		: IDENTIFIER Dims_Opt
 		;
 UnannType
 		:UnannReferenceType
@@ -219,7 +233,7 @@ UnannArrayType
 		: UnannTypeVariable Dims
 		;		
 UnannTypeVariable
-		: IDENT
+		: IDENTIFIER
 		;	
 
 // Start work by An
