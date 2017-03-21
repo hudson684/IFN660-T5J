@@ -24,7 +24,7 @@ namespace RunTests
                 process.WaitForExit();
 
                 var errors = new StringBuilder();
-                Debug.WriteLine("text file name {1}",srcFile);
+                //Debug.WriteLine("text file name {1}",srcFile);
                 using (var expected = new StreamReader(srcFile + ".expected"))
                 {
 
@@ -71,7 +71,7 @@ namespace RunTests
 
                
             }
-            Console.ReadKey();
+            //Console.ReadKey();
         }
     }
 }
