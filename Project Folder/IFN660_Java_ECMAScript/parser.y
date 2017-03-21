@@ -1,4 +1,4 @@
-﻿%namespace IFN660_Java_ECMAScript
+%namespace IFN660_Java_ECMAScript
 %union
 {
     public int num;
@@ -7,15 +7,9 @@
 
 %token <num> NUMBER
 %token <name> IDENT
-<<<<<<< HEAD
-%token IF ELSE INT BOOL
-%token ARGS
-%token MAIN
-=======
-%token IF ELSE INT BOOL GE
+%token IF ELSE INT BOOL GE STATIC FINAL
 %token Void Main
 %token PUBLIC CLASS
->>>>>>> origin/parser
 
 %left '='
 %nonassoc '<'
@@ -26,24 +20,24 @@
 Program : Statement
         ;
 
-Statement
+Statement 
 		: IF '(' Expression ')' Statement ELSE Statement
         | '{' StatementList '}'
         | Expression ';'
         | Type IDENT ';'
         ;
 
-Type
+Type 
 		: INT
      	| BOOL
      	;
 
-StatementList
+StatementList 
 		: StatementList Statement
     	| /* empty */
         ;
 
-Expression
+Expression 
 		: NUMBER
         | IDENT
         | Expression '=' Expression
@@ -55,33 +49,33 @@ Empty:
 	 ;
 
 // Group A Start
-CompilationUnit
+CompilationUnit 
 		: TypeDeclarations /* need to add PackageDeclaration_opt and ImportDeclarations */
 		;
 
-TypeDeclarations
+TypeDeclarations 
 		: TypeDeclarations TypeDeclaration
 		| /* empty */
 		;
 
-TypeDeclaration
+TypeDeclaration 
 		: ClassDeclaration /* need to add InterfaceDeclaration */
 		;
 
-ClassDeclaration
+ClassDeclaration 
 		: NormalClassDeclaration /* need to add EnumDeclaration */
 		;
 
-NormalClassDeclaration
+NormalClassDeclaration 
 		: ClassModifiers CLASS IDENT TypeParameters_opt SuperClass_opt Superinterfaces_opt ClassBody
 		;
 
-ClassModifiers
+ClassModifiers 
 		: ClassModifiers ClassModifier
 		| /* empty */
 		;
 
-ClassModifier
+ClassModifier 
 		: Annotation
 		| PUBLIC
 		; /* more need to be added here */
@@ -98,7 +92,7 @@ SuperClass_opt : /* empty */
 Superinterfaces_opt : /* empty */
 		;
 
-ClassBody
+ClassBody 
 		: '{' ClassBodyDeclaration '}' /* not really. This will hook into GroupB's work. Just for testing */
 		;
 // Group A End
@@ -117,9 +111,9 @@ ClassBodyDeclaration
 ClassMemberDeclaration
 		:MethodDeclaration
 		;
-// Change ClassMemberDeclaration to MethodDeclaration
+// Change ClassMemberDeclaration to MethodDeclaration -An	
 MethodDeclaration
-		: MethodModifiers MethodHeaders MethodBody
+		: MethodModifiers MethodHeader MethodBody
         ;
 
 MethodModifiers
@@ -134,74 +128,77 @@ MethodModifier
         ;
 
 MethodHeader
-		: Result MethodDeclorator Throws_opt
+		: Result MethodDeclarator Throws_opt
         ;
 
 // End Fix
-// Start work by An
-MethodBody
-		: Block
-		| ';'
-		;
 // End GroupB
 
 //WORK BY JOSH HUDSON
-Result
+Result 
 		: Void
 	   	;
 
 Throws_opt
 		: Empty
 	  	;
-
-// Fixed spelling error
-MethodDeclorator
+	 
+// Fixed spelling error	 
+MethodDeclarator
 		: IDENT '(' FormalParameterList_Opt ')' Dims_Opt
 		;
 
-Identifyer
+Identifier
 		: Main
 		;
 
 //PLACEHOLDER - Josh
 FormalParameterList_Opt
 		: Empty
-					   ;
+		;
 
-Dims_Opt
+Dims_Opt 
 		: Dims
+		| /* Empty */
 		;
 
 // JOSHUA'S WORK END
-
-// Work by An
-UnannType
-		:UnannReferenceType
+// Work by Vivian
+Dims
+		: Annotations '['']'
 		;
 
 VariableDeclaratorId
-		: IDENT
+		: IDENT Dims_Opt
+		;
+UnannType
+		:UnannReferenceType
 		;
 
 UnannReferenceType
 		: UnannArrayType
 		;
-
+// Vivian's work end
+// Work by Khoa - Fixed by An
 UnannArrayType
 		: UnannTypeVariable Dims
-		;
+		;		
 UnannTypeVariable
 		: IDENT
-		;
-Dims
-		: Anotations '['']'
+		;	
 
-Anotations
-		: Anotation
+// Start work by An
+MethodBody
+		: Block 
+		| ';'
+		;
+Annotations
+		: Annotation
 		| Empty
 		;
-Block
+Block 
 		: '{' BlockStatements_Opt '}'
+		;
 BlockStatements_Opt
 		: BlockStatements
 		| Empty
@@ -229,7 +226,7 @@ VariableModifers
 		| Empty
 		;
 VariableModifer
-		: Anotation
+		: Annotation
 		| FINAL
 		;
 VariableDeclaratorList
@@ -237,60 +234,18 @@ VariableDeclaratorList
 		;
 VariableDeclarator
 		: VariableDeclaratorId VariableDeclarator_opt
+		;
 VariableDeclarator_opt
 		: '=' VariableInitializer
+		;
 VariableDeclaratorId
 		: Identifyer Dims_Opt
 		;
 VariableInitializer
 		: Expression
+		;
 
-    // Top of 2nd page by Khoa
-    UnannReferenceType: UnannArrayTypes
-                      ;
-
-    UnannArrayTypes: UnannArrayType
-                   ;
-
-    UnannArrayType: UnannTypeVariable
-                  ;
-
-    UnannTypeVariable: Identifier Dims
-                     ;
-
-    Identifier: String
-              ;
-
-    Dims: {Annotation} [ ]
-//
-
-		  // Unanntype - Vivian
-UnannType : UnannReferenceType
-		  ;
-		  // UnannReferenceType - Vivian
-UnannReferenceType : /* empty */
-					;
-
-		  // VariableDeclaratorId - Vivian
-VariableDeclaratorId : Identifier
-					 | Dims
-					 ;
-
-		  // Identifier - Vivian
-Identifier : ARGS
-		   | String
-		   | MAIN
-		   ;
-
-		   // String - Vivian
-String : /* empty*/
-       ;
-
-		  // Dims - Vivian
-Dims :  /* empty */
-     ;
-
-	 
+// End work by An
 
 %%
 
