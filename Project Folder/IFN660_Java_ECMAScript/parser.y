@@ -1,15 +1,50 @@
 %namespace IFN660_Java_ECMAScript
 %union
 {
-    public int num;
+    public long intnum;
+	public float floatnum;
+	public boolean boolval;
+	public char charval;
     public string name;
 }
-
-%token <num> NUMBER
+// 3.8 Identifier
 %token <name> IDENTIFIER
-%token IF ELSE INT BOOL GE STATIC FINAL
-%token Void Main
-%token PUBLIC CLASS
+
+// 3.9 Keywords
+%token ABSTRACT   CONTINUE   FOR          NEW         SWITCH
+%token ASSERT     DEFAULT    IF           PACKAGE     SYNCHRONIZED
+%token BOOLEAN    DO         GOTO         PRIVATE     THIS
+%token BREAK      DOUBLE     IMPLEMENTS   PROTECTED   THROW
+%token BYTE       ELSE       IMPORT       PUBLIC      THROWS
+%token CASE       ENUM       INSTANCEOF   RETURN      TRANSIENT
+%token CATCH      EXTENDS    INT          SHORT       TRY
+%token CHAR       FINAL      INTERFACE    STATIC      VOID
+%token CLASS      FINALLY    LONG         STRICTFP    VOLATILE
+%token CONST      FLOAT      NATIVE       SUPER       WHILE
+
+// 3.10 Literals
+%token <intnum> IntegerLiteral
+%token <floatnum> FloatingPointLiteral
+%token <boolval> BooleanLiteral
+%token <charval> CharacterLiteral
+%token <name> StringLiteral
+%token NullLiteral
+
+// 3.11 Separators
+%token '(' ')' '{' '}' '[' ']' 
+%token ';' ',' '.' '@'
+%token ELLIPSIS DOUBLE_COLON
+
+// 3.12 Operators
+%token '=' '>' '<' '!' '~' '?' ':' 
+%token '+' '-' '*' '/' '&' '|' '^' '%'
+%token EQUAL GREATER_OR_EQUAL LESS_THAN_OR_EQUAL NOT_EQUAL
+%token ARROW LOGICAL_AND LOGICAL_OR INCREMENT DECREMENT
+%token LEFT_SHIFT SIGNED_RIGHT_SHIFT UNSIGNED_RIGHT_SHIFT
+%token ADDITION_ASSIGNMENT SUBTRACTION_ASSIGNMENT
+%token MULTIPLICATION_ASSIGNMENT DIVISION_ASSIGNMENT MODULUS_ASSIGNMENT
+%token BITWISE_AND_ASSIGNMENT BITWISE_OR_ASSIGNMENT BITWISE_XOR_ASSIGNMENT
+%token LEFT_SHIFT_ASSIGNMENT UNSIGNED_RIGHT_SHIFT_ASSIGNMENT SIGNED_RIGHT_SHIFT_ASSIGNMENT
 
 %left '='
 %nonassoc '<'
@@ -29,8 +64,8 @@ Statement
 		;
 
 Type 
-		: INT
-     	| BOOL
+		: IntegerLiteral
+     	| BooleanLiteral
      	;
 
 StatementList 
@@ -39,7 +74,7 @@ StatementList
         ;
 
 Expression 
-		: NUMBER
+		: IntegerLiteral
         | IDENTIFIER
         | Expression '=' Expression
         | Expression '+' Expression
@@ -90,7 +125,14 @@ ClassModifiers
 ClassModifier 
 		: Annotation
 		| PUBLIC
-		; /* follow up*/
+		| PROTECTED
+		| PRIVATE
+		| ABSTRACT
+		| STATIC
+		| FINAL
+		| STRICTFP
+		;
+
 
 Annotation
 		: /* empty */
@@ -158,7 +200,7 @@ MethodHeader
 
 //WORK BY JOSH HUDSON
 Result 
-		: Void
+		: VOID
 	   	;
 
 Throws_opt
@@ -170,9 +212,11 @@ MethodDeclarator
 		: IDENTIFIER '(' FormalParameterList_Opt ')' Dims_Opt
 		;
 
+/* Removed by Nathan
 Identifier
 		: Main
 		;
+*/
 
 //PLACEHOLDER - Josh - Tri
 FormalParameterList_Opt
