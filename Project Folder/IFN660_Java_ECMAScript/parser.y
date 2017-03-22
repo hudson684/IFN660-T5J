@@ -1,7 +1,7 @@
 %namespace IFN660_Java_ECMAScript
 %union
 {
-    public long intnum;
+    public long num;
 	public float floatnum;
 	public boolean boolval;
 	public char charval;
