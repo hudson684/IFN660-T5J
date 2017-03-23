@@ -61,6 +61,7 @@ Statement
 		| '{' StatementList '}'
 		| Expression ';'
 		| Type IDENTIFIER ';'
+		| StatementWithoutTrailingSubstatement
 		;
 
 Type 
@@ -355,6 +356,15 @@ VariableInitializer
 		: Expression
 		;
 
+// Tristan
+StatementWithoutTrailingSubstatement
+		: ExpressionStatement ';'
+		;
+ExpressionStatement
+		: StatementExpression
+		;
+
+// End Work by Tristan
 //work by sneha
 
 Assignment
