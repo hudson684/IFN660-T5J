@@ -355,8 +355,37 @@ VariableInitializer
 		: Expression
 		;
 
-// End work by An
+//work by sneha
 
+Assignment
+	: LeftHandSide AssignmentOperator Expression
+	;
+LeftHandSide
+	: ExpressionName
+	;
+ExpressionName
+	: IDENT
+	;
+AssignmentOperator
+	: '='
+	;
+Expression
+	: AssignmentExpression
+	;
+
+AssignmentExpression
+	: ArrayAccess
+	;
+
+PrimaryNoNewArray
+	: Literal
+	;
+
+Literal
+	: IntegerLiteral
+	;
+
+// end of sneha Work
 %%
 
 public Parser(Scanner scanner) : base(scanner)
