@@ -173,12 +173,8 @@ ClassMemberDeclaration
 		;
 // Change ClassMemberDeclaration to MethodDeclaration -An	
 MethodDeclaration
-		: MethodModifiers MethodHeaders MethodBody
+		: MethodModifiers MethodHeader MethodBody
         ;
-
-MethodHeaders
-		: MethodHeader
-		;
 
 MethodModifiers
 		: MethodModifier
@@ -201,6 +197,7 @@ MethodHeader
 //WORK BY JOSH HUDSON
 Result 
 		: VOID
+		| UnannType
 	   	;
 
 Throws_opt
@@ -234,10 +231,16 @@ Dims_Opt
 //Work by Tri
 FormalParameterList 
 		: FormalParameters 
+		| /*TODO*/
 		;
 
 FormalParameters 
-		: FormalParameter FormalParameters
+		: FormalParameter FormalParameter_repeat
+		| /* empty *//*TODO*/
+		;
+
+FormalParameter_repeat
+		: ',' FormalParameter FormalParameter_repeat
 		| /* empty */
 		;
 
@@ -251,14 +254,15 @@ VariableModifiers
 		;
 
 VariableModifier 
-		: /* empty */ /* TODO */
+		: Annotation
+		| FINAL
 		;
 
 //End work by Tri
 
 // Work by Vivian
 Dims
-		: Annotations '['']'
+		: Annotations '[' ']'
 		| /* follow up */
 		;
 
@@ -269,6 +273,10 @@ VariableDeclaratorId
 UnannType
 		: UnannReferenceType
 		| UnannPrimitiveType
+		;
+
+UnannPrimitiveType
+		: /* empty *//*TODO*/
 		;
 
 UnannReferenceType
