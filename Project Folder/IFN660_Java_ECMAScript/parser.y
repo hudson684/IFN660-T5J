@@ -259,23 +259,29 @@ VariableModifier
 // Work by Vivian
 Dims
 		: Annotations '['']'
+		| /* follow up */
 		;
 
 VariableDeclaratorId
 		: IDENTIFIER Dims_Opt
 		;
+
 UnannType
-		:UnannReferenceType
+		: UnannReferenceType
+		| UnannPrimitiveType
 		;
 
 UnannReferenceType
 		: UnannArrayType
+		| /*follow up */
 		;
+
 // Vivian's work end
 // Work by Khoa - Fixed by An
 UnannArrayType
 		: UnannTypeVariable Dims
-		;		
+		;	
+			
 UnannTypeVariable
 		: IDENTIFIER
 		;	
@@ -285,54 +291,57 @@ MethodBody
 		: Block 
 		| ';'
 		;
+
 Annotations
 		: Annotation
-		| Empty
+		| /* Empty */
 		;
+
 Block 
 		: '{' BlockStatements_Opt '}'
 		;
+
 BlockStatements_Opt
 		: BlockStatements
-		| Empty
+		| /* Empty */
 		;
+
 BlockStatements
 		: BlockStatement BlockStatement_s
 		;
 
 BlockStatement_s
 		: BlockStatement BlockStatement_s
-		| Empty
+		| /* Empty */
 		;
 
 BlockStatement
 		: LocalVariableDeclarationsAndStatement
+		| Statement
+		| /* follow up */
 		;
+
 LocalVariableDeclarationsAndStatement
 		: LocalVariableDeclaration ';'
 		;
+
 LocalVariableDeclaration
-		: VariableModifers UnannType VariableDeclaratorList
+		: UnannType VariableDeclaratorList
+		| /* follow up */
 		;
-VariableModifers
-		: VariableModifer VariableModifers
-		| Empty
-		;
-VariableModifer
-		: Annotation
-		| FINAL
-		;
+
 VariableDeclaratorList
 		: VariableDeclarator
+		| /* follow up */
 		;
+
 VariableDeclarator
-		: VariableDeclaratorId VariableDeclarator_opt
+		: VariableDeclaratorId
+		| /* follow up */
 		;
-VariableDeclarator_opt
-		: '=' VariableInitializer
-		;
+
 VariableDeclaratorId
-		: Identifyer Dims_Opt
+		: IDENTIFIER Dims_Opt
 		;
 VariableInitializer
 		: Expression
