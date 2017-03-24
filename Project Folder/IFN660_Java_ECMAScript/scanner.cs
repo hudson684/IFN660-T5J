@@ -5,10 +5,10 @@
 //  See accompanying file GPLEXcopyright.rtf.
 //
 //  GPLEX Version:  1.2.2
-//  Machine:  MSI
-//  DateTime: 21/03/2017 4:44:40 PM
-//  UserName: Tri Phan
-//  GPLEX input file <scanner.lex - 21/03/2017 4:42:49 PM>
+//  Machine:  DESKTOP-1VMC0S8
+//  DateTime: 25/03/2017 8:52:22 AM
+//  UserName: hudso
+//  GPLEX input file <scanner.lex - 24/03/2017 12:05:48 PM>
 //  GPLEX frame file <embedded resource>
 //
 //  Option settings: unicode, parser, minimize
@@ -681,10 +681,10 @@ throw new Exception(
         case 22:
         case 23:
         case 26:
-yylval.name = yytext; return (int)Tokens.IDENT;
+yylval.name = yytext; return (int)Tokens.IDENTIFIER;
             break;
         case 6:
-yylval.num = int.Parse(yytext); return (int)Tokens.NUMBER;
+yylval.num = int.Parse(yytext); return (int)Tokens.IntegerLiteral;
             break;
         case 7:
 return '=';

@@ -90,7 +90,7 @@ CompilationUnit
 		: PackageDeclaration_opt ImportDeclarations TypeDeclarations
 		;
 
-PackageDeclaration_opt\
+PackageDeclaration_opt
 		: /* empty */
 		| /* follow up */
 		;
@@ -155,18 +155,16 @@ ClassBody
 		;
 // Group A End
 
-// PartB by Adon
+// PartB by Adon Mofified by Josh to remove MemberDeclarations as it is unessisary
 ClassBodyDeclarations
-		: ClassBodyDeclaration
+		: ClassBodyDeclaration ClassMemberDeclarations
+		| /* empty */
         ;
 
 ClassBodyDeclaration
-		: ClassMemberDeclarations
+		: ClassMemberDeclaration
         ;
 
-ClassMemberDeclarations 
-		: ClassMemberDeclaration
-		;
 
 // Fixed by An
 ClassMemberDeclaration
