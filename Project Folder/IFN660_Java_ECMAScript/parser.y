@@ -359,6 +359,10 @@ ExpressionStatement
 		: StatementExpression
 		;
 
+StatementExpression
+		: Assignment
+		;
+
 // End Work by Tristan
 //work by sneha
 
