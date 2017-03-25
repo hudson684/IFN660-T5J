@@ -13,8 +13,13 @@ if                           { return (int)Tokens.IF; }
 else                         { return (int)Tokens.ELSE; }
 int                          { return (int)Tokens.INT; }
 bool                         { return (int)Tokens.BOOL; }
+class						 { return (int)Tokens.CLASS;}
+public						 { return (int)Tokens.PUBLIC;}
+static						 { return (int)Tokens.STATIC;}
+void						 { return (int)Tokens.VOID;}
+final						 { return (int)Tokens.FINAL;}
 
-{letter}({letter}|{digit})* { yylval.name = yytext; return (int)Tokens.IDENT; }
+{letter}({letter}|{digit})* { yylval.name = yytext; return (int)Tokens.IDENTIFIER; }
 {digit}+	    { yylval.num = int.Parse(yytext); return (int)Tokens.NUMBER; }
 
 "="                            { return '='; }
@@ -24,6 +29,8 @@ bool                         { return (int)Tokens.BOOL; }
 ")"                            { return ')'; }
 "{"                            { return '{'; }
 "}"                            { return '}'; }
+"["                            { return '['; }
+"]"                            { return ']'; }
 ";"                            { return ';'; }
 ","                            { return ','; }
 ">="                           { return (int)Tokens.GE; }
