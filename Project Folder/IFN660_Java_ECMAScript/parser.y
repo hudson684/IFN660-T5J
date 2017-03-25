@@ -54,6 +54,7 @@
 
 Program
 		: Statement
+		| CompilationUnit
 		;
 
 Statement 
@@ -80,6 +81,7 @@ Expression
         | Expression '=' Expression
         | Expression '+' Expression
         | Expression '<' Expression
+		| AssignmentExpression
         ;
 
 Empty:
@@ -121,7 +123,7 @@ NormalClassDeclaration
 		;
 
 ClassModifiers 
-		: ClassModifier ClassModifiers
+		: ClassModifiers ClassModifier
 		| /* empty */
 		;
 
@@ -139,7 +141,6 @@ ClassModifier
 
 Annotation
 		: /* empty */
-		| /* follow up*/
 		;
 
 //GROUP C TRACKING
@@ -159,7 +160,7 @@ ClassBody
 
 // PartB by Adon Mofified by Josh to remove MemberDeclarations as it is unessisary
 ClassBodyDeclarations
-		: ClassBodyDeclaration ClassMemberDeclaration
+		: ClassMemberDeclarations ClassBodyDeclaration
 		| /* empty */
         ;
 
@@ -178,8 +179,8 @@ MethodDeclaration
         ;
 
 MethodModifiers
-		: MethodModifier
-        | MethodModifier MethodModifiers
+		: MethodModifiers MethodModifier
+        | Empty
 		| /* empty */
         ;
 
@@ -246,7 +247,7 @@ FormalParameter
 		;
 
 VariableModifiers 
-		: VariableModifier VariableModifiers
+		: VariableModifiers VariableModifier
 		| /* empty */
 		;
 
@@ -260,7 +261,6 @@ VariableModifier
 // Work by Vivian
 Dims
 		: Annotations '[' ']'
-		| /* follow up */
 		;
 
 VariableDeclaratorId
@@ -316,7 +316,7 @@ BlockStatements
 		;
 
 BlockStatement_s
-		: BlockStatement BlockStatement_s
+		: BlockStatement_s BlockStatement
 		| /* Empty */
 		;
 
@@ -345,25 +345,30 @@ VariableDeclarator
 		| /* follow up */
 		;
 
-
+VariableDeclaratorId
+		: IDENTIFIER Dims_Opt
+/* Removed by An		;
 VariableInitializer
 		: Expression
 		;
-
+*/
 // Tristan
 StatementWithoutTrailingSubstatement
-		: ExpressionStatement ';'
+		: ExpressionStatement 
 		|  /* empty */
 		;
 ExpressionStatement
-		: StatementExpression
+		: StatementExpression ';'
 		;
-
 StatementExpression
 		: Assignment
 		;
 
 // End Work by Tristan
+// Added by An
+StatementExpression
+		: Assignment
+		;
 //work by sneha
 
 Assignment
