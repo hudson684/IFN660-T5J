@@ -54,6 +54,7 @@
 
 Program
 		: Statement
+		| CompilationUnit
 		;
 
 Statement 
@@ -80,6 +81,7 @@ Expression
         | Expression '=' Expression
         | Expression '+' Expression
         | Expression '<' Expression
+		| AssignmentExpression
         ;
 
 Empty:
@@ -119,7 +121,7 @@ NormalClassDeclaration
 		;
 
 ClassModifiers 
-		: ClassModifier ClassModifiers
+		: ClassModifiers ClassModifier
 		| /* empty */
 		;
 
@@ -137,7 +139,6 @@ ClassModifier
 
 Annotation
 		: /* empty */
-		| /* follow up*/
 		;
 
 //GROUP C TRACKING
@@ -157,7 +158,7 @@ ClassBody
 
 // PartB by Adon Mofified by Josh to remove MemberDeclarations as it is unessisary
 ClassBodyDeclarations
-		: ClassBodyDeclaration ClassMemberDeclarations
+		: ClassMemberDeclarations ClassBodyDeclaration
 		| /* empty */
         ;
 
@@ -176,8 +177,8 @@ MethodDeclaration
         ;
 
 MethodModifiers
-		: MethodModifier
-        | MethodModifier MethodModifiers
+		: MethodModifiers MethodModifier
+        | Empty
         ;
 
 MethodModifier
@@ -239,7 +240,7 @@ FormalParameters
 		;
 
 FormalParameter_repeat
-		: ',' FormalParameter FormalParameter_repeat
+		: ',' FormalParameter_repeat FormalParameter
 		| /* empty */
 		;
 
@@ -248,7 +249,7 @@ FormalParameter
 		;
 
 VariableModifiers 
-		: VariableModifier VariableModifiers
+		: VariableModifiers VariableModifier
 		| /* empty */
 		;
 
@@ -262,7 +263,6 @@ VariableModifier
 // Work by Vivian
 Dims
 		: Annotations '[' ']'
-		| /* follow up */
 		;
 
 VariableDeclaratorId
@@ -318,7 +318,7 @@ BlockStatements
 		;
 
 BlockStatement_s
-		: BlockStatement BlockStatement_s
+		: BlockStatement_s BlockStatement
 		| /* Empty */
 		;
 
@@ -349,49 +349,52 @@ VariableDeclarator
 
 VariableDeclaratorId
 		: IDENTIFIER Dims_Opt
-		;
-VariableInitializer
+/* Removed by An		;
+ VariableInitializer
 		: Expression
 		;
-
+*/
 // Tristan
 StatementWithoutTrailingSubstatement
-		: ExpressionStatement ';'
+		: ExpressionStatement 
 		;
 ExpressionStatement
-		: StatementExpression
+		: StatementExpression ';'
 		;
-
 // End Work by Tristan
+// Added by An
+StatementExpression
+		: Assignment
+		;
 //work by sneha
 
 Assignment
-	: LeftHandSide AssignmentOperator Expression
-	;
+		: LeftHandSide AssignmentOperator Expression
+		;
 LeftHandSide
-	: ExpressionName
-	;
+		: ExpressionName
+		;
 ExpressionName
-	: IDENT
-	;
+		: IDENTIFIER
+		;
 AssignmentOperator
-	: '='
-	;
+		: '='
+		;
 Expression
-	: AssignmentExpression
-	;
+		: AssignmentExpression
+		;
 
 AssignmentExpression
-	: ArrayAccess
-	;
+		: ArrayAccess
+		;
 
 PrimaryNoNewArray
-	: Literal
-	;
+		: Literal
+		;
 
 Literal
-	: IntegerLiteral
-	;
+		: IntegerLiteral
+		;
 
 // end of sneha Work
 %%
