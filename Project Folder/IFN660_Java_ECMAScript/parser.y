@@ -90,6 +90,7 @@ CompilationUnit
 		: PackageDeclaration_opt ImportDeclarations TypeDeclarations
 		;
 
+
 PackageDeclaration_opt
 		: /* empty */
 		| /* follow up */
@@ -99,6 +100,7 @@ ImportDeclarations
 		: /*empty*/
 		| /* follow up */
 		;
+
 
 TypeDeclarations 
 		: TypeDeclaration TypeDeclarations
@@ -157,7 +159,7 @@ ClassBody
 
 // PartB by Adon Mofified by Josh to remove MemberDeclarations as it is unessisary
 ClassBodyDeclarations
-		: ClassBodyDeclaration ClassMemberDeclarations
+		: ClassBodyDeclaration ClassMemberDeclaration
 		| /* empty */
         ;
 
@@ -178,6 +180,7 @@ MethodDeclaration
 MethodModifiers
 		: MethodModifier
         | MethodModifier MethodModifiers
+		| /* empty */
         ;
 
 MethodModifier
@@ -200,7 +203,7 @@ Result
 	   	;
 
 Throws_opt
-		: Empty
+		: /* empty */
 	  	;
 	 
 // Fixed spelling error	 
@@ -208,11 +211,6 @@ MethodDeclarator
 		: IDENTIFIER '(' FormalParameterList_Opt ')' Dims_Opt
 		;
 
-/* Removed by Nathan
-Identifier
-		: Main
-		;
-*/
 
 //PLACEHOLDER - Josh - Tri
 FormalParameterList_Opt
@@ -234,12 +232,12 @@ FormalParameterList
 		;
 
 FormalParameters 
-		: FormalParameter FormalParameter_repeat
+		: FormalParameter FormalParameter_s
 		| /* empty *//*TODO*/
 		;
 
-FormalParameter_repeat
-		: ',' FormalParameter FormalParameter_repeat
+FormalParameter_s
+		: ',' FormalParameter FormalParameter_s
 		| /* empty */
 		;
 
@@ -347,9 +345,7 @@ VariableDeclarator
 		| /* follow up */
 		;
 
-VariableDeclaratorId
-		: IDENTIFIER Dims_Opt
-		;
+
 VariableInitializer
 		: Expression
 		;
@@ -357,6 +353,7 @@ VariableInitializer
 // Tristan
 StatementWithoutTrailingSubstatement
 		: ExpressionStatement ';'
+		|  /* empty */
 		;
 ExpressionStatement
 		: StatementExpression
@@ -372,7 +369,7 @@ LeftHandSide
 	: ExpressionName
 	;
 ExpressionName
-	: IDENT
+	: IDENTIFIER
 	;
 AssignmentOperator
 	: '='
@@ -383,6 +380,10 @@ Expression
 
 AssignmentExpression
 	: ArrayAccess
+	;
+
+ArrayAccess
+	: PrimaryNoNewArray
 	;
 
 PrimaryNoNewArray
