@@ -12,7 +12,7 @@ letter [a-zA-Z]
 if                           { return (int)Tokens.IF; }
 else                         { return (int)Tokens.ELSE; }
 int                          { return (int)Tokens.INT; }
-bool                         { return (int)Tokens.BOOL; }
+bool					     { return (int)Tokens.BOOL; }
 class						 { return (int)Tokens.CLASS;}
 public						 { return (int)Tokens.PUBLIC;}
 static						 { return (int)Tokens.STATIC;}
