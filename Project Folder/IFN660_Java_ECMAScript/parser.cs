@@ -4,9 +4,9 @@
 
 // GPPG version 1.5.2
 // Machine:  DESKTOP-1VMC0S8
-// DateTime: 25/03/2017 12:24:48 PM
+// DateTime: 25/03/2017 12:29:51 PM
 // UserName: hudso
-// Input file <parser.y - 25/03/2017 12:24:46 PM>
+// Input file <parser.y - 25/03/2017 12:29:10 PM>
 
 // options: lines gplex
 
@@ -21,7 +21,7 @@ namespace IFN660_Java_ECMAScript
 {
 public enum Tokens {error=128,EOF=129,IDENTIFIER=130,ABSTRACT=131,CONTINUE=132,
     FOR=133,NEW=134,SWITCH=135,ASSERT=136,DEFAULT=137,IF=138,
-    PACKAGE=139,SYNCHRONIZED=140,BOOLEAN=141,DO=142,GOTO=143,PRIVATE=144,
+    PACKAGE=139,SYNCHRONIZED=140,BOOL=141,DO=142,GOTO=143,PRIVATE=144,
     THIS=145,BREAK=146,DOUBLE=147,IMPLEMENTS=148,PROTECTED=149,THROW=150,
     BYTE=151,ELSE=152,IMPORT=153,PUBLIC=154,THROWS=155,CASE=156,
     ENUM=157,INSTANCEOF=158,RETURN=159,TRANSIENT=160,CATCH=161,EXTENDS=162,
@@ -40,7 +40,7 @@ public struct ValueType
 {
     public long num;
 	public float floatnum;
-	public boolean boolval;
+	public bool boolval;
 	public char charval;
     public string name;
 }
