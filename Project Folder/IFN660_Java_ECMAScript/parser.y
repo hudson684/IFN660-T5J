@@ -160,7 +160,7 @@ ClassBody
 
 // PartB by Adon Mofified by Josh to remove MemberDeclarations as it is unessisary
 ClassBodyDeclarations
-		: ClassMemberDeclarations ClassBodyDeclaration
+		: ClassBodyDeclarations ClassBodyDeclaration
 		| /* empty */
         ;
 
@@ -345,13 +345,7 @@ VariableDeclarator
 		| /* follow up */
 		;
 
-VariableDeclaratorId
-		: IDENTIFIER Dims_Opt
-/* Removed by An		;
-VariableInitializer
-		: Expression
-		;
-*/
+
 // Tristan
 StatementWithoutTrailingSubstatement
 		: ExpressionStatement 
@@ -360,9 +354,8 @@ StatementWithoutTrailingSubstatement
 ExpressionStatement
 		: StatementExpression ';'
 		;
-StatementExpression
-		: Assignment
-		;
+
+
 
 // End Work by Tristan
 // Added by An
