@@ -12,7 +12,7 @@ namespace IFN660_Java_ECMAScript
         #region Keywords
         // An code
         WHILE = 265,
-        IDENT = 266,
+        IDENTIFIER = 266,
         GE = 267,
         NUMBER = 268,
         ABSTRACT = 269,
@@ -122,6 +122,7 @@ namespace IFN660_Java_ECMAScript
     public struct MyValueType
     {
         public long num;
+        public double floatnum;
         public string name;
     };
 
@@ -153,7 +154,7 @@ namespace IFN660_Java_ECMAScript
                         token = (Tokens)scanner.yylex();
                         switch (token)
                         {
-                            case Tokens.IDENT:
+                            case Tokens.IDENTIFIER:
                                 Console.WriteLine("IDENT ({0})", scanner.yylval.name);
                                 break;
                             case Tokens.EOF:
@@ -324,20 +325,20 @@ namespace IFN660_Java_ECMAScript
                             //case Tokens.OctalIntegerLiteral:
                             //    Console.WriteLine("OctalIntegerLiteral ({0})", scanner.yylval.name);
                             //    break;
-                            
+
                             //case Tokens.BinaryIntegerLiteral:
                             //    Console.WriteLine("BinaryIntegerLiteral ({0})", scanner.yylval.name);
                             //    break;
                             // Code by Adon
                             case Tokens.FloatingPointLiteral:
-                                Console.WriteLine("FloatingPointLiteral ({0})", scanner.yylval.name);
+                                Console.WriteLine("FloatingPointLiteral ({0})", scanner.yylval.floatnum);
                                 break;
                             //Code by Tri
                             case Tokens.CharacterLiteral:
                                 Console.WriteLine("CharacterLiteral ({0})", scanner.yylval.name);
                                 break;
                             case Tokens.StringLiteral:
-                                Console.WriteLine("StringLiteral ({0})",scanner.yylval.name);
+                                Console.WriteLine("StringLiteral ({0})", scanner.yylval.name);
                                 break;
                             //case Tokens.OCTAL_ESCAPE:
                             //    Console.WriteLine("OctalEscape ({0})", scanner.yylval.name);
@@ -347,13 +348,13 @@ namespace IFN660_Java_ECMAScript
                                 break;
                             // Code by Vivian
                             case Tokens.BooleanLiteral:
-                             	Console.WriteLine ("BooleanLiteral");
-                             	break;
+                                Console.WriteLine("BooleanLiteral");
+                                break;
 
                             // Code by Josh
                             case Tokens.NullLiteral:
-                             	Console.WriteLine ("NullLiteral");
-                             	break;
+                                Console.WriteLine("NullLiteral");
+                                break;
                             #endregion
                             #region Separators
                             case Tokens.ELLIPSIS:
@@ -442,11 +443,11 @@ namespace IFN660_Java_ECMAScript
                                 Console.WriteLine("UnicodeInputCharacter ({0})", scanner.yylval.name);
                                 break;
                             default:
-                                Console.WriteLine("'{0}'",(char) token);
+                                Console.WriteLine("'{0}'", (char)token);
                                 break;
 
                         }
-                    } 
+                    }
                     while (token != Tokens.EOF);
                 }
             }
@@ -457,5 +458,6 @@ namespace IFN660_Java_ECMAScript
 
             Console.Read();
         }
+
     }
 }
