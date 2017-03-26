@@ -71,7 +71,7 @@ namespace RunTests
 
                
             }
-            //Console.ReadKey();
+            Console.ReadKey();
         }
     }
 }

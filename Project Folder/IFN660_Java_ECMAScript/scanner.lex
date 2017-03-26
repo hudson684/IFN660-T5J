@@ -117,10 +117,10 @@ NullLiteral									"null"
 Literal										({IntergerLiteral}|{FloatingPointLiteral}|{CharacterLiteral}|{StringLiteral}|{BooleanLiteral}|{NullLiteral})
 
 /* 3.11 Separators */
-Separator									[\(\)\{\}\[\]\;\,\.\@]
+Separators									[\(\)\{\}\[\]\;\,\.\@]
 
 /* 3.12 Operators */
-Delimiter									[\=\>\<\!\~\?\:\+\-\*\/\&\|\^\%]
+Operators									[\=\>\<\!\~\?\:\+\-\*\/\&\|\^\%]
 %%
 
 										/* 3.3 Unicode Escapes */
@@ -131,8 +131,6 @@ Delimiter									[\=\>\<\!\~\?\:\+\-\*\/\&\|\^\%]
 {WhiteSpace}								/* White space */
 										/* 3.7 Comment */
 {Comment}									/* Comment */
-										/* 3.9 KEYWORDS An */
-
 
 										/* 3.9 KEYWORDS An */
 abstract									{return (int)Tokens.ABSTRACT;}
@@ -191,73 +189,38 @@ while										{return (int)Tokens.WHILE;}
 
 /* 3.10.1 - Integer Literals - Nathan and Sneha */
 // Decimals - Nathan
-{DecimalIntegerLiteral}							{	string inString;
-													int outInt;
-													long outLong;
-													inString = yytext;
-													inString = inString.ToUpper().Replace("_","");
-													if (inString.EndsWith("L"))
-													{
-														inString = inString.TrimEnd('L');
-														outLong = Convert.ToInt64(inString);
-														yylval.num = outLong; 
-													}
-													else
-													{
-														outInt = Convert.ToInt32(inString);
-														yylval.num = outInt;
-													}
+{DecimalIntegerLiteral}							{	
+                                                    yylval.num = parseInteger(yytext, 10);
 													return (int)Tokens.IntegerLiteral; 
 												}
 // Hexadecimals - Nathan
-{HexIntegerLiteral}								{	inString = yytext;
-													inString = inString.ToUpper().Replace("_","").TrimStart('0','X');
-													if (inString.EndsWith("L"))
-													{
-														inString = inString.TrimEnd('L');
-														outLong = Convert.ToInt64(inString, 16);
-														yylval.num = outLong; 
-													}
-													else
-													{
-														outInt = Convert.ToInt32(inString, 16);
-														yylval.num = outInt;
-													}
-													return (int)Tokens.IntegerLiteral;
+{HexIntegerLiteral}								{	
+                                                    yylval.num = parseInteger(yytext, 16);
+													return (int)Tokens.IntegerLiteral; 
 												 }
 // Octals - Sneha
-{OctalIntegerLiteral}							{	inString = yytext;
-													inString = inString.ToUpper().Replace("_","");
-													if(inString.EndsWith("L"))
-													{
-														inString = inString.TrimEnd('L');
-														outLong = Convert.ToInt64(inString,8);
-														yylval.num = outLong;
-													}else{
-														outInt = Convert.ToInt32(inString,8);
-														yylval.num = outInt;
-													}
-													return (int)Tokens.IntegerLiteral;
+{OctalIntegerLiteral}							{	
+                                                    yylval.num = parseInteger(yytext, 8);
+													return (int)Tokens.IntegerLiteral; 
 												}
 // Binarys - Sneha
-{BinaryIntegerLiteral}							{	inString = yytext;
-													inString = inString.ToUpper().Replace("_","").TrimStart('0','B');
-													if (inString.EndsWith("L"))
-													{
-														inString = inString.TrimEnd('L');
-														outLong = Convert.ToInt64(inString, 2);
-														yylval.num = outLong; 
-													}
-													else
-													{
-														outInt = Convert.ToInt32(inString, 2);
-														yylval.num = outInt;
-													}
+{BinaryIntegerLiteral}							{	
+                                                    yylval.num = parseInteger(yytext, 2);
 													return (int)Tokens.IntegerLiteral; 
 												}
 
 /* 3.10.2 FloatingPoint Literal - Adon*/
-{FloatingPointLiteral}						{yylval.name = yytext;return (int)Tokens.FloatingPointLiteral;}
+{DecimalFloatingPointLiteral}                   {
+                                                    // yylval.name = yytext;
+                                                    yylval.floatnum = parseFloat(yytext, 10);
+                                                    return (int)Tokens.FloatingPointLiteral;
+                                                }
+
+{HexadecimalFloatingPointLiteral}               {
+                                                    //yylval.name = yytext;
+                                                    yylval.floatnum = parseFloat(yytext, 16);
+                                                    return (int)Tokens.FloatingPointLiteral;
+                                                }
 
 /* 3.10.3 Boolean Literal - Vivan*/
 {BooleanLiteral}							{return (int)Tokens.BooleanLiteral;}
@@ -275,14 +238,14 @@ while										{return (int)Tokens.WHILE;}
 {NullLiteral}								{return (int)Tokens.NullLiteral;}
 
 /* 3.11 SEPARATORS  - An */	
-{Separator}									{return yytext[0];}
+{Separators}									{return yytext[0];}
 "..."										{return (int)Tokens.ELLIPSIS;}	
 "::"										{return (int)Tokens.DOUBLE_COLON;}	
 										
 
 										/* 3.12 OPERATOR  - An */
 
-{Delimiter}									{return yytext[0];}
+{Operators}									{return yytext[0];}
 "=="										{return (int)Tokens.EQUAL;}
 ">="										{return (int)Tokens.GREATER_OR_EQUAL;}
 "<="										{return (int)Tokens.LESS_THAN_OR_EQUAL;}
@@ -312,7 +275,7 @@ while										{return (int)Tokens.WHILE;}
 ">>>="										{return (int)Tokens.SIGNED_RIGHT_SHIFT_ASSIGNMENT;}
 
 /* 3.8 IDENTIFIERS */
-{Identifier} 			{ yylval.name = yytext; return (int)Tokens.IDENT; }
+{Identifier} 			                    { yylval.name = yytext; return (int)Tokens.IDENTIFIER; }
 
 .                            			{ 
 											throw new Exception(
@@ -321,3 +284,151 @@ while										{return (int)Tokens.WHILE;}
 										}
 										
 %%
+
+long parseInteger (string inString, int intBase)
+{	
+    int outInt;
+    long outLong;
+
+    switch(intBase)
+    {
+        case (16):
+            inString = inString.TrimStart('0','X','x');
+            break;
+        case (8):
+            inString = inString.TrimStart('0');
+            break;
+        case (2):
+            inString = inString.TrimStart('0','B','b');
+            break;
+    }
+    
+    // Strip out underscores
+    inString = inString.Replace("_","");
+
+    // Check if integer is int32 of int64 (long)
+    if (inString.ToUpper().EndsWith("L"))
+    {
+        // This is a bit OTT at the moment. Leave it until we work out exactly what to do with longs
+        inString = inString.TrimEnd('L','l');
+        outLong = Convert.ToInt64(inString, intBase);
+        return outLong; 
+    }
+    else
+    {
+        outInt = Convert.ToInt32(inString, intBase);
+        return outInt;
+    }
+}
+
+double parseFloat (string inString, int intBase)
+{	
+    float outFloat;
+    double outDouble;
+    
+    // Strip out underscores and makes uppercase
+    inString = inString.ToUpper().Replace("_","");
+
+    // Check if integer is float or double
+    if (inString.EndsWith("F"))
+    {
+        // This is a bit OTT at the moment. Leave it until we work out exactly what to do with longs
+        inString = inString.TrimEnd('F');
+		if (intBase == 16)
+		{
+			outFloat = float.Parse(convertHexFloatToDecFloat(inString).ToString());
+		}
+		else
+		{
+			outFloat = float.Parse(inString);
+		}
+        return outFloat; 
+    }
+    else
+    {
+		// double indicator may not be there but try to remove anyway
+		inString = inString.TrimEnd('D');
+		if (intBase == 16)
+		{
+			outDouble = convertHexFloatToDecFloat(inString);
+		}
+		else
+		{
+			outDouble = Convert.ToSingle(inString);
+		}
+        return outDouble;
+    }
+}
+
+double convertHexFloatToDecFloat(string inString)
+{
+    string[] splitString;
+    long binExp, leftInt;
+    string left, right;
+
+    double significand, rightDec, outDouble;
+
+	// remove hex signifier
+	inString = inString.TrimStart('0', 'X');
+
+    // strip off binary exponent
+    if (inString.Contains("P"))
+    {
+        splitString = inString.Split('P');
+        binExp = int.Parse(splitString[1]);
+        inString = splitString[0];
+    }
+    else
+        binExp = 0;
+	
+    // split left and right parts
+    if (inString.Contains("."))
+    {
+        splitString = inString.Split('.');
+        left = splitString[0];
+        right = splitString[1];
+
+		// set default values if they are empty strings
+		if (left == "")
+		{
+			left = "0";
+		}
+
+		if (right == "")
+		{
+			right = "0";
+		}
+    }
+    else
+    {
+        left = inString;
+        right = "0";
+    }
+	
+    // convert hexdigits to decimaldigits
+	leftInt = Convert.ToInt64(left, 16);
+    rightDec = getHexDecimalPart(right);
+
+    // stitch things back together and convert to a double
+    significand  = leftInt + rightDec;
+
+    // multiply significand by binary exponent
+    outDouble = significand * Math.Pow(2, binExp);
+
+    return outDouble;
+}
+
+double getHexDecimalPart(string inString)
+{
+    char[] inChars = inString.ToCharArray();
+    double outDouble = 0;
+    int place = 0;
+            
+    foreach (char each in inChars)
+    {
+        place++;
+        outDouble = outDouble + (Convert.ToInt32(each.ToString(), 16) / (float)Math.Pow(16, place));
+    }
+
+    return outDouble;
+}
