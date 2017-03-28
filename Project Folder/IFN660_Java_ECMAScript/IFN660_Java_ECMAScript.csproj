@@ -43,8 +43,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AST\ClassModifierEnum.cs" />
+    <Compile Include="AST\ClassDeclaration.cs" />
+    <Compile Include="AST\Modifier.cs" />
     <Compile Include="AST\Expression.cs" />
+    <Compile Include="AST\MethodDeclaration.cs" />
     <Compile Include="AST\Node.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

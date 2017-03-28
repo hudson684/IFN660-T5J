@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace IFN660_Java_ECMAScript
+﻿namespace IFN660_Java_ECMAScript
 {
     
     public abstract class Statement : Node

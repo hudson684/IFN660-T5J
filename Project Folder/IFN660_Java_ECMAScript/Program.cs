@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace IFN660_Java_ECMAScript
+﻿namespace IFN660_Java_ECMAScript
 {
     class Program
     {
