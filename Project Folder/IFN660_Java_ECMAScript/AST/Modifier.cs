@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace IFN660_Java_ECMAScript.AST
 {
-    public enum ClassModifer
+    public enum Modifier
     {
         PUBLIC,
         STATIC,
