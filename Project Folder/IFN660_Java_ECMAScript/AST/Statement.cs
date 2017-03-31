@@ -14,4 +14,14 @@
             this.Cond = Cond; this.Then = Then; this.Else = Else;
         }
     }
+
+    public class AssignmentStatement : Statement
+    {
+        private Expression expr;
+        public AssignmentStatement(Expression expr)
+        {
+            this.expr = expr;
+        }
+    }
+
 }

@@ -4,17 +4,15 @@ namespace IFN660_Java_ECMAScript.AST
 {
     public class MethodDeclaration : Node
     {
-        private Modifier[] methodModifiers;
-        private String methodIdentifier;
+        private Parameters parameters;
+        private Statements statements;
         
 
-
-        public MethodDeclaration(String methodIdentifier, Modifier[] methodModifiers)
+        public MethodDeclaration(Parameters parameters, Statements statements)
         {
-            this.methodIdentifier = methodIdentifier;
-            this.methodModifiers = methodModifiers;
+            this.parameters = parameters;
+            this.statements = statements;
         }
-
 
     }
 }

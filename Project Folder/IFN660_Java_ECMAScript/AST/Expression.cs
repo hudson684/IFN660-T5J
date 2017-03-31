@@ -16,7 +16,6 @@
 
     public class IntegerLiteral : Expression
     {
-
         private int value;
         public IntegerLiteral(int value)
         {
