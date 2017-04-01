@@ -1,4 +1,4 @@
-﻿EscapeSequence (\')
+﻿CharacterLiteral ('\'')
 CharacterLiteral ('a')
 CharacterLiteral ('%')
 CharacterLiteral ('\t')

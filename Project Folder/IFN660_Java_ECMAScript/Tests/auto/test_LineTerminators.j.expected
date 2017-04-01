@@ -2,6 +2,6 @@
 IDENT (Enter)
 IDENT (whitespace)
 IDENT (text)
-EscapeSequence (\f)
+CharacterLiteral ('\f')
 IDENT (text)
 EOF
