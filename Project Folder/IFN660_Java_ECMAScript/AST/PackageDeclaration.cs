@@ -6,9 +6,7 @@ using System.Threading.Tasks;
 
 namespace IFN660_Java_ECMAScript.AST
 {
-    public class PackageDelaration : Node
+    public class  PackageDeclaration
     {
-        public PackageDelaration()
-        { }
     }
 }
