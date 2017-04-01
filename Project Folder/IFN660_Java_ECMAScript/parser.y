@@ -1,14 +1,51 @@
 ﻿%namespace IFN660_Java_ECMAScript
 %union
 {
-    public int num;
+    public long num;
+	public float floatnum;
+	public bool boolval;
+	public char charval;
     public string name;
 }
 
 %token <num> NUMBER
 %token <name> IDENTIFIER
-%token IF ELSE INT BOOL GE 
-%token CLASS PUBLIC STATIC VOID FINAL
+
+// 3.9 Keywords
+%token ABSTRACT   CONTINUE   FOR          NEW         SWITCH
+%token ASSERT     DEFAULT    IF           PACKAGE     SYNCHRONIZED
+%token BOOL	      DO         GOTO         PRIVATE     THIS
+%token BREAK      DOUBLE     IMPLEMENTS   PROTECTED   THROW
+%token BYTE       ELSE       IMPORT       PUBLIC      THROWS
+%token CASE       ENUM       INSTANCEOF   RETURN      TRANSIENT
+%token CATCH      EXTENDS    INT          SHORT       TRY
+%token CHAR       FINAL      INTERFACE    STATIC      VOID
+%token CLASS      FINALLY    LONG         STRICTFP    VOLATILE
+%token CONST      FLOAT      NATIVE       SUPER       WHILE
+
+// 3.10 Literals
+%token <intnum> IntegerLiteral
+%token <floatnum> FloatingPointLiteral
+%token <boolval> BooleanLiteral
+%token <charval> CharacterLiteral
+%token <name> StringLiteral
+%token NullLiteral
+
+// 3.11 Separators
+%token '(' ')' '{' '}' '[' ']' 
+%token ';' ',' '.' '@'
+%token ELLIPSIS DOUBLE_COLON
+
+// 3.12 Operators
+%token '=' '>' '<' '!' '~' '?' ':' 
+%token '+' '-' '*' '/' '&' '|' '^' '%'
+%token EQUAL GREATER_OR_EQUAL LESS_THAN_OR_EQUAL NOT_EQUAL
+%token ARROW LOGICAL_AND LOGICAL_OR INCREMENT DECREMENT
+%token LEFT_SHIFT SIGNED_RIGHT_SHIFT UNSIGNED_RIGHT_SHIFT
+%token ADDITION_ASSIGNMENT SUBTRACTION_ASSIGNMENT
+%token MULTIPLICATION_ASSIGNMENT DIVISION_ASSIGNMENT MODULUS_ASSIGNMENT
+%token BITWISE_AND_ASSIGNMENT BITWISE_OR_ASSIGNMENT BITWISE_XOR_ASSIGNMENT
+%token LEFT_SHIFT_ASSIGNMENT UNSIGNED_RIGHT_SHIFT_ASSIGNMENT SIGNED_RIGHT_SHIFT_ASSIGNMENT
 
 %left '='
 %nonassoc '<'
@@ -40,7 +77,7 @@ Expression : NUMBER
            | Expression '+' Expression
            | Expression '<' Expression
 		   | AssignmentExpression
-		   | LambdaExpression
+		  
            ;
 Empty	:
 		;
@@ -310,16 +347,18 @@ AssignmentOperator
 		: '='
 		;
 AssignmentExpression
-	: ArrayAccess
-	;
-
+		: ArrayAccess
+		;
+ArrayAccess
+		: PrimaryNoNewArray
+		;
 PrimaryNoNewArray
-	: Literal
-	;
+		: Literal
+		;
 
 Literal
-	: IntegerLiteral
-	;
+		: IntegerLiteral
+		;
 
 // end of sneha Work
 

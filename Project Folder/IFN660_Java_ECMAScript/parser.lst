@@ -1,10 +1,10 @@
 
 // ==========================================================================
-//  GPPG error listing for yacc source file <parser.y - 25/03/2017 10:37:26 AM>
+//  GPPG error listing for yacc source file <parser.y - 1/04/2017 12:10:33 PM>
 // ==========================================================================
 //  Version:  1.5.2
-//  Machine:  VDI-VL17-065
-//  DateTime: 25/03/2017 10:37:29 AM
+//  Machine:  VDI-VL17-070
+//  DateTime: 1/04/2017 12:13:17 PM
 //  UserName: n9768653
 // ==========================================================================
 
@@ -12,33 +12,54 @@
 %namespace IFN660_Java_ECMAScript
 %union
 {
-    public int num;
+    public long num;
+	public float floatnum;
+	public bool boolval;
+	public char charval;
     public string name;
 }
 
 %token <num> NUMBER
 %token <name> IDENTIFIER
-%token IF ELSE INT BOOL GE 
-%token CLASS PUBLIC STATIC VOID FINAL
+
+// 3.9 Keywords
+%token ABSTRACT   CONTINUE   FOR          NEW         SWITCH
+%token ASSERT     DEFAULT    IF           PACKAGE     SYNCHRONIZED
+%token BOOL	      DO         GOTO         PRIVATE     THIS
+%token BREAK      DOUBLE     IMPLEMENTS   PROTECTED   THROW
+%token BYTE       ELSE       IMPORT       PUBLIC      THROWS
+%token CASE       ENUM       INSTANCEOF   RETURN      TRANSIENT
+%token CATCH      EXTENDS    INT          SHORT       TRY
+%token CHAR       FINAL      INTERFACE    STATIC      VOID
+%token CLASS      FINALLY    LONG         STRICTFP    VOLATILE
+%token CONST      FLOAT      NATIVE       SUPER       WHILE
+
+/ 3.11 Separators
+//^^
+// Error: This character is invalid in this context
+// Warning: Optional numeric code ignored in this version
+// Error: Syntax error, unexpected '.'
+// ------------------------------------------------------
+%token '(' ')' '{' '}' '[' ']' 
+%token ';' ',' '.' '@'
+%token ELLIPSIS DOUBLE_COLON
+
+// 3.12 Operators
+%token '=' '>' '<' '!' '~' '?' ':' 
+%token '+' '-' '*' '/' '&' '|' '^' '%'
+%token EQUAL GREATER_OR_EQUAL LESS_THAN_OR_EQUAL NOT_EQUAL
+%token ARROW LOGICAL_AND LOGICAL_OR INCREMENT DECREMENT
+%token LEFT_SHIFT SIGNED_RIGHT_SHIFT UNSIGNED_RIGHT_SHIFT
+%token ADDITION_ASSIGNMENT SUBTRACTION_ASSIGNMENT
+%token MULTIPLICATION_ASSIGNMENT DIVISION_ASSIGNMENT MODULUS_ASSIGNMENT
+%token BITWISE_AND_ASSIGNMENT BITWISE_OR_ASSIGNMENT BITWISE_XOR_ASSIGNMENT
+%token LEFT_SHIFT_ASSIGNMENT UNSIGNED_RIGHT_SHIFT_ASSIGNMENT SIGNED_RIGHT_SHIFT_ASSIGNMENT
 
 %left '='
 %nonassoc '<'
 %left '+'
 
 %%
-// Warning: NonTerminal symbol "Literal" is unreachable
-// Warning: NonTerminal symbol "PrimaryNoNewArray" is unreachable
-// Error: NonTerminal symbol "IntegerLiteral" has no productions
-// Warning: NonTerminal symbol "IntegerLiteral" is unreachable
-// Warning: Terminating ArrayAccess fixes the following size-2 NonTerminal set
-   // {AssignmentExpression, ArrayAccess}
-// Error: There are 5 non-terminating NonTerminal Symbols
-   //  {AssignmentExpression, ArrayAccess, PrimaryNoNewArray, Literal, 
-   //     IntegerLiteral}
-// Error: NonTerminal symbol "ArrayAccess" has no productions
-// Warning: Terminating IntegerLiteral fixes the following size-3 NonTerminal set
-   // {PrimaryNoNewArray, Literal, IntegerLiteral}
-// ------------------------------------------------------------------------------
 
 Program : CompilationUnit
         ;
@@ -64,6 +85,7 @@ Expression : NUMBER
            | Expression '+' Expression
            | Expression '<' Expression
 		   | AssignmentExpression
+		  
            ;
 Empty	:
 		;
@@ -335,21 +357,18 @@ AssignmentOperator
 AssignmentExpression
 	: ArrayAccess
 	;
-
+ArrayAccess
+	: PrimaryNoNewArray
+	;
 PrimaryNoNewArray
 	: Literal
 	;
 
 Literal
-	: IntegerLiteral
+	: NUMBER
 	;
 
 // end of sneha Work
-
-
-
-
-
 
 %%
 
