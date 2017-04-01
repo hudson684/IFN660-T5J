@@ -23,7 +23,21 @@
         }
 
 
-    };
+    }
+
+    //changed made by Josh so that the assignmentStatement is correct
+    public class AssignmentExpression : Expression
+    {
+        private Expression leftHandSide;
+        private Expression rightHandSide;
+        private string assignmentExpressor;
+        public AssignmentExpression(Expression leftHandSide, string assignmentExpressor, Expression rightHandSide)
+        {
+            this.leftHandSide = leftHandSide;
+            this.rightHandSide = rightHandSide;
+            this.assignmentExpressor = assignmentExpressor;
+        }
+    }
 
 }
 
