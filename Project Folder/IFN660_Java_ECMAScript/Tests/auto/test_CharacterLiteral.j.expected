@@ -1,0 +1,11 @@
+﻿CharacterLiteral ('\'')
+CharacterLiteral ('a')
+CharacterLiteral ('%')
+CharacterLiteral ('\t')
+CharacterLiteral ('\\')
+CharacterLiteral ('\'')
+CharacterLiteral ('\u03a9')
+CharacterLiteral ('\uFFFF')
+CharacterLiteral ('\177')
+CharacterLiteral ('T')
+EOF

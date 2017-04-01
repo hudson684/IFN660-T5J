@@ -11,7 +11,7 @@ namespace RunTests
         static void Main(string[] args)
         {
             string compiler = @"..\..\..\IFN660_Java_ECMAScript\bin\Debug\IFN660_Java_ECMAScript.exe";
-            string testFolder = @"..\..\..\IFN660_Java_ECMAScript\Tests\";
+            string testFolder = @"..\..\..\IFN660_Java_ECMAScript\Tests\auto\";
             string sourceFilePattern = "*.j";
 
             foreach (var srcFile in Directory.EnumerateFiles(testFolder, sourceFilePattern, SearchOption.AllDirectories))
@@ -24,7 +24,7 @@ namespace RunTests
                 process.WaitForExit();
 
                 var errors = new StringBuilder();
-                Debug.WriteLine("text file name {1}",srcFile);
+                //Debug.WriteLine("text file name {1}",srcFile);
                 using (var expected = new StreamReader(srcFile + ".expected"))
                 {
 
@@ -71,6 +71,7 @@ namespace RunTests
 
                
             }
+            Console.ReadKey();
         }
     }
 }

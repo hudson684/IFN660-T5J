@@ -66,6 +66,16 @@ namespace IFN660_Java_ECMAScript
         VOLATILE = 317,
         #endregion
 
+<<<<<<< HEAD
+        IntegerLiteral = 318,
+        FloatingPointLiteral = 358,
+        // DecimalIntegerLiteral = 318,
+        HexIntegerLiteral = 319,
+        OctalIntegerLiteral = 320,
+        BinaryIntegerLiteral = 321,
+        ELLIPSIS = 322,
+        DOUBLE_COLON = 323,
+=======
         #region Literals
         IntegerLiteral = 318,
         FloatingPointLiteral = 319,
@@ -80,6 +90,7 @@ namespace IFN660_Java_ECMAScript
         ELLIPSIS = 330,
         DOUBLE_COLON = 331,
         #endregion
+>>>>>>> scannerUpdate
 
         #region Operator
         // An code
@@ -317,6 +328,19 @@ namespace IFN660_Java_ECMAScript
                             #region Literals
                             // Code by Nathan & Sneha
                             case Tokens.IntegerLiteral:
+<<<<<<< HEAD
+                                Console.WriteLine("IntegerLiteral ({0})", scanner.yylval.name);
+                                break;
+                            case Tokens.HexIntegerLiteral:
+                                Console.WriteLine("HexIntegerLiteral ({0})", scanner.yylval.name);
+                                break;
+                            case Tokens.OctalIntegerLiteral:
+                                Console.WriteLine("OctalIntegerLiteral ({0})", scanner.yylval.name);
+                                break;
+                            case Tokens.BinaryIntegerLiteral:
+                                Console.WriteLine("BinaryIntegerLiteral ({0})", scanner.yylval.name);
+                                break;
+=======
                                 Console.WriteLine("IntegerLiteral ({0})", scanner.yylval.num);
                                 break;
                             //case Tokens.DecimalIntegerLiteral:
@@ -329,6 +353,7 @@ namespace IFN660_Java_ECMAScript
                             //case Tokens.BinaryIntegerLiteral:
                             //    Console.WriteLine("BinaryIntegerLiteral ({0})", scanner.yylval.name);
                             //    break;
+>>>>>>> scannerUpdate
                             // Code by Adon
                             case Tokens.FloatingPointLiteral:
                                 Console.WriteLine("FloatingPointLiteral ({0})", scanner.yylval.floatnum);
