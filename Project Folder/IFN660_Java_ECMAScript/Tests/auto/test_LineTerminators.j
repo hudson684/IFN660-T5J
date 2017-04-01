@@ -1,4 +1,4 @@
 ﻿asaadaded 
 Enter
 
-	whitespace text \f text
+	whitespace text '\f' text
