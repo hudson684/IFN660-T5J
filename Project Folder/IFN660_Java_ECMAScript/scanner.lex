@@ -1,5 +1,11 @@
 %namespace IFN660_Java_ECMAScript
 
+%{
+int lines = 0;
+%}
+
+/* Literal definitions */
+// Nathan - Senha - An
 HexDigit									[0-9a-fA-F]
 Digit 										[0-9] // Nathan removed "_"
 OctalDigit									[0-7]
@@ -158,7 +164,7 @@ if											{return (int)Tokens.IF;}
 goto										{return (int)Tokens.GOTO;}
 implements									{return (int)Tokens.IMPLEMENTS;}
 import										{return (int)Tokens.IMPORT;}
-instanceof									{return (int)Tokens.INSTANCE_OF;}
+instanceof									{return (int)Tokens.INSTANCEOF;}
 int											{return (int)Tokens.INT;}
 interface									{return (int)Tokens.INTERFACE;}
 long										{return (int)Tokens.LONG;}
@@ -431,4 +437,9 @@ double getHexDecimalPart(string inString)
     }
 
     return outDouble;
+}
+public override void yyerror( string format, params object[] args )
+{
+    System.Console.Error.WriteLine("Error: line {0}, {1}", lines,
+        String.Format(format, args));
 }
