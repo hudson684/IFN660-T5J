@@ -1,3 +1,14 @@
+
+// ==========================================================================
+//  GPPG error listing for yacc source file <parser.y - 4/04/2017 8:53:18 AM>
+// ==========================================================================
+//  Version:  1.5.2
+//  Machine:  VDI-VL17-054
+//  DateTime: 4/04/2017 8:53:21 AM
+//  UserName: n9768653
+// ==========================================================================
+
+
 %namespace IFN660_Java_ECMAScript
 %union
 {
@@ -7,6 +18,8 @@
 	public char charval;
     public string name;
 }
+// 3.8 Identifier
+%token <name> IDENTIFIER
 
 %token <num> NUMBER
 %token <name> IDENTIFIER
@@ -174,7 +187,13 @@ MethodDeclaration
 
 MethodModifiers
         : MethodModifiers MethodModifier
-		| /* Empty */
+		| / * Empty */
+//-^^^^------^^^
+// Error: This character is invalid in this context
+// Error: This character is invalid in this context
+// Error: This character is invalid in this context
+// Error: This character is invalid in this context
+// ------------------------------------------------
         ;
 
 MethodModifier
@@ -266,26 +285,7 @@ UnannType
 		;
 
 UnannPrimitiveType
-		: NumbericType
-		| BOOL
-		;
-
-NumbericType
-		: IntegralType
-		| FloatingPointType
-		;
-
-IntegralType
-		: BYTE
-		| SHORT
-		| INT
-		| LONG
-		| CHAR
-		;
-
-FloatingPointType
-		: FLOAT
-		| DOUBLE
+		: /* empty *//*TODO*/
 		;
 
 UnannReferenceType
@@ -416,4 +416,5 @@ Literal
 public Parser(Scanner scanner) : base(scanner)
 {
 }
+// ==========================================================================
 
