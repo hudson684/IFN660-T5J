@@ -130,7 +130,7 @@ Operators									[\=\>\<\!\~\?\:\+\-\*\/\&\|\^\%]
 %%
 
 										/* 3.3 Unicode Escapes */
-{UnicodeInputCharacter}						{yylval.name = yytext;return (int)Tokens.UnicodeInputCharacter;}
+{UnicodeInputCharacter}						/*{yylval.name = yytext;return (int)Tokens.UnicodeInputCharacter;}*/
 										/* 3.4 Line Terminators */
 {LineTerminator}							/* Line Terminator */
 										/* 3.6 WhiteSpace */
@@ -238,7 +238,7 @@ while										{return (int)Tokens.WHILE;}
 {StringLiteral}								{yylval.name = yytext; return (int)Tokens.StringLiteral;}
 
 /* 3.10.6 Escape sequences for Character and String Literals - Tri*/
-{EscapeSequence}							{yylval.name = yytext; return (int)Tokens.EscapeSequence;}
+{EscapeSequence}							/*{yylval.name = yytext; return (int)Tokens.EscapeSequence;}*/
 
 /* 3.10.7 Null Literal - Joshua*/
 {NullLiteral}								{return (int)Tokens.NullLiteral;}

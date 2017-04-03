@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -82,25 +82,10 @@
     <None Include="Tests\auto\test_StringLiteral.j.expected" />
     <None Include="Tests\auto\test_Unicode_Escape.j" />
     <None Include="Tests\auto\test_Unicode_Escape.j.expected" />
-    <None Include="Tests\test_EscapeSequence.j" />
-    <None Include="Tests\test_CharacterLiteral.j" />
-    <None Include="Tests\test_LineTerminators.j" />
-    <None Include="Tests\test_StringLiteral.j" />
-    <None Include="Tests\test_BooleanLiteral.j" />
-    <None Include="Tests\test_Comments.j" />
-    <None Include="Tests\test_DecLiteral.j" />
-    <None Include="Tests\test_floatingPointLiterals.j" />
-    <None Include="Tests\test_HexLiteral.j" />
-    <None Include="Tests\test_intLiterals.j" />
-    <None Include="Tests\test_Keywords.j" />
-    <None Include="Tests\test_NullLiteral.j" />
-    <None Include="Tests\test_OctalLiteral.j" />
-    <None Include="Tests\test_Operators.j" />
-    <None Include="Tests\test_Separators.j" />
-    <None Include="Tests\test_Unicode_Escape.j" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="test1.txt" />
+    <Content Include="Tests\auto\test.java" />
     <Content Include="Tests\test1.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
