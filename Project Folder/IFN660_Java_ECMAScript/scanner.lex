@@ -1,7 +1,5 @@
 %namespace IFN660_Java_ECMAScript
 
-%namespace IFN660_Java_ECMAScript
-
 %{
 int lines = 0;
 %}
@@ -69,24 +67,15 @@ Literals									({Numberic}|{Character}|{String}|{BooleanLiteral}|{NullLiteral}
 
 // An
 Separator									[\(\)\{\}\[\]\;\,\.\@]
-Delimiter									[\=\>\<\!\~\?\:\+\-\*\/\&\|\^\%]	
+Delimiter									[\=\>\<\!\~\?\:\+\-\*\/\&\|\^\%]
 
 %%
-
-										/* 3.3 Unicode Escapes -  Joshua Hudson &  Vivian Lee */
-
-
-										/* 3.4  Line Terminators - Joshua Hudson &  Vivian Lee */
+/* 3.4  Line Terminators - Joshua Hudson &  Vivian Lee */
 \n|\r|\n\r								/* skip whitespace */
 //catches someone typing in /n in string form ect - Ask Wayne - Josh
 //[\\n|\\r|\\r\\n]						{return (int)Tokens.LINE_TERMINATOR; }
 
-
-										/* 3.6 Whitespace*/
-[\n]									{lines++;}
-[ \r\t\f]                  			/* skip whitespace */
-
-										/* 3.7 Comments - Nathan & Sneha */
+/* 3.7 Comments - Nathan & Sneha */
 \/\*([^*]|[\r\n]|(\*+([^*/]|[\r\n])))*\*+\/		/* skip multiline comments */
 \/\/[^\n]*                						/* skip the line comment  */
 
@@ -171,6 +160,12 @@ while										{return (int)Tokens.WHILE;}
 {Separator}									{return yytext[0];}
 "..."										{return (int)Tokens.ELLIPSIS;}	
 "::"										{return (int)Tokens.DOUBLE_COLON;}	
+	
+
+/* 3.11 SEPARATORS  - An */	
+{Separator}									{return yytext[0];}
+"..."										{return (int)Tokens.ELLIPSIS;}	
+"::"										{return (int)Tokens.DOUBLE_COLON;}	
 										
 
 										/* 3.12 OPERATOR  - An */
@@ -204,18 +199,19 @@ while										{return (int)Tokens.WHILE;}
 ">>="										{return (int)Tokens.UNSIGNED_RIGHT_SHIFT_ASSIGNMENT;}
 ">>>="										{return (int)Tokens.SIGNED_RIGHT_SHIFT_ASSIGNMENT;}
 
-/* 3.8 IDENTIFIERS */
-{Letter}({Letter}|{Digit})* 			{ yylval.name = yytext; return (int)Tokens.IDENTIFIER; }
 
-//{Digit}+	    						{ yylval.num = int.Parse(yytext); return (int)Tokens.NUMBER; }
-			
+{Letter}({Letter}|{Digit})* { yylval.name = yytext; return (int)Tokens.IDENTIFIER; }
+{Digit}+	    { yylval.num = int.Parse(yytext); return (int)Tokens.NUMBER; }
 
-.                            			{ 
-											throw new Exception(
-												String.Format(
-													"unexpected character '{0}'", yytext)); 
-										}
-										
+[\n]		{ lines++;    }
+[ \t\r]      /* ignore other whitespace */
+
+.                            { 
+                                 throw new Exception(
+                                     String.Format(
+                                         "unexpected character '{0}'", yytext)); 
+                             }
+
 %%
 public override void yyerror( string format, params object[] args )
 {

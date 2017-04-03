@@ -4,7 +4,7 @@
 // ==========================================================================
 //  Version:  1.2.2
 //  Machine:  VDI-VL17-054
-//  DateTime: 4/04/2017 9:01:42 AM
+//  DateTime: 4/04/2017 9:25:54 AM
 //  UserName: n9768653
 // ==========================================================================
 
@@ -258,84 +258,5 @@ public override void yyerror( string format, params object[] args )
 {
     System.Console.Error.WriteLine("Error: line {0}, {1}", lines,
         String.Format(format, args));
-}
-
-// ==========================================================================
-
-/* 3.10.1 - Integer Literals - Nathan and Sneha */
-// Decimals -Nathan
-{IntegerLiteral}							{ yylval.name = yytext; return (int)Tokens.IntegerLiteral; }
-
-/* 3.10.2 FloatingPoint Literal - Adon*/
-{FloatingPointLiteral}						{yylval.name = yytext; return (int)Tokens.FloatingPointLiteral;}
-
-/* 3.10.3 Boolean Literal - Vivan*/
-{BooleanLiteral}							{yylval.name = yytext; return (int)Tokens.BooleanLiteral;}
-
-/* 3.10.4 Character Literal - Tri*/
-{CharacterLiteral}							{yylval.name = yytext; return (int)Tokens.CharacterLiteral;}
-
-/* 3.10.5 String Literal - Tri*/
-{StringLiteral}								{yylval.name = yytext; return (int)Tokens.StringLiteral;}
-
-/* 3.10.6 Escape sequences for Character and String Literals - Tri*/
-//{OctalEscape}								{yylval.name = yytext; return (int)Tokens.OCTAL_ESCAPE;}
-//{EscapeSequence}							{yylval.name = yytext; return (int)Tokens.ESCAPE_SEQUENCE;}
-
-/* 3.10.7 Null Literal - Joshua*/
-{NullLiteral}								{return (int)Tokens.NullLiteral;}
-
-/* 3.11 SEPARATORS  - An */	
-{Separator}									{return yytext[0];}
-"..."										{return (int)Tokens.ELLIPSIS;}	
-"::"										{return (int)Tokens.DOUBLE_COLON;}	
-										
-
-										/* 3.12 OPERATOR  - An */
-//--------^^^^^^^^^^^^^^^^^^^^^^^^^
-// Warning: Code between rules, ignored
-// ------------------------------------
-
-{Delimiter}									{return yytext[0];}
-"=="										{return (int)Tokens.EQUAL;}
-">="										{return (int)Tokens.GREATER_OR_EQUAL;}
-"<="										{return (int)Tokens.LESS_THAN_OR_EQUAL;}
-"!="										{return (int)Tokens.NOT_EQUAL;}
-
-"->"										{return (int)Tokens.ARROW;}
-"&&"										{return (int)Tokens.LOGICAL_AND;}
-"||"										{return (int)Tokens.LOGICAL_OR;}
-
-"++"										{return (int)Tokens.INCREMENT;}
-"--"										{return (int)Tokens.DECREMENT;}
-
-"<<"										{return (int)Tokens.LEFT_SHIFT;}
-">>"										{return (int)Tokens.SIGNED_RIGHT_SHIFT;}
-">>>"										{return (int)Tokens.UNSIGNED_RIGHT_SHIFT;}
-
-"+="										{return (int)Tokens.ADDITION_ASSIGNMENT;}
-"-="										{return (int)Tokens.SUBTRACTION_ASSIGNMENT;}
-"*="										{return (int)Tokens.MULTIPLICATION_ASSIGNMENT;}		
-"/="										{return (int)Tokens.DIVISION_ASSIGNMENT;}
-"%="										{return (int)Tokens.MODULUS_ASSIGNMENT;}
-"&="										{return (int)Tokens.BITWISE_AND_ASSIGNMENT;}
-"|="										{return (int)Tokens.BITWISE_OR_ASSIGNMENT;}
-"^="										{return (int)Tokens.BITWISE_XOR_ASSIGNMENT;}
-"<<="										{return (int)Tokens.LEFT_SHIFT_ASSIGNMENT;}
-">>="										{return (int)Tokens.UNSIGNED_RIGHT_SHIFT_ASSIGNMENT;}
-">>>="										{return (int)Tokens.SIGNED_RIGHT_SHIFT_ASSIGNMENT;}
-
-/* 3.8 IDENTIFIERS */
-{Letter}({Letter}|{Digit})* 			{ yylval.name = yytext; return (int)Tokens.IDENTIFIER; }
-
-//{Digit}+	    						{ yylval.num = int.Parse(yytext); return (int)Tokens.NUMBER; }
-			
-
-.                            			{ 
-											throw new Exception(
-												String.Format(
-													"unexpected character '{0}'", yytext)); 
-										}
-										
-%%// ==========================================================================
+}// ==========================================================================
 

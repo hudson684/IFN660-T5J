@@ -7,20 +7,9 @@
 	public char charval;
     public string name;
 }
-// 3.8 Identifier
-%token <name> IDENTIFIER
 
-// 3.9 Keywords
-%token ABSTRACT   CONTINUE   FOR          NEW         SWITCH
-%token ASSERT     DEFAULT    IF           PACKAGE     SYNCHRONIZED
-%token BOOL	      DO         GOTO         PRIVATE     THIS
-%token BREAK      DOUBLE     IMPLEMENTS   PROTECTED   THROW
-%token BYTE       ELSE       IMPORT       PUBLIC      THROWS
-%token CASE       ENUM       INSTANCEOF   RETURN      TRANSIENT
-%token CATCH      EXTENDS    INT          SHORT       TRY
-%token CHAR       FINAL      INTERFACE    STATIC      VOID
-%token CLASS      FINALLY    LONG         STRICTFP    VOLATILE
-%token CONST      FLOAT      NATIVE       SUPER       WHILE
+%token <num> NUMBER
+%token <name> IDENTIFIER
 
 // 3.9 Keywords
 %token ABSTRACT   CONTINUE   FOR          NEW         SWITCH
@@ -427,3 +416,4 @@ Literal
 public Parser(Scanner scanner) : base(scanner)
 {
 }
+
