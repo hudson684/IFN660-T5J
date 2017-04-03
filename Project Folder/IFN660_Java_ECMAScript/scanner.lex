@@ -1,4 +1,11 @@
-﻿%namespace IFN660_Java_ECMAScript
+%namespace IFN660_Java_ECMAScript
+
+%namespace IFN660_Java_ECMAScript
+
+%{
+int lines = 0;
+%}
+
 /* Literal definitions */
 // Nathan - Senha - An
 HexDigit									[0-9a-fA-F]
@@ -76,7 +83,8 @@ Delimiter									[\=\>\<\!\~\?\:\+\-\*\/\&\|\^\%]
 
 
 										/* 3.6 Whitespace*/
-[ \r\n\t\f]                  			/* skip whitespace */
+[\n]									{lines++;}
+[ \r\t\f]                  			/* skip whitespace */
 
 										/* 3.7 Comments - Nathan & Sneha */
 \/\*([^*]|[\r\n]|(\*+([^*/]|[\r\n])))*\*+\/		/* skip multiline comments */
@@ -209,3 +217,8 @@ while										{return (int)Tokens.WHILE;}
 										}
 										
 %%
+public override void yyerror( string format, params object[] args )
+{
+    System.Console.Error.WriteLine("Error: line {0}, {1}", lines,
+        String.Format(format, args));
+}

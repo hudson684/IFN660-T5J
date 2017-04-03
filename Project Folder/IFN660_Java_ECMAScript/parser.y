@@ -22,6 +22,18 @@
 %token CLASS      FINALLY    LONG         STRICTFP    VOLATILE
 %token CONST      FLOAT      NATIVE       SUPER       WHILE
 
+// 3.9 Keywords
+%token ABSTRACT   CONTINUE   FOR          NEW         SWITCH
+%token ASSERT     DEFAULT    IF           PACKAGE     SYNCHRONIZED
+%token BOOL	      DO         GOTO         PRIVATE     THIS
+%token BREAK      DOUBLE     IMPLEMENTS   PROTECTED   THROW
+%token BYTE       ELSE       IMPORT       PUBLIC      THROWS
+%token CASE       ENUM       INSTANCEOF   RETURN      TRANSIENT
+%token CATCH      EXTENDS    INT          SHORT       TRY
+%token CHAR       FINAL      INTERFACE    STATIC      VOID
+%token CLASS      FINALLY    LONG         STRICTFP    VOLATILE
+%token CONST      FLOAT      NATIVE       SUPER       WHILE
+
 // 3.10 Literals
 %token <intnum> IntegerLiteral
 %token <floatnum> FloatingPointLiteral
@@ -52,27 +64,23 @@
 
 %%
 
-Program
-		: Statement
-		| CompilationUnit
-		;
+Program : CompilationUnit
+        ;
 
-Statement 
-		: IF '(' Expression ')' Statement ELSE Statement
-		| '{' StatementList '}'
-		| Expression ';'
-		| Type IDENTIFIER ';'
-		| StatementWithoutTrailingSubstatement
-		;
+Statement : IF '(' Expression ')' Statement ELSE Statement
+          | '{' StatementList '}'
+          | Expression ';'
+          | Type IDENTIFIER ';'
+		  | StatementWithoutTrailingSubstatement
+          ;
 
-Type 
-		: IntegerLiteral
-     	| BooleanLiteral
-     	;
+Type	: IntegerLiteral
+		| BooleanLiteral
+		;
 
 StatementList 
 		: StatementList Statement
-    	| /* empty */
+        | /* empty */
         ;
 
 Expression 
@@ -82,16 +90,15 @@ Expression
         | Expression '+' Expression
         | Expression '<' Expression
 		| AssignmentExpression
-        ;
-
-Empty:
-	 ;
+		  
+           ;
+Empty	:
+		;
 
 // Group A Start
 CompilationUnit 
 		: PackageDeclaration_opt ImportDeclarations TypeDeclarations
 		;
-
 
 PackageDeclaration_opt
 		: /* empty */
@@ -103,13 +110,11 @@ ImportDeclarations
 		| /* follow up */
 		;
 
-
 TypeDeclarations 
 		: TypeDeclaration TypeDeclarations
 		| /* empty */
 		| /* follow up */
 		;
-
 TypeDeclaration 
 		: ClassDeclaration /* need to add InterfaceDeclaration */
 		;
@@ -130,14 +135,13 @@ ClassModifiers
 ClassModifier 
 		: Annotation
 		| PUBLIC
-		| PROTECTED
-		| PRIVATE
-		| ABSTRACT
-		| STATIC
-		| FINAL
-		| STRICTFP
+		| PROTECTED 
+		| PRIVATE 
+		| ABSTRACT 
+		| STATIC 
+		| FINAL 
+		| STRICTFP 
 		;
-
 
 Annotation
 		: /* empty */
@@ -156,6 +160,7 @@ Superinterfaces_opt : /* empty */
 ClassBody 
 		: '{' ClassBodyDeclarations '}'
 		;
+
 // Group A End
 
 // PartB by Adon Mofified by Josh to remove MemberDeclarations as it is unessisary
@@ -168,20 +173,19 @@ ClassBodyDeclaration
 		: ClassMemberDeclaration
         ;
 
-
 // Fixed by An
 ClassMemberDeclaration
-		:MethodDeclaration
+		: MethodDeclaration
 		;
+
 // Change ClassMemberDeclaration to MethodDeclaration -An	
 MethodDeclaration
 		: MethodModifiers MethodHeader MethodBody
         ;
 
 MethodModifiers
-		: MethodModifiers MethodModifier
-        | Empty
-		| /* empty */
+        : MethodModifiers MethodModifier
+		| /* Empty */
         ;
 
 MethodModifier
@@ -204,15 +208,19 @@ Result
 	   	;
 
 Throws_opt
-		: /* empty */
+		: Empty
 	  	;
-	 
+
 // Fixed spelling error	 
 MethodDeclarator
 		: IDENTIFIER '(' FormalParameterList_Opt ')' Dims_Opt
 		;
 
-
+/* Removed by Nathan
+Identifier
+		: Main
+		;
+*/
 //PLACEHOLDER - Josh - Tri
 FormalParameterList_Opt
 		: FormalParameterList
@@ -223,7 +231,6 @@ Dims_Opt
 		: Dims
 		| /* Empty */
 		;
-
 // JOSHUA'S WORK END
 
 //Work by Tri
@@ -233,19 +240,17 @@ FormalParameterList
 		;
 
 FormalParameters 
-		: FormalParameter FormalParameter_s
+		: FormalParameter FormalParameter_repeat 
 		| /* empty *//*TODO*/
 		;
-
-FormalParameter_s
-		: ',' FormalParameter FormalParameter_s
+FormalParameter_repeat
+		: ',' FormalParameter_repeat FormalParameter
 		| /* empty */
 		;
 
 FormalParameter 
-		: VariableModifiers UnannType VariableDeclaratorId
+		:  VariableModifiers UnannType VariableDeclaratorId
 		;
-
 VariableModifiers 
 		: VariableModifiers VariableModifier
 		| /* empty */
@@ -257,10 +262,9 @@ VariableModifier
 		;
 
 //End work by Tri
-
 // Work by Vivian
 Dims
-		: Annotations '[' ']'
+		: Annotations '['']'
 		;
 
 VariableDeclaratorId
@@ -273,7 +277,26 @@ UnannType
 		;
 
 UnannPrimitiveType
-		: /* empty *//*TODO*/
+		: NumbericType
+		| BOOL
+		;
+
+NumbericType
+		: IntegralType
+		| FloatingPointType
+		;
+
+IntegralType
+		: BYTE
+		| SHORT
+		| INT
+		| LONG
+		| CHAR
+		;
+
+FloatingPointType
+		: FLOAT
+		| DOUBLE
 		;
 
 UnannReferenceType
@@ -293,7 +316,7 @@ UnannTypeVariable
 
 // Start work by An
 MethodBody
-		: Block 
+		:  Block 
 		| ';'
 		;
 
@@ -345,58 +368,60 @@ VariableDeclarator
 		| /* follow up */
 		;
 
+VariableDeclaratorId
+		: IDENTIFIER Dims_Opt
+		;
 
 // Tristan
 StatementWithoutTrailingSubstatement
 		: ExpressionStatement 
-		|  /* empty */
 		;
+
 ExpressionStatement
 		: StatementExpression ';'
 		;
 
-
-
-// End Work by Tristan
-// Added by An
 StatementExpression
 		: Assignment
 		;
+
+// End Work by Tristan
 //work by sneha
 
 Assignment
-	: LeftHandSide AssignmentOperator Expression
-	;
+		: LeftHandSide AssignmentOperator Expression
+		;
+
 LeftHandSide
-	: ExpressionName
-	;
+		: ExpressionName
+		;
+
 ExpressionName
-	: IDENTIFIER
-	;
+		: IDENTIFIER
+		;
+
 AssignmentOperator
-	: '='
-	;
-Expression
-	: AssignmentExpression
-	;
+		: '='
+		;
 
 AssignmentExpression
-	: ArrayAccess
-	;
+		: ArrayAccess
+		;
 
 ArrayAccess
-	: PrimaryNoNewArray
-	;
+		: PrimaryNoNewArray
+		;
 
 PrimaryNoNewArray
-	: Literal
-	;
+		: Literal
+		;
 
 Literal
-	: IntegerLiteral
-	;
+		: IntegerLiteral
+		;
 
 // end of sneha Work
+
 %%
 
 public Parser(Scanner scanner) : base(scanner)
