@@ -63,24 +63,27 @@ Statement : IF '(' Expression ')' Statement ELSE Statement
 		  | StatementWithoutTrailingSubstatement
           ;
 
-Type : INT
-     | BOOL
-     ;
+Type	: IntegerLiteral
+		| BooleanLiteral
+		;
 
-StatementList : StatementList Statement
-              | /* empty */
-              ;
+StatementList 
+		: StatementList Statement
+        | /* empty */
+        ;
 
-Expression : NUMBER
-           | IDENTIFIER
-           | Expression '=' Expression
-           | Expression '+' Expression
-           | Expression '<' Expression
-		   | AssignmentExpression
+Expression 
+		: IntegerLiteral
+        | IDENTIFIER
+        | Expression '=' Expression
+        | Expression '+' Expression
+        | Expression '<' Expression
+		| AssignmentExpression
 		  
            ;
 Empty	:
 		;
+
 // Group A Start
 CompilationUnit 
 		: PackageDeclaration_opt ImportDeclarations TypeDeclarations
@@ -108,9 +111,11 @@ TypeDeclaration
 ClassDeclaration 
 		: NormalClassDeclaration /* need to add EnumDeclaration */
 		;
+
 NormalClassDeclaration 
 		: ClassModifiers CLASS IDENTIFIER TypeParameters_opt SuperClass_opt Superinterfaces_opt ClassBody
 		;
+
 ClassModifiers 
 		: ClassModifiers ClassModifier
 		| /* empty */
@@ -119,11 +124,18 @@ ClassModifiers
 ClassModifier 
 		: Annotation
 		| PUBLIC
+		| PROTECTED 
+		| PRIVATE 
+		| ABSTRACT 
+		| STATIC 
+		| FINAL 
+		| STRICTFP 
 		;
 
 Annotation
 		: /* empty */
 		;
+
 //GROUP C TRACKING
 TypeParameters_opt : /* empty */
 		;
@@ -133,9 +145,11 @@ SuperClass_opt : /* empty */
 
 Superinterfaces_opt : /* empty */
 		;
+
 ClassBody 
 		: '{' ClassBodyDeclarations '}'
 		;
+
 // Group A End
 
 // PartB by Adon Mofified by Josh to remove MemberDeclarations as it is unessisary
@@ -143,6 +157,7 @@ ClassBodyDeclarations
 		: ClassBodyDeclarations ClassBodyDeclaration
 		| /* empty */
         ;
+
 ClassBodyDeclaration
 		: ClassMemberDeclaration
         ;
@@ -151,13 +166,15 @@ ClassBodyDeclaration
 ClassMemberDeclaration
 		: MethodDeclaration
 		;
+
 // Change ClassMemberDeclaration to MethodDeclaration -An	
 MethodDeclaration
 		: MethodModifiers MethodHeader MethodBody
         ;
+
 MethodModifiers
         : MethodModifiers MethodModifier
-		|
+		| /* Empty */
         ;
 
 MethodModifier
@@ -165,6 +182,7 @@ MethodModifier
 		| PUBLIC
         | STATIC
         ;
+
 MethodHeader
 		: Result MethodDeclarator Throws_opt
         ;
@@ -186,6 +204,7 @@ Throws_opt
 MethodDeclarator
 		: IDENTIFIER '(' FormalParameterList_Opt ')' Dims_Opt
 		;
+
 /* Removed by Nathan
 Identifier
 		: Main
@@ -230,6 +249,7 @@ VariableModifier
 		: Annotation
 		| FINAL
 		;
+
 //End work by Tri
 // Work by Vivian
 Dims
@@ -246,7 +266,26 @@ UnannType
 		;
 
 UnannPrimitiveType
-		: /* empty *//*TODO*/
+		: NumbericType
+		| BOOL
+		;
+
+NumbericType
+		: IntegralType
+		| FloatingPointType
+		;
+
+IntegralType
+		: BYTE
+		| SHORT
+		| INT
+		| LONG
+		| CHAR
+		;
+
+FloatingPointType
+		: FLOAT
+		| DOUBLE
 		;
 
 UnannReferenceType
@@ -321,37 +360,47 @@ VariableDeclarator
 VariableDeclaratorId
 		: IDENTIFIER Dims_Opt
 		;
+
 // Tristan
 StatementWithoutTrailingSubstatement
 		: ExpressionStatement 
 		;
+
 ExpressionStatement
 		: StatementExpression ';'
 		;
+
 StatementExpression
 		: Assignment
 		;
+
 // End Work by Tristan
 //work by sneha
 
 Assignment
 		: LeftHandSide AssignmentOperator Expression
 		;
+
 LeftHandSide
 		: ExpressionName
 		;
+
 ExpressionName
 		: IDENTIFIER
 		;
+
 AssignmentOperator
 		: '='
 		;
+
 AssignmentExpression
 		: ArrayAccess
 		;
+
 ArrayAccess
 		: PrimaryNoNewArray
 		;
+
 PrimaryNoNewArray
 		: Literal
 		;
