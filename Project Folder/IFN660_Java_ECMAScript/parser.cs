@@ -4,9 +4,9 @@
 
 // GPPG version 1.5.2
 // Machine:  VDI-VL17-054
-// DateTime: 4/04/2017 9:01:43 AM
+// DateTime: 4/04/2017 9:25:54 AM
 // UserName: n9768653
-// Input file <parser.y - 4/04/2017 9:01:39 AM>
+// Input file <parser.y - 4/04/2017 9:21:34 AM>
 
 // options: lines gplex
 
@@ -401,6 +401,7 @@ public class Parser: ShiftReduceParser<ValueType, LexLocation>
 public Parser(Scanner scanner) : base(scanner)
 {
 }
+
 #line default
 }
 }

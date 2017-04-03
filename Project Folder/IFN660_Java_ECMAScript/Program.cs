@@ -11,8 +11,6 @@ namespace IFN660_Java_ECMAScript
                 new FileStream(args[0], FileMode.Open));
             Parser parser = new Parser(scanner);
             parser.Parse();
-
-            Console.Read();
         }
     }
 }
