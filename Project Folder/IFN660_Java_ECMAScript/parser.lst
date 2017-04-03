@@ -1,11 +1,11 @@
 
 // ==========================================================================
-//  GPPG error listing for yacc source file <parser.y - 25/03/2017 12:21:48 PM>
+//  GPPG error listing for yacc source file <parser.y - 4/04/2017 8:53:18 AM>
 // ==========================================================================
 //  Version:  1.5.2
-//  Machine:  DESKTOP-1VMC0S8
-//  DateTime: 25/03/2017 12:21:50 PM
-//  UserName: hudso
+//  Machine:  VDI-VL17-054
+//  DateTime: 4/04/2017 8:53:21 AM
+//  UserName: n9768653
 // ==========================================================================
 
 
@@ -14,17 +14,20 @@
 {
     public long num;
 	public float floatnum;
-	public boolean boolval;
+	public bool boolval;
 	public char charval;
     public string name;
 }
 // 3.8 Identifier
 %token <name> IDENTIFIER
 
+%token <num> NUMBER
+%token <name> IDENTIFIER
+
 // 3.9 Keywords
 %token ABSTRACT   CONTINUE   FOR          NEW         SWITCH
 %token ASSERT     DEFAULT    IF           PACKAGE     SYNCHRONIZED
-%token BOOLEAN    DO         GOTO         PRIVATE     THIS
+%token BOOL	      DO         GOTO         PRIVATE     THIS
 %token BREAK      DOUBLE     IMPLEMENTS   PROTECTED   THROW
 %token BYTE       ELSE       IMPORT       PUBLIC      THROWS
 %token CASE       ENUM       INSTANCEOF   RETURN      TRANSIENT
@@ -62,82 +65,24 @@
 %left '+'
 
 %%
-// Warning: NonTerminal symbol "FormalParameters" is unreachable
-// Warning: NonTerminal symbol "Dims" is unreachable
-// Warning: NonTerminal symbol "FormalParameterList" is unreachable
-// Warning: NonTerminal symbol "VariableModifiers" is unreachable
-// Warning: NonTerminal symbol "FormalParameter_s" is unreachable
-// Warning: NonTerminal symbol "FormalParameter" is unreachable
-// Warning: NonTerminal symbol "Dims_Opt" is unreachable
-// Warning: NonTerminal symbol "MethodDeclarator" is unreachable
-// Warning: NonTerminal symbol "Result" is unreachable
-// Warning: NonTerminal symbol "MethodModifier" is unreachable
-// Warning: NonTerminal symbol "FormalParameterList_Opt" is unreachable
-// Warning: NonTerminal symbol "UnannType" is unreachable
-// Warning: NonTerminal symbol "Throws_opt" is unreachable
-// Warning: NonTerminal symbol "BlockStatements" is unreachable
-// Warning: NonTerminal symbol "BlockStatements_Opt" is unreachable
-// Warning: NonTerminal symbol "Block" is unreachable
-// Error: Too many errors, abandoning
-// Warning: NonTerminal symbol "BlockStatement_s" is unreachable
-// Warning: NonTerminal symbol "BlockStatement" is unreachable
-// Warning: NonTerminal symbol "UnannTypeVariable" is unreachable
-// Warning: NonTerminal symbol "Annotations" is unreachable
-// Warning: NonTerminal symbol "VariableModifier" is unreachable
-// Warning: NonTerminal symbol "VariableDeclaratorId" is unreachable
-// Warning: NonTerminal symbol "UnannArrayType" is unreachable
-// Warning: NonTerminal symbol "UnannPrimitiveType" is unreachable
-// Warning: NonTerminal symbol "UnannReferenceType" is unreachable
-// Warning: NonTerminal symbol "NormalClassDeclaration" is unreachable
-// Warning: NonTerminal symbol "ClassDeclaration" is unreachable
-// Warning: NonTerminal symbol "TypeDeclaration" is unreachable
-// Warning: NonTerminal symbol "SuperClass_opt" is unreachable
-// Warning: NonTerminal symbol "TypeParameters_opt" is unreachable
-// Warning: NonTerminal symbol "ClassModifiers" is unreachable
-// Warning: NonTerminal symbol "TypeDeclarations" is unreachable
-// Warning: NonTerminal symbol "Empty" is unreachable
-// Warning: Terminating ClassMemberDeclarations fixes the following size-1 NonTerminal set
-   // {ClassMemberDeclarations}
-// Error: There are 1 non-terminating NonTerminal Symbols
-   //  {ClassMemberDeclarations}
-// Warning: NonTerminal symbol "ImportDeclarations" is unreachable
-// Warning: NonTerminal symbol "PackageDeclaration_opt" is unreachable
-// Warning: NonTerminal symbol "CompilationUnit" is unreachable
-// Warning: NonTerminal symbol "MethodDeclaration" is unreachable
-// Warning: NonTerminal symbol "ClassMemberDeclaration" is unreachable
-// Warning: NonTerminal symbol "ClassBodyDeclaration" is unreachable
-// Warning: NonTerminal symbol "MethodBody" is unreachable
-// Warning: NonTerminal symbol "MethodHeader" is unreachable
-// Warning: NonTerminal symbol "MethodModifiers" is unreachable
-// Error: NonTerminal symbol "ClassMemberDeclarations" has no productions
-// Warning: NonTerminal symbol "ClassModifier" is unreachable
-// Warning: NonTerminal symbol "ClassBody" is unreachable
-// Warning: NonTerminal symbol "Superinterfaces_opt" is unreachable
-// Warning: NonTerminal symbol "ClassMemberDeclarations" is unreachable
-// Warning: NonTerminal symbol "ClassBodyDeclarations" is unreachable
-// Warning: NonTerminal symbol "Annotation" is unreachable
-// ---------------------------------------------------------------------------------------
 
-Program
-		: Statement
+Program : CompilationUnit
+        ;
+
+Statement : IF '(' Expression ')' Statement ELSE Statement
+          | '{' StatementList '}'
+          | Expression ';'
+          | Type IDENTIFIER ';'
+		  | StatementWithoutTrailingSubstatement
+          ;
+
+Type	: IntegerLiteral
+		| BooleanLiteral
 		;
-
-Statement 
-		: IF '(' Expression ')' Statement ELSE Statement
-		| '{' StatementList '}'
-		| Expression ';'
-		| Type IDENTIFIER ';'
-		| StatementWithoutTrailingSubstatement
-		;
-
-Type 
-		: IntegerLiteral
-     	| BooleanLiteral
-     	;
 
 StatementList 
 		: StatementList Statement
-    	| /* empty */
+        | /* empty */
         ;
 
 Expression 
@@ -147,16 +92,15 @@ Expression
         | Expression '+' Expression
         | Expression '<' Expression
 		| AssignmentExpression
-        ;
-
-Empty:
-	 ;
+		  
+           ;
+Empty	:
+		;
 
 // Group A Start
 CompilationUnit 
 		: PackageDeclaration_opt ImportDeclarations TypeDeclarations
 		;
-
 
 PackageDeclaration_opt
 		: /* empty */
@@ -168,13 +112,11 @@ ImportDeclarations
 		| /* follow up */
 		;
 
-
 TypeDeclarations 
 		: TypeDeclaration TypeDeclarations
 		| /* empty */
 		| /* follow up */
 		;
-
 TypeDeclaration 
 		: ClassDeclaration /* need to add InterfaceDeclaration */
 		;
@@ -195,14 +137,13 @@ ClassModifiers
 ClassModifier 
 		: Annotation
 		| PUBLIC
-		| PROTECTED
-		| PRIVATE
-		| ABSTRACT
-		| STATIC
-		| FINAL
-		| STRICTFP
+		| PROTECTED 
+		| PRIVATE 
+		| ABSTRACT 
+		| STATIC 
+		| FINAL 
+		| STRICTFP 
 		;
-
 
 Annotation
 		: /* empty */
@@ -221,11 +162,12 @@ Superinterfaces_opt : /* empty */
 ClassBody 
 		: '{' ClassBodyDeclarations '}'
 		;
+
 // Group A End
 
 // PartB by Adon Mofified by Josh to remove MemberDeclarations as it is unessisary
 ClassBodyDeclarations
-		: ClassMemberDeclarations ClassBodyDeclaration
+		: ClassBodyDeclarations ClassBodyDeclaration
 		| /* empty */
         ;
 
@@ -233,20 +175,25 @@ ClassBodyDeclaration
 		: ClassMemberDeclaration
         ;
 
-
 // Fixed by An
 ClassMemberDeclaration
-		:MethodDeclaration
+		: MethodDeclaration
 		;
+
 // Change ClassMemberDeclaration to MethodDeclaration -An	
 MethodDeclaration
 		: MethodModifiers MethodHeader MethodBody
         ;
 
 MethodModifiers
-		: MethodModifiers MethodModifier
-        | Empty
-		| /* empty */
+        : MethodModifiers MethodModifier
+		| / * Empty */
+//-^^^^------^^^
+// Error: This character is invalid in this context
+// Error: This character is invalid in this context
+// Error: This character is invalid in this context
+// Error: This character is invalid in this context
+// ------------------------------------------------
         ;
 
 MethodModifier
@@ -269,15 +216,19 @@ Result
 	   	;
 
 Throws_opt
-		: /* empty */
+		: Empty
 	  	;
-	 
+
 // Fixed spelling error	 
 MethodDeclarator
 		: IDENTIFIER '(' FormalParameterList_Opt ')' Dims_Opt
 		;
 
-
+/* Removed by Nathan
+Identifier
+		: Main
+		;
+*/
 //PLACEHOLDER - Josh - Tri
 FormalParameterList_Opt
 		: FormalParameterList
@@ -288,7 +239,6 @@ Dims_Opt
 		: Dims
 		| /* Empty */
 		;
-
 // JOSHUA'S WORK END
 
 //Work by Tri
@@ -298,19 +248,17 @@ FormalParameterList
 		;
 
 FormalParameters 
-		: FormalParameter FormalParameter_s
+		: FormalParameter FormalParameter_repeat 
 		| /* empty *//*TODO*/
 		;
-
-FormalParameter_s
-		: ',' FormalParameter FormalParameter_s
+FormalParameter_repeat
+		: ',' FormalParameter_repeat FormalParameter
 		| /* empty */
 		;
 
 FormalParameter 
-		: VariableModifiers UnannType VariableDeclaratorId
+		:  VariableModifiers UnannType VariableDeclaratorId
 		;
-
 VariableModifiers 
 		: VariableModifiers VariableModifier
 		| /* empty */
@@ -322,10 +270,9 @@ VariableModifier
 		;
 
 //End work by Tri
-
 // Work by Vivian
 Dims
-		: Annotations '[' ']'
+		: Annotations '['']'
 		;
 
 VariableDeclaratorId
@@ -358,7 +305,7 @@ UnannTypeVariable
 
 // Start work by An
 MethodBody
-		: Block 
+		:  Block 
 		| ';'
 		;
 
@@ -410,58 +357,60 @@ VariableDeclarator
 		| /* follow up */
 		;
 
+VariableDeclaratorId
+		: IDENTIFIER Dims_Opt
+		;
 
 // Tristan
 StatementWithoutTrailingSubstatement
 		: ExpressionStatement 
-		|  /* empty */
 		;
+
 ExpressionStatement
 		: StatementExpression ';'
 		;
 
-
-
-// End Work by Tristan
-// Added by An
 StatementExpression
 		: Assignment
 		;
+
+// End Work by Tristan
 //work by sneha
 
 Assignment
-	: LeftHandSide AssignmentOperator Expression
-	;
+		: LeftHandSide AssignmentOperator Expression
+		;
+
 LeftHandSide
-	: ExpressionName
-	;
+		: ExpressionName
+		;
+
 ExpressionName
-	: IDENTIFIER
-	;
+		: IDENTIFIER
+		;
+
 AssignmentOperator
-	: '='
-	;
-Expression
-	: AssignmentExpression
-	;
+		: '='
+		;
 
 AssignmentExpression
-	: ArrayAccess
-	;
+		: ArrayAccess
+		;
 
 ArrayAccess
-	: PrimaryNoNewArray
-	;
+		: PrimaryNoNewArray
+		;
 
 PrimaryNoNewArray
-	: Literal
-	;
+		: Literal
+		;
 
 Literal
-	: IntegerLiteral
-	;
+		: IntegerLiteral
+		;
 
 // end of sneha Work
+
 %%
 
 public Parser(Scanner scanner) : base(scanner)
