@@ -53,32 +53,32 @@
 
 %%
 
-Program : CompilationUnit
+Program : CompilationUnit										{ // Nathan }
         ;
 
-Statement : IF '(' Expression ')' Statement ELSE Statement
-          | '{' StatementList '}'
-          | Expression ';'
-          | Type IDENTIFIER ';'
-		  | StatementWithoutTrailingSubstatement
+Statement : IF '(' Expression ')' Statement ELSE Statement		{ // Nathan }
+          | '{' StatementList '}'								{ // Nathan }
+          | Expression ';'										{ // Nathan }
+          | Type IDENTIFIER ';'									{ // Nathan }
+		  | StatementWithoutTrailingSubstatement				{ // Nathan }
           ;
 
-Type	: IntegerLiteral
-		| BooleanLiteral
+Type	: IntegerLiteral										{ // Tri }
+		| BooleanLiteral										{ // Tri }
 		;
 
 StatementList 
-		: StatementList Statement
-        | /* empty */
+		: StatementList Statement								{ // Tri }
+        | /* empty */											{ // Tri }
         ;
 
 Expression 
-		: IntegerLiteral
-        | IDENTIFIER
-        | Expression '=' Expression
-        | Expression '+' Expression
-        | Expression '<' Expression
-		| AssignmentExpression
+		: IntegerLiteral										{ // Tri }
+        | IDENTIFIER											{ // Tri }	
+        | Expression '=' Expression								{ // Tri }
+        | Expression '+' Expression								{ // Tri }
+        | Expression '<' Expression								{ // Josh }
+		| AssignmentExpression									{ // Josh }
 		  
            ;
 Empty	:
@@ -86,105 +86,105 @@ Empty	:
 
 // Group A Start
 CompilationUnit 
-		: PackageDeclaration_opt ImportDeclarations TypeDeclarations
+		: PackageDeclaration_opt ImportDeclarations TypeDeclarations	{ // Josh }
 		;
 
 PackageDeclaration_opt
-		: /* empty */
+		: /* empty */											{ // Josh }
 		| /* follow up */
 		;
 		
 ImportDeclarations
-		: /*empty*/
+		: /*empty*/												{ // Josh }
 		| /* follow up */
 		;
 
 TypeDeclarations 
 		: TypeDeclaration TypeDeclarations
-		| /* empty */
+		| /* empty */											{ // Josh }
 		| /* follow up */
 		;
 TypeDeclaration 
-		: ClassDeclaration /* need to add InterfaceDeclaration */
+		: ClassDeclaration /* need to add InterfaceDeclaration */ { // Vivian }
 		;
 
 ClassDeclaration 
-		: NormalClassDeclaration /* need to add EnumDeclaration */
+		: NormalClassDeclaration /* need to add EnumDeclaration */ { // Vivian }
 		;
 
 NormalClassDeclaration 
-		: ClassModifiers CLASS IDENTIFIER TypeParameters_opt SuperClass_opt Superinterfaces_opt ClassBody
+		: ClassModifiers CLASS IDENTIFIER TypeParameters_opt SuperClass_opt Superinterfaces_opt ClassBody { // Vivian }
 		;
 
 ClassModifiers 
-		: ClassModifiers ClassModifier
-		| /* empty */
+		: ClassModifiers ClassModifier							{ // Vivian }
+		| /* empty */											{ // Vivian }
 		;
 
 ClassModifier 
-		: Annotation
-		| PUBLIC
-		| PROTECTED 
-		| PRIVATE 
-		| ABSTRACT 
-		| STATIC 
-		| FINAL 
-		| STRICTFP 
+		: Annotation											{ // Adon }
+		| PUBLIC												{ // Adon }
+		| PROTECTED 											{ // Adon }
+		| PRIVATE 												{ // Adon }
+		| ABSTRACT 												{ // Adon }
+		| STATIC 												{ // Adon }
+		| FINAL 												{ // Adon }
+		| STRICTFP 												{ // Adon }
 		;
 
 Annotation
-		: /* empty */
+		: /* empty */											{ // Tristan }
 		;
 
 //GROUP C TRACKING
-TypeParameters_opt : /* empty */
+TypeParameters_opt : /* empty */								{ // Tristan }
 		;
 
-SuperClass_opt : /* empty */
+SuperClass_opt : /* empty */									{ // Tristan }
 		;
 
-Superinterfaces_opt : /* empty */
+Superinterfaces_opt : /* empty */								{ // Tristan }
 		;
 
 ClassBody 
-		: '{' ClassBodyDeclarations '}'
+		: '{' ClassBodyDeclarations '}'							{ // Tristan }
 		;
 
 // Group A End
 
 // PartB by Adon Mofified by Josh to remove MemberDeclarations as it is unessisary
 ClassBodyDeclarations
-		: ClassBodyDeclarations ClassBodyDeclaration
-		| /* empty */
+		: ClassBodyDeclarations ClassBodyDeclaration			{ // Tristan }
+		| /* empty */											{ // Tristan }
         ;
 
 ClassBodyDeclaration
-		: ClassMemberDeclaration
+		: ClassMemberDeclaration								{ // Tristan }
         ;
 
 // Fixed by An
 ClassMemberDeclaration
-		: MethodDeclaration
+		: MethodDeclaration										{ // Sneha }
 		;
 
 // Change ClassMemberDeclaration to MethodDeclaration -An	
 MethodDeclaration
-		: MethodModifiers MethodHeader MethodBody
+		: MethodModifiers MethodHeader MethodBody				{ // Sneha }
         ;
 
 MethodModifiers
-        : MethodModifiers MethodModifier
-		| /* Empty */
+        : MethodModifiers MethodModifier						{ // Sneha }
+		| /* Empty */											{ // Sneha }
         ;
 
 MethodModifier
-		: Annotation
-		| PUBLIC
-        | STATIC
+		: Annotation											{ // Sneha }
+		| PUBLIC												{ // Sneha }
+        | STATIC												{ // Sneha }
         ;
 
 MethodHeader
-		: Result MethodDeclarator Throws_opt
+		: Result MethodDeclarator Throws_opt					{ // Khoa }
         ;
 
 // End Fix
@@ -192,221 +192,221 @@ MethodHeader
 
 //WORK BY JOSH HUDSON
 Result 
-		: VOID
-		| UnannType
+		: VOID													{ // Khoa }
+		| UnannType												{ // Khoa }
 	   	;
 
 Throws_opt
-		: Empty
+		: Empty													{ // Khoa }
 	  	;
 
 // Fixed spelling error	 
 MethodDeclarator
-		: IDENTIFIER '(' FormalParameterList_Opt ')' Dims_Opt
+		: IDENTIFIER '(' FormalParameterList_Opt ')' Dims_Opt	{ // Khoa }
 		;
 
 /* Removed by Nathan
 Identifier
-		: Main
+		: Main													{ // Khoa }
 		;
 */
 //PLACEHOLDER - Josh - Tri
 FormalParameterList_Opt
-		: FormalParameterList
-		| /* empty */
+		: FormalParameterList									{ // An }
+		| /* empty */											{ // An }
 		;
 
 Dims_Opt 
-		: Dims
-		| /* Empty */
+		: Dims													{ // An }
+		| /* Empty */											{ // An }
 		;
 // JOSHUA'S WORK END
 
 //Work by Tri
 FormalParameterList 
-		: FormalParameters 
-		| /*TODO*/
+		: FormalParameters 										{ // An }
+		| /*TODO*/												{ // An }
 		;
 
 FormalParameters 
-		: FormalParameter FormalParameter_repeat 
-		| /* empty *//*TODO*/
+		: FormalParameter FormalParameter_repeat 				{ // Nathan }
+		| /* empty *//*TODO*/									{ // Nathan }
 		;
 FormalParameter_repeat
-		: ',' FormalParameter_repeat FormalParameter
-		| /* empty */
+		: ',' FormalParameter_repeat FormalParameter			{ // Nathan }
+		| /* empty */											{ // Nathan }
 		;
 
 FormalParameter 
-		:  VariableModifiers UnannType VariableDeclaratorId
+		:  VariableModifiers UnannType VariableDeclaratorId		{ // Nathan }
 		;
 VariableModifiers 
-		: VariableModifiers VariableModifier
-		| /* empty */
+		: VariableModifiers VariableModifier					{ // Nathan }
+		| /* empty */											{ // Nathan }
 		;
 
 VariableModifier 
-		: Annotation
-		| FINAL
+		: Annotation											{ // Tri }
+		| FINAL													{ // Tri }
 		;
 
 //End work by Tri
 // Work by Vivian
 Dims
-		: Annotations '['']'
+		: Annotations '['']'									{ // Tri }
 		;
 
 VariableDeclaratorId
-		: IDENTIFIER Dims_Opt
+		: IDENTIFIER Dims_Opt									{ // Tri }
 		;
 
 UnannType
-		: UnannReferenceType
-		| UnannPrimitiveType
+		: UnannReferenceType									{ // Tri }
+		| UnannPrimitiveType									{ // Tri }
 		;
 
 UnannPrimitiveType
-		: NumbericType
-		| BOOL
+		: NumbericType											{ // Josh }
+		| BOOL													{ // Josh }
 		;
 
 NumbericType
-		: IntegralType
-		| FloatingPointType
+		: IntegralType											{ // Josh }
+		| FloatingPointType										{ // Josh }
 		;
 
 IntegralType
-		: BYTE
-		| SHORT
-		| INT
-		| LONG
-		| CHAR
+		: BYTE													{ // Josh }
+		| SHORT													{ // Josh }
+		| INT													{ // Vivian }
+		| LONG													{ // Vivian }
+		| CHAR													{ // Vivian }
 		;
 
 FloatingPointType
-		: FLOAT
-		| DOUBLE
+		: FLOAT													{ // Vivian }
+		| DOUBLE												{ // Vivian }
 		;
 
 UnannReferenceType
-		: UnannArrayType
-		| /*follow up */
+		: UnannArrayType										{ // Vivian }
+		| /*follow up */										{ // Vivian }
 		;
 
 // Vivian's work end
 // Work by Khoa - Fixed by An
 UnannArrayType
-		: UnannTypeVariable Dims
+		: UnannTypeVariable Dims								{ // Adon }
 		;	
 			
 UnannTypeVariable
-		: IDENTIFIER
+		: IDENTIFIER											{ // Adon }
 		;	
 
 // Start work by An
 MethodBody
-		:  Block 
-		| ';'
+		:  Block 												{ // Adon }
+		| ';'													{ // Adon }
 		;
 
 Annotations
-		: Annotation
-		| /* Empty */
+		: Annotation											{ // Adon }
+		| /* Empty */											{ // Adon }
 		;
 
 Block 
-		: '{' BlockStatements_Opt '}'
+		: '{' BlockStatements_Opt '}'							{ // Tristan }
 		;
 
 BlockStatements_Opt
-		: BlockStatements
-		| /* Empty */
+		: BlockStatements										{ // Tristan }
+		| /* Empty */											{ // Tristan }
 		;
 
 BlockStatements
-		: BlockStatement BlockStatement_s
+		: BlockStatement BlockStatement_s						{ // Tristan }
 		;
 
 BlockStatement_s
-		: BlockStatement_s BlockStatement
-		| /* Empty */
+		: BlockStatement_s BlockStatement						{ // Tristan }
+		| /* Empty */											{ // Tristan }
 		;
 
 BlockStatement
-		: LocalVariableDeclarationsAndStatement
-		| Statement
-		| /* follow up */
+		: LocalVariableDeclarationsAndStatement					{ // Sneha }
+		| Statement												{ // Sneha }
+		| /* follow up */										{ // Sneha }
 		;
 
 LocalVariableDeclarationsAndStatement
-		: LocalVariableDeclaration ';'
+		: LocalVariableDeclaration ';'							{ // Sneha }
 		;
 
 LocalVariableDeclaration
-		: UnannType VariableDeclaratorList
-		| /* follow up */
+		: UnannType VariableDeclaratorList						{ // Sneha }
+		| /* follow up */										{ // Sneha }
 		;
 
 VariableDeclaratorList
-		: VariableDeclarator
-		| /* follow up */
+		: VariableDeclarator									{ // An }
+		| /* follow up */										{ // An }
 		;
 
 VariableDeclarator
-		: VariableDeclaratorId
-		| /* follow up */
+		: VariableDeclaratorId									{ // An }
+		| /* follow up */										{ // An }
 		;
 
 VariableDeclaratorId
-		: IDENTIFIER Dims_Opt
+		: IDENTIFIER Dims_Opt									{ // An }
 		;
 
 // Tristan
 StatementWithoutTrailingSubstatement
-		: ExpressionStatement 
+		: ExpressionStatement 									{ // An }
 		;
 
 ExpressionStatement
-		: StatementExpression ';'
+		: StatementExpression ';'								{ // Khoa }
 		;
 
 StatementExpression
-		: Assignment
+		: Assignment											{ // Khoa }
 		;
 
 // End Work by Tristan
 //work by sneha
 
 Assignment
-		: LeftHandSide AssignmentOperator Expression
+		: LeftHandSide AssignmentOperator Expression			{ // Khoa }
 		;
 
 LeftHandSide
-		: ExpressionName
+		: ExpressionName										{ // Khoa }
 		;
 
 ExpressionName
-		: IDENTIFIER
+		: IDENTIFIER											{ // Khoa }
 		;
 
 AssignmentOperator
-		: '='
+		: '='													{ // Khoa }
 		;
 
 AssignmentExpression
-		: ArrayAccess
+		: ArrayAccess											{ // Nathan }
 		;
 
 ArrayAccess
-		: PrimaryNoNewArray
+		: PrimaryNoNewArray										{ // Nathan }
 		;
 
 PrimaryNoNewArray
-		: Literal
+		: Literal												{ // Nathan }
 		;
 
 Literal
-		: IntegerLiteral
+		: IntegerLiteral										{ // Nathan }
 		;
 
 // end of sneha Work
