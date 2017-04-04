@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 
 namespace IFN660_Java_ECMAScript
 {
@@ -23,6 +24,25 @@ namespace IFN660_Java_ECMAScript
             {
                 object value = field.GetValue(this);
                 Indent(indent + 1);
+                
+                if (value is IEnumerable && !(value is String))
+                {
+                    var e = (IEnumerable)value;
+                    Console.WriteLine("[");
+                    foreach (var item in e)
+                    {
+                        if (item is Node)
+                            ((Node)item).DumpValue(indent + 2);
+                        else
+                        {
+                            Indent(indent + 2);
+                            Console.WriteLine(item);
+                        }
+                    }
+                    Indent(indent + 1);
+                    Console.WriteLine("]");
+                }
+
                 if (value is Node)
                 {
                     Console.WriteLine("{0}:", field.Name);
@@ -30,6 +50,8 @@ namespace IFN660_Java_ECMAScript
                 }
                 else
                     Console.WriteLine("{0}: {1}", field.Name, value);
+
+
             }
 
             Indent(indent);
