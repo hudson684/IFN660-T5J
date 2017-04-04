@@ -2,7 +2,7 @@
 %union
 {
     public long num;
-	public float floatnum;
+	public double floatnum;
 	public bool boolval;
 	public char charval;
     public string name;
@@ -14,7 +14,7 @@
 // 3.9 Keywords
 %token ABSTRACT   CONTINUE   FOR          NEW         SWITCH
 %token ASSERT     DEFAULT    IF           PACKAGE     SYNCHRONIZED
-%token BOOL	      DO         GOTO         PRIVATE     THIS
+%token BOOLEAN	  DO         GOTO         PRIVATE     THIS
 %token BREAK      DOUBLE     IMPLEMENTS   PROTECTED   THROW
 %token BYTE       ELSE       IMPORT       PUBLIC      THROWS
 %token CASE       ENUM       INSTANCEOF   RETURN      TRANSIENT
@@ -266,8 +266,13 @@ UnannType
 		;
 
 UnannPrimitiveType
+<<<<<<< HEAD
 		: NumbericType											{ // Josh }
 		| BOOL													{ // Josh }
+=======
+		: NumbericType
+		| BOOLEAN
+>>>>>>> master
 		;
 
 NumbericType
