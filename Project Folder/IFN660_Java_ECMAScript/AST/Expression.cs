@@ -30,11 +30,11 @@ namespace IFN660_Java_ECMAScript
         }
     }
 
-    public class IntegerLiteral : Expression
+    public class IntegerLiteralExpression : Expression
     {
 
         private int value;
-        public IntegerLiteral(int value)
+        public IntegerLiteralExpression(int value)
         {
             this.value = value;
         }
@@ -43,12 +43,12 @@ namespace IFN660_Java_ECMAScript
     }
 
     //changed made by Josh so that the assignmentStatement is correct
-    public class AssignmentExpression : Expression
+    public class BinaryExpression : Expression
     {
         private Expression leftHandSide;
         private Expression rightHandSide;
         private string assignmentExpressor;
-        public AssignmentExpression(Expression leftHandSide, string assignmentExpressor, Expression rightHandSide)
+        public BinaryExpression(Expression leftHandSide, string assignmentExpressor, Expression rightHandSide)
         {
             this.leftHandSide = leftHandSide;
             this.rightHandSide = rightHandSide;

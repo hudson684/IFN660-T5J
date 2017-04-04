@@ -49,8 +49,9 @@
     <Compile Include="AST\Expression.cs" />
     <Compile Include="AST\MethodDeclaration.cs" />
     <Compile Include="AST\Node.cs" />
-    <Compile Include="AST\PackageDelaration.cs" />
+    <Compile Include="AST\PackageDeclaration.cs" />
     <Compile Include="AST\Parameters.cs" />
+    <Compile Include="AST\Type.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="AST\Statement.cs" />

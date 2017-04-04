@@ -15,7 +15,15 @@
         }
     }
 
+    public class ExpressionStatement : Statement
+    {
+        private Expression expr;
 
+        public ExpressionStatement (Expression expr)
+        {
+            this.expr = expr;
+        }
+    }
    
 
 }

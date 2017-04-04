@@ -9,29 +9,29 @@ namespace IFN660_Java_ECMAScript.AST
         private Modifier[] methodModifiers;
         private String methodIdentifier;
         private MethodDeclaration methodDeclaration;
-        private String result;
+        private Type returnType;
         private Statement[] statementList;
 
-        public MethodDeclaration(String methodIdentifier, Modifier[] methodModifiers, MethodDeclaration methodDeclaration, String result)
+        public MethodDeclaration(String methodIdentifier, Modifier[] methodModifiers, MethodDeclaration methodDeclaration, Type returnType)
         {
             this.methodIdentifier = methodIdentifier;
             this.methodModifiers = methodModifiers;
             this.methodDeclaration = methodDeclaration;
-            this.result = result;
+            this.returnType = returnType;
         }
-        public MethodDeclaration(String methodIdentifier, Modifier[] methodModifiers, String result)
+        public MethodDeclaration(String methodIdentifier, Modifier[] methodModifiers, Type returnType)
         {
             this.methodIdentifier = methodIdentifier;
             this.methodModifiers = methodModifiers;
-            this.result = result;
+            this.returnType = returnType;
         }
 
-        public MethodDeclaration(String methodIdentifier, Modifier[] methodModifiers, Statement[] statementList, String result)
+        public MethodDeclaration(String methodIdentifier, Modifier[] methodModifiers, Statement[] statementList, Type returnType)
         {
             this.methodIdentifier = methodIdentifier;
             this.methodModifiers = methodModifiers;
             this.statementList = statementList;
-            this.result = result;
+            this.returnType = returnType;
         }
 
 
