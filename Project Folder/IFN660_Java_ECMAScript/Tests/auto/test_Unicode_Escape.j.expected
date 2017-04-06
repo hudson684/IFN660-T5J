@@ -1,7 +1,0 @@
-﻿CharacterLiteral ('\"')
-UnicodeInputCharacter (\u0022)
-UnicodeInputCharacter (\u0054)
-StringLiteral ("End of test")
-UnicodeInputCharacter (\u005c)
-IDENT (u005a)
-EOF
