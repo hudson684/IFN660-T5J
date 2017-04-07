@@ -2,10 +2,13 @@
 %union
 {
     public long num;
-	public float floatnum;
+	public double floatnum;
 	public bool boolval;
 	public char charval;
     public string name;
+	Statement s;
+	Expression e;
+	Node n;
 }
 
 %token <num> NUMBER
@@ -14,7 +17,7 @@
 // 3.9 Keywords
 %token ABSTRACT   CONTINUE   FOR          NEW         SWITCH
 %token ASSERT     DEFAULT    IF           PACKAGE     SYNCHRONIZED
-%token BOOL	      DO         GOTO         PRIVATE     THIS
+%token BOOLEAN	  DO         GOTO         PRIVATE     THIS
 %token BREAK      DOUBLE     IMPLEMENTS   PROTECTED   THROW
 %token BYTE       ELSE       IMPORT       PUBLIC      THROWS
 %token CASE       ENUM       INSTANCEOF   RETURN      TRANSIENT
@@ -53,14 +56,14 @@
 
 %%
 
-Program : CompilationUnit										{ // Nathan }
+Program : CompilationUnit										{ $$ = $1; $$.DumpValue(0); } // Nathan - may not need this. Just do dump at CompilationUnit level.
         ;
 
-Statement : IF '(' Expression ')' Statement ELSE Statement		{ // Nathan }
-          | '{' StatementList '}'								{ // Nathan }
-          | Expression ';'										{ // Nathan }
-          | Type IDENTIFIER ';'									{ // Nathan }
-		  | StatementWithoutTrailingSubstatement				{ // Nathan }
+Statement : IF '(' Expression ')' Statement ELSE Statement		{ $$ = new IfStatement($3, $5, $7); } // Nathan
+          | '{' StatementList '}'								{ $$ = $2; } // how does this work? Won't StatementList be any array or list type - Nathan
+          | Expression ';'										{ $$ = new ExpressionStatement($1); } // Nathan
+          | Type IDENTIFIER ';'									{ // Nathan - I don't think this is needed } 
+		  | StatementWithoutTrailingSubstatement				{ $$ = $1 } // Nathan
           ;
 
 Type	: IntegerLiteral										{ // Tri }
@@ -229,20 +232,23 @@ FormalParameterList
 		;
 
 FormalParameters 
-		: FormalParameter FormalParameter_repeat 				{ // Nathan }
-		| /* empty *//*TODO*/									{ // Nathan }
-		;
-FormalParameter_repeat
-		: ',' FormalParameter_repeat FormalParameter			{ // Nathan }
-		| /* empty */											{ // Nathan }
+		: FormalParameters FormalParameter 						{ $$ = $2 } /* TODO - only works if there is a single parameter */ // Nathan
+		| /* empty *//*TODO*/									{ $$ = null; } // Nathan
 		;
 
+/*	Do we need this? - Nathan	
+FormalParameter_repeat
+		: ',' FormalParameter_repeat FormalParameter			{ $$ = null; } /* TODO */ // Nathan
+		| /* empty */											{ $$ = null; } // Nathan
+		;
+*/
+
 FormalParameter 
-		:  VariableModifiers UnannType VariableDeclaratorId		{ // Nathan }
+		:  VariableModifiers UnannType VariableDeclaratorId		{ $$ = new VariableDeclarationStatement($2, $3); } // Nathan
 		;
 VariableModifiers 
-		: VariableModifiers VariableModifier					{ // Nathan }
-		| /* empty */											{ // Nathan }
+		: VariableModifiers VariableModifier					{ $$ = null; } /* TODO */  // Nathan
+		| /* empty */											{ $$ = null; } // Nathan
 		;
 
 VariableModifier 
@@ -266,8 +272,13 @@ UnannType
 		;
 
 UnannPrimitiveType
+<<<<<<< HEAD
 		: NumbericType											{ // Josh }
 		| BOOL													{ // Josh }
+=======
+		: NumbericType
+		| BOOLEAN
+>>>>>>> master
 		;
 
 NumbericType
@@ -394,19 +405,19 @@ AssignmentOperator
 		;
 
 AssignmentExpression
-		: ArrayAccess											{ // Nathan }
+		: ArrayAccess											{ $$ = $1 } // Nathan
 		;
 
 ArrayAccess
-		: PrimaryNoNewArray										{ // Nathan }
+		: PrimaryNoNewArray										{ $$ = $1; } // Nathan
 		;
 
 PrimaryNoNewArray
-		: Literal												{ // Nathan }
+		: Literal												{ $$ = $1; } // Nathan
 		;
 
 Literal
-		: IntegerLiteral										{ // Nathan }
+		: IntegerLiteral										{ $$ = new IntegerLiteralExpression($1); } // Nathan
 		;
 
 // end of sneha Work
