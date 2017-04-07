@@ -6,20 +6,37 @@ using System.Threading.Tasks;
 
 namespace IFN660_Java_ECMAScript.AST
 {
-    public abstract class Type : Node
+    public enum type
     {
+        STRING,
+        VOID,
+        INTEGER
     }
+
+    public class Type : Node
+    {
+        private Enum elementType;
+
+        public Type() { }
+
+        public Type (Enum elementType)
+	    {
+            this.elementType = elementType;
+	    }
+    }
+
 
     public class ArrayType : Type
     {
         private Type elementType;
 
-        public ArrayType(Type elementType)
+        public ArrayType(Type elementType) 
         {
             this.elementType = elementType;
         }
     }
-
+    
+    /*
     public class VoidType : Type
     {
         public VoidType ()
@@ -40,4 +57,5 @@ namespace IFN660_Java_ECMAScript.AST
         {
         }
     }
+     * */
 }

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace IFN660_Java_ECMAScript.AST
 {
-    public class ImportDeclaration: Node
+    public class ImportDeclaration : Statement
     {
         public ImportDeclaration()
         { }

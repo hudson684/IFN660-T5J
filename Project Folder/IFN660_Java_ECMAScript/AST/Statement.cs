@@ -1,4 +1,4 @@
-﻿namespace IFN660_Java_ECMAScript
+﻿namespace IFN660_Java_ECMAScript.AST
 {
     
     public abstract class Statement : Node
@@ -24,6 +24,21 @@
             this.expr = expr;
         }
     }
+
+    public class VariableDefinitionStatement : Statement
+    {
+        private Type VariableType;
+        private Expression VariableName;
+
+        public VariableDefinitionStatement(Type VariableType, Expression VariableName)
+        {
+            this.VariableType = VariableType;
+            this.VariableName = VariableName;
+        }
+
+    }
+
+
    
 
 }

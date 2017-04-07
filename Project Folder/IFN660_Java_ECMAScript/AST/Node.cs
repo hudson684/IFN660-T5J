@@ -25,10 +25,21 @@ namespace IFN660_Java_ECMAScript
                 object value = field.GetValue(this);
                 Indent(indent + 1);
                 
+                if (value is Node)
+                {
+                    Console.WriteLine("{0}:", field.Name);
+                    ((Node)value).DumpValue(indent + 2);
+                }
+                else
+                    Console.WriteLine("{0}: {1}", field.Name, value);
+
                 if (value is IEnumerable && !(value is String))
                 {
                     var e = (IEnumerable)value;
+
+                    Indent(indent + 1);
                     Console.WriteLine("[");
+
                     foreach (var item in e)
                     {
                         if (item is Node)
@@ -39,18 +50,10 @@ namespace IFN660_Java_ECMAScript
                             Console.WriteLine(item);
                         }
                     }
+
                     Indent(indent + 1);
                     Console.WriteLine("]");
                 }
-
-                if (value is Node)
-                {
-                    Console.WriteLine("{0}:", field.Name);
-                    ((Node)value).DumpValue(indent + 2);
-                }
-                else
-                    Console.WriteLine("{0}: {1}", field.Name, value);
-
 
             }
 
