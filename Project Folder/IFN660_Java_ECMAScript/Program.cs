@@ -15,18 +15,18 @@ namespace IFN660_Java_ECMAScript.AST
             Modifier[] mods = { Modifier.PUBLIC, Modifier.STATIC };
             Modifier[] classMods = { Modifier.PUBLIC };
 
-            VariableDefinitionStatement[] argList = { new VariableDefinitionStatement(new ArrayType(new Type(type.STRING)), new VariableExpression("args") ) };
+            VariableDefinitionStatement[] argList = { new VariableDefinitionStatement(new ArrayType(new Type(type.STRING)), new VariableExpression("args") , null) };
 
             var lhs = new VariableExpression("x");
             var rhs = new IntegerLiteralExpression(42);
 
-            var assignVar = new VariableDefinitionStatement(new Type(type.INTEGER), lhs);
+            var assignVar = new VariableDefinitionStatement(new Type(type.INTEGER), lhs, null);
 
             var assignExpr = new AssignmentExpression(lhs, rhs);
             var assignStmt = new ExpressionStatement(assignExpr);
             Statement[] statementList = { assignVar, assignStmt }; 
 
-            var method = new MethodDeclaration("Main", mods, statementList, type.VOID, argList);
+            var method = new MethodDeclaration("Main", mods, statementList, new Type(type.VOID), argList);
             var classDec = new ClassDeclaration("HelloWorld", classMods, method);
 
             ClassDeclaration[] classes = { classDec };
@@ -34,6 +34,8 @@ namespace IFN660_Java_ECMAScript.AST
             var pro = new CompilationUnitDeclaration(null, null, classes);
 
             pro.DumpValue(0);
+
+
         }
     }
 }
