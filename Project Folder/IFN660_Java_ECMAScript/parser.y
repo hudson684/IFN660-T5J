@@ -80,8 +80,8 @@ Expression
         | IDENTIFIER											{ // Tri }	
         | Expression '=' Expression								{ // Tri }
         | Expression '+' Expression								{ // Tri }
-        | Expression '<' Expression								{ // Josh }
-		| AssignmentExpression									{ // Josh }
+        | Expression '<' Expression								{ $$ = new AssignmentExpression($1,$2,$3); } //Josh
+		| AssignmentExpression									{ $$ = $1; } // Josh
 		  
            ;
 Empty	:
@@ -89,22 +89,22 @@ Empty	:
 
 // Group A Start
 CompilationUnit 
-		: PackageDeclaration_opt ImportDeclarations TypeDeclarations	{ // Josh }
+		: PackageDeclaration_opt ImportDeclarations TypeDeclarations	{ $$ = new CompiationUnit($1,$2,$3); } // Josh
 		;
 
 PackageDeclaration_opt
-		: /* empty */											{ // Josh }
+		: /* empty */											{ $$ = null; // Josh }
 		| /* follow up */
 		;
 		
 ImportDeclarations
-		: /*empty*/												{ // Josh }
+		: /*empty*/												{ $$ = null; // Josh }
 		| /* follow up */
 		;
 
 TypeDeclarations 
-		: TypeDeclaration TypeDeclarations
-		| /* empty */											{ // Josh }
+		: TypeDeclaration TypeDeclarations						{ $$ = $1,$2;// Josh }
+		| /* empty */											{ $$ = null; // Josh }
 		| /* follow up */
 		;
 TypeDeclaration 
@@ -272,23 +272,19 @@ UnannType
 		;
 
 UnannPrimitiveType
-<<<<<<< HEAD
-		: NumbericType											{ // Josh }
-		| BOOL													{ // Josh }
-=======
-		: NumbericType
-		| BOOLEAN
->>>>>>> master
+
+		: NumbericType											{ $$ = $1; // Josh }
+		| BOOLEAN												{ $$ = $1; // Josh }
 		;
 
 NumbericType
-		: IntegralType											{ // Josh }
-		| FloatingPointType										{ // Josh }
+		: IntegralType											{ $$ = $1; // Josh }
+		| FloatingPointType										{ $$ = $1; // Josh }
 		;
 
 IntegralType
-		: BYTE													{ // Josh }
-		| SHORT													{ // Josh }
+		: BYTE													{ $$ = $1;  // Josh }
+		| SHORT													{ $$ = $1;  // Josh }
 		| INT													{ // Vivian }
 		| LONG													{ // Vivian }
 		| CHAR													{ // Vivian }
