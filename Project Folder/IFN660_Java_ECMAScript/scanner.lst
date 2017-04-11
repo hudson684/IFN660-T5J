@@ -3,13 +3,13 @@
 //  GPLEX error listing for lex source file <scanner.lex>
 // ==========================================================================
 //  Version:  1.2.2
-//  Machine:  VDI-VL17-054
-//  DateTime: 4/04/2017 9:51:05 AM
-//  UserName: n9768653
+//  Machine:  VDI-VL17-145
+//  DateTime: 11/04/2017 6:30:48 PM
+//  UserName: n9648500
 // ==========================================================================
 
 
-%namespace IFN660_Java_ECMAScript
+%namespace IFN660_Java_ECMAScript.AST
 
 %{
 int lines = 0;

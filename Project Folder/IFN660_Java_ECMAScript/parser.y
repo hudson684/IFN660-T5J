@@ -1,4 +1,4 @@
-%namespace IFN660_Java_ECMAScript
+%namespace IFN660_Java_ECMAScript.AST
 %union
 {
     public long num;
@@ -56,31 +56,31 @@
 
 %%
 
-Program : CompilationUnit										{ $$ = $1; $$.DumpValue(0); } // Nathan - may not need this. Just do dump at CompilationUnit level.
+Program : CompilationUnit										
         ;
 
 Statement : IF '(' Expression ')' Statement ELSE Statement		{ $$ = new IfStatement($3, $5, $7); } // Nathan
           | '{' StatementList '}'								{ $$ = $2; } // how does this work? Won't StatementList be any array or list type - Nathan
           | Expression ';'										{ $$ = new ExpressionStatement($1); } // Nathan
-          | Type IDENTIFIER ';'									{ // Nathan - I don't think this is needed } 
-		  | StatementWithoutTrailingSubstatement				{ $$ = $1 } // Nathan
+          | Type IDENTIFIER ';'									
+		  | StatementWithoutTrailingSubstatement				{ $$ = $1; } // Nathan
           ;
 
-Type	: IntegerLiteral										{ $$ = $1; // Tri }
-		| BooleanLiteral										{ $$ = $1; // Tri }
+Type	: IntegerLiteral										{ $$ = $1;}
+		| BooleanLiteral										{ $$ = $1; }
 		;
 
 StatementList 
-		: StatementList Statement								{ $$ = $1 $2; // Tri }
-        | /* empty */											{ $$ = null; // Tri }
+		: StatementList Statement								{ $$ = $2;} // needs work - Nathan
+        | /* empty */											{ $$ = null;}
         ;
 
 Expression 
-		: IntegerLiteral										{ $$ = $1; // Tri }
-        | IDENTIFIER											{ $$ = new AssignmentExpression($1,$2,$3); // Tri }	
-        | Expression '=' Expression								{ $$ = new AssignmentExpression($1,$2,$3); // Tri }
-        | Expression '+' Expression								{ $$ = new AssignmentExpression($1,$2,$3); // Tri }
-        | Expression '<' Expression								{ $$ = new AssignmentExpression($1,$2,$3); } //Josh
+		: IntegerLiteral										{ $$ = $1; }
+        | IDENTIFIER											{ $$ = $1; } // this might not be right	
+        | Expression '=' Expression								{ $$ = new AssignmentExpression($1,$3); }
+        | Expression '+' Expression								{ $$ = new BinaryExpression($1,$2,$3); } // check this
+        | Expression '<' Expression								{ $$ = new BinaryExpression($1,$2,$3); } //Josh - check this
 		| AssignmentExpression									{ $$ = $1; } // Josh
 		  
            ;
@@ -89,105 +89,105 @@ Empty	:
 
 // Group A Start
 CompilationUnit 
-		: PackageDeclaration_opt ImportDeclarations TypeDeclarations	{ $$ = new CompiationUnit($1,$2,$3); } // Josh
+		: PackageDeclaration_opt ImportDeclarations TypeDeclarations	{ $$ = new CompiationUnitDeclaration($1,$2,$3); $$.DumpValue(0); } // Josh
 		;
 
 PackageDeclaration_opt
-		: /* empty */											{ $$ = null; // Josh }
+		: /* empty */											{ $$ = null; }
 		| /* follow up */
 		;
 		
 ImportDeclarations
-		: /*empty*/												{ $$ = null; // Josh }
+		: /*empty*/												{ $$ = null; }
 		| /* follow up */
 		;
 
 TypeDeclarations 
-		: TypeDeclaration TypeDeclarations						{ $$ = $1,$2;// Josh }
-		| /* empty */											{ $$ = null; // Josh }
+		: TypeDeclaration TypeDeclarations						{ $$ = $1; } // needs work - Josh
+		| /* empty */											{ $$ = null; }
 		| /* follow up */
 		;
 TypeDeclaration 
-		: ClassDeclaration /* need to add InterfaceDeclaration */ { // Vivian }
+		: ClassDeclaration /* need to add InterfaceDeclaration */ {  } // Vivian
 		;
 
 ClassDeclaration 
-		: NormalClassDeclaration /* need to add EnumDeclaration */ { // Vivian }
+		: NormalClassDeclaration /* need to add EnumDeclaration */ {  } // Vivian
 		;
 
 NormalClassDeclaration 
-		: ClassModifiers CLASS IDENTIFIER TypeParameters_opt SuperClass_opt Superinterfaces_opt ClassBody { // Vivian }
+		: ClassModifiers CLASS IDENTIFIER TypeParameters_opt SuperClass_opt Superinterfaces_opt ClassBody {  } // Vivian
 		;
 
 ClassModifiers 
-		: ClassModifiers ClassModifier							{ // Vivian }
-		| /* empty */											{ // Vivian }
+		: ClassModifiers ClassModifier							{  } // Vivian
+		| /* empty */											{  } // Vivian
 		;
 
 ClassModifier 
-		: Annotation											{ // Adon }
-		| PUBLIC												{ // Adon }
-		| PROTECTED 											{ // Adon }
-		| PRIVATE 												{ // Adon }
-		| ABSTRACT 												{ // Adon }
-		| STATIC 												{ // Adon }
-		| FINAL 												{ // Adon }
-		| STRICTFP 												{ // Adon }
+		: Annotation											{  } // Adon
+		| PUBLIC												{  } // Adon
+		| PROTECTED 											{  } // Adon
+		| PRIVATE 												{  } // Adon
+		| ABSTRACT 												{  } // Adon
+		| STATIC 												{  } // Adon
+		| FINAL 												{  } // Adon
+		| STRICTFP 												{  } // Adon
 		;
 
 Annotation
-		: /* empty */											{ // Tristan }
+		: /* empty */											{ } // Tristan
 		;
 
 //GROUP C TRACKING
-TypeParameters_opt : /* empty */								{ // Tristan }
+TypeParameters_opt : /* empty */								{ } // Tristan
 		;
 
-SuperClass_opt : /* empty */									{ // Tristan }
+SuperClass_opt : /* empty */									{ } // Tristan
 		;
 
-Superinterfaces_opt : /* empty */								{ // Tristan }
+Superinterfaces_opt : /* empty */								{ } // Tristan
 		;
 
 ClassBody 
-		: '{' ClassBodyDeclarations '}'							{ // Tristan }
+		: '{' ClassBodyDeclarations '}'							{ } // Tristan
 		;
 
 // Group A End
 
 // PartB by Adon Mofified by Josh to remove MemberDeclarations as it is unessisary
 ClassBodyDeclarations
-		: ClassBodyDeclarations ClassBodyDeclaration			{ // Tristan }
-		| /* empty */											{ // Tristan }
+		: ClassBodyDeclarations ClassBodyDeclaration			{ } // Tristan
+		| /* empty */											{ } // Tristan
         ;
 
 ClassBodyDeclaration
-		: ClassMemberDeclaration								{ // Tristan }
+		: ClassMemberDeclaration								{ } // Tristan
         ;
 
 // Fixed by An
 ClassMemberDeclaration
-		: MethodDeclaration										{ // Sneha }
+		: MethodDeclaration										{ } // Sneha
 		;
 
 // Change ClassMemberDeclaration to MethodDeclaration -An	
 MethodDeclaration
-		: MethodModifiers MethodHeader MethodBody				{ // Sneha }
+		: MethodModifiers MethodHeader MethodBody				{ } // Sneha
         ;
 
 MethodModifiers
-        : MethodModifiers MethodModifier						{ // Sneha }
-		| /* Empty */											{ // Sneha }
+        : MethodModifiers MethodModifier						{ } // Sneha
+		| /* Empty */											{ } // Sneha
         ;
 
 MethodModifier
-		: Annotation											{ // Sneha }
-		| PUBLIC												{ // Sneha }
-        | STATIC												{ // Sneha }
+		: Annotation											{ } // Sneha
+		| PUBLIC												{ } // Sneha
+        | STATIC												{ } // Sneha
         ;
 
 MethodHeader
-		: Result MethodDeclarator Throws_opt					{ // Khoa }
+		: Result MethodDeclarator Throws_opt					{ } // Khoa
         ;
 
 // End Fix
@@ -195,53 +195,53 @@ MethodHeader
 
 //WORK BY JOSH HUDSON
 Result 
-		: VOID													{ // Khoa }
-		| UnannType												{ // Khoa }
+		: VOID													{ } // Khoa
+		| UnannType												{ } // Khoa
 	   	;
 
 Throws_opt
-		: Empty													{ // Khoa }
+		: Empty													{ } // Khoa
 	  	;
 
 // Fixed spelling error	 
 MethodDeclarator
-		: IDENTIFIER '(' FormalParameterList_Opt ')' Dims_Opt	{ // Khoa }
+		: IDENTIFIER '(' FormalParameterList_Opt ')' Dims_Opt	{ } // Khoa
 		;
 
 /* Removed by Nathan
 Identifier
-		: Main													{ // Khoa }
+		: Main													{ } // Khoa
 		;
 */
 //PLACEHOLDER - Josh - Tri
 FormalParameterList_Opt
-		: FormalParameterList									{ // An }
-		| /* empty */											{ // An }
+		: FormalParameterList									{ } // An
+		| /* empty */											{ } // An
 		;
 
 Dims_Opt 
-		: Dims													{ // An }
-		| /* Empty */											{ // An }
+		: Dims													{ } // An
+		| /* Empty */											{ } // An
 		;
 // JOSHUA'S WORK END
 
 //Work by Tri
 FormalParameterList 
-		: FormalParameters 										{ // An }
-		| /*TODO*/												{ // An }
+		: FormalParameters 										{ } // An
+		| /*TODO*/												{ } // An
 		;
 
 FormalParameters 
-		: FormalParameters FormalParameter 						{ $$ = $2 } /* TODO - only works if there is a single parameter */ // Nathan
+		: FormalParameters FormalParameter 						{ $$ = $2; } /* TODO - only works if there is a single parameter */ // Nathan
 		| /* empty *//*TODO*/									{ $$ = null; } // Nathan
 		;
 
-/*	Do we need this? - Nathan	
-FormalParameter_repeat
-		: ',' FormalParameter_repeat FormalParameter			{ $$ = null; } /* TODO */ // Nathan
-		| /* empty */											{ $$ = null; } // Nathan
-		;
-*/
+///	Do we need this? - Nathan	
+//FormalParameter_repeat
+//		: ',' FormalParameter_repeat FormalParameter			{ $$ = null; } /* TODO */ // Nathan
+//		| /* empty */											{ $$ = null; } // Nathan
+//		;
+
 
 FormalParameter 
 		:  VariableModifiers UnannType VariableDeclaratorId		{ $$ = new VariableDeclarationStatement($2, $3); } // Nathan
@@ -252,156 +252,156 @@ VariableModifiers
 		;
 
 VariableModifier 
-		: Annotation											{ $$ = $1; // Tri }
-		| FINAL													{ $$ = $1; // Tri }
+		: Annotation											{ $$ = $1; } // Tri
+		| FINAL													{ $$ = $1; } // Tri
 		;
 
 //End work by Tri
 // Work by Vivian
 Dims
-		: Annotations '['']'									{ $$ = $1 $2 $3; // Tri }
+		: Annotations '['']'									{ $$ = $1; } // Needs work - Tri
 		;
 
 VariableDeclaratorId
-		: IDENTIFIER Dims_Opt									{ $$ = $1 $2; // Tri }
+		: IDENTIFIER Dims_Opt									{ $$ = $1; } // Needs work - Tri
 		;
 
 UnannType
-		: UnannReferenceType									{ $$ = $1; // Tri }
-		| UnannPrimitiveType									{ $$ = $1; // Tri }
+		: UnannReferenceType									{ $$ = $1; } // Tri
+		| UnannPrimitiveType									{ $$ = $1; } // Tri
 		;
 
 UnannPrimitiveType
 
-		: NumbericType											{ $$ = $1; // Josh }
-		| BOOLEAN												{ $$ = $1; // Josh }
+		: NumbericType											{ $$ = $1; } // Josh
+		| BOOLEAN												{ $$ = $1; } // Josh
 		;
 
 NumbericType
-		: IntegralType											{ $$ = $1; // Josh }
-		| FloatingPointType										{ $$ = $1; // Josh }
+		: IntegralType											{ $$ = $1; } // Josh
+		| FloatingPointType										{ $$ = $1; } // Josh
 		;
 
 IntegralType
-		: BYTE													{ $$ = $1;  // Josh }
-		| SHORT													{ $$ = $1;  // Josh }
-		| INT													{ // Vivian }
-		| LONG													{ // Vivian }
-		| CHAR													{ // Vivian }
+		: BYTE													{ $$ = $1;  } // Josh
+		| SHORT													{ $$ = $1;  } // Josh
+		| INT													{ } // Vivian
+		| LONG													{ } // Vivian
+		| CHAR													{ } // Vivian
 		;
 
 FloatingPointType
-		: FLOAT													{ // Vivian }
-		| DOUBLE												{ // Vivian }
+		: FLOAT													{ } // Vivian
+		| DOUBLE												{ } // Vivian
 		;
 
 UnannReferenceType
-		: UnannArrayType										{ // Vivian }
-		| /*follow up */										{ // Vivian }
+		: UnannArrayType										{ } // Vivian
+		| /*follow up */										{ } // Vivian
 		;
 
 // Vivian's work end
 // Work by Khoa - Fixed by An
 UnannArrayType
-		: UnannTypeVariable Dims								{ // Adon }
+		: UnannTypeVariable Dims								{ } // Adon
 		;	
 			
 UnannTypeVariable
-		: IDENTIFIER											{ // Adon }
+		: IDENTIFIER											{ } // Adon
 		;	
 
 // Start work by An
 MethodBody
-		:  Block 												{ // Adon }
-		| ';'													{ // Adon }
+		:  Block 												{ } // Adon
+		| ';'													{ } // Adon
 		;
 
 Annotations
-		: Annotation											{ // Adon }
-		| /* Empty */											{ // Adon }
+		: Annotation											{ } // Adon
+		| /* Empty */											{ } // Adon
 		;
 
 Block 
-		: '{' BlockStatements_Opt '}'							{ // Tristan }
+		: '{' BlockStatements_Opt '}'							{ } // Tristan
 		;
 
 BlockStatements_Opt
-		: BlockStatements										{ // Tristan }
-		| /* Empty */											{ // Tristan }
+		: BlockStatements										{ } // Tristan
+		| /* Empty */											{ } // Tristan
 		;
 
 BlockStatements
-		: BlockStatement BlockStatement_s						{ // Tristan }
+		: BlockStatement BlockStatement_s						{ } // Tristan
 		;
 
 BlockStatement_s
-		: BlockStatement_s BlockStatement						{ // Tristan }
-		| /* Empty */											{ // Tristan }
+		: BlockStatement_s BlockStatement						{ } // Tristan
+		| /* Empty */											{ } // Tristan
 		;
 
 BlockStatement
-		: LocalVariableDeclarationsAndStatement					{ // Sneha }
-		| Statement												{ // Sneha }
-		| /* follow up */										{ // Sneha }
+		: LocalVariableDeclarationsAndStatement					{ } // Sneha
+		| Statement												{ } // Sneha
+		| /* follow up */										{ } // Sneha
 		;
 
 LocalVariableDeclarationsAndStatement
-		: LocalVariableDeclaration ';'							{ // Sneha }
+		: LocalVariableDeclaration ';'							{ } // Sneha
 		;
 
 LocalVariableDeclaration
-		: UnannType VariableDeclaratorList						{ // Sneha }
-		| /* follow up */										{ // Sneha }
+		: UnannType VariableDeclaratorList						{ } // Sneha
+		| /* follow up */										{ } // Sneha
 		;
 
 VariableDeclaratorList
-		: VariableDeclarator									{ // An }
-		| /* follow up */										{ // An }
+		: VariableDeclarator									{ } // An
+		| /* follow up */										{ } // An
 		;
 
 VariableDeclarator
-		: VariableDeclaratorId									{ // An }
-		| /* follow up */										{ // An }
+		: VariableDeclaratorId									{ } // An
+		| /* follow up */										{ } // An
 		;
 
 VariableDeclaratorId
-		: IDENTIFIER Dims_Opt									{ // An }
+		: IDENTIFIER Dims_Opt									{ } // An
 		;
 
 // Tristan
 StatementWithoutTrailingSubstatement
-		: ExpressionStatement 									{ // An }
+		: ExpressionStatement 									{ } // An
 		;
 
 ExpressionStatement
-		: StatementExpression ';'								{ // Khoa }
+		: StatementExpression ';'								{ } // Khoa
 		;
 
 StatementExpression
-		: Assignment											{ // Khoa }
+		: Assignment											{ } // Khoa
 		;
 
 // End Work by Tristan
 //work by sneha
 
 Assignment
-		: LeftHandSide AssignmentOperator Expression			{ // Khoa }
+		: LeftHandSide AssignmentOperator Expression			{ } // Khoa
 		;
 
 LeftHandSide
-		: ExpressionName										{ // Khoa }
+		: ExpressionName										{ } // Khoa
 		;
 
 ExpressionName
-		: IDENTIFIER											{ // Khoa }
+		: IDENTIFIER											{ } // Khoa
 		;
 
 AssignmentOperator
-		: '='													{ // Khoa }
+		: '='													{ } // Khoa
 		;
 
 AssignmentExpression
-		: ArrayAccess											{ $$ = $1 } // Nathan
+		: ArrayAccess											{ $$ = $1; } // Nathan
 		;
 
 ArrayAccess
@@ -419,6 +419,7 @@ Literal
 // end of sneha Work
 
 %%
+
 public Parser(Scanner scanner) : base(scanner)
 {
 }

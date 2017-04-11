@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.IO;
 
 namespace IFN660_Java_ECMAScript.AST
 {
@@ -6,10 +7,10 @@ namespace IFN660_Java_ECMAScript.AST
     {
         static void Main(string[] args)
         {
-            //Scanner scanner = new Scanner(
-            //   new FileStream(args[0], FileMode.Open));
-            //Parser parser = new Parser(scanner);
-            //parser.Parse();
+            Scanner scanner = new Scanner(
+               new FileStream(args[0], FileMode.Open));
+            Parser parser = new Parser(scanner);
+            parser.Parse();
 
             //var xExpres = new Exception { }
             Modifier[] mods = { Modifier.PUBLIC, Modifier.STATIC };
