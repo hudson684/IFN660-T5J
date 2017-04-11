@@ -38,6 +38,9 @@ namespace IFN660_Java_ECMAScript.AST
             this.args = args;
         }
 
-
+        public override Boolean ResolveNames()
+        {
+            return statementList.ResolveNames();
+        }
     }
 }

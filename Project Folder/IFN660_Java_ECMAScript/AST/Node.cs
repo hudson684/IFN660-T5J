@@ -11,6 +11,8 @@ namespace IFN660_Java_ECMAScript
                 Console.Write("    ");
         }
 
+        public abstract Boolean ResolveNames();
+
         public void DumpValue(int indent)
         {
             Indent(indent);

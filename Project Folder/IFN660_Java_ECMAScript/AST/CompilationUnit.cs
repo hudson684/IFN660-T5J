@@ -8,9 +8,15 @@ namespace IFN660_Java_ECMAScript.AST
 {
     public class CompilationUnit : Node
     {
+        
         private ClassDeclaration classDeclaration;
         private PackageDeclaration packageDeclaration;
         private ImportDeclaration importDeclaration;
+
+        public override Boolean ResolveNames()
+        {
+            return classDeclaration.ResolveNames();
+        }
 
         public CompilationUnit(ClassDeclaration classDeclaration, PackageDeclaration packageDecalration, ImportDeclaration importDecalration)
         {
