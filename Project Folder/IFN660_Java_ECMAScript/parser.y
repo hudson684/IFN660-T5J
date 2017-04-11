@@ -66,20 +66,20 @@ Statement : IF '(' Expression ')' Statement ELSE Statement		{ $$ = new IfStateme
 		  | StatementWithoutTrailingSubstatement				{ $$ = $1 } // Nathan
           ;
 
-Type	: IntegerLiteral										{ // Tri }
-		| BooleanLiteral										{ // Tri }
+Type	: IntegerLiteral										{ $$ = $1; // Tri }
+		| BooleanLiteral										{ $$ = $1; // Tri }
 		;
 
 StatementList 
-		: StatementList Statement								{ // Tri }
-        | /* empty */											{ // Tri }
+		: StatementList Statement								{ $$ = $1 $2; // Tri }
+        | /* empty */											{ $$ = null; // Tri }
         ;
 
 Expression 
-		: IntegerLiteral										{ // Tri }
-        | IDENTIFIER											{ // Tri }	
-        | Expression '=' Expression								{ // Tri }
-        | Expression '+' Expression								{ // Tri }
+		: IntegerLiteral										{ $$ = $1; // Tri }
+        | IDENTIFIER											{ $$ = new AssignmentExpression($1,$2,$3); // Tri }	
+        | Expression '=' Expression								{ $$ = new AssignmentExpression($1,$2,$3); // Tri }
+        | Expression '+' Expression								{ $$ = new AssignmentExpression($1,$2,$3); // Tri }
         | Expression '<' Expression								{ $$ = new AssignmentExpression($1,$2,$3); } //Josh
 		| AssignmentExpression									{ $$ = $1; } // Josh
 		  
@@ -252,23 +252,23 @@ VariableModifiers
 		;
 
 VariableModifier 
-		: Annotation											{ // Tri }
-		| FINAL													{ // Tri }
+		: Annotation											{ $$ = $1; // Tri }
+		| FINAL													{ $$ = $1; // Tri }
 		;
 
 //End work by Tri
 // Work by Vivian
 Dims
-		: Annotations '['']'									{ // Tri }
+		: Annotations '['']'									{ $$ = $1 $2 $3; // Tri }
 		;
 
 VariableDeclaratorId
-		: IDENTIFIER Dims_Opt									{ // Tri }
+		: IDENTIFIER Dims_Opt									{ $$ = $1 $2; // Tri }
 		;
 
 UnannType
-		: UnannReferenceType									{ // Tri }
-		| UnannPrimitiveType									{ // Tri }
+		: UnannReferenceType									{ $$ = $1; // Tri }
+		| UnannPrimitiveType									{ $$ = $1; // Tri }
 		;
 
 UnannPrimitiveType
