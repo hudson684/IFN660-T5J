@@ -8,5 +8,9 @@ namespace IFN660_Java_ECMAScript.AST
 {
     public class  PackageDeclaration : Statement
     {
+        public override bool ResolveNames()
+        {
+            return true;
+        }
     }
 }

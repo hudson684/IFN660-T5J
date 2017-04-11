@@ -16,6 +16,12 @@ namespace IFN660_Java_ECMAScript.AST
             this.ImportDeclarations = ImportDeclarations;
             this.TypeDeclarations = TypeDeclarations;
         }
+
+        public override bool ResolveNames()
+        {
+            // need to get loops for lists
+            return true;
+        }
     }
 
 }

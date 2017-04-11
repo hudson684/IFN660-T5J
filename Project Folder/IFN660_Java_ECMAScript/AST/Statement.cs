@@ -13,6 +13,11 @@
         {
             this.Cond = Cond; this.Then = Then; this.Else = Else;
         }
+
+        public override bool ResolveNames()
+        {
+            return Cond.ResolveNames() & Then.ResolveNames() & Else.ResolveNames();
+        }
     }
 
     public class WhileStatement : Statement
@@ -25,6 +30,11 @@
         {
             this.Cond = Cond;
             this.StmtList = StmtList;
+        }
+
+        public override bool ResolveNames()
+        {
+            return Cond.ResolveNames(); // & StmtList.ResolveNames();
         }
     }
 
@@ -43,6 +53,11 @@
             this.ForUpdate = ForUpdate;
             this.StmtList = StmtList;
         }
+
+        public override bool ResolveNames()
+        {
+            return ForInit.ResolveNames() & TestExpr.ResolveNames() & ForUpdate.ResolveNames();// & StmtList.ResolveNames();
+        }
     }
 
     public class ExpressionStatement : Statement
@@ -52,6 +67,11 @@
         public ExpressionStatement (Expression expr)
         {
             this.expr = expr;
+        }
+
+        public override bool ResolveNames()
+        {
+            return expr.ResolveNames();
         }
     }
 
@@ -66,6 +86,12 @@
             this.VariableType = VariableType;
             this.VariableName = VariableName;
             this.VariableAssignment = VariableAssignment;
+        }
+
+        public override bool ResolveNames()
+        {
+            // do something here...
+            return VariableAssignment.ResolveNames();
         }
 
     }

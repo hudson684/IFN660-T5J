@@ -13,5 +13,11 @@ namespace IFN660_Java_ECMAScript.AST
         {
             this.str = str;
         }
+
+        public override bool ResolveNames()
+        {
+            // need to more here...
+            return true;
+        }
     }
 }

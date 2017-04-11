@@ -6,23 +6,23 @@ using System.Threading.Tasks;
 
 namespace IFN660_Java_ECMAScript.AST
 {
-    public enum type
+    public abstract class Type : Node
     {
-        STRING,
-        VOID,
-        INTEGER
     }
 
-    public class Type : Node
+    public class NamedType : Type
     {
-        private Enum elementType;
+        private string elementType;
 
-        public Type() { }
-
-        public Type (Enum elementType)
-	    {
+        public NamedType(string elementType)
+        {
             this.elementType = elementType;
-	    }
+        }
+
+        public override bool ResolveNames()
+        {
+            return true;
+        }
     }
 
 
@@ -33,6 +33,11 @@ namespace IFN660_Java_ECMAScript.AST
         public ArrayType(Type elementType) 
         {
             this.elementType = elementType;
+        }
+
+        public override bool ResolveNames()
+        {
+            return true;
         }
     }
     

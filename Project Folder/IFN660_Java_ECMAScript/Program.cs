@@ -15,18 +15,18 @@ namespace IFN660_Java_ECMAScript.AST
             Modifier[] mods = { Modifier.PUBLIC, Modifier.STATIC };
             Modifier[] classMods = { Modifier.PUBLIC };
 
-            VariableDefinitionStatement[] argList = { new VariableDefinitionStatement(new ArrayType(new Type(type.STRING)), new VariableExpression("args") , null) };
+            VariableDefinitionStatement[] argList = { new VariableDefinitionStatement(new ArrayType(new NamedType("STRING")), new VariableExpression("args") , null) };
 
             var lhs = new VariableExpression("x");
             var rhs = new IntegerLiteralExpression(42);
 
-            var assignVar = new VariableDefinitionStatement(new Type(type.INTEGER), lhs, null);
+            var assignVar = new VariableDefinitionStatement(new NamedType("INTEGER"), lhs, null);
 
             var assignExpr = new AssignmentExpression(lhs, rhs);
             var assignStmt = new ExpressionStatement(assignExpr);
             Statement[] statementList = { assignVar, assignStmt }; 
 
-            var method = new MethodDeclaration("Main", mods, statementList, new Type(type.VOID), argList);
+            var method = new MethodDeclaration("Main", mods, statementList, new NamedType("VOID"), argList);
             var classDec = new ClassDeclaration("HelloWorld", classMods, method);
 
             ClassDeclaration[] classes = { classDec };

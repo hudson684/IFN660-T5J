@@ -18,6 +18,11 @@ namespace IFN660_Java_ECMAScript
             this.rhs = rhs;
         }
 
+        public override bool ResolveNames()
+        {
+            return lhs.ResolveNames() & rhs.ResolveNames();
+        }
+
     }
 
     public class VariableExpression : Expression
@@ -27,6 +32,12 @@ namespace IFN660_Java_ECMAScript
         public VariableExpression(string value)
         {
             this.value = value;
+        }
+
+        public override bool ResolveNames()
+        {
+            // check for valid declaration...
+            return true;
         }
     }
 
@@ -39,7 +50,10 @@ namespace IFN660_Java_ECMAScript
             this.value = value;
         }
 
-
+        public override bool ResolveNames()
+        {
+            return true;
+        }
     }
 
     //changed made by Josh so that the assignmentStatement is correct
@@ -53,6 +67,11 @@ namespace IFN660_Java_ECMAScript
             this.leftHandSide = leftHandSide;
             this.rightHandSide = rightHandSide;
             this.assignmentExpressor = assignmentExpressor;
+        }
+
+        public override bool ResolveNames()
+        {
+            return leftHandSide.ResolveNames() & rightHandSide.ResolveNames();
         }
     }
 

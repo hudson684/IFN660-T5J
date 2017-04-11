@@ -40,7 +40,8 @@ namespace IFN660_Java_ECMAScript.AST
 
         public override Boolean ResolveNames()
         {
-            return statementList.ResolveNames();
+            // need to put in loop to iterate over statementList
+            return true;
         }
     }
 }
