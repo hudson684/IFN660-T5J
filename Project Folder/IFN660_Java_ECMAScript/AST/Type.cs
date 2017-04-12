@@ -25,6 +25,24 @@ namespace IFN660_Java_ECMAScript.AST
         }
     }
 
+    public class IntType : Type
+    {
+
+        public override bool ResolveNames()
+        {
+            return true;
+        }
+    }
+
+    public class BoolType : Type
+    {
+
+        public override bool ResolveNames()
+        {
+            return true;
+        }
+    }
+
 
     public class ArrayType : Type
     {

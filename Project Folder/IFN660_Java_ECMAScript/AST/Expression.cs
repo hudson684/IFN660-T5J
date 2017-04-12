@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace IFN660_Java_ECMAScript
+namespace IFN660_Java_ECMAScript.AST
 {
     public abstract class Expression : Node { };
 
@@ -44,8 +44,8 @@ namespace IFN660_Java_ECMAScript
     public class IntegerLiteralExpression : Expression
     {
 
-        private int value;
-        public IntegerLiteralExpression(int value)
+        private long value;
+        public IntegerLiteralExpression(long value)
         {
             this.value = value;
         }
@@ -59,19 +59,18 @@ namespace IFN660_Java_ECMAScript
     //changed made by Josh so that the assignmentStatement is correct
     public class BinaryExpression : Expression
     {
-        private Expression leftHandSide;
-        private Expression rightHandSide;
-        private string assignmentExpressor;
-        public BinaryExpression(Expression leftHandSide, string assignmentExpressor, Expression rightHandSide)
+        private Expression lhs,rhs;
+        private char oper;
+        public BinaryExpression(Expression lhs, char oper, Expression rhs)
         {
-            this.leftHandSide = leftHandSide;
-            this.rightHandSide = rightHandSide;
-            this.assignmentExpressor = assignmentExpressor;
+            this.lhs = rhs;
+            this.rhs = rhs;
+            this.oper = oper;
         }
 
         public override bool ResolveNames()
         {
-            return leftHandSide.ResolveNames() & rightHandSide.ResolveNames();
+            return lhs.ResolveNames() & rhs.ResolveNames();
         }
     }
 

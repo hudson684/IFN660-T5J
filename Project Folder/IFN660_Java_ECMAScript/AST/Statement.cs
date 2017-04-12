@@ -78,10 +78,10 @@
     public class VariableDefinitionStatement : Statement
     {
         private Type VariableType;
-        private Expression VariableName;
+        private string VariableName;
         private Expression VariableAssignment;
 
-        public VariableDefinitionStatement(Type VariableType, Expression VariableName, Expression VariableAssignment)
+        public VariableDefinitionStatement(Type VariableType, string VariableName, Expression VariableAssignment)
         {
             this.VariableType = VariableType;
             this.VariableName = VariableName;
@@ -95,8 +95,23 @@
         }
 
     }
+    public class VariableDeclaration : Statement
+    {
+        private Type type;
+        private string name;
+        public VariableDeclaration(Type type, string name)
+        {
+            this.type = type;
+            this.name = name;
+        }
+        public override bool ResolveNames()
+        {
+            // do something here...
+            return type.ResolveNames();
+        }
+    };
 
 
-   
+
 
 }

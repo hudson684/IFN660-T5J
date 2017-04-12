@@ -1,15 +1,23 @@
 
 // ==========================================================================
-//  GPPG error listing for yacc source file <parser.y - 11/04/2017 6:30:02 PM>
+//  GPPG error listing for yacc source file <parser.y - 12/04/2017 6:03:04 PM>
 // ==========================================================================
 //  Version:  1.5.2
-//  Machine:  VDI-VL17-145
-//  DateTime: 11/04/2017 6:30:04 PM
-//  UserName: n9648500
+//  Machine:  VDI-VL17-074
+//  DateTime: 12/04/2017 6:03:15 PM
+//  UserName: n9768653
 // ==========================================================================
 
 
-%namespace IFN660_Java_ECMAScript.AST
+%namespace IFN660_Java_ECMAScript
+%output parser.cs
+//-----^^^^^^^^^^
+// Error: Syntax error, unexpected filePath, expecting '='
+// -------------------------------------------------------
+
+%{
+public static AST.CompilationUnitDeclaration root;
+%}
 %union
 {
     public long num;
@@ -17,13 +25,20 @@
 	public bool boolval;
 	public char charval;
     public string name;
-	Statement s;
-	Expression e;
-	Node n;
+	public AST.Statement stmt;
+	public AST.Expression expr;
+	public AST.Type type;
+	public AST.CompilationUnitDeclaration cmpu;
+	public System.Collections.Generic.List<AST.Statement> stmts;
 }
 
 %token <num> NUMBER
 %token <name> IDENTIFIER
+%type <expr> Expression
+%type <stmt> Statement
+%type <type> Type
+%type <stmts> StatementList
+%type <cmpu> CompilationUnit
 
 // 3.9 Keywords
 %token ABSTRACT   CONTINUE   FOR          NEW         SWITCH
@@ -38,7 +53,7 @@
 %token CONST      FLOAT      NATIVE       SUPER       WHILE
 
 // 3.10 Literals
-%token <intnum> IntegerLiteral
+%token <num> IntegerLiteral
 %token <floatnum> FloatingPointLiteral
 %token <boolval> BooleanLiteral
 %token <charval> CharacterLiteral
@@ -66,84 +81,33 @@
 %left '+'
 
 %%
-// Warning: NonTerminal symbol "VariableModifier" is unreachable
-// Warning: NonTerminal symbol "VariableDeclaratorId" is unreachable
-// Warning: NonTerminal symbol "VariableModifiers" is unreachable
-// Warning: NonTerminal symbol "UnannPrimitiveType" is unreachable
-// Warning: NonTerminal symbol "UnannReferenceType" is unreachable
-// Warning: NonTerminal symbol "Annotations" is unreachable
-// Warning: NonTerminal symbol "FormalParameter" is unreachable
-// Warning: NonTerminal symbol "Dims_Opt" is unreachable
-// Warning: NonTerminal symbol "FormalParameterList_Opt" is unreachable
-// Warning: NonTerminal symbol "UnannType" is unreachable
-// Warning: NonTerminal symbol "FormalParameters" is unreachable
-// Warning: NonTerminal symbol "Dims" is unreachable
-// Warning: NonTerminal symbol "FormalParameterList" is unreachable
-// Warning: NonTerminal symbol "BlockStatement_s" is unreachable
-// Warning: NonTerminal symbol "BlockStatement" is unreachable
-// Warning: NonTerminal symbol "BlockStatements" is unreachable
-// Error: Too many errors, abandoning
-// Warning: NonTerminal symbol "LocalVariableDeclaration" is unreachable
-// Warning: NonTerminal symbol "LocalVariableDeclarationsAndStatement" is unreachable
-// Warning: NonTerminal symbol "BlockStatements_Opt" is unreachable
-// Warning: NonTerminal symbol "FloatingPointType" is unreachable
-// Warning: NonTerminal symbol "IntegralType" is unreachable
-// Warning: NonTerminal symbol "NumbericType" is unreachable
-// Warning: NonTerminal symbol "Block" is unreachable
-// Warning: NonTerminal symbol "UnannTypeVariable" is unreachable
-// Warning: NonTerminal symbol "UnannArrayType" is unreachable
-// Warning: NonTerminal symbol "TypeParameters_opt" is unreachable
-// Warning: NonTerminal symbol "ClassModifiers" is unreachable
-// Warning: NonTerminal symbol "NormalClassDeclaration" is unreachable
-// Warning: NonTerminal symbol "ClassBody" is unreachable
-// Warning: NonTerminal symbol "Superinterfaces_opt" is unreachable
-// Warning: NonTerminal symbol "SuperClass_opt" is unreachable
-// Warning: NonTerminal symbol "ClassDeclaration" is unreachable
-// Warning: NonTerminal symbol "PackageDeclaration_opt" is unreachable
-// Warning: NonTerminal symbol "CompilationUnit" is unreachable
-// Warning: NonTerminal symbol "Empty" is unreachable
-// Warning: NonTerminal symbol "TypeDeclaration" is unreachable
-// Warning: NonTerminal symbol "TypeDeclarations" is unreachable
-// Warning: NonTerminal symbol "ImportDeclarations" is unreachable
-// Warning: NonTerminal symbol "MethodModifier" is unreachable
-// Warning: NonTerminal symbol "MethodBody" is unreachable
-// Warning: NonTerminal symbol "MethodHeader" is unreachable
-// Warning: NonTerminal symbol "Throws_opt" is unreachable
-// Warning: NonTerminal symbol "MethodDeclarator" is unreachable
-// Warning: NonTerminal symbol "Result" is unreachable
-// Warning: NonTerminal symbol "MethodModifiers" is unreachable
-// Warning: NonTerminal symbol "ClassBodyDeclarations" is unreachable
-// Warning: NonTerminal symbol "Annotation" is unreachable
-// Warning: NonTerminal symbol "ClassModifier" is unreachable
-// Warning: NonTerminal symbol "MethodDeclaration" is unreachable
-// Warning: NonTerminal symbol "ClassMemberDeclaration" is unreachable
-// Warning: NonTerminal symbol "ClassBodyDeclaration" is unreachable
-// ----------------------------------------------------------------------------------
 
+Program : CompilationUnit										{root = $1;}
+        ;
 
-Statement : IF '(' Expression ')' Statement ELSE Statement		{ $$ = new IfStatement($3, $5, $7); } // Nathan
-          | '{' StatementList '}'								{ $$ = $2; } // how does this work? Won't StatementList be any array or list type - Nathan
-          | Expression ';'										{ $$ = new ExpressionStatement($1); } // Nathan
-          | Type IDENTIFIER ';'									
-		  | StatementWithoutTrailingSubstatement				{ $$ = $1; } // Nathan
+Statement : IF '(' Expression ')' Statement ELSE Statement		{ $$ = new AST.IfStatement($3, $5, $7); } // Nathan
+          | '{' StatementList '}'								
+          | Expression ';'										{ $$ = new AST.ExpressionStatement($1); } // Nathan
+          | Type IDENTIFIER ';'									{ $$ = new AST.VariableDeclaration($1,$2);}
+		  | StatementWithoutTrailingSubstatement				 // Nathan
           ;
 
-Type	: IntegerLiteral										{ $$ = $1;}
-		| BooleanLiteral										{ $$ = $1; }
+Type	: IntegerLiteral										{ $$ = new AST.IntType();}
+		| BooleanLiteral										{ $$ = new AST.BoolType(); }
 		;
 
 StatementList 
-		: StatementList Statement								{ $$ = $2;} // needs work - Nathan
-        | /* empty */											{ $$ = null;}
+		: StatementList Statement								{ $$ = $1; $$.Add($2);} // needs work - Nathan
+        | /* empty */											{ $$ = new System.Collections.Generic.List<AST.Statement>();}
         ;
 
 Expression 
-		: IntegerLiteral										{ $$ = $1; }
-        | IDENTIFIER											{ $$ = $1; } // this might not be right	
-        | Expression '=' Expression								{ $$ = new AssignmentExpression($1,$3); }
-        | Expression '+' Expression								{ $$ = new BinaryExpression($1,$2,$3); } // check this
-        | Expression '<' Expression								{ $$ = new BinaryExpression($1,$2,$3); } //Josh - check this
-		| AssignmentExpression									{ $$ = $1; } // Josh
+		: IntegerLiteral										{ $$ = new AST.IntegerLiteralExpression($1); }
+        | IDENTIFIER											{ $$ = new AST.VariableExpression($1); } // this might not be right	
+        | Expression '=' Expression								{ $$ = new AST.AssignmentExpression($1,$3); }
+        | Expression '+' Expression								{ $$ = new AST.BinaryExpression($1,'+',$3); } // check this
+        | Expression '<' Expression								{ $$ = new AST.BinaryExpression($1,'<',$3); } //Josh - check this
+		| AssignmentExpression									// Josh
 		  
            ;
 Empty	:
@@ -151,22 +115,22 @@ Empty	:
 
 // Group A Start
 CompilationUnit 
-		: PackageDeclaration_opt ImportDeclarations TypeDeclarations	{ $$ = new CompiationUnitDeclaration($1,$2,$3); $$.DumpValue(0); } // Josh
+		: PackageDeclaration_opt ImportDeclarations TypeDeclarations	 // Josh   { $$ = new AST.CompilationUnitDeclaration($1,$2,$3);  }
 		;
 
 PackageDeclaration_opt
-		: /* empty */											{ $$ = null; }
+		: /* empty */											
 		| /* follow up */
 		;
 		
 ImportDeclarations
-		: /*empty*/												{ $$ = null; }
+		: /*empty*/												
 		| /* follow up */
 		;
 
 TypeDeclarations 
 		: TypeDeclaration TypeDeclarations						{ $$ = $1; } // needs work - Josh
-		| /* empty */											{ $$ = null; }
+		| /* empty */											
 		| /* follow up */
 		;
 TypeDeclaration 
@@ -295,22 +259,22 @@ FormalParameterList
 
 FormalParameters 
 		: FormalParameters FormalParameter 						{ $$ = $2; } /* TODO - only works if there is a single parameter */ // Nathan
-		| /* empty *//*TODO*/									{ $$ = null; } // Nathan
+		| /* empty *//*TODO*/									 // Nathan
 		;
 
 ///	Do we need this? - Nathan	
 //FormalParameter_repeat
 //		: ',' FormalParameter_repeat FormalParameter			{ $$ = null; } /* TODO */ // Nathan
-//		| /* empty */											{ $$ = null; } // Nathan
+//		| /* empty */											 // Nathan
 //		;
 
 
 FormalParameter 
-		:  VariableModifiers UnannType VariableDeclaratorId		{ $$ = new VariableDeclarationStatement($2, $3); } // Nathan
+		:  VariableModifiers UnannType VariableDeclaratorId		 // Nathan
 		;
 VariableModifiers 
-		: VariableModifiers VariableModifier					{ $$ = null; } /* TODO */  // Nathan
-		| /* empty */											{ $$ = null; } // Nathan
+		: VariableModifiers VariableModifier					 /* TODO */  // Nathan
+		| /* empty */											 // Nathan
 		;
 
 VariableModifier 
@@ -325,7 +289,7 @@ Dims
 		;
 
 VariableDeclaratorId
-		: IDENTIFIER Dims_Opt									{ $$ = $1; } // Needs work - Tri
+		: IDENTIFIER Dims_Opt									
 		;
 
 UnannType
@@ -475,7 +439,7 @@ PrimaryNoNewArray
 		;
 
 Literal
-		: IntegerLiteral										{ $$ = new IntegerLiteralExpression($1); } // Nathan
+		: IntegerLiteral										{  } // Nathan
 		;
 
 // end of sneha Work

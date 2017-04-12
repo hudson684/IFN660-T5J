@@ -1,4 +1,9 @@
-%namespace IFN660_Java_ECMAScript.AST
+%namespace IFN660_Java_ECMAScript
+
+
+%{
+public static AST.CompilationUnitDeclaration root;
+%}
 %union
 {
     public long num;
@@ -6,13 +11,20 @@
 	public bool boolval;
 	public char charval;
     public string name;
-	Statement s;
-	Expression e;
-	Node n;
+	public AST.Statement stmt;
+	public AST.Expression expr;
+	public AST.Type type;
+	public AST.CompilationUnitDeclaration cmpu;
+	public System.Collections.Generic.List<AST.Statement> stmts;
 }
 
 %token <num> NUMBER
 %token <name> IDENTIFIER
+%type <expr> Expression
+%type <stmt> Statement
+%type <type> Type
+%type <stmts> StatementList
+%type <cmpu> CompilationUnit
 
 // 3.9 Keywords
 %token ABSTRACT   CONTINUE   FOR          NEW         SWITCH
@@ -27,7 +39,7 @@
 %token CONST      FLOAT      NATIVE       SUPER       WHILE
 
 // 3.10 Literals
-%token <intnum> IntegerLiteral
+%token <num> IntegerLiteral
 %token <floatnum> FloatingPointLiteral
 %token <boolval> BooleanLiteral
 %token <charval> CharacterLiteral
@@ -56,32 +68,32 @@
 
 %%
 
-Program : CompilationUnit										
+Program : CompilationUnit										{root = $1;}
         ;
 
-Statement : IF '(' Expression ')' Statement ELSE Statement		{ $$ = new IfStatement($3, $5, $7); } // Nathan
-          | '{' StatementList '}'								{ $$ = $2; } // how does this work? Won't StatementList be any array or list type - Nathan
-          | Expression ';'										{ $$ = new ExpressionStatement($1); } // Nathan
-          | Type IDENTIFIER ';'									
-		  | StatementWithoutTrailingSubstatement				{ $$ = $1; } // Nathan
+Statement : IF '(' Expression ')' Statement ELSE Statement		{ $$ = new AST.IfStatement($3, $5, $7); } // Nathan
+          | '{' StatementList '}'								
+          | Expression ';'										{ $$ = new AST.ExpressionStatement($1); } // Nathan
+          | Type IDENTIFIER ';'									{ $$ = new AST.VariableDeclaration($1,$2);}
+		  | StatementWithoutTrailingSubstatement				 // Nathan
           ;
 
-Type	: IntegerLiteral										{ $$ = $1;}
-		| BooleanLiteral										{ $$ = $1; }
+Type	: IntegerLiteral										{ $$ = new AST.IntType();}
+		| BooleanLiteral										{ $$ = new AST.BoolType(); }
 		;
 
 StatementList 
-		: StatementList Statement								{ $$ = $2;} // needs work - Nathan
-        | /* empty */											{ $$ = null;}
+		: StatementList Statement								{ $$ = $1; $$.Add($2);} // needs work - Nathan
+        | /* empty */											{ $$ = new System.Collections.Generic.List<AST.Statement>();}
         ;
 
 Expression 
-		: IntegerLiteral										{ $$ = $1; }
-        | IDENTIFIER											{ $$ = $1; } // this might not be right	
-        | Expression '=' Expression								{ $$ = new AssignmentExpression($1,$3); }
-        | Expression '+' Expression								{ $$ = new BinaryExpression($1,$2,$3); } // check this
-        | Expression '<' Expression								{ $$ = new BinaryExpression($1,$2,$3); } //Josh - check this
-		| AssignmentExpression									{ $$ = $1; } // Josh
+		: IntegerLiteral										{ $$ = new AST.IntegerLiteralExpression($1); }
+        | IDENTIFIER											{ $$ = new AST.VariableExpression($1); } // this might not be right	
+        | Expression '=' Expression								{ $$ = new AST.AssignmentExpression($1,$3); }
+        | Expression '+' Expression								{ $$ = new AST.BinaryExpression($1,'+',$3); } // check this
+        | Expression '<' Expression								{ $$ = new AST.BinaryExpression($1,'<',$3); } //Josh - check this
+		| AssignmentExpression									// Josh
 		  
            ;
 Empty	:
@@ -89,22 +101,22 @@ Empty	:
 
 // Group A Start
 CompilationUnit 
-		: PackageDeclaration_opt ImportDeclarations TypeDeclarations	{ $$ = new CompiationUnitDeclaration($1,$2,$3); $$.DumpValue(0); } // Josh
+		: PackageDeclaration_opt ImportDeclarations TypeDeclarations	 // Josh   { $$ = new AST.CompilationUnitDeclaration($1,$2,$3);  }
 		;
 
 PackageDeclaration_opt
-		: /* empty */											{ $$ = null; }
+		: /* empty */											
 		| /* follow up */
 		;
 		
 ImportDeclarations
-		: /*empty*/												{ $$ = null; }
+		: /*empty*/												
 		| /* follow up */
 		;
 
 TypeDeclarations 
 		: TypeDeclaration TypeDeclarations						{ $$ = $1; } // needs work - Josh
-		| /* empty */											{ $$ = null; }
+		| /* empty */											
 		| /* follow up */
 		;
 TypeDeclaration 
@@ -233,22 +245,22 @@ FormalParameterList
 
 FormalParameters 
 		: FormalParameters FormalParameter 						{ $$ = $2; } /* TODO - only works if there is a single parameter */ // Nathan
-		| /* empty *//*TODO*/									{ $$ = null; } // Nathan
+		| /* empty *//*TODO*/									 // Nathan
 		;
 
 ///	Do we need this? - Nathan	
 //FormalParameter_repeat
 //		: ',' FormalParameter_repeat FormalParameter			{ $$ = null; } /* TODO */ // Nathan
-//		| /* empty */											{ $$ = null; } // Nathan
+//		| /* empty */											 // Nathan
 //		;
 
 
 FormalParameter 
-		:  VariableModifiers UnannType VariableDeclaratorId		{ $$ = new VariableDeclarationStatement($2, $3); } // Nathan
+		:  VariableModifiers UnannType VariableDeclaratorId		 // Nathan
 		;
 VariableModifiers 
-		: VariableModifiers VariableModifier					{ $$ = null; } /* TODO */  // Nathan
-		| /* empty */											{ $$ = null; } // Nathan
+		: VariableModifiers VariableModifier					 /* TODO */  // Nathan
+		| /* empty */											 // Nathan
 		;
 
 VariableModifier 
@@ -263,7 +275,7 @@ Dims
 		;
 
 VariableDeclaratorId
-		: IDENTIFIER Dims_Opt									{ $$ = $1; } // Needs work - Tri
+		: IDENTIFIER Dims_Opt									
 		;
 
 UnannType
@@ -413,7 +425,7 @@ PrimaryNoNewArray
 		;
 
 Literal
-		: IntegerLiteral										{ $$ = new IntegerLiteralExpression($1); } // Nathan
+		: IntegerLiteral										{  } // Nathan
 		;
 
 // end of sneha Work

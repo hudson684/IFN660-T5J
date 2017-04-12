@@ -1,4 +1,4 @@
-%namespace IFN660_Java_ECMAScript.AST
+%namespace IFN660_Java_ECMAScript
 
 %{
 int lines = 0;

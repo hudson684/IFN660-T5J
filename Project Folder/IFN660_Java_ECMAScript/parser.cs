@@ -3,10 +3,10 @@
 // (see accompanying GPPGcopyright.rtf)
 
 // GPPG version 1.5.2
-// Machine:  VDI-VL17-145
-// DateTime: 11/04/2017 6:30:48 PM
-// UserName: n9648500
-// Input file <parser.y - 11/04/2017 6:30:46 PM>
+// Machine:  VDI-VL17-074
+// DateTime: 12/04/2017 6:03:56 PM
+// UserName: n9768653
+// Input file <parser.y - 12/04/2017 6:03:52 PM>
 
 // options: lines gplex
 
@@ -17,7 +17,7 @@ using System.Globalization;
 using System.Text;
 using QUT.Gppg;
 
-namespace IFN660_Java_ECMAScript.AST
+namespace IFN660_Java_ECMAScript
 {
 public enum Tokens {error=128,EOF=129,NUMBER=130,IDENTIFIER=131,ABSTRACT=132,
     CONTINUE=133,FOR=134,NEW=135,SWITCH=136,ASSERT=137,DEFAULT=138,
@@ -36,16 +36,18 @@ public enum Tokens {error=128,EOF=129,NUMBER=130,IDENTIFIER=131,ABSTRACT=132,
     UNSIGNED_RIGHT_SHIFT_ASSIGNMENT=211,SIGNED_RIGHT_SHIFT_ASSIGNMENT=212};
 
 public struct ValueType
-#line 3 "parser.y"
+#line 8 "parser.y"
 {
     public long num;
 	public double floatnum;
 	public bool boolval;
 	public char charval;
     public string name;
-	Statement s;
-	Expression e;
-	Node n;
+	public AST.Statement stmt;
+	public AST.Expression expr;
+	public AST.Type type;
+	public AST.CompilationUnitDeclaration cmpu;
+	public System.Collections.Generic.List<AST.Statement> stmts;
 }
 #line default
 // Abstract base class for GPLEX scanners
@@ -70,14 +72,20 @@ public class ScanObj {
 [GeneratedCodeAttribute( "Gardens Point Parser Generator", "1.5.2")]
 public class Parser: ShiftReduceParser<ValueType, LexLocation>
 {
+  // Verbatim content from parser.y - 12/04/2017 6:03:52 PM
+#line 5 "parser.y"
+public static AST.CompilationUnitDeclaration root;
+#line default
+  // End verbatim content from parser.y - 12/04/2017 6:03:52 PM
+
 #pragma warning disable 649
   private static Dictionary<int, string> aliases;
 #pragma warning restore 649
   private static Rule[] rules = new Rule[124];
   private static State[] states = new State[143];
   private static string[] nonTerms = new string[] {
-      "Program", "$accept", "CompilationUnit", "Statement", "Expression", "StatementList", 
-      "Type", "StatementWithoutTrailingSubstatement", "AssignmentExpression", 
+      "Expression", "Statement", "Type", "StatementList", "CompilationUnit", 
+      "Program", "$accept", "StatementWithoutTrailingSubstatement", "AssignmentExpression", 
       "Empty", "PackageDeclaration_opt", "ImportDeclarations", "TypeDeclarations", 
       "TypeDeclaration", "ClassDeclaration", "NormalClassDeclaration", "ClassModifiers", 
       "TypeParameters_opt", "SuperClass_opt", "Superinterfaces_opt", "ClassBody", 
@@ -96,7 +104,7 @@ public class Parser: ShiftReduceParser<ValueType, LexLocation>
       "Literal", };
 
   static Parser() {
-    states[0] = new State(-20,new int[]{-1,1,-3,3,-11,4});
+    states[0] = new State(-20,new int[]{-6,1,-5,3,-11,4});
     states[1] = new State(new int[]{129,2});
     states[2] = new State(-1);
     states[3] = new State(-2);
@@ -124,12 +132,12 @@ public class Parser: ShiftReduceParser<ValueType, LexLocation>
     states[25] = new State(new int[]{123,28,59,108},new int[]{-30,26,-53,27});
     states[26] = new State(-49);
     states[27] = new State(-92);
-    states[28] = new State(new int[]{131,53,152,57,165,58,164,59,174,60,167,61,178,63,148,64,142,65,139,67,123,74,182,92,184,97,59,-89,125,-98},new int[]{-54,29,-55,31,-56,32,-58,35,-59,36,-35,38,-46,49,-51,50,-52,51,-47,54,-48,55,-49,56,-50,62,-4,66,-5,78,-9,88,-68,89,-69,90,-70,91,-7,94,-8,98,-62,99,-63,100,-64,102,-65,103,-67,107});
+    states[28] = new State(new int[]{131,53,152,57,165,58,164,59,174,60,167,61,178,63,148,64,142,65,139,67,123,74,182,92,184,97,59,-89,125,-98},new int[]{-54,29,-55,31,-56,32,-58,35,-59,36,-35,38,-46,49,-51,50,-52,51,-47,54,-48,55,-49,56,-50,62,-2,66,-1,78,-9,88,-68,89,-69,90,-70,91,-3,94,-8,98,-62,99,-63,100,-64,102,-65,103,-67,107});
     states[29] = new State(new int[]{125,30});
     states[30] = new State(-96);
     states[31] = new State(-97);
     states[32] = new State(-101,new int[]{-57,33});
-    states[33] = new State(new int[]{131,53,152,57,165,58,164,59,174,60,167,61,178,63,148,64,142,65,139,67,123,74,182,92,184,97,125,-99,59,-89},new int[]{-56,34,-58,35,-59,36,-35,38,-46,49,-51,50,-52,51,-47,54,-48,55,-49,56,-50,62,-4,66,-5,78,-9,88,-68,89,-69,90,-70,91,-7,94,-8,98,-62,99,-63,100,-64,102,-65,103,-67,107});
+    states[33] = new State(new int[]{131,53,152,57,165,58,164,59,174,60,167,61,178,63,148,64,142,65,139,67,123,74,182,92,184,97,125,-99,59,-89},new int[]{-56,34,-58,35,-59,36,-35,38,-46,49,-51,50,-52,51,-47,54,-48,55,-49,56,-50,62,-2,66,-1,78,-9,88,-68,89,-69,90,-70,91,-3,94,-8,98,-62,99,-63,100,-64,102,-65,103,-67,107});
     states[34] = new State(-100);
     states[35] = new State(-102);
     states[36] = new State(new int[]{59,37});
@@ -164,23 +172,23 @@ public class Parser: ShiftReduceParser<ValueType, LexLocation>
     states[65] = new State(-78);
     states[66] = new State(-103);
     states[67] = new State(new int[]{40,68});
-    states[68] = new State(new int[]{182,86,131,87},new int[]{-5,69,-9,88,-68,89,-69,90,-70,91});
+    states[68] = new State(new int[]{182,86,131,87},new int[]{-1,69,-9,88,-68,89,-69,90,-70,91});
     states[69] = new State(new int[]{41,70,61,80,43,82,60,84});
-    states[70] = new State(new int[]{139,67,123,74,182,92,131,93,184,97},new int[]{-4,71,-5,78,-9,88,-68,89,-69,90,-70,91,-7,94,-8,98,-62,99,-63,100,-64,102,-65,103,-67,107});
+    states[70] = new State(new int[]{139,67,123,74,182,92,131,93,184,97},new int[]{-2,71,-1,78,-9,88,-68,89,-69,90,-70,91,-3,94,-8,98,-62,99,-63,100,-64,102,-65,103,-67,107});
     states[71] = new State(new int[]{153,72});
-    states[72] = new State(new int[]{139,67,123,74,182,92,131,93,184,97},new int[]{-4,73,-5,78,-9,88,-68,89,-69,90,-70,91,-7,94,-8,98,-62,99,-63,100,-64,102,-65,103,-67,107});
+    states[72] = new State(new int[]{139,67,123,74,182,92,131,93,184,97},new int[]{-2,73,-1,78,-9,88,-68,89,-69,90,-70,91,-3,94,-8,98,-62,99,-63,100,-64,102,-65,103,-67,107});
     states[73] = new State(-3);
-    states[74] = new State(-11,new int[]{-6,75});
-    states[75] = new State(new int[]{125,76,139,67,123,74,182,92,131,93,184,97},new int[]{-4,77,-5,78,-9,88,-68,89,-69,90,-70,91,-7,94,-8,98,-62,99,-63,100,-64,102,-65,103,-67,107});
+    states[74] = new State(-11,new int[]{-4,75});
+    states[75] = new State(new int[]{125,76,139,67,123,74,182,92,131,93,184,97},new int[]{-2,77,-1,78,-9,88,-68,89,-69,90,-70,91,-3,94,-8,98,-62,99,-63,100,-64,102,-65,103,-67,107});
     states[76] = new State(-4);
     states[77] = new State(-10);
     states[78] = new State(new int[]{59,79,61,80,43,82,60,84});
     states[79] = new State(-5);
-    states[80] = new State(new int[]{182,86,131,87},new int[]{-5,81,-9,88,-68,89,-69,90,-70,91});
+    states[80] = new State(new int[]{182,86,131,87},new int[]{-1,81,-9,88,-68,89,-69,90,-70,91});
     states[81] = new State(new int[]{61,-14,43,82,60,84,59,-14,41,-14});
-    states[82] = new State(new int[]{182,86,131,87},new int[]{-5,83,-9,88,-68,89,-69,90,-70,91});
+    states[82] = new State(new int[]{182,86,131,87},new int[]{-1,83,-9,88,-68,89,-69,90,-70,91});
     states[83] = new State(-15);
-    states[84] = new State(new int[]{182,86,131,87},new int[]{-5,85,-9,88,-68,89,-69,90,-70,91});
+    states[84] = new State(new int[]{182,86,131,87},new int[]{-1,85,-9,88,-68,89,-69,90,-70,91});
     states[85] = new State(new int[]{61,-16,43,82,41,-16,59,-16});
     states[86] = new State(-12);
     states[87] = new State(-13);
@@ -200,7 +208,7 @@ public class Parser: ShiftReduceParser<ValueType, LexLocation>
     states[101] = new State(-114);
     states[102] = new State(-115);
     states[103] = new State(new int[]{61,106},new int[]{-66,104});
-    states[104] = new State(new int[]{182,86,131,87},new int[]{-5,105,-9,88,-68,89,-69,90,-70,91});
+    states[104] = new State(new int[]{182,86,131,87},new int[]{-1,105,-9,88,-68,89,-69,90,-70,91});
     states[105] = new State(new int[]{61,80,43,82,60,84,59,-116});
     states[106] = new State(-119);
     states[107] = new State(-117);
@@ -242,25 +250,25 @@ public class Parser: ShiftReduceParser<ValueType, LexLocation>
 
     for (int sNo = 0; sNo < states.Length; sNo++) states[sNo].number = sNo;
 
-    rules[1] = new Rule(-2, new int[]{-1,129});
-    rules[2] = new Rule(-1, new int[]{-3});
-    rules[3] = new Rule(-4, new int[]{139,40,-5,41,-4,153,-4});
-    rules[4] = new Rule(-4, new int[]{123,-6,125});
-    rules[5] = new Rule(-4, new int[]{-5,59});
-    rules[6] = new Rule(-4, new int[]{-7,131,59});
-    rules[7] = new Rule(-4, new int[]{-8});
-    rules[8] = new Rule(-7, new int[]{182});
-    rules[9] = new Rule(-7, new int[]{184});
-    rules[10] = new Rule(-6, new int[]{-6,-4});
-    rules[11] = new Rule(-6, new int[]{});
-    rules[12] = new Rule(-5, new int[]{182});
-    rules[13] = new Rule(-5, new int[]{131});
-    rules[14] = new Rule(-5, new int[]{-5,61,-5});
-    rules[15] = new Rule(-5, new int[]{-5,43,-5});
-    rules[16] = new Rule(-5, new int[]{-5,60,-5});
-    rules[17] = new Rule(-5, new int[]{-9});
+    rules[1] = new Rule(-7, new int[]{-6,129});
+    rules[2] = new Rule(-6, new int[]{-5});
+    rules[3] = new Rule(-2, new int[]{139,40,-1,41,-2,153,-2});
+    rules[4] = new Rule(-2, new int[]{123,-4,125});
+    rules[5] = new Rule(-2, new int[]{-1,59});
+    rules[6] = new Rule(-2, new int[]{-3,131,59});
+    rules[7] = new Rule(-2, new int[]{-8});
+    rules[8] = new Rule(-3, new int[]{182});
+    rules[9] = new Rule(-3, new int[]{184});
+    rules[10] = new Rule(-4, new int[]{-4,-2});
+    rules[11] = new Rule(-4, new int[]{});
+    rules[12] = new Rule(-1, new int[]{182});
+    rules[13] = new Rule(-1, new int[]{131});
+    rules[14] = new Rule(-1, new int[]{-1,61,-1});
+    rules[15] = new Rule(-1, new int[]{-1,43,-1});
+    rules[16] = new Rule(-1, new int[]{-1,60,-1});
+    rules[17] = new Rule(-1, new int[]{-9});
     rules[18] = new Rule(-10, new int[]{});
-    rules[19] = new Rule(-3, new int[]{-11,-12,-13});
+    rules[19] = new Rule(-5, new int[]{-11,-12,-13});
     rules[20] = new Rule(-11, new int[]{});
     rules[21] = new Rule(-11, new int[]{});
     rules[22] = new Rule(-12, new int[]{});
@@ -344,7 +352,7 @@ public class Parser: ShiftReduceParser<ValueType, LexLocation>
     rules[100] = new Rule(-57, new int[]{-57,-56});
     rules[101] = new Rule(-57, new int[]{});
     rules[102] = new Rule(-56, new int[]{-58});
-    rules[103] = new Rule(-56, new int[]{-4});
+    rules[103] = new Rule(-56, new int[]{-2});
     rules[104] = new Rule(-56, new int[]{});
     rules[105] = new Rule(-58, new int[]{-59,59});
     rules[106] = new Rule(-59, new int[]{-35,-60});
@@ -357,7 +365,7 @@ public class Parser: ShiftReduceParser<ValueType, LexLocation>
     rules[113] = new Rule(-8, new int[]{-62});
     rules[114] = new Rule(-62, new int[]{-63,59});
     rules[115] = new Rule(-63, new int[]{-64});
-    rules[116] = new Rule(-64, new int[]{-65,-66,-5});
+    rules[116] = new Rule(-64, new int[]{-65,-66,-1});
     rules[117] = new Rule(-65, new int[]{-67});
     rules[118] = new Rule(-67, new int[]{131});
     rules[119] = new Rule(-66, new int[]{61});
@@ -379,585 +387,535 @@ public class Parser: ShiftReduceParser<ValueType, LexLocation>
 #pragma warning disable 162, 1522
     switch (action)
     {
-      case 3: // Statement -> IF, '(', Expression, ')', Statement, ELSE, Statement
-#line 62 "parser.y"
-                                                            { CurrentSemanticValue = new IfStatement(ValueStack[ValueStack.Depth-5], ValueStack[ValueStack.Depth-3], ValueStack[ValueStack.Depth-1]); }
+      case 2: // Program -> CompilationUnit
+#line 71 "parser.y"
+                                   {root = ValueStack[ValueStack.Depth-1].cmpu;}
 #line default
         break;
-      case 4: // Statement -> '{', StatementList, '}'
-#line 63 "parser.y"
-                                         { CurrentSemanticValue = ValueStack[ValueStack.Depth-2]; }
+      case 3: // Statement -> IF, '(', Expression, ')', Statement, ELSE, Statement
+#line 74 "parser.y"
+                                                            { CurrentSemanticValue.stmt = new AST.IfStatement(ValueStack[ValueStack.Depth-5].expr, ValueStack[ValueStack.Depth-3].stmt, ValueStack[ValueStack.Depth-1].stmt); }
 #line default
         break;
       case 5: // Statement -> Expression, ';'
-#line 64 "parser.y"
-                                    { CurrentSemanticValue = new ExpressionStatement(ValueStack[ValueStack.Depth-2]); }
+#line 76 "parser.y"
+                                    { CurrentSemanticValue.stmt = new AST.ExpressionStatement(ValueStack[ValueStack.Depth-2].expr); }
 #line default
         break;
-      case 7: // Statement -> StatementWithoutTrailingSubstatement
-#line 66 "parser.y"
-                                              { CurrentSemanticValue = ValueStack[ValueStack.Depth-1]; }
+      case 6: // Statement -> Type, IDENTIFIER, ';'
+#line 77 "parser.y"
+                                        { CurrentSemanticValue.stmt = new AST.VariableDeclaration(ValueStack[ValueStack.Depth-3].type,ValueStack[ValueStack.Depth-2].name);}
 #line default
         break;
       case 8: // Type -> IntegerLiteral
-#line 69 "parser.y"
-                               { CurrentSemanticValue = ValueStack[ValueStack.Depth-1].intnum;}
+#line 81 "parser.y"
+                               { CurrentSemanticValue.type = new AST.IntType();}
 #line default
         break;
       case 9: // Type -> BooleanLiteral
-#line 70 "parser.y"
-                            { CurrentSemanticValue = ValueStack[ValueStack.Depth-1].boolval; }
+#line 82 "parser.y"
+                            { CurrentSemanticValue.type = new AST.BoolType(); }
 #line default
         break;
       case 10: // StatementList -> StatementList, Statement
-#line 74 "parser.y"
-                                   { CurrentSemanticValue = ValueStack[ValueStack.Depth-1];}
+#line 86 "parser.y"
+                                   { CurrentSemanticValue.stmts = ValueStack[ValueStack.Depth-2].stmts; CurrentSemanticValue.stmts.Add(ValueStack[ValueStack.Depth-1].stmt);}
 #line default
         break;
       case 11: // StatementList -> /* empty */
-#line 75 "parser.y"
-                                { CurrentSemanticValue = null;}
+#line 87 "parser.y"
+                                { CurrentSemanticValue.stmts = new System.Collections.Generic.List<AST.Statement>();}
 #line default
         break;
       case 12: // Expression -> IntegerLiteral
-#line 79 "parser.y"
-                            { CurrentSemanticValue = ValueStack[ValueStack.Depth-1].intnum; }
+#line 91 "parser.y"
+                            { CurrentSemanticValue.expr = new AST.IntegerLiteralExpression(ValueStack[ValueStack.Depth-1].num); }
 #line default
         break;
       case 13: // Expression -> IDENTIFIER
-#line 80 "parser.y"
-                               { CurrentSemanticValue = ValueStack[ValueStack.Depth-1].name; }
+#line 92 "parser.y"
+                               { CurrentSemanticValue.expr = new AST.VariableExpression(ValueStack[ValueStack.Depth-1].name); }
 #line default
         break;
       case 14: // Expression -> Expression, '=', Expression
-#line 81 "parser.y"
-                                           { CurrentSemanticValue = new AssignmentExpression(ValueStack[ValueStack.Depth-3],ValueStack[ValueStack.Depth-1]); }
+#line 93 "parser.y"
+                                           { CurrentSemanticValue.expr = new AST.AssignmentExpression(ValueStack[ValueStack.Depth-3].expr,ValueStack[ValueStack.Depth-1].expr); }
 #line default
         break;
       case 15: // Expression -> Expression, '+', Expression
-#line 82 "parser.y"
-                                           { CurrentSemanticValue = new BinaryExpression(ValueStack[ValueStack.Depth-3],ValueStack[ValueStack.Depth-2],ValueStack[ValueStack.Depth-1]); }
+#line 94 "parser.y"
+                                           { CurrentSemanticValue.expr = new AST.BinaryExpression(ValueStack[ValueStack.Depth-3].expr,'+',ValueStack[ValueStack.Depth-1].expr); }
 #line default
         break;
       case 16: // Expression -> Expression, '<', Expression
-#line 83 "parser.y"
-                                           { CurrentSemanticValue = new BinaryExpression(ValueStack[ValueStack.Depth-3],ValueStack[ValueStack.Depth-2],ValueStack[ValueStack.Depth-1]); }
-#line default
-        break;
-      case 17: // Expression -> AssignmentExpression
-#line 84 "parser.y"
-                                 { CurrentSemanticValue = ValueStack[ValueStack.Depth-1]; }
-#line default
-        break;
-      case 19: // CompilationUnit -> PackageDeclaration_opt, ImportDeclarations, TypeDeclarations
-#line 92 "parser.y"
-                                                               { CurrentSemanticValue = new CompiationUnitDeclaration(ValueStack[ValueStack.Depth-3],ValueStack[ValueStack.Depth-2],ValueStack[ValueStack.Depth-1]); CurrentSemanticValue.DumpValue(0); }
-#line default
-        break;
-      case 20: // PackageDeclaration_opt -> /* empty */
-#line 96 "parser.y"
-                          { CurrentSemanticValue = null; }
-#line default
-        break;
-      case 22: // ImportDeclarations -> /* empty */
-#line 101 "parser.y"
-                         { CurrentSemanticValue = null; }
+#line 95 "parser.y"
+                                           { CurrentSemanticValue.expr = new AST.BinaryExpression(ValueStack[ValueStack.Depth-3].expr,'<',ValueStack[ValueStack.Depth-1].expr); }
 #line default
         break;
       case 24: // TypeDeclarations -> TypeDeclaration, TypeDeclarations
-#line 106 "parser.y"
+#line 118 "parser.y"
                                           { CurrentSemanticValue = ValueStack[ValueStack.Depth-2]; }
 #line default
         break;
-      case 25: // TypeDeclarations -> /* empty */
-#line 107 "parser.y"
-                          { CurrentSemanticValue = null; }
-#line default
-        break;
       case 27: // TypeDeclaration -> ClassDeclaration
-#line 111 "parser.y"
+#line 123 "parser.y"
                                                             {  }
 #line default
         break;
       case 28: // ClassDeclaration -> NormalClassDeclaration
-#line 115 "parser.y"
+#line 127 "parser.y"
                                                              {  }
 #line default
         break;
       case 29: // NormalClassDeclaration -> ClassModifiers, CLASS, IDENTIFIER, TypeParameters_opt, 
                //                           SuperClass_opt, Superinterfaces_opt, ClassBody
-#line 119 "parser.y"
+#line 131 "parser.y"
                                                                                                     {  }
 #line default
         break;
       case 30: // ClassModifiers -> ClassModifiers, ClassModifier
-#line 123 "parser.y"
+#line 135 "parser.y"
                                        {  }
 #line default
         break;
       case 31: // ClassModifiers -> /* empty */
-#line 124 "parser.y"
+#line 136 "parser.y"
                           {  }
 #line default
         break;
       case 32: // ClassModifier -> Annotation
-#line 128 "parser.y"
+#line 140 "parser.y"
                          {  }
 #line default
         break;
       case 33: // ClassModifier -> PUBLIC
-#line 129 "parser.y"
+#line 141 "parser.y"
                       {  }
 #line default
         break;
       case 34: // ClassModifier -> PROTECTED
-#line 130 "parser.y"
+#line 142 "parser.y"
                          {  }
 #line default
         break;
       case 35: // ClassModifier -> PRIVATE
-#line 131 "parser.y"
+#line 143 "parser.y"
                         {  }
 #line default
         break;
       case 36: // ClassModifier -> ABSTRACT
-#line 132 "parser.y"
+#line 144 "parser.y"
                          {  }
 #line default
         break;
       case 37: // ClassModifier -> STATIC
-#line 133 "parser.y"
+#line 145 "parser.y"
                        {  }
 #line default
         break;
       case 38: // ClassModifier -> FINAL
-#line 134 "parser.y"
+#line 146 "parser.y"
                       {  }
 #line default
         break;
       case 39: // ClassModifier -> STRICTFP
-#line 135 "parser.y"
+#line 147 "parser.y"
                          {  }
 #line default
         break;
       case 40: // Annotation -> /* empty */
-#line 139 "parser.y"
+#line 151 "parser.y"
                           { }
 #line default
         break;
       case 41: // TypeParameters_opt -> /* empty */
-#line 143 "parser.y"
+#line 155 "parser.y"
                                         { }
 #line default
         break;
       case 42: // SuperClass_opt -> /* empty */
-#line 146 "parser.y"
+#line 158 "parser.y"
                                      { }
 #line default
         break;
       case 43: // Superinterfaces_opt -> /* empty */
-#line 149 "parser.y"
+#line 161 "parser.y"
                                          { }
 #line default
         break;
       case 44: // ClassBody -> '{', ClassBodyDeclarations, '}'
-#line 153 "parser.y"
+#line 165 "parser.y"
                                         { }
 #line default
         break;
       case 45: // ClassBodyDeclarations -> ClassBodyDeclarations, ClassBodyDeclaration
-#line 160 "parser.y"
+#line 172 "parser.y"
                                                  { }
 #line default
         break;
       case 46: // ClassBodyDeclarations -> /* empty */
-#line 161 "parser.y"
+#line 173 "parser.y"
                           { }
 #line default
         break;
       case 47: // ClassBodyDeclaration -> ClassMemberDeclaration
-#line 165 "parser.y"
+#line 177 "parser.y"
                                   { }
 #line default
         break;
       case 48: // ClassMemberDeclaration -> MethodDeclaration
-#line 170 "parser.y"
+#line 182 "parser.y"
                                { }
 #line default
         break;
       case 49: // MethodDeclaration -> MethodModifiers, MethodHeader, MethodBody
-#line 175 "parser.y"
+#line 187 "parser.y"
                                                { }
 #line default
         break;
       case 50: // MethodModifiers -> MethodModifiers, MethodModifier
-#line 179 "parser.y"
+#line 191 "parser.y"
                                               { }
 #line default
         break;
       case 51: // MethodModifiers -> /* empty */
-#line 180 "parser.y"
+#line 192 "parser.y"
                           { }
 #line default
         break;
       case 52: // MethodModifier -> Annotation
-#line 184 "parser.y"
+#line 196 "parser.y"
                          { }
 #line default
         break;
       case 53: // MethodModifier -> PUBLIC
-#line 185 "parser.y"
+#line 197 "parser.y"
                       { }
 #line default
         break;
       case 54: // MethodModifier -> STATIC
-#line 186 "parser.y"
+#line 198 "parser.y"
                             { }
 #line default
         break;
       case 55: // MethodHeader -> Result, MethodDeclarator, Throws_opt
-#line 190 "parser.y"
+#line 202 "parser.y"
                                            { }
 #line default
         break;
       case 56: // Result -> VOID
-#line 198 "parser.y"
+#line 210 "parser.y"
                      { }
 #line default
         break;
       case 57: // Result -> UnannType
-#line 199 "parser.y"
+#line 211 "parser.y"
                          { }
 #line default
         break;
       case 58: // Throws_opt -> Empty
-#line 203 "parser.y"
+#line 215 "parser.y"
                       { }
 #line default
         break;
       case 59: // MethodDeclarator -> IDENTIFIER, '(', FormalParameterList_Opt, ')', Dims_Opt
-#line 208 "parser.y"
+#line 220 "parser.y"
                                                         { }
 #line default
         break;
       case 60: // FormalParameterList_Opt -> FormalParameterList
-#line 218 "parser.y"
+#line 230 "parser.y"
                                 { }
 #line default
         break;
       case 61: // FormalParameterList_Opt -> /* empty */
-#line 219 "parser.y"
+#line 231 "parser.y"
                           { }
 #line default
         break;
       case 62: // Dims_Opt -> Dims
-#line 223 "parser.y"
+#line 235 "parser.y"
                      { }
 #line default
         break;
       case 63: // Dims_Opt -> /* empty */
-#line 224 "parser.y"
+#line 236 "parser.y"
                           { }
 #line default
         break;
       case 64: // FormalParameterList -> FormalParameters
-#line 230 "parser.y"
+#line 242 "parser.y"
                                { }
 #line default
         break;
       case 65: // FormalParameterList -> /* empty */
-#line 231 "parser.y"
+#line 243 "parser.y"
                         { }
 #line default
         break;
       case 66: // FormalParameters -> FormalParameters, FormalParameter
-#line 235 "parser.y"
+#line 247 "parser.y"
                                            { CurrentSemanticValue = ValueStack[ValueStack.Depth-1]; }
 #line default
         break;
-      case 67: // FormalParameters -> /* empty */
-#line 236 "parser.y"
-                                { CurrentSemanticValue = null; }
-#line default
-        break;
-      case 68: // FormalParameter -> VariableModifiers, UnannType, VariableDeclaratorId
-#line 247 "parser.y"
-                                                       { CurrentSemanticValue = new VariableDeclarationStatement(ValueStack[ValueStack.Depth-2], ValueStack[ValueStack.Depth-1]); }
-#line default
-        break;
-      case 69: // VariableModifiers -> VariableModifiers, VariableModifier
-#line 250 "parser.y"
-                                           { CurrentSemanticValue = null; }
-#line default
-        break;
-      case 70: // VariableModifiers -> /* empty */
-#line 251 "parser.y"
-                          { CurrentSemanticValue = null; }
-#line default
-        break;
       case 71: // VariableModifier -> Annotation
-#line 255 "parser.y"
+#line 267 "parser.y"
                          { CurrentSemanticValue = ValueStack[ValueStack.Depth-1]; }
 #line default
         break;
       case 72: // VariableModifier -> FINAL
-#line 256 "parser.y"
+#line 268 "parser.y"
                       { CurrentSemanticValue = ValueStack[ValueStack.Depth-1]; }
 #line default
         break;
       case 73: // Dims -> Annotations, '[', ']'
-#line 262 "parser.y"
+#line 274 "parser.y"
                                { CurrentSemanticValue = ValueStack[ValueStack.Depth-3]; }
 #line default
         break;
-      case 74: // VariableDeclaratorId -> IDENTIFIER, Dims_Opt
-#line 266 "parser.y"
-                                { CurrentSemanticValue = ValueStack[ValueStack.Depth-2].name; }
-#line default
-        break;
       case 75: // UnannType -> UnannReferenceType
-#line 270 "parser.y"
-                               { CurrentSemanticValue = ValueStack[ValueStack.Depth-1]; }
-#line default
-        break;
-      case 76: // UnannType -> UnannPrimitiveType
-#line 271 "parser.y"
-                               { CurrentSemanticValue = ValueStack[ValueStack.Depth-1]; }
-#line default
-        break;
-      case 77: // UnannPrimitiveType -> NumbericType
-#line 276 "parser.y"
-                           { CurrentSemanticValue = ValueStack[ValueStack.Depth-1]; }
-#line default
-        break;
-      case 78: // UnannPrimitiveType -> BOOLEAN
-#line 277 "parser.y"
-                       { CurrentSemanticValue = ValueStack[ValueStack.Depth-1]; }
-#line default
-        break;
-      case 79: // NumbericType -> IntegralType
-#line 281 "parser.y"
-                           { CurrentSemanticValue = ValueStack[ValueStack.Depth-1]; }
-#line default
-        break;
-      case 80: // NumbericType -> FloatingPointType
 #line 282 "parser.y"
                                { CurrentSemanticValue = ValueStack[ValueStack.Depth-1]; }
 #line default
         break;
+      case 76: // UnannType -> UnannPrimitiveType
+#line 283 "parser.y"
+                               { CurrentSemanticValue = ValueStack[ValueStack.Depth-1]; }
+#line default
+        break;
+      case 77: // UnannPrimitiveType -> NumbericType
+#line 288 "parser.y"
+                           { CurrentSemanticValue = ValueStack[ValueStack.Depth-1]; }
+#line default
+        break;
+      case 78: // UnannPrimitiveType -> BOOLEAN
+#line 289 "parser.y"
+                       { CurrentSemanticValue = ValueStack[ValueStack.Depth-1]; }
+#line default
+        break;
+      case 79: // NumbericType -> IntegralType
+#line 293 "parser.y"
+                           { CurrentSemanticValue = ValueStack[ValueStack.Depth-1]; }
+#line default
+        break;
+      case 80: // NumbericType -> FloatingPointType
+#line 294 "parser.y"
+                               { CurrentSemanticValue = ValueStack[ValueStack.Depth-1]; }
+#line default
+        break;
       case 81: // IntegralType -> BYTE
-#line 286 "parser.y"
+#line 298 "parser.y"
                      { CurrentSemanticValue = ValueStack[ValueStack.Depth-1];  }
 #line default
         break;
       case 82: // IntegralType -> SHORT
-#line 287 "parser.y"
+#line 299 "parser.y"
                       { CurrentSemanticValue = ValueStack[ValueStack.Depth-1];  }
 #line default
         break;
       case 83: // IntegralType -> INT
-#line 288 "parser.y"
+#line 300 "parser.y"
                     { }
 #line default
         break;
       case 84: // IntegralType -> LONG
-#line 289 "parser.y"
+#line 301 "parser.y"
                      { }
 #line default
         break;
       case 85: // IntegralType -> CHAR
-#line 290 "parser.y"
+#line 302 "parser.y"
                      { }
 #line default
         break;
       case 86: // FloatingPointType -> FLOAT
-#line 294 "parser.y"
+#line 306 "parser.y"
                       { }
 #line default
         break;
       case 87: // FloatingPointType -> DOUBLE
-#line 295 "parser.y"
+#line 307 "parser.y"
                       { }
 #line default
         break;
       case 88: // UnannReferenceType -> UnannArrayType
-#line 299 "parser.y"
+#line 311 "parser.y"
                             { }
 #line default
         break;
       case 89: // UnannReferenceType -> /* empty */
-#line 300 "parser.y"
+#line 312 "parser.y"
                             { }
 #line default
         break;
       case 90: // UnannArrayType -> UnannTypeVariable, Dims
-#line 306 "parser.y"
+#line 318 "parser.y"
                                   { }
 #line default
         break;
       case 91: // UnannTypeVariable -> IDENTIFIER
-#line 310 "parser.y"
+#line 322 "parser.y"
                          { }
 #line default
         break;
       case 92: // MethodBody -> Block
-#line 315 "parser.y"
+#line 327 "parser.y"
                        { }
 #line default
         break;
       case 93: // MethodBody -> ';'
-#line 316 "parser.y"
+#line 328 "parser.y"
                     { }
 #line default
         break;
       case 94: // Annotations -> Annotation
-#line 320 "parser.y"
+#line 332 "parser.y"
                          { }
 #line default
         break;
       case 95: // Annotations -> /* empty */
-#line 321 "parser.y"
+#line 333 "parser.y"
                           { }
 #line default
         break;
       case 96: // Block -> '{', BlockStatements_Opt, '}'
-#line 325 "parser.y"
+#line 337 "parser.y"
                                       { }
 #line default
         break;
       case 97: // BlockStatements_Opt -> BlockStatements
-#line 329 "parser.y"
+#line 341 "parser.y"
                              { }
 #line default
         break;
       case 98: // BlockStatements_Opt -> /* empty */
-#line 330 "parser.y"
+#line 342 "parser.y"
                           { }
 #line default
         break;
       case 99: // BlockStatements -> BlockStatement, BlockStatement_s
-#line 334 "parser.y"
+#line 346 "parser.y"
                                          { }
 #line default
         break;
       case 100: // BlockStatement_s -> BlockStatement_s, BlockStatement
-#line 338 "parser.y"
+#line 350 "parser.y"
                                          { }
 #line default
         break;
       case 101: // BlockStatement_s -> /* empty */
-#line 339 "parser.y"
+#line 351 "parser.y"
                           { }
 #line default
         break;
       case 102: // BlockStatement -> LocalVariableDeclarationsAndStatement
-#line 343 "parser.y"
+#line 355 "parser.y"
                                               { }
 #line default
         break;
       case 103: // BlockStatement -> Statement
-#line 344 "parser.y"
+#line 356 "parser.y"
                          { }
 #line default
         break;
       case 104: // BlockStatement -> /* empty */
-#line 345 "parser.y"
+#line 357 "parser.y"
                              { }
 #line default
         break;
       case 105: // LocalVariableDeclarationsAndStatement -> LocalVariableDeclaration, ';'
-#line 349 "parser.y"
+#line 361 "parser.y"
                                        { }
 #line default
         break;
       case 106: // LocalVariableDeclaration -> UnannType, VariableDeclaratorList
-#line 353 "parser.y"
+#line 365 "parser.y"
                                           { }
 #line default
         break;
       case 107: // LocalVariableDeclaration -> /* empty */
-#line 354 "parser.y"
+#line 366 "parser.y"
                              { }
 #line default
         break;
       case 108: // VariableDeclaratorList -> VariableDeclarator
-#line 358 "parser.y"
+#line 370 "parser.y"
                                { }
 #line default
         break;
       case 109: // VariableDeclaratorList -> /* empty */
-#line 359 "parser.y"
+#line 371 "parser.y"
                              { }
 #line default
         break;
       case 110: // VariableDeclarator -> VariableDeclaratorId
-#line 363 "parser.y"
+#line 375 "parser.y"
                                  { }
 #line default
         break;
       case 111: // VariableDeclarator -> /* empty */
-#line 364 "parser.y"
+#line 376 "parser.y"
                              { }
 #line default
         break;
       case 112: // VariableDeclaratorId -> IDENTIFIER, Dims_Opt
-#line 368 "parser.y"
+#line 380 "parser.y"
                                 { }
 #line default
         break;
       case 113: // StatementWithoutTrailingSubstatement -> ExpressionStatement
-#line 373 "parser.y"
+#line 385 "parser.y"
                                  { }
 #line default
         break;
       case 114: // ExpressionStatement -> StatementExpression, ';'
-#line 377 "parser.y"
+#line 389 "parser.y"
                                    { }
 #line default
         break;
       case 115: // StatementExpression -> Assignment
-#line 381 "parser.y"
+#line 393 "parser.y"
                          { }
 #line default
         break;
       case 116: // Assignment -> LeftHandSide, AssignmentOperator, Expression
-#line 388 "parser.y"
+#line 400 "parser.y"
                                                  { }
 #line default
         break;
       case 117: // LeftHandSide -> ExpressionName
-#line 392 "parser.y"
+#line 404 "parser.y"
                             { }
 #line default
         break;
       case 118: // ExpressionName -> IDENTIFIER
-#line 396 "parser.y"
+#line 408 "parser.y"
                          { }
 #line default
         break;
       case 119: // AssignmentOperator -> '='
-#line 400 "parser.y"
+#line 412 "parser.y"
                     { }
 #line default
         break;
       case 120: // AssignmentExpression -> ArrayAccess
-#line 404 "parser.y"
+#line 416 "parser.y"
                           { CurrentSemanticValue = ValueStack[ValueStack.Depth-1]; }
 #line default
         break;
       case 121: // ArrayAccess -> PrimaryNoNewArray
-#line 408 "parser.y"
+#line 420 "parser.y"
                                { CurrentSemanticValue = ValueStack[ValueStack.Depth-1]; }
 #line default
         break;
       case 122: // PrimaryNoNewArray -> Literal
-#line 412 "parser.y"
+#line 424 "parser.y"
                        { CurrentSemanticValue = ValueStack[ValueStack.Depth-1]; }
 #line default
         break;
       case 123: // Literal -> IntegerLiteral
-#line 416 "parser.y"
-                            { CurrentSemanticValue = new IntegerLiteralExpression(ValueStack[ValueStack.Depth-1].intnum); }
+#line 428 "parser.y"
+                            {  }
 #line default
         break;
     }
@@ -974,7 +932,8 @@ public class Parser: ShiftReduceParser<ValueType, LexLocation>
         return CharToString((char)terminal);
   }
 
-#line 423 "parser.y"
+#line 434 "parser.y"
+
 public Parser(Scanner scanner) : base(scanner)
 {
 }

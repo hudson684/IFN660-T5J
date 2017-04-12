@@ -5,10 +5,10 @@
 //  See accompanying file GPLEXcopyright.rtf.
 //
 //  GPLEX Version:  1.2.2
-//  Machine:  VDI-VL17-145
-//  DateTime: 11/04/2017 6:30:48 PM
-//  UserName: n9648500
-//  GPLEX input file <scanner.lex - 11/04/2017 6:27:18 PM>
+//  Machine:  VDI-VL17-074
+//  DateTime: 12/04/2017 6:03:55 PM
+//  UserName: n9768653
+//  GPLEX input file <scanner.lex - 12/04/2017 5:44:38 PM>
 //  GPLEX frame file <embedded resource>
 //
 //  Option settings: unicode, parser, minimize
@@ -33,7 +33,7 @@ using System.Runtime.Serialization;
 using System.Diagnostics.CodeAnalysis;
 
 
-namespace IFN660_Java_ECMAScript.AST
+namespace IFN660_Java_ECMAScript
 {   
     /// <summary>
     /// Summary Canonical example of GPLEX automaton
