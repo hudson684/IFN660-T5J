@@ -1,4 +1,6 @@
-﻿namespace IFN660_Java_ECMAScript.AST
+﻿using System.Collections.Generic;
+
+namespace IFN660_Java_ECMAScript.AST
 {
     
     public abstract class Statement : Node
@@ -24,9 +26,9 @@
     {
         // by Nathan
         private Expression Cond;
-        private Statement[] StmtList;
+        private List<Statement> StmtList;
 
-        public WhileStatement(Expression Cond, Statement[] StmtList)
+        public WhileStatement(Expression Cond, List<Statement> StmtList)
         {
             this.Cond = Cond;
             this.StmtList = StmtList;
@@ -34,7 +36,14 @@
 
         public override bool ResolveNames()
         {
-            return Cond.ResolveNames(); // & StmtList.ResolveNames();
+            bool loopResolve = true;
+
+            foreach (Statement each in StmtList)
+            {
+                loopResolve = loopResolve & each.ResolveNames();
+            }
+
+            return Cond.ResolveNames() & loopResolve;
         }
     }
 
@@ -44,9 +53,9 @@
         private Statement ForInit;
         private Expression TestExpr;
         private Statement ForUpdate;
-        private Statement[] StmtList;
+        private List<Statement> StmtList;
 
-        public ForStatement(Statement ForInit, Expression TestExpr, Statement ForUpdate, Statement[] StmtList)
+        public ForStatement(Statement ForInit, Expression TestExpr, Statement ForUpdate, List<Statement> StmtList)
         {
             this.ForInit = ForInit;
             this.TestExpr = TestExpr;
@@ -56,7 +65,14 @@
 
         public override bool ResolveNames()
         {
-            return ForInit.ResolveNames() & TestExpr.ResolveNames() & ForUpdate.ResolveNames();// & StmtList.ResolveNames();
+            bool loopResolve = true;
+
+            foreach (Statement each in StmtList)
+            {
+                loopResolve = loopResolve & each.ResolveNames();
+            }
+
+            return ForInit.ResolveNames() & TestExpr.ResolveNames() & ForUpdate.ResolveNames() & loopResolve;
         }
     }
 
@@ -79,19 +95,17 @@
     {
         private Type VariableType;
         private string VariableName;
-        private Expression VariableAssignment;
 
-        public VariableDefinitionStatement(Type VariableType, string VariableName, Expression VariableAssignment)
+        public VariableDefinitionStatement(Type VariableType, string VariableName)
         {
             this.VariableType = VariableType;
             this.VariableName = VariableName;
-            this.VariableAssignment = VariableAssignment;
         }
 
         public override bool ResolveNames()
         {
             // do something here...
-            return VariableAssignment.ResolveNames();
+            return true;
         }
 
     }

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace IFN660_Java_ECMAScript.AST
 {
-    public class  PackageDeclaration : Statement
+    public class  PackageDeclarationStatement : Statement
     {
         public override bool ResolveNames()
         {

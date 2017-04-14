@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace IFN660_Java_ECMAScript.AST
 {
@@ -6,12 +7,12 @@ namespace IFN660_Java_ECMAScript.AST
     {
 
         //changed made by Josh to fix incorrect code be Adon.
-        private Modifier[] methodModifiers;
+        private List<Modifier> methodModifiers;
         private String methodIdentifier;
         //private MethodDeclaration methodDeclaration;
         private Type returnType;
-        private Statement[] statementList;
-        private VariableDefinitionStatement[] args;
+        private List<Statement> statementList;
+        private List<VariableDefinitionStatement> args;
 
         /*
         public MethodDeclaration(String methodIdentifier, Modifier[] methodModifiers, MethodDeclaration methodDeclaration, Type returnType)
@@ -29,7 +30,7 @@ namespace IFN660_Java_ECMAScript.AST
         }
          * */
 
-        public MethodDeclaration(String methodIdentifier, Modifier[] methodModifiers, Statement[] statementList, Type returnType, VariableDefinitionStatement[] args)
+        public MethodDeclaration(String methodIdentifier, List<Modifier> methodModifiers, List<Statement> statementList, Type returnType, List<VariableDefinitionStatement> args)
         {
             this.methodIdentifier = methodIdentifier;
             this.methodModifiers = methodModifiers;
@@ -40,8 +41,19 @@ namespace IFN660_Java_ECMAScript.AST
 
         public override Boolean ResolveNames()
         {
-            // need to put in loop to iterate over statementList
-            return true;
+            bool loopResolve = true;
+
+            foreach (Statement each in statementList)
+            {
+                loopResolve = loopResolve & each.ResolveNames();
+            }
+
+            foreach (VariableDefinitionStatement each in args)
+            {
+                loopResolve = loopResolve & each.ResolveNames();
+            }
+
+            return loopResolve;
         }
     }
 }

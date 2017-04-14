@@ -1,9 +1,12 @@
 %namespace IFN660_Java_ECMAScript
 
+%using System.Collections.Generic;
+%using IFN660_Java_ECMAScript.AST;
 
 %{
-public static AST.CompilationUnitDeclaration root;
+public static CompilationUnitDeclaration root;
 %}
+
 %union
 {
     public long num;
@@ -11,19 +14,22 @@ public static AST.CompilationUnitDeclaration root;
 	public bool boolval;
 	public char charval;
     public string name;
-	public AST.Statement stmt;
-	public AST.Expression expr;
+	public Statement stmt;
+	public Expression expr;
 	public AST.Type type;
-	public AST.CompilationUnitDeclaration cmpu;
-	public System.Collections.Generic.List<AST.Statement> stmts;
+	public CompilationUnitDeclaration cmpu;
+	public List<Statement> stmts;
 }
 
 %token <num> NUMBER
 %token <name> IDENTIFIER
 %type <expr> Expression
+%type <expr> Literal
 %type <stmt> Statement
+%type <stmt> TypeDeclaration
 %type <type> Type
 %type <stmts> StatementList
+%type <stmts> TypeDeclarations
 %type <cmpu> CompilationUnit
 
 // 3.9 Keywords
@@ -71,28 +77,28 @@ public static AST.CompilationUnitDeclaration root;
 Program : CompilationUnit										{root = $1;}
         ;
 
-Statement : IF '(' Expression ')' Statement ELSE Statement		{ $$ = new AST.IfStatement($3, $5, $7); } // Nathan
+Statement : IF '(' Expression ')' Statement ELSE Statement		{ $$ = new IfStatement($3, $5, $7); } // Nathan
           | '{' StatementList '}'								
-          | Expression ';'										{ $$ = new AST.ExpressionStatement($1); } // Nathan
-          | Type IDENTIFIER ';'									{ $$ = new AST.VariableDeclaration($1,$2);}
+          | Expression ';'										{ $$ = new ExpressionStatement($1); } // Nathan
+          | Type IDENTIFIER ';'									{ $$ = new VariableDeclaration($1,$2);}
 		  | StatementWithoutTrailingSubstatement				 // Nathan
           ;
 
-Type	: IntegerLiteral										{ $$ = new AST.IntType();}
-		| BooleanLiteral										{ $$ = new AST.BoolType(); }
+Type	: IntegerLiteral										{ $$ = new IntType();}
+		| BooleanLiteral										{ $$ = new BoolType(); }
 		;
 
 StatementList 
 		: StatementList Statement								{ $$ = $1; $$.Add($2);} // needs work - Nathan
-        | /* empty */											{ $$ = new System.Collections.Generic.List<AST.Statement>();}
+        | /* empty */											{ $$ = new List<Statement>();}
         ;
 
 Expression 
-		: IntegerLiteral										{ $$ = new AST.IntegerLiteralExpression($1); }
-        | IDENTIFIER											{ $$ = new AST.VariableExpression($1); } // this might not be right	
-        | Expression '=' Expression								{ $$ = new AST.AssignmentExpression($1,$3); }
-        | Expression '+' Expression								{ $$ = new AST.BinaryExpression($1,'+',$3); } // check this
-        | Expression '<' Expression								{ $$ = new AST.BinaryExpression($1,'<',$3); } //Josh - check this
+		: IntegerLiteral										{ $$ = new IntegerLiteralExpression($1); }
+        | IDENTIFIER											{ $$ = new VariableExpression($1); } // this might not be right	
+        | Expression '=' Expression								{ $$ = new AssignmentExpression($1,$3); }
+        | Expression '+' Expression								{ $$ = new BinaryExpression($1,'+',$3); } // check this
+        | Expression '<' Expression								{ $$ = new BinaryExpression($1,'<',$3); } //Josh - check this
 		| AssignmentExpression									// Josh
 		  
            ;
@@ -101,7 +107,7 @@ Empty	:
 
 // Group A Start
 CompilationUnit 
-		: PackageDeclaration_opt ImportDeclarations TypeDeclarations	 // Josh   { $$ = new AST.CompilationUnitDeclaration($1,$2,$3);  }
+		: PackageDeclaration_opt ImportDeclarations TypeDeclarations	 // Josh   { $$ = new CompilationUnitDeclaration($1,$2,$3);  }
 		;
 
 PackageDeclaration_opt
@@ -115,8 +121,8 @@ ImportDeclarations
 		;
 
 TypeDeclarations 
-		: TypeDeclaration TypeDeclarations						{ $$ = $1; } // needs work - Josh
-		| /* empty */											
+		: TypeDeclarations TypeDeclaration						{ $$ = $1; $$.Add($2); } // needs work - Josh
+		| /* empty */											{ $$ = new List<Statement>();}											
 		| /* follow up */
 		;
 TypeDeclaration 
@@ -421,11 +427,11 @@ ArrayAccess
 		;
 
 PrimaryNoNewArray
-		: Literal												{ $$ = $1; } // Nathan
+		: Literal												{  } // Nathan
 		;
 
 Literal
-		: IntegerLiteral										{  } // Nathan
+		: IntegerLiteral										{ $$ = new IntegerLiteralExpression($1); } // Nathan
 		;
 
 // end of sneha Work

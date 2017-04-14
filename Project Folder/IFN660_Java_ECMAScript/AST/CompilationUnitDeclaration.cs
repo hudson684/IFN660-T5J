@@ -6,21 +6,34 @@ namespace IFN660_Java_ECMAScript.AST
 {
     public class CompilationUnitDeclaration : Node
     {
-        private PackageDeclaration[] PackageDeclarations;
-        private ImportDeclaration[] ImportDeclarations;
-        private ClassDeclaration[] TypeDeclarations;
+        private PackageDeclarationStatement PackageDeclaration;
+        private List<ImportDeclaration> ImportDeclarations;
+        private List<ClassDeclaration> ClassDeclarations;
 
-        public CompilationUnitDeclaration(PackageDeclaration[] PackageDeclarations, ImportDeclaration[] ImportDeclarations, ClassDeclaration[] TypeDeclarations)
+
+        public CompilationUnitDeclaration(PackageDeclarationStatement PackageDeclaration, List<ImportDeclaration> ImportDeclarations, List<ClassDeclaration> ClassDeclarations)
         {
-            this.PackageDeclarations = PackageDeclarations;
+            this.PackageDeclaration = PackageDeclaration;
             this.ImportDeclarations = ImportDeclarations;
-            this.TypeDeclarations = TypeDeclarations;
+            this.ClassDeclarations = ClassDeclarations;
         }
 
         public override bool ResolveNames()
         {
+            bool loopResolve = true;
+
+            foreach (ImportDeclaration each in ImportDeclarations)
+            {
+                loopResolve = loopResolve & each.ResolveNames();
+            }
+
+            foreach (ClassDeclaration each in ClassDeclarations)
+            {
+                loopResolve = loopResolve & each.ResolveNames();
+            }
+
             // need to get loops for lists
-            return true;
+            return PackageDeclaration.ResolveNames() & loopResolve;
         }
     }
 

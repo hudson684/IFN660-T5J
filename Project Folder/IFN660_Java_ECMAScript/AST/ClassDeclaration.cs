@@ -1,16 +1,17 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace IFN660_Java_ECMAScript.AST
 {
  
     public class ClassDeclaration: Node
     {
-        private Modifier[] classModifiers;
+        private List<Modifier> classModifiers;
         private String classIdentifier;
         private MethodDeclaration methodDeclaration;
        // private ClassDeclaration classDeclaration;
 
-        public ClassDeclaration(String classIdentifier, Modifier[] classModifiers, MethodDeclaration methodDeclaration = null)
+        public ClassDeclaration(String classIdentifier, List<Modifier> classModifiers, MethodDeclaration methodDeclaration = null)
         {
             this.classIdentifier = classIdentifier;
             this.classModifiers = classModifiers;

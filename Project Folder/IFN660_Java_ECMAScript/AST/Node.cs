@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections;
 
-namespace IFN660_Java_ECMAScript
+namespace IFN660_Java_ECMAScript.AST
 {
     public abstract class Node
     {
