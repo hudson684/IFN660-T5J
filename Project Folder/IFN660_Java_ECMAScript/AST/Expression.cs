@@ -18,9 +18,9 @@ namespace IFN660_Java_ECMAScript.AST
             this.rhs = rhs;
         }
 
-        public override bool ResolveNames()
+        public override bool ResolveNames(LexicalScope scope)
         {
-            return lhs.ResolveNames() & rhs.ResolveNames();
+            return lhs.ResolveNames(scope) & rhs.ResolveNames(scope);
         }
 
     }
@@ -34,7 +34,7 @@ namespace IFN660_Java_ECMAScript.AST
             this.value = value;
         }
 
-        public override bool ResolveNames()
+        public override bool ResolveNames(LexicalScope scope)
         {
             // check for valid declaration...
             return true;
@@ -50,7 +50,7 @@ namespace IFN660_Java_ECMAScript.AST
             this.value = value;
         }
 
-        public override bool ResolveNames()
+        public override bool ResolveNames(LexicalScope scope)
         {
             return true;
         }
@@ -68,9 +68,9 @@ namespace IFN660_Java_ECMAScript.AST
             this.oper = oper;
         }
 
-        public override bool ResolveNames()
+        public override bool ResolveNames(LexicalScope scope)
         {
-            return lhs.ResolveNames() & rhs.ResolveNames();
+            return lhs.ResolveNames(scope) & rhs.ResolveNames(scope);
         }
     }
 

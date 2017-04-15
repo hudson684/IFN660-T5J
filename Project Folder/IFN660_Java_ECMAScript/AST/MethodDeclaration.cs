@@ -39,18 +39,18 @@ namespace IFN660_Java_ECMAScript.AST
             this.args = args;
         }
 
-        public override Boolean ResolveNames()
+        public override Boolean ResolveNames(LexicalScope scope)
         {
             bool loopResolve = true;
 
             foreach (Statement each in statementList)
             {
-                loopResolve = loopResolve & each.ResolveNames();
+                loopResolve = loopResolve & each.ResolveNames(scope);
             }
 
             foreach (VariableDefinitionStatement each in args)
             {
-                loopResolve = loopResolve & each.ResolveNames();
+                loopResolve = loopResolve & each.ResolveNames(scope);
             }
 
             return loopResolve;

@@ -11,7 +11,7 @@ namespace IFN660_Java_ECMAScript.AST
         public ImportDeclaration()
         { }
 
-        public override bool ResolveNames()
+        public override bool ResolveNames(LexicalScope scope)
         {
             return true;
         }

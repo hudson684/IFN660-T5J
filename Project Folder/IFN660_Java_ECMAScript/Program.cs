@@ -10,9 +10,9 @@ namespace IFN660_Java_ECMAScript
         {
             Scanner scanner = new Scanner(
                new FileStream(args[0], FileMode.Open));
-            Parser parser = new Parser(scanner);
-            parser.Parse();
-            Parser.root.DumpValue(0);
+            //Parser parser = new Parser(scanner);
+            //parser.Parse();
+            //Parser.root.DumpValue(0);
             
             ////var xExpres = new Exception { }
             /*
@@ -40,6 +40,10 @@ namespace IFN660_Java_ECMAScript
             pro.DumpValue(0);
             */
 
+        }
+        bool SemanticAnalysis(Node root)
+        {
+            return root.ResolveNames(null);
         }
     }
 }

@@ -18,22 +18,22 @@ namespace IFN660_Java_ECMAScript.AST
             this.ClassDeclarations = ClassDeclarations;
         }
 
-        public override bool ResolveNames()
+        public override bool ResolveNames(LexicalScope scope)
         {
             bool loopResolve = true;
 
             foreach (ImportDeclaration each in ImportDeclarations)
             {
-                loopResolve = loopResolve & each.ResolveNames();
+                loopResolve = loopResolve & each.ResolveNames(scope);
             }
 
             foreach (ClassDeclaration each in ClassDeclarations)
             {
-                loopResolve = loopResolve & each.ResolveNames();
+                loopResolve = loopResolve & each.ResolveNames(scope);
             }
 
             // need to get loops for lists
-            return PackageDeclaration.ResolveNames() & loopResolve;
+            return PackageDeclaration.ResolveNames(scope) & loopResolve;
         }
     }
 

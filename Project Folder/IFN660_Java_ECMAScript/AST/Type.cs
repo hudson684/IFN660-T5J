@@ -19,7 +19,7 @@ namespace IFN660_Java_ECMAScript.AST
             this.elementType = elementType;
         }
 
-        public override bool ResolveNames()
+        public override bool ResolveNames(LexicalScope scope)
         {
             return true;
         }
@@ -28,7 +28,7 @@ namespace IFN660_Java_ECMAScript.AST
     public class IntType : Type
     {
 
-        public override bool ResolveNames()
+        public override bool ResolveNames(LexicalScope scope)
         {
             return true;
         }
@@ -37,7 +37,7 @@ namespace IFN660_Java_ECMAScript.AST
     public class BoolType : Type
     {
 
-        public override bool ResolveNames()
+        public override bool ResolveNames(LexicalScope scope)
         {
             return true;
         }
@@ -53,7 +53,7 @@ namespace IFN660_Java_ECMAScript.AST
             this.elementType = elementType;
         }
 
-        public override bool ResolveNames()
+        public override bool ResolveNames(LexicalScope scope)
         {
             return true;
         }

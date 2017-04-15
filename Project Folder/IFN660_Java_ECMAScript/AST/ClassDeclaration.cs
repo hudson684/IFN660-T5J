@@ -19,9 +19,9 @@ namespace IFN660_Java_ECMAScript.AST
         }
 
 
-        public override Boolean ResolveNames()
+        public override Boolean ResolveNames(LexicalScope scope)
         {
-            return methodDeclaration.ResolveNames(); 
+            return methodDeclaration.ResolveNames(scope); 
         }
 
     }

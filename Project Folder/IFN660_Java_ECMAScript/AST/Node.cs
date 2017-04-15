@@ -11,7 +11,7 @@ namespace IFN660_Java_ECMAScript.AST
                 Console.Write("    ");
         }
 
-        public abstract Boolean ResolveNames();
+        public abstract Boolean ResolveNames(LexicalScope scope);
 
         public void DumpValue(int indent)
         {

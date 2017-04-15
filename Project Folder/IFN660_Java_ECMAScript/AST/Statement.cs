@@ -16,9 +16,9 @@ namespace IFN660_Java_ECMAScript.AST
             this.Cond = Cond; this.Then = Then; this.Else = Else;
         }
 
-        public override bool ResolveNames()
+        public override bool ResolveNames(LexicalScope scope)
         {
-            return Cond.ResolveNames() & Then.ResolveNames() & Else.ResolveNames();
+            return Cond.ResolveNames(scope) & Then.ResolveNames(scope) & Else.ResolveNames(scope);
         }
     }
 
@@ -34,16 +34,16 @@ namespace IFN660_Java_ECMAScript.AST
             this.StmtList = StmtList;
         }
 
-        public override bool ResolveNames()
+        public override bool ResolveNames(LexicalScope scope)
         {
             bool loopResolve = true;
 
             foreach (Statement each in StmtList)
             {
-                loopResolve = loopResolve & each.ResolveNames();
+                loopResolve = loopResolve & each.ResolveNames(scope);
             }
 
-            return Cond.ResolveNames() & loopResolve;
+            return Cond.ResolveNames(scope) & loopResolve;
         }
     }
 
@@ -63,16 +63,16 @@ namespace IFN660_Java_ECMAScript.AST
             this.StmtList = StmtList;
         }
 
-        public override bool ResolveNames()
+        public override bool ResolveNames(LexicalScope scope)
         {
             bool loopResolve = true;
 
             foreach (Statement each in StmtList)
             {
-                loopResolve = loopResolve & each.ResolveNames();
+                loopResolve = loopResolve & each.ResolveNames(scope);
             }
 
-            return ForInit.ResolveNames() & TestExpr.ResolveNames() & ForUpdate.ResolveNames() & loopResolve;
+            return ForInit.ResolveNames(scope) & TestExpr.ResolveNames(scope) & ForUpdate.ResolveNames(scope) & loopResolve;
         }
     }
 
@@ -85,9 +85,9 @@ namespace IFN660_Java_ECMAScript.AST
             this.expr = expr;
         }
 
-        public override bool ResolveNames()
+        public override bool ResolveNames(LexicalScope scope)
         {
-            return expr.ResolveNames();
+            return expr.ResolveNames(scope);
         }
     }
 
@@ -102,7 +102,7 @@ namespace IFN660_Java_ECMAScript.AST
             this.VariableName = VariableName;
         }
 
-        public override bool ResolveNames()
+        public override bool ResolveNames(LexicalScope scope)
         {
             // do something here...
             return true;
@@ -118,14 +118,10 @@ namespace IFN660_Java_ECMAScript.AST
             this.type = type;
             this.name = name;
         }
-        public override bool ResolveNames()
+        public override bool ResolveNames(LexicalScope scope)
         {
             // do something here...
-            return type.ResolveNames();
+            return type.ResolveNames(scope);
         }
     };
-
-
-
-
 }
