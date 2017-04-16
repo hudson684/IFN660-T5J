@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using System.IO;
 using IFN660_Java_ECMAScript.AST;
 

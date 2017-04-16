@@ -112,19 +112,17 @@ CompilationUnit
 
 PackageDeclaration_opt
 		: /* empty */											
-		| /* follow up */
 		;
 		
 ImportDeclarations
 		: /*empty*/												
-		| /* follow up */
 		;
 
 TypeDeclarations 
 		: TypeDeclarations TypeDeclaration						{ $$ = $1; $$.Add($2); } // needs work - Josh
 		| /* empty */											{ $$ = new List<Statement>();}											
-		| /* follow up */
 		;
+
 TypeDeclaration 
 		: ClassDeclaration /* need to add InterfaceDeclaration */ {  } // Vivian
 		;
@@ -246,12 +244,11 @@ Dims_Opt
 //Work by Tri
 FormalParameterList 
 		: FormalParameters 										{ } // An
-		| /*TODO*/												{ } // An
 		;
 
 FormalParameters 
-		: FormalParameters FormalParameter 						{ $$ = $2; } /* TODO - only works if there is a single parameter */ // Nathan
-		| /* empty *//*TODO*/									 // Nathan
+		: FormalParameter 										//{ $$ = $2; } /* TODO - only works if there is a single parameter */ // Nathan 
+		| FormalParameters ',' FormalParameter					// Nathan // Recheck this one
 		;
 
 ///	Do we need this? - Nathan	
@@ -290,7 +287,6 @@ UnannType
 		;
 
 UnannPrimitiveType
-
 		: NumbericType											{ $$ = $1; } // Josh
 		| BOOLEAN												{ $$ = $1; } // Josh
 		;
@@ -315,7 +311,6 @@ FloatingPointType
 
 UnannReferenceType
 		: UnannArrayType										{ } // Vivian
-		| /*follow up */										{ } // Vivian
 		;
 
 // Vivian's work end
@@ -335,7 +330,7 @@ MethodBody
 		;
 
 Annotations
-		: Annotation											{ } // Adon
+		: Annotations Annotation								{ } // Adon
 		| /* Empty */											{ } // Adon
 		;
 
@@ -349,18 +344,13 @@ BlockStatements_Opt
 		;
 
 BlockStatements
-		: BlockStatement BlockStatement_s						{ } // Tristan
-		;
-
-BlockStatement_s
-		: BlockStatement_s BlockStatement						{ } // Tristan
-		| /* Empty */											{ } // Tristan
+		: BlockStatement 
+		| BlockStatements BlockStatement				{ } // Tristan
 		;
 
 BlockStatement
 		: LocalVariableDeclarationsAndStatement					{ } // Sneha
 		| Statement												{ } // Sneha
-		| /* follow up */										{ } // Sneha
 		;
 
 LocalVariableDeclarationsAndStatement
@@ -369,17 +359,15 @@ LocalVariableDeclarationsAndStatement
 
 LocalVariableDeclaration
 		: UnannType VariableDeclaratorList						{ } // Sneha
-		| /* follow up */										{ } // Sneha
 		;
 
 VariableDeclaratorList
 		: VariableDeclarator									{ } // An
-		| /* follow up */										{ } // An
+		| VariableDeclaratorList VariableDeclarator				{ } // An
 		;
 
 VariableDeclarator
 		: VariableDeclaratorId									{ } // An
-		| /* follow up */										{ } // An
 		;
 
 VariableDeclaratorId
