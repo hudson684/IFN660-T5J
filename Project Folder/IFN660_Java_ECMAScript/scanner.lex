@@ -28,7 +28,7 @@ UnicodeInputCharacter						{UnicodeEscape}|{RawInputCharacter}
 
 /* 3.4  Line Terminators - Joshua Hudson &  Vivian Lee */
 LineTerminator								{CR}{LF}?|{LF}
-InputCharacter								{UnicodeInputCharacter}|^\r|^\n]
+InputCharacter								{UnicodeInputCharacter}|[^\r|^\n] //Khoa - add missing opening square bracket
 
 /* 3.6 White Space */
 WhiteSpace									{SP}|{HT}|{FF}|{LineTerminator}
