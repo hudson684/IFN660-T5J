@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 
 namespace IFN660_Java_ECMAScript.AST
 {
     public abstract class Node
     {
+
         void Indent(int n)
         {
             for (int i = 0; i < n; i++)

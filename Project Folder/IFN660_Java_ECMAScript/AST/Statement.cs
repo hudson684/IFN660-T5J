@@ -109,7 +109,7 @@ namespace IFN660_Java_ECMAScript.AST
         }
 
     }
-    public class VariableDeclaration : Statement
+    public class VariableDeclaration : Statement, Declaration
     {
         private Type type;
         private string name;
@@ -118,6 +118,12 @@ namespace IFN660_Java_ECMAScript.AST
             this.type = type;
             this.name = name;
         }
+
+        public string GetName()
+        {
+            return name;
+        }
+
         public override bool ResolveNames(LexicalScope scope)
         {
             // do something here...

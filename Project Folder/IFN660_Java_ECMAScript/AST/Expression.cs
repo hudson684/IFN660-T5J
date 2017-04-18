@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -28,16 +29,28 @@ namespace IFN660_Java_ECMAScript.AST
     public class VariableExpression : Expression
     {
         private string value;
+        private Declaration decl;
 
         public VariableExpression(string value)
         {
             this.value = value;
+            this.decl = null;
         }
 
         public override bool ResolveNames(LexicalScope scope)
         {
             // check for valid declaration...
-            return true;
+            if (scope != null)
+            {
+                decl = scope.Resolve(value);
+            }
+
+            if (decl == null)
+                Console.WriteLine("Error: Undeclared indentifier - {0}", value);
+            else
+                Console.WriteLine("Found variable {0} in scope", value);
+
+            return decl != null;
         }
     }
 
@@ -73,18 +86,7 @@ namespace IFN660_Java_ECMAScript.AST
             return lhs.ResolveNames(scope) & rhs.ResolveNames(scope);
         }
     }
-    public class StatementExpression : Expression
-    {
-        private Expression exp;
-        public StatementExpression(Expression exp)
-        {
-            this.exp = exp; 
-        }
-        public override bool ResolveNames(LexicalScope scope)
-        {
-            return exp.ResolveNames(scope);
-        }
-    }
+
 }
 
 
