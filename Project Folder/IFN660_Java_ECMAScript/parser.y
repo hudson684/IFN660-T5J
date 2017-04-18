@@ -183,23 +183,27 @@ ClassBodyDeclaration
 
 // Fixed by An
 ClassMemberDeclaration
-		: MethodDeclaration										{ } // Sneha
+		: MethodDeclaration										{ $$ = $1; } // Vivian
 		;
 
 // Change ClassMemberDeclaration to MethodDeclaration -An	
 MethodDeclaration
+<<<<<<< HEAD
 		: MethodModifiers MethodHeader MethodBody				{$$ = new MethodDeclaration($1, $2, $3)} // Sneha
+=======
+		: MethodModifiers MethodHeader MethodBody				{ $$ = new MethodDeclaration($1,$2,$3);} // Vivian
+>>>>>>> 7cfcf3570659cb8ec52dca3fd94750745b887045
         ;
 
 MethodModifiers
-        : MethodModifiers MethodModifier						{ } // Sneha
-		| /* Empty */											{ } // Sneha
+        : MethodModifiers MethodModifier						{ $$ = $1,$2; } // Vivian
+		| /* Empty */											{ $$ = null; } // Vivian
         ;
 
 MethodModifier
-		: Annotation											{ } // Sneha
-		| PUBLIC												{ } // Sneha
-        | STATIC												{ } // Sneha
+		: Annotation											{ $$ = $1; } // Vivian 
+		| PUBLIC												{ $$ = $1; } // Vivian
+        | STATIC												{ $$ = $1;} // vivian
         ;
 
 MethodHeader
@@ -349,16 +353,16 @@ BlockStatements
 		;
 
 BlockStatement
-		: LocalVariableDeclarationsAndStatement					{ } // Sneha
-		| Statement												{ } // Sneha
+		: LocalVariableDeclarationsAndStatement					{ $$ = $1; } // Vivian
+		| Statement												{ $$ = $1; } // Vivian
 		;
 
 LocalVariableDeclarationsAndStatement
-		: LocalVariableDeclaration ';'							{ } // Sneha
+		: LocalVariableDeclaration ';'							{ $$ = new LocalVariableDeclarationsAndStatement($1); } // Vivian
 		;
 
 LocalVariableDeclaration
-		: UnannType VariableDeclaratorList						{ } // Sneha
+		: UnannType VariableDeclaratorList						{ $$ = new LocalVariableDeclaration($1,$2); } // Vivian
 		;
 
 VariableDeclaratorList
