@@ -3,8 +3,8 @@
 //  GPLEX error listing for lex source file <scanner.lex>
 // ==========================================================================
 //  Version:  1.2.2
-//  Machine:  VDI-VL17-054
-//  DateTime: 4/04/2017 9:25:54 AM
+//  Machine:  VDI-VL17-026
+//  DateTime: 18/04/2017 12:49:39 PM
 //  UserName: n9768653
 // ==========================================================================
 
@@ -81,11 +81,9 @@ Separator									[\(\)\{\}\[\]\;\,\.\@]
 Delimiter									[\=\>\<\!\~\?\:\+\-\*\/\&\|\^\%]
 
 %%
+[\n]		{ lines++;    }
 /* 3.4  Line Terminators - Joshua Hudson &  Vivian Lee */
 \n|\r|\n\r								/* skip whitespace */
-//^^^^^^^^
-// Warning: This pattern always overrides "[\n]" 
-// ----------------------------------------------
 //catches someone typing in /n in string form ect - Ask Wayne - Josh
 //[\\n|\\r|\\r\\n]						{return (int)Tokens.LINE_TERMINATOR; }
 
@@ -99,7 +97,7 @@ Delimiter									[\=\>\<\!\~\?\:\+\-\*\/\&\|\^\%]
 // ------------------------------------
 abstract									{return (int)Tokens.ABSTRACT;}
 assert										{return (int)Tokens.ASSERT;}
-bool										{return (int)Tokens.BOOL;}
+bool										{return (int)Tokens.BOOLEAN;}
 break										{return (int)Tokens.BREAK;}
 byte										{return (int)Tokens.BYTE;}
 case										{return (int)Tokens.CASE;}
@@ -175,32 +173,9 @@ while										{return (int)Tokens.WHILE;}
 
 /* 3.11 SEPARATORS  - An */	
 {Separator}									{return yytext[0];}
-//^^^^^^^^^
-// Warning: This pattern always overrides "{Separator}" 
-// -----------------------------------------------------
 "..."										{return (int)Tokens.ELLIPSIS;}	
-//^^^
-// Warning: This pattern always overrides ""..."" 
-// -----------------------------------------------
 "::"										{return (int)Tokens.DOUBLE_COLON;}	
-//^^
-// Warning: This pattern always overrides ""::"" 
-// ----------------------------------------------
 	
-
-/* 3.11 SEPARATORS  - An */	
-{Separator}									{return yytext[0];}
-//^^^^^^^^^
-// Warning: This pattern always overridden by "{Separator}" 
-// ---------------------------------------------------------
-"..."										{return (int)Tokens.ELLIPSIS;}	
-//^^^
-// Warning: This pattern always overridden by ""..."" 
-// ---------------------------------------------------
-"::"										{return (int)Tokens.DOUBLE_COLON;}	
-//^^
-// Warning: This pattern always overridden by ""::"" 
-// --------------------------------------------------
 										
 
 										/* 3.12 OPERATOR  - An */
@@ -241,11 +216,8 @@ while										{return (int)Tokens.WHILE;}
 {Letter}({Letter}|{Digit})* { yylval.name = yytext; return (int)Tokens.IDENTIFIER; }
 {Digit}+	    { yylval.num = int.Parse(yytext); return (int)Tokens.NUMBER; }
 
-[\n]		{ lines++;    }
-//^^
-// Warning: This pattern always overridden by "\n|\r|\n\r" 
-// --------------------------------------------------------
-[ \t\r]      /* ignore other whitespace */
+
+
 
 .                            { 
                                  throw new Exception(

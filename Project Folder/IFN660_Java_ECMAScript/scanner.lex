@@ -70,6 +70,7 @@ Separator									[\(\)\{\}\[\]\;\,\.\@]
 Delimiter									[\=\>\<\!\~\?\:\+\-\*\/\&\|\^\%]
 
 %%
+[\n]		{ lines++;    }
 /* 3.4  Line Terminators - Joshua Hudson &  Vivian Lee */
 \n|\r|\n\r								/* skip whitespace */
 //catches someone typing in /n in string form ect - Ask Wayne - Josh
@@ -82,7 +83,7 @@ Delimiter									[\=\>\<\!\~\?\:\+\-\*\/\&\|\^\%]
 										/* 3.9 KEYWORDS An */
 abstract									{return (int)Tokens.ABSTRACT;}
 assert										{return (int)Tokens.ASSERT;}
-bool										{return (int)Tokens.BOOL;}
+bool										{return (int)Tokens.BOOLEAN;}
 break										{return (int)Tokens.BREAK;}
 byte										{return (int)Tokens.BYTE;}
 case										{return (int)Tokens.CASE;}
@@ -161,11 +162,6 @@ while										{return (int)Tokens.WHILE;}
 "..."										{return (int)Tokens.ELLIPSIS;}	
 "::"										{return (int)Tokens.DOUBLE_COLON;}	
 	
-
-/* 3.11 SEPARATORS  - An */	
-{Separator}									{return yytext[0];}
-"..."										{return (int)Tokens.ELLIPSIS;}	
-"::"										{return (int)Tokens.DOUBLE_COLON;}	
 										
 
 										/* 3.12 OPERATOR  - An */
@@ -203,8 +199,8 @@ while										{return (int)Tokens.WHILE;}
 {Letter}({Letter}|{Digit})* { yylval.name = yytext; return (int)Tokens.IDENTIFIER; }
 {Digit}+	    { yylval.num = int.Parse(yytext); return (int)Tokens.NUMBER; }
 
-[\n]		{ lines++;    }
-[ \t\r]      /* ignore other whitespace */
+
+
 
 .                            { 
                                  throw new Exception(

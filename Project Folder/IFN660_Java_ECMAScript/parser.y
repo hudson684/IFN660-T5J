@@ -53,13 +53,14 @@
 
 %%
 
-Program : CompilationUnit										{ // Nathan }
+Program : CompilationUnit
+		//| Type										
         ;
 
 
 // Types, Values and Variable 
-Type	: PrimitiveType										{ // Tri }
-		| ReferenceType										{ // Tri }
+Type	: PrimitiveType										
+		| ReferenceType										
 		;
 
 PrimitiveType
@@ -68,27 +69,27 @@ PrimitiveType
 		;
 
 NumbericType
-		: IntegralType											{ // Josh }
-		| FloatingPointType										{ // Josh }
+		: IntegralType											
+		| FloatingPointType										
 		;
 
 IntegralType
-		: BYTE													{ // Josh }
-		| SHORT													{ // Josh }
-		| INT													{ // Vivian }
-		| LONG													{ // Vivian }
-		| CHAR													{ // Vivian }
+		: BYTE													
+		| SHORT												
+		| INT													
+		| LONG													
+		| CHAR													
 		;
 
 FloatingPointType
-		: FLOAT													{ // Vivian }
-		| DOUBLE												{ // Vivian }
+		: FLOAT													
+		| DOUBLE												
 		;
 
 ReferenceType
 		: ClassOrInterfaceType
 		| TypeVariable
-		| ArrayType
+		| ArrayType							// Cause reduce/reduce conflict
 		;
 
 ClassOrInterfaceType
@@ -97,9 +98,8 @@ ClassOrInterfaceType
 		;
 
 ClassType
-		: Annotations IDENTIFIER TypeArguments_repeat
-		| ClassOrInterfaceType '.' Annotations IDENTIFIER
-		| TypeArguments_repeat
+		: Annotations IDENTIFIER TypeArguments_opt
+		| ClassOrInterfaceType '.' Annotations IDENTIFIER TypeArguments_opt
 		;
 
 InterfaceType
@@ -116,7 +116,17 @@ ArrayType
 		| TypeVariable Dims
 		;
 
-TypeParameters
+Dims
+		: Annotations '['']'
+		| Dims Annotations '['']'
+		;
+
+Dims_opt
+		:
+		| Dims
+		;
+
+TypeParameter
 		: TypeParameterModifiers IDENTIFIER TypeBound_opt
 		;
 
@@ -136,33 +146,32 @@ TypeBound_opt
 
 TypeBound
 		: EXTENDS TypeVariable
-		| EXTENDS ClassOrInterfaceType AdditionalBound
+		| EXTENDS ClassOrInterfaceType AdditionalBounds
+		;
+
+AdditionalBounds
+		: AdditionalBounds AdditionalBound
+		|
 		;
 
 AdditionalBound
 		: '&' InterfaceType
 		;
 
-TypeArguments_repeat
-		: TypeArguments_repeat TypeArguments
-		;
 TypeArguments_opt
-		: TypeArguments
-		|
+		: 
+		| TypeArguments
 		;
 
 TypeArguments
-		: '<' TypeArgumentList '>'
+		: '<' TypeArgumentList '>'				// Reduce/Reduce confict here
 		;
 
 TypeArgumentList
-		: TypeArgument TypeArgument_repeat
+		: TypeArgument
+		| TypeArgumentList ',' TypeArgument
 		;
 
-TypeArgument_repeat
-		: ',' TypeArgument_repeat TypeArgument
-		|
-		;
 TypeArgument
 		: ReferenceType
 		| Wildcard
@@ -173,8 +182,8 @@ Wildcard
 		;
 
 WildcardBounds_opt
-		: WildcardBounds
-		|
+		: 
+		| WildcardBounds
 		;
 
 WildcardBounds
@@ -182,7 +191,9 @@ WildcardBounds
 		| SUPER ReferenceType
 		;
 
-// Names	
+/*******************************************************************************************
+********************************* Names **************************************
+*******************************************************************************************/
 TypeName
 		: IDENTIFIER
 		| PackageOrTypeName '.' IDENTIFIER
@@ -212,40 +223,26 @@ AmbigousName
 		| AmbigousName '.' IDENTIFIER
 		;
 
-StatementList 
-		: StatementList Statement								{ // Tri }
-        | /* empty */											{ // Tri }
-        ;
-
-Expression 
-		: LambdaExpression
-		| AssignmentExpression									{ // Josh }  
-        ;
-
-Empty	:
-		;
-
-// Group A Start
+/*******************************************************************************************
+********************************* Packages **************************************
+*******************************************************************************************/
 CompilationUnit 
-		: PackageDeclaration_opt ImportDeclarations TypeDeclarations	{ // Josh }
+		: PackageDeclaration_opt ImportDeclarations TypeDeclarations	
 		;
 
 PackageDeclaration_opt
-		: PackageDeclaration											{ // Josh }
+		: PackageDeclaration											
 		| 
 		;
 
 PackageDeclaration
-		: PackageModifiers PACKAGE IDENTIFIER PackageDeclaration_repeat
-		;
-
-PackageDeclaration_repeat
-		: PackageDeclaration_repeat '.' IDENTIFIER
-		|
+		: PackageModifiers PACKAGE IDENTIFIER ';'
+		| PackageDeclaration '.' IDENTIFIER ';'
 		;
 
 PackageModifiers
 		: PackageModifiers PackageModifier
+		|
 		;
 
 PackageModifier
@@ -267,6 +264,7 @@ ImportDeclaration
 SingleTypeImportDeclaration
 		: IMPORT TypeName ';'
 		;
+
 TypeImportOnDemandDeclaration
 		: IMPORT PackageOrTypeName '.' '*' ';'
 		;
@@ -280,70 +278,46 @@ StaticImportOnDemandDeclaration
 		;
 
 TypeDeclarations 
-		: TypeDeclaration TypeDeclarations
-		| /* empty */											{ // Josh }
-		| /* follow up */
+		: TypeDeclarations TypeDeclaration
+		| /* empty */											
 		;
 TypeDeclaration 
-		: ClassDeclaration 										 { // Vivian }
+		: ClassDeclaration 										 
 		| InterfaceDeclaration 
+		| ';'
 		;
 
+/*******************************************************************************************
+********************************* Classes **************************************
+*******************************************************************************************/
 ClassDeclaration 
-		: NormalClassDeclaration /* need to add EnumDeclaration */ { // Vivian }
+		: NormalClassDeclaration 
 		| EnumDeclaration
 		;
 
 NormalClassDeclaration 
-		: ClassModifiers CLASS IDENTIFIER TypeParameters_opt SuperClass_opt Superinterfaces_opt ClassBody { // Vivian }
+		: ClassModifiers CLASS IDENTIFIER TypeParameters_opt SuperClass_opt Superinterfaces_opt ClassBody 
 		;
 
 ClassModifiers 
-		: ClassModifiers ClassModifier							{ // Vivian }
-		| /* empty */											{ // Vivian }
+		: ClassModifiers ClassModifier							
+		| /* empty */											
 		;
 
 ClassModifier 
-		: Annotation											{ // Adon }
-		| PUBLIC												{ // Adon }
-		| PROTECTED 											{ // Adon }
-		| PRIVATE 												{ // Adon }
-		| ABSTRACT 												{ // Adon }
-		| STATIC 												{ // Adon }
-		| FINAL 												{ // Adon }
-		| STRICTFP 												{ // Adon }
+		: Annotation											
+		| PUBLIC												
+		| PROTECTED 											
+		| PRIVATE 												
+		| ABSTRACT 												
+		| STATIC 												
+		| FINAL 												
+		| STRICTFP 												
 		;
 
-Annotation
-		: NormalAnnotation											{ // Tristan }
-		| MarkerAnnotation
-		| SingleElementAnnotation
-		;
-
-NormalAnnotation
-		: '@' TypeName '(' ElementValuePairList_opt ')'
-		;
-
-ElementValuePairList_opt
-		: ElementValuePairList
-		|
-		;
-
-ElementValuePairList
-		: ElementValuePair ElementValuePair_repeat
-		;
-
-ElementValuePair_repeat
-		: ',' ElementValuePair_repeat ElementValuePair
-		;
-
-ElementValuePair
-		: IDENTIFIER '=' ElementValue
-
-//GROUP C TRACKING
 TypeParameters_opt 
-		: TypeParameters
-		|								{ // Tristan }
+		: 
+		| TypeParameters						
 		;
 
 TypeParameters
@@ -351,15 +325,11 @@ TypeParameters
 		;
 
 TypeParameterList
-		: TypeParameter TypeParameterList_repeat
+		: TypeParameter
+		| TypeParameterList ',' TypeParameter
 		;
 
-TypeParameterList_repeat
-		: ',' TypeArgument_repeat TypeParameter
-		|
-		;
-
-SuperClass_opt								{ // Tristan }
+SuperClass_opt								
 		: SuperClass
 		|
 		;
@@ -368,7 +338,7 @@ SuperClass
 		: EXTENDS ClassType
 		;
 
-Superinterfaces_opt /* empty */								{ // Tristan }
+Superinterfaces_opt
 		: Superinterfaces
 		|
 		;
@@ -378,39 +348,31 @@ Superinterfaces
 		;
 
 InterfaceTypeList
-		: InterfaceType InterfaceTypeList_repeat
-		;
-
-InterfaceTypeList_repeat
-		: ',' InterfaceTypeList_repeat InterfaceType
-		|
+		: InterfaceType
+		| InterfaceTypeList ',' InterfaceType
 		;
 
 ClassBody 
-		: '{' ClassBodyDeclarations '}'							{ // Tristan }
+		: '{' ClassBodyDeclarations '}'							
 		;
 
-// Group A End
-
-// PartB by Adon Mofified by Josh to remove MemberDeclarations as it is unessisary
 ClassBodyDeclarations
-		: ClassBodyDeclarations ClassBodyDeclaration			{ // Tristan }
-		| /* empty */											{ // Tristan }
+		: ClassBodyDeclarations ClassBodyDeclaration			
+		| /* empty */											
         ;
 
 ClassBodyDeclaration
-		: ClassMemberDeclaration								{ // Tristan }
+		: ClassMemberDeclaration								
 		| InstanceInitializer 
 		| StaticInitializer 
 		| ConstructorDeclaration
 		;
 
-// Fixed by An
 ClassMemberDeclaration
 		: FieldDeclaration 
 		| MethodDeclaration 
 		| ClassDeclaration 
-		| InterfaceDeclaration 									{ // Sneha }
+		| InterfaceDeclaration 									
 		| ';'
 		;
 
@@ -433,20 +395,82 @@ FieldModifier
 		| VOLATILE
 		;
 
-// Change ClassMemberDeclaration to MethodDeclaration -An	
+VariableDeclaratorList
+		: VariableDeclarator 								
+		| VariableDeclaratorList ',' VariableDeclarator									
+		;
+
+VariableDeclarator
+		: VariableDeclaratorId	VariableDeclarator_opt										
+		;
+
+VariableDeclarator_opt
+		: '=' VariableInitializer
+		|
+		;
+
+VariableInitializer
+		: Expression
+		| ArrayInitializer
+		;
+
+VariableDeclaratorId
+		: IDENTIFIER Dims_opt									
+		;
+
+UnannType
+		: UnannPrimitiveType 									
+		| UnannReferenceType									
+		;
+
+UnannPrimitiveType
+		: NumbericType											
+		| BOOLEAN													
+		;
+
+UnannReferenceType
+		: UnannClassOrInterfaceType 
+		| UnannTypeVariable 
+		| UnannArrayType																				
+		;
+
+UnannClassOrInterfaceType
+		: UnannClassType
+		| UnannInterfaceType
+		;
+
+UnannClassType
+		: IDENTIFIER TypeArguments_opt
+		| UnannClassOrInterfaceType '.' Annotations IDENTIFIER TypeArguments_opt
+		;
+
+UnannInterfaceType
+		: UnannClassType
+		;
+
+UnannTypeVariable
+		: IDENTIFIER
+		;
+
+UnannArrayType
+		: UnannPrimitiveType Dims 
+		| UnannClassOrInterfaceType Dims 
+		| UnannTypeVariable Dims								
+		;	
+
 MethodDeclaration
-		: MethodModifiers MethodHeader MethodBody				{ // Sneha }
+		: MethodModifiers MethodHeader MethodBody				
         ;
 
 MethodModifiers
-        : MethodModifiers MethodModifier						{ // Sneha }
-		| /* Empty */											{ // Sneha }
+        : MethodModifiers MethodModifier						
+		| /* Empty */											
         ;
 
 MethodModifier
-		: Annotation											{ // Sneha }
-		| PUBLIC												{ // Sneha }
-        | STATIC												{ // Sneha }
+		: Annotation											
+		| PUBLIC												
+        | STATIC												
         | FINAL
 		| SYNCHRONIZED
 		| NATIVE
@@ -454,75 +478,52 @@ MethodModifier
 		;
 
 MethodHeader
-		: Result MethodDeclarator Throws_opt					{ // Khoa }
-        | TypeParameters Annotations Result MethodDeclarator Throws_opt
+		: Result MethodDeclarator Throws_opt
+		| TypeParameters Annotations Result MethodDeclarator Throws_opt
 		;
 
-// End Fix
-// End GroupB
-
-//WORK BY JOSH HUDSON
 Result 
-		: VOID													{ // Khoa }
-		| UnannType												{ // Khoa }
+		: VOID													
+		| UnannType											
 	   	;
 
-Throws_opt
-		: Empty													{ // Khoa }
-	  	;
-Throws
-		: THROWS ExceptionTypeList
-		;
-
-// Fixed spelling error	 
 MethodDeclarator
-		: IDENTIFIER '(' FormalParameterList_Opt ')' Dims_Opt	{ // Khoa }
+		: IDENTIFIER '(' FormalParameterList_opt ')' Dims_opt	
 		;
 
-//PLACEHOLDER - Josh - Tri
-FormalParameterList_Opt
-		: FormalParameterList									{ // An }
-		| /* empty */											{ // An }
+FormalParameterList_opt
+		: FormalParameterList								
+		| /* empty */										
 		;
 
-Dims_Opt 
-		: Dims													{ // An }
-		| /* Empty */											{ // An }
-		;
-// JOSHUA'S WORK END
-
-//Work by Tri
 FormalParameterList 
 		: ReceiverParameter
-		| FormalParameters ',' LastFormalParameter 								{ // An }
-		| LastFormalParameter 											{ // An }
+		| FormalParameters ',' LastFormalParameter 						
+		| LastFormalParameter 									
 		;
 
 FormalParameters 
-		: FormalParameter FormalParameters_repeat 				{ // Nathan }
-		| ReceiverParameter FormalParameters_repeat									{ // Nathan }
-		;
-
-FormalParameters_repeat
-		: ',' FormalParameters_repeat FormalParameter
-		|
+		: FormalParameter  				
+		| ReceiverParameter 
+		| FormalParameters ',' 	FormalParameter						
 		;
 
 FormalParameter 
-		:  VariableModifiers UnannType VariableDeclaratorId		{ // Nathan }
+		:  VariableModifiers UnannType VariableDeclaratorId	
 		;
+
 VariableModifiers 
-		: VariableModifiers VariableModifier					{ // Nathan }
-		| /* empty */											{ // Nathan }
+		: VariableModifiers VariableModifier					
+		| /* empty */											
 		;
 
 VariableModifier 
-		: Annotation											{ // Tri }
-		| FINAL													{ // Tri }
+		: Annotation											
+		| FINAL													
 		;
 
 LastFormalParameter
-		: VariableModifiers UnannType Annotations '...' VariableDeclaratorId
+		: VariableModifiers UnannType Annotations ELLIPSIS VariableDeclaratorId
 		| FormalParameter
 		;
 
@@ -535,13 +536,17 @@ Identifier_opt
 		|
 		;
 
-ExceptionTypeList
-		: ExceptionType	ExceptionType_repeat
+Throws_opt
+		: Throws
+		| 													
+	  	;
+Throws
+		: THROWS ExceptionTypeList
 		;
 
-ExceptionType_repeat
-		: ',' ExceptionType_repeat ExceptionType
-		|
+ExceptionTypeList
+		: ExceptionType	
+		| ExceptionTypeList ',' ExceptionType
 		;
 
 ExceptionType
@@ -549,13 +554,21 @@ ExceptionType
 		| TypeVariable
 		;
 
+MethodBody
+		:  Block 												
+		| ';'													
+		;
+
 InstanceInitializer
+		: Block
+		;
+
+StaticInitializer
 		: STATIC Block
 		;
 
 ConstructorDeclaration
-		: ConstructorModifiers ConstructorDeclaration Throws_opt
-		| ConstructorBody
+		: ConstructorModifiers ConstructorDeclarator Throws_opt ConstructorBody
 		;
 
 ConstructorModifiers
@@ -570,16 +583,16 @@ ConstructorModifier
 		| PRIVATE
 		;
 
-ConstructorDeclaration
-		: TypeParameters_opt SimpleTypeName '(' FormalParameterList_Opt')'
+ConstructorDeclarator
+		: TypeParameters_opt SimpleTypeName '(' FormalParameterList_opt')'
 		;
 
 SimpleTypeName
 		: IDENTIFIER
 		;
-
+////////// Todo //////////////////////
 ConstructorBody
-		: '{' ExplicitConstructorInvocation_opt BlockStatements_Opt'}'
+		: '{' ExplicitConstructorInvocation_opt BlockStatements_opt'}'
 		;
 
 ExplicitConstructorInvocation_opt
@@ -605,11 +618,8 @@ ArgumentList_opt
 		;
 
 ArgumentList
-		: Expression ArgumentList_repeat
-		;
-
-ArgumentList_repeat
-		: ',' ArgumentList_repeat Expression
+		: Expression 
+		| ArgumentList ',' Expression
 		;
 
 EnumDeclaration
@@ -617,7 +627,7 @@ EnumDeclaration
 		;
 
 EnumBody
-		: '{' EnumConstantList_opt '}' Comma_opt EnumBodyDeclarations_opt
+		: '{' EnumConstantList_opt Comma_opt EnumBodyDeclarations_opt '}'
 		;
 
 EnumConstantList_opt
@@ -636,11 +646,8 @@ EnumBodyDeclarations_opt
 		;
 
 EnumConstantList
-		: EnumConstant EnumConstantList_repeat
-		;
-
-EnumConstantList_repeat
-		: ',' EnumConstantList_repeat EnumConstant
+		: EnumConstant 
+		| EnumConstantList ',' EnumConstant
 		;
 
 EnumConstant
@@ -651,6 +658,11 @@ EnumConstantModifiers
 		: EnumConstantModifiers EnumConstantModifier
 		|
 		;
+
+EnumConstantModifier
+		: Annotation
+		;
+
 ArgumentListWithBracket_opt
 		: '(' ArgumentList_opt ')'
 		|
@@ -661,28 +673,27 @@ ClassBody_opt
 		|
 		;
 
-EnumConstantModifier
-		: Annotation
-		;
-
 EnumBodyDeclarations
 		: ';' ClassBodyDeclarations
 		;
 
+/*******************************************************************************************
+********************************* Interfaces **************************************
+*******************************************************************************************/
 InterfaceDeclaration
 		: NormalClassDeclaration
 		| AnnotationTypeDeclaration
 		;
 
 NormalClassDeclaration
-		: InterfaceModifers INTERFACE IDENTIFIER TypeParameters_opt
-		| ExtendsInterfaces_opt InterfaceBody
+		: InterfaceModifers INTERFACE IDENTIFIER TypeParameters_opt ExtendsInterfaces_opt InterfaceBody
 		;
 
 InterfaceModifers
 		: InterfaceModifers InterfaceModifer
 		|
 		;
+
 InterfaceModifer
 		: Annotation
 		| PUBLIC
@@ -775,8 +786,7 @@ AnnotationTypeMemberDeclaration
 		;
 
 AnnotationTypeElementDeclaration
-		: AnnotationTypeElementModifers UnannType IDENTIFIER '(' ')' Dims_Opt
-		| DefaultValue_opt ';'
+		: AnnotationTypeElementModifers UnannType IDENTIFIER '(' ')' Dims_opt DefaultValue_opt ';'
 		;
 
 AnnotationTypeElementModifers	
@@ -799,6 +809,35 @@ DefaultValue
 		: DEFAULT ElementValue
 		;
 
+Annotations
+		: Annotations Annotation								
+		| /* Empty */											
+		;
+
+Annotation
+		: NormalAnnotation											
+		| MarkerAnnotation
+		| SingleElementAnnotation
+		;
+
+NormalAnnotation
+		: '@' TypeName '(' ElementValuePairList_opt ')'
+		;
+
+ElementValuePairList_opt
+		: 
+		| ElementValuePairList
+		;
+
+ElementValuePairList
+		: ElementValuePair
+		| ElementValuePairList ',' ElementValuePair
+		;
+
+ElementValuePair
+		: IDENTIFIER '=' ElementValue
+		;
+
 ElementValue
 		: ConditionalExpression
 		| ElementValueArrayInitializer
@@ -806,31 +845,25 @@ ElementValue
 		;
 
 ElementValueArrayInitializer
-		: '{' ElementValueList_opt Comma_opt'}'
-		;
-
-ElementValueList_opt
-		: ElementValueList
-		| 
+		: '{' ElementValueList '}'
 		;
 
 ElementValueList
-		: ElementValue ElementValue_repeat
-		;
-
-ElementValue_repeat
-		: ElementValue_repeat ',' ElementValue
-		|
+		: ElementValue 
+		| ElementValueList ',' ElementValue
 		;
 
 MarkerAnnotation
 		: '@' TypeName
 		;
 
-SingleElementAnnotation
+SingleElementAnnotation							// Reduce/Reduce conflict on ')' - NormalAnnotation
 		: '@' TypeName '(' ElementValue ')'
 		;
 
+/*******************************************************************************************
+********************************* Arrays **************************************
+*******************************************************************************************/
 ArrayInitializer
 		: '{' VariableInitializerList_opt Comma_opt'}'
 		;
@@ -841,149 +874,43 @@ VariableInitializerList_opt
 		;
 
 VariableInitializerList
-		: VariableInitializer VariableInitializer_repeat
+		: VariableInitializer 
+		| VariableInitializerList ',' VariableInitializer
 		;
 
-VariableInitializer_repeat
-		: VariableInitializer_repeat ',' VariableInitializer
-		|
-		;
-
-//End work by Tri
-// Work by Vivian
-Dims
-		: Annotations '['']'									{ // Tri }
-		;
-
-VariableDeclaratorId
-		: IDENTIFIER Dims_Opt									{ // Tri }
-		;
-
-UnannType
-		: UnannReferenceType									{ // Tri }
-		| UnannPrimitiveType									{ // Tri }
-		;
-
-UnannPrimitiveType
-		: NumbericType											{ // Josh }
-		| BOOL													{ // Josh }
-		;
-
-UnannReferenceType
-		: UnannClassOrInterfaceType 
-		| UnannTypeVariable 
-		| UnannArrayType										{ // Vivian }										{ // Vivian }
-		;
-
-UnannClassOrInterfaceType
-		: UnannClassType
-		| UnannInterfaceType
-		;
-
-UnannClassType
-		: IDENTIFIER TypeArguments_opt
-		| UnannClassOrInterfaceType '.' Annotations IDENTIFIER
-		| TypeArguments_opt
-		;
-
-UnannInterfaceType
-		: UnannClassType
-		;
-
-UnannTypeVariable
-		: IDENTIFIER
-		;
-
-// Vivian's work end
-// Work by Khoa - Fixed by An
-UnannArrayType
-		: UnannPrimitiveType Dims 
-		| UnannClassOrInterfaceType Dims 
-		| UnannTypeVariable Dims								{ // Adon }
-		;	
-			
-UnannTypeVariable
-		: IDENTIFIER											{ // Adon }
-		;	
-
-// Start work by An
-MethodBody
-		:  Block 												{ // Adon }
-		| ';'													{ // Adon }
-		;
-
-Annotations
-		: Annotation											{ // Adon }
-		| /* Empty */											{ // Adon }
-		;
-
+/*******************************************************************************************
+********************************* Blocks and Statements **************************************
+*******************************************************************************************/
 Block 
-		: '{' BlockStatements_Opt '}'							{ // Tristan }
+		: '{' BlockStatements_opt '}'							
 		;
 
-BlockStatements_Opt
-		: BlockStatements										{ // Tristan }
-		| /* Empty */											{ // Tristan }
+BlockStatements_opt
+		: BlockStatements										
+		| /* Empty */											
 		;
 
 BlockStatements
-		: BlockStatement BlockStatement_s						{ // Tristan }
-		;
-
-BlockStatement_s
-		: BlockStatement_s BlockStatement						{ // Tristan }
-		| /* Empty */											{ // Tristan }
+		: BlockStatement 
+		| BlockStatements BlockStatement					
 		;
 
 BlockStatement
-		: LocalVariableDeclarationsAndStatement					{ // Sneha }
-		| Statement												{ // Sneha }
-		| ClassDeclaration										{ // Sneha }
+		: LocalVariableDeclarationsAndStatement					
+		| Statement												
+		| ClassDeclaration										
 		;
 
 LocalVariableDeclarationsAndStatement
-		: LocalVariableDeclaration ';'							{ // Sneha }
+		: LocalVariableDeclaration ';'							
 		;
 
 LocalVariableDeclaration
-		: VariableModifiers UnannType VariableDeclaratorList	{ // Sneha }
+		: VariableModifiers UnannType VariableDeclaratorList	
 		;
 
-VariableDeclaratorList
-		: VariableDeclarator VariableDeclarator_repeat									{ // An }
-		| /* follow up */										{ // An }
-		;
-
-VariableDeclarator_repeat
-		: ',' VariableDeclarator_repeat VariableDeclarator
-		|
-		;
-
-VariableDeclarator
-		: VariableDeclaratorId	VariableDeclarator_opt							{ // An }										{ // An }
-		;
-
-VariableDeclarator_opt
-		: '=' VariableInitializer
-		|
-		;
-
-VariableInitializer
-		: Expression
-		| ArrayInitializer
-		;
-
-VariableDeclaratorId
-		: IDENTIFIER Dims_Opt									{ // An }
-		;
-
-// Tristan
-
-/*******************************************************************************************
-********************************* Block and Statement **************************************
-*******************************************************************************************/
 Statement 
-		: StatementWithoutTrailingSubstatement				{ // Nathan }
+		: StatementWithoutTrailingSubstatement				
         | LabeledStatement 
 		| IfThenStatement 
 		| IfThenElseStatement 
@@ -1002,7 +929,7 @@ StatementNoShortIf
 StatementWithoutTrailingSubstatement
 		: Block
 		| EmptyStatement
-		| ExpressionStatement 									{ // An }
+		| ExpressionStatement 									
 		| AssertStatement
 		| SwitchStatement 
 		| DoStatement 
@@ -1027,11 +954,11 @@ LabeledStatementNoShortIf
 		;
 
 ExpressionStatement
-		: StatementExpression ';'								{ // Khoa }
+		: StatementExpression ';'								
 		;
 
 StatementExpression
-		: Assignment											{ // Khoa }
+		: Assignment											
 		| PreIncrementExpression 
 		| PreDecrementExpression 
 		| PostIncrementExpression 
@@ -1062,7 +989,7 @@ SwitchStatement
 		;
 
 SwitchBlock
-		: '{' SwitchBlockStatementGroups SwitchLabels_repeat '}'
+		: '{' SwitchBlockStatementGroups SwitchLabel_repeat '}'
 		;
 
 SwitchBlockStatementGroups
@@ -1070,22 +997,24 @@ SwitchBlockStatementGroups
 		|
 		;
 
-SwitchLabels_repeat
-		: SwitchLabels SwitchLabel
-		|
-		;
-
 SwitchBlockStatementGroup
 		: SwitchLabels BlockStatements
 		;
 
+SwitchLabel_repeat
+		: SwitchLabel_repeat SwitchLabel
+		|
+		;
+
 SwitchLabels
-		: SwitchLabel SwitchLabels_repeat
+		: SwitchLabel
+		| SwitchLabels SwitchLabel
 		;
 
 SwitchLabel
-		: CASE ConstantExpression ';'
-		| CASE EnumConstantName ';'
+		: CASE ConstantExpression ':'
+		| CASE EnumConstantName ':'
+		| DEFAULT ':'
 		;
 
 EnumConstantName
@@ -1115,51 +1044,35 @@ ForStatementNoShortIf
 		;
 
 BasicForStatement
-		: FOR '(' ForInit_opt ';' Expression_opt ';' ForUpdate_opt ')' Statement
+		: FOR '(' ForInit ';' Expression ';' ForUpdate ')' Statement
 		;
 
 BasicForStatementNoShortIf
-		: FOR '(' ForInit_opt ';' Expression_opt ';' ForUpdate_opt ')' StatementNoShortIf
-		;		
-
-ForInit_opt
-		: ForInit
-		|
-		;
-
-Expression_opt
-		: Expression
-		|
-		;
-
-ForUpdate_opt
-		: ForUpdate
-		|
+		: FOR '(' ForInit ';' Expression ';' ForUpdate ')' StatementNoShortIf
 		;
 
 ForInit
-		: StatementExpressionList
+		: 
+		| StatementExpressionList
 		| LocalVariableDeclaration
 		;
 
 ForUpdate
-		: StatementExpressionList
+		: 
+		| StatementExpressionList
 		;
 
 StatementExpressionList
-		: StatementExpression StatementExpression_repeat
-		;
-
-StatementExpression_repeat
-		: StatementExpression_repeat ',' StatementExpression
+		: StatementExpression 
+		| StatementExpressionList ',' StatementExpression
 		;
 
 EnhancedForStatement
-		: FOR '(' VariableModifiers UnannType VariableDeclaratorId : Expression ')' Statement
+		: FOR '(' VariableModifiers UnannType VariableDeclaratorId ':' Expression ')' Statement
 		;
 
 EnhancedForStatementNoShortIf
-		: FOR '(' VariableModifiers UnannType VariableDeclaratorId : Expression ')' StatementNoShortIf
+		: FOR '(' VariableModifiers UnannType VariableDeclaratorId ':' Expression ')' StatementNoShortIf
 		;
 
 BreakStatement
@@ -1172,18 +1085,19 @@ ContinueStatement
 
 ReturnStatement
 		: RETURN Expression_opt ';'
-		;		
+		;	
 
 ThrowStatement
-		: THROW Expression ;
+		: THROW Expression ';'
+		;
 
 SynchronizedStatement
 		: SYNCHRONIZED '(' Expression ')' Block
 		;
 
 TryStatement
-		: Try Block Catches
-		| Try Block Catches_opt FINALLY
+		: TRY Block Catches
+		| TRY Block Catches_opt Finally_opt
 		| TryWithResourcesStatement
 		;
 
@@ -1193,16 +1107,12 @@ Catches_opt
 		;
 
 Catches
-		: CatchClause CatchClauses
-		;
-
-CatchClauses
-		: CatchClauses CatchClause
-		|
+		: CatchClause
+		| Catches CatchClause
 		;
 
 CatchClause
-		: CATCH '(' CatchFromalParameter ')' Block		
+		: CATCH '(' CatchFromalParameter ')' Block
 		;
 
 CatchFromalParameter
@@ -1210,11 +1120,12 @@ CatchFromalParameter
 		;
 
 CatchType
-		: UnannClassType CatchType_repeat
+		: UnannClassType 
+		| CatchType '|' CatchType
 		;
 
-CatchType_repeat
-		: CatchType_repeat '|' ClassType
+Finally_opt
+		: Finally
 		|
 		;
 
@@ -1224,11 +1135,6 @@ Finally
 
 TryWithResourcesStatement
 		: TRY ResourceSpecification Block Catches_opt Finally_opt
-		;
-
-Finally_opt
-		: Finally
-		|
 		;
 
 ResourceSpecification
@@ -1241,12 +1147,8 @@ SemmiColon_opt
 		;
 
 ResourceList
-		: Resource ResourceList_repeat
-		;
-
-ResourceList_repeat
-		: ResourceList_repeat ';' Resource
-		|
+		: Resource 
+		| ResourceList ';' Resource
 		;
 
 Resource
@@ -1254,11 +1156,7 @@ Resource
 		;
 
 /*******************************************************************************************
-******************************* End Block and Statement  ***********************************
-*******************************************************************************************/
-
-/*******************************************************************************************
-************************************** Expression  *****************************************
+********************************* Expression **************************************
 *******************************************************************************************/
 Primary
 		: PrimaryNoNewArray
@@ -1266,7 +1164,7 @@ Primary
 		;
 
 PrimaryNoNewArray
-		: Literal
+		: 
 		| ClassLiteral
 		| THIS
 		| TypeName '.' THIS
@@ -1279,14 +1177,14 @@ PrimaryNoNewArray
 		;
 
 ClassLiteral
-		: TypeName SquareBracket_opt '.' CLASS
-		| NumbericType SquareBracket_opt '.' CLASS
-		| BOOLEAN SquareBracket_opt '.' CLASS
-		| VOID'.' CLASS
+		: TypeName SquareBrackets '.' CLASS
+		| NumbericType SquareBrackets '.' CLASS
+		| BOOLEAN SquareBrackets '.' CLASS
+		| VOID '.' CLASS
 		;
 
-SquareBracket_opt
-		: '['']'
+SquareBrackets
+		: SquareBrackets '['']'
 		|
 		;
 
@@ -1301,8 +1199,7 @@ UnqualifiedClassInstanceCreationExpression
 		;
 
 ClassOrInterfaceTypeToInstantiate
-		: Annotations IDENTIFIER ClassOrInterfaceTypeToInstantiate_repeat
-		| TypeArgumentsOrDiamond_opt
+		: Annotations IDENTIFIER ClassOrInterfaceTypeToInstantiate_repeat TypeArgumentsOrDiamond_opt
 		;
 
 ClassOrInterfaceTypeToInstantiate_repeat
@@ -1340,52 +1237,65 @@ MethodInvocation
 		| TypeName '.' SUPER '.' TypeArguments_opt IDENTIFIER '(' ArgumentList_opt')'
 		;
 
+ArgumentList_opt
+		: ArgumentList
+		|
+		;
+
+ArgumentList
+		: Expression
+		| ArgumentList ',' Expression
+		;
+
 MethodReference
-		: ExpressionName '::' TypeArguments_opt IDENTIFIER
-		| ReferenceType '::' TypeArguments_opt IDENTIFIER
-		| Primary '::' TypeArguments_opt IDENTIFIER
-		| SUPER '::' TypeArguments_opt IDENTIFIER
-		| TypeName '.' SUPER '::' TypeArguments_opt IDENTIFIER
-		| ClassType '::' TypeArguments_opt new
-		| ArrayType '::' new
+		: ExpressionName DOUBLE_COLON TypeArguments_opt IDENTIFIER
+		| ReferenceType DOUBLE_COLON TypeArguments_opt IDENTIFIER
+		| Primary DOUBLE_COLON TypeArguments_opt IDENTIFIER
+		| SUPER DOUBLE_COLON TypeArguments_opt IDENTIFIER
+		| TypeName '.' SUPER DOUBLE_COLON TypeArguments_opt IDENTIFIER
+		| ClassType DOUBLE_COLON TypeArguments_opt NEW
+		| ArrayType DOUBLE_COLON NEW
 		;
 
 ArrayCreationExpression
-		: NEW PrimitiveType DimExprs Dims_Opt
-		| NEW ClassOrInterfaceType DimExprs Dims_Opt
+		: NEW PrimitiveType DimExprs Dims_opt
+		| NEW ClassOrInterfaceType DimExprs Dims_opt
 		| NEW PrimitiveType Dims ArrayInitializer
 		| NEW ClassOrInterfaceType Dims ArrayInitializer
 		;
 
 DimExprs
-		: DimExpr DimExpr_repeat
-		;
-
-DimExpr_repeat
-		: DimExpr_repeat DimExpr
-		|
+		: DimExpr 
+		| DimExprs DimExpr
 		;
 
 DimExpr
 		: Annotations '[' Expression ']'
+		;
+
+Expression
+		: LambdaExpression
+		| AssignmentExpression
+		;
+
+Expression_opt
+		: Expression
+		|
+		;
 
 LambdaExpression
-		: LambdaParameters '->' LambdaBody
+		: LambdaParameters ARROW LambdaBody
 		;
 
 LambdaParameters
 		: IDENTIFIER
-		| '(' FormalParameterList_Opt ')'
+		| '(' FormalParameterList_opt ')'
 		| '(' InferredFormalParameterList')'
 		;
 
 InferredFormalParameterList
-		: IDENTIFIER Identifier_repeat
-		;
-
-Identifier_repeat
-		: Identifier_repeat ',' IDENTIFIER
-		|
+		: IDENTIFIER 
+		| InferredFormalParameterList ',' IDENTIFIER
 		;
 
 LambdaBody
@@ -1398,21 +1308,18 @@ AssignmentExpression
 		| Assignment
 		;
 
-// End Work by Tristan
-//work by sneha
-
 Assignment
-		: LeftHandSide AssignmentOperator Expression			{ // Khoa }
+		: LeftHandSide AssignmentOperator Expression			
 		;
 
 LeftHandSide
-		: ExpressionName										{ // Khoa }
+		: ExpressionName										
 		| FieldAccess
 		| ArrayAccess
 		;
 
 AssignmentOperator
-		: '='													{ // Khoa }
+		: '='													
 		| MULTIPLICATION_ASSIGNMENT
 		| DIVISION_ASSIGNMENT
 		| MODULUS_ASSIGNMENT
@@ -1539,16 +1446,15 @@ CastExpression
 ConstantExpression
 		: Expression
 		;
+
 Literal
-		: IntegerLiteral										{ // Nathan }
+		: IntegerLiteral										
 		| FloatingPointLiteral
 		| BooleanLiteral
 		| CharacterLiteral
 		| StringLiteral
 		| NullLiteral
 		;
-
-// end of sneha Work
 
 %%
 
