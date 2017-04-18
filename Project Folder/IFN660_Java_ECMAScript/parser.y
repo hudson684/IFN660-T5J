@@ -124,31 +124,31 @@ TypeDeclarations
 		;
 
 TypeDeclaration 
-		: ClassDeclaration /* need to add InterfaceDeclaration */ {  } // Vivian
+		: ClassDeclaration /* need to add InterfaceDeclaration */ { $$ = $1; } // Vivian
 		;
 
 ClassDeclaration 
-		: NormalClassDeclaration /* need to add EnumDeclaration */ {  } // Vivian
+		: NormalClassDeclaration /* need to add EnumDeclaration */ { $$ = $1; } // Vivian
 		;
 
 NormalClassDeclaration 
-		: ClassModifiers CLASS IDENTIFIER TypeParameters_opt SuperClass_opt Superinterfaces_opt ClassBody {  } // Vivian
+		: ClassModifiers CLASS IDENTIFIER TypeParameters_opt SuperClass_opt Superinterfaces_opt ClassBody {  $$ = new NormalClassDeclaration($1,$2,$3,$4,$5,$6); } // Vivian
 		;
 
 ClassModifiers 
-		: ClassModifiers ClassModifier							{  } // Vivian
-		| /* empty */											{  } // Vivian
+		: ClassModifiers ClassModifier							{ $$ = $1,$2; } // Vivian
+		| /* empty */											{ $$ = null } // Vivian
 		;
 
 ClassModifier 
-		: Annotation											{  } // Adon
-		| PUBLIC												{  } // Adon
-		| PROTECTED 											{  } // Adon
-		| PRIVATE 												{  } // Adon
-		| ABSTRACT 												{  } // Adon
-		| STATIC 												{  } // Adon
-		| FINAL 												{  } // Adon
-		| STRICTFP 												{  } // Adon
+		: Annotation											{ $$ = $1; } // Adon
+		| PUBLIC												{ $$ = $1; } // Adon
+		| PROTECTED 											{ $$ = $1; } // Adon
+		| PRIVATE 												{ $$ = $1; } // Adon
+		| ABSTRACT 												{ $$ = $1; } // Adon
+		| STATIC 												{ $$ = $1; } // Adon
+		| FINAL 												{ $$ = $1; } // Adon
+		| STRICTFP 												{ $$ = $1; } // Adon
 		;
 
 Annotation
@@ -299,39 +299,39 @@ NumbericType
 IntegralType
 		: BYTE													{ $$ = $1;  } // Josh
 		| SHORT													{ $$ = $1;  } // Josh
-		| INT													{ } // Vivian
-		| LONG													{ } // Vivian
-		| CHAR													{ } // Vivian
+		| INT													{ $$ = $1;} // Vivian
+		| LONG													{ $$ = $1; } // Vivian
+		| CHAR													{ $$ = $1; } // Vivian
 		;
 
 FloatingPointType
-		: FLOAT													{ } // Vivian
-		| DOUBLE												{ } // Vivian
+		: FLOAT													{ $$ = $1; } // Vivian
+		| DOUBLE												{ $$ = $1; } // Vivian
 		;
 
 UnannReferenceType
-		: UnannArrayType										{ } // Vivian
+		: UnannArrayType										{ $$ = $1; } // Vivian
 		;
 
 // Vivian's work end
 // Work by Khoa - Fixed by An
 UnannArrayType
-		: UnannTypeVariable Dims								{ } // Adon
+		: UnannTypeVariable Dims								{ $$ = $1; } // Adon: Not sure but Dims returns Annotation in the end and Annotation returns thing so we put $$ = $1 here
 		;	
 			
 UnannTypeVariable
-		: IDENTIFIER											{ } // Adon
+		: IDENTIFIER											{ $$ = $1; } // Adon
 		;	
 
 // Start work by An
 MethodBody
-		:  Block 												{ } // Adon
-		| ';'													{ } // Adon
+		:  Block 												{ $$= $1; }  // Adon
+		| ';'													{ $$= null;} // Adon
 		;
 
 Annotations
-		: Annotations Annotation								{ } // Adon
-		| /* Empty */											{ } // Adon
+		: Annotations Annotation								{ $$ = new Anotations($2); } // Adon
+		| /* Empty */											{ $$ = null; } // Adon
 		;
 
 Block 
