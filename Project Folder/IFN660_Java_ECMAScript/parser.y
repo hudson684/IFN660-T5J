@@ -316,7 +316,7 @@ UnannReferenceType
 // Vivian's work end
 // Work by Khoa - Fixed by An
 UnannArrayType
-		: UnannTypeVariable Dims								{ $$ = (new UnannTypeVariable($1), new Dims($2)); } // Adon
+		: UnannTypeVariable Dims								{ $$ = $1; } // Adon: Not sure but Dims returns Annotation in the end and Annotation returns thing so we put $$ = $1 here
 		;	
 			
 UnannTypeVariable
@@ -325,8 +325,8 @@ UnannTypeVariable
 
 // Start work by An
 MethodBody
-		:  Block 												{$$ = $1; } // Adon
-		| ';'													{ } // Adon
+		:  Block 												{ $$= $1; }  // Adon
+		| ';'													{ $$= null;} // Adon
 		;
 
 Annotations
