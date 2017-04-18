@@ -141,14 +141,14 @@ ClassModifiers
 		;
 
 ClassModifier 
-		: Annotation											{  } // Adon
-		| PUBLIC												{  } // Adon
-		| PROTECTED 											{  } // Adon
-		| PRIVATE 												{  } // Adon
-		| ABSTRACT 												{  } // Adon
-		| STATIC 												{  } // Adon
-		| FINAL 												{  } // Adon
-		| STRICTFP 												{  } // Adon
+		: Annotation											{ $$ = $1; } // Adon
+		| PUBLIC												{ $$ = $1; } // Adon
+		| PROTECTED 											{ $$ = $1; } // Adon
+		| PRIVATE 												{ $$ = $1; } // Adon
+		| ABSTRACT 												{ $$ = $1; } // Adon
+		| STATIC 												{ $$ = $1; } // Adon
+		| FINAL 												{ $$ = $1; } // Adon
+		| STRICTFP 												{ $$ = $1; } // Adon
 		;
 
 Annotation
@@ -316,22 +316,22 @@ UnannReferenceType
 // Vivian's work end
 // Work by Khoa - Fixed by An
 UnannArrayType
-		: UnannTypeVariable Dims								{ } // Adon
+		: UnannTypeVariable Dims								{ $$ = (new UnannTypeVariable($1), new Dims($2)); } // Adon
 		;	
 			
 UnannTypeVariable
-		: IDENTIFIER											{ } // Adon
+		: IDENTIFIER											{ $$ = $1; } // Adon
 		;	
 
 // Start work by An
 MethodBody
-		:  Block 												{ } // Adon
+		:  Block 												{$$ = $1; } // Adon
 		| ';'													{ } // Adon
 		;
 
 Annotations
-		: Annotations Annotation								{ } // Adon
-		| /* Empty */											{ } // Adon
+		: Annotations Annotation								{ $$ = new Anotations($2); } // Adon
+		| /* Empty */											{ $$ = null; } // Adon
 		;
 
 Block 
