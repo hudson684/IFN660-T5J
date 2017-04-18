@@ -188,7 +188,7 @@ ClassMemberDeclaration
 
 // Change ClassMemberDeclaration to MethodDeclaration -An	
 MethodDeclaration
-		: MethodModifiers MethodHeader MethodBody				{ } // Sneha
+		: MethodModifiers MethodHeader MethodBody				{$$ = new MethodDeclaration($1, $2, $3)} // Sneha
         ;
 
 MethodModifiers
@@ -203,7 +203,7 @@ MethodModifier
         ;
 
 MethodHeader
-		: Result MethodDeclarator Throws_opt					{ } // Khoa
+		: Result MethodDeclarator Throws_opt					{$$ = new ArrayList($1, $2, $3);} // Khoa
         ;
 
 // End Fix
@@ -211,12 +211,12 @@ MethodHeader
 
 //WORK BY JOSH HUDSON
 Result 
-		: VOID													{ } // Khoa
-		| UnannType												{ } // Khoa
+		: VOID													{$$ = new List<Statement>();} // Khoa
+		| UnannType												{$$ = new } // Khoa
 	   	;
 
 Throws_opt
-		: Empty													{ } // Khoa
+		: Empty													{$$ = new List<Statement>();} // Khoa
 	  	;
 
 // Fixed spelling error	 

@@ -5,7 +5,6 @@ namespace IFN660_Java_ECMAScript.AST
 {
     public class MethodDeclaration : Node
     {
-
         //changed made by Josh to fix incorrect code be Adon.
         private List<Modifier> methodModifiers;
         private String methodIdentifier;
@@ -29,7 +28,10 @@ namespace IFN660_Java_ECMAScript.AST
             this.returnType = returnType;
         }
          * */
+        public struct Someshit
+        {
 
+        }
         public MethodDeclaration(String methodIdentifier, List<Modifier> methodModifiers, List<Statement> statementList, Type returnType, List<VariableDefinitionStatement> args)
         {
             this.methodIdentifier = methodIdentifier;
