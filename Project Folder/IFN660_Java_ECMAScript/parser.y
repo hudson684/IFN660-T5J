@@ -203,7 +203,7 @@ MethodModifier
         ;
 
 MethodHeader
-		: Result MethodDeclarator Throws_opt					{$$ = new ArrayList($1, $2, $3);} // Khoa
+		: Result MethodDeclarator Throws_opt					{$$ = new ArrayList($1, $2, $3); } // Khoa
         ;
 
 // End Fix
@@ -211,12 +211,12 @@ MethodHeader
 
 //WORK BY JOSH HUDSON
 Result 
-		: VOID													{$$ = $1} // Khoa
-		| UnannType												{$$ = $1} // Khoa
+		: VOID													{$$ = $1; } // Khoa
+		| UnannType												{$$ = $1; } // Khoa
 	   	;
 
 Throws_opt
-		: Empty													{$$ = new List<Statement>();} // Khoa
+		: Empty													{$$ = new List<Statement>(); } // Khoa
 	  	;
 
 // Fixed spelling error	 
@@ -330,17 +330,17 @@ Annotations
 		;
 
 Block 
-		: '{' BlockStatements_Opt '}'							{ } // Tristan
+		: '{' BlockStatements_Opt '}'							{ $$ = $2} // Tristan
 		;
 
 BlockStatements_Opt
-		: BlockStatements										{ } // Tristan
-		| /* Empty */											{ } // Tristan
+		: BlockStatements										{ $$ = $1 } // Tristan
+		| /* Empty */											{ $$ = null } // Tristan
 		;
 
 BlockStatements
-		: BlockStatement 
-		| BlockStatements BlockStatement				{ } // Tristan
+		: BlockStatement								{ $$ = $1; } // Tristan 
+		| BlockStatements BlockStatement				{ $$ = $1; $$.Add($2); } // Tristan
 		;
 
 BlockStatement
@@ -375,26 +375,26 @@ StatementWithoutTrailingSubstatement
 		;
 
 ExpressionStatement
-		: StatementExpression ';'								{ $$ = new ExpressionStatement($1) } // Khoa
+		: StatementExpression ';'								{ $$ = new ExpressionStatement($1); } // Khoa
 		;
 
 StatementExpression
-		: Assignment											{ $$ = new StatementExpression($1)} // Khoa
+		: Assignment											{ $$ = new StatementExpression($1); } // Khoa
 		;
 
 // End Work by Tristan
 //work by sneha
 
 Assignment
-		: LeftHandSide AssignmentOperator Expression			{ $$ = new AssignmentExpression($1, $3) } // Khoa
+		: LeftHandSide AssignmentOperator Expression			{ $$ = new AssignmentExpression($1, $3); } // Khoa
 		;
 
 LeftHandSide
-		: ExpressionName										{ $$ = $1} // Khoa
+		: ExpressionName										{ $$ = $1; } // Khoa
 		;
 
 ExpressionName
-		: IDENTIFIER											{ $$ = $1 } // Khoa
+		: IDENTIFIER											{ $$ = $1;  } // Khoa
 		;
 
 AssignmentOperator
