@@ -124,20 +124,20 @@ TypeDeclarations
 		;
 
 TypeDeclaration 
-		: ClassDeclaration /* need to add InterfaceDeclaration */ {  } // Vivian
+		: ClassDeclaration /* need to add InterfaceDeclaration */ { $$ = $1; } // Vivian
 		;
 
 ClassDeclaration 
-		: NormalClassDeclaration /* need to add EnumDeclaration */ {  } // Vivian
+		: NormalClassDeclaration /* need to add EnumDeclaration */ { $$ = $1; } // Vivian
 		;
 
 NormalClassDeclaration 
-		: ClassModifiers CLASS IDENTIFIER TypeParameters_opt SuperClass_opt Superinterfaces_opt ClassBody {  } // Vivian
+		: ClassModifiers CLASS IDENTIFIER TypeParameters_opt SuperClass_opt Superinterfaces_opt ClassBody {  $$ = new NormalClassDeclaration($1,$2,$3,$4,$5,$6); } // Vivian
 		;
 
 ClassModifiers 
-		: ClassModifiers ClassModifier							{  } // Vivian
-		| /* empty */											{  } // Vivian
+		: ClassModifiers ClassModifier							{ $$ = $1,$2; } // Vivian
+		| /* empty */											{ $$ = null } // Vivian
 		;
 
 ClassModifier 
@@ -299,18 +299,18 @@ NumbericType
 IntegralType
 		: BYTE													{ $$ = $1;  } // Josh
 		| SHORT													{ $$ = $1;  } // Josh
-		| INT													{ } // Vivian
-		| LONG													{ } // Vivian
-		| CHAR													{ } // Vivian
+		| INT													{ $$ = $1;} // Vivian
+		| LONG													{ $$ = $1; } // Vivian
+		| CHAR													{ $$ = $1; } // Vivian
 		;
 
 FloatingPointType
-		: FLOAT													{ } // Vivian
-		| DOUBLE												{ } // Vivian
+		: FLOAT													{ $$ = $1; } // Vivian
+		| DOUBLE												{ $$ = $1; } // Vivian
 		;
 
 UnannReferenceType
-		: UnannArrayType										{ } // Vivian
+		: UnannArrayType										{ $$ = $1; } // Vivian
 		;
 
 // Vivian's work end
