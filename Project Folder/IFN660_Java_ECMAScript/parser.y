@@ -197,7 +197,7 @@ MethodModifiers
         ;
 
 MethodModifier
-		: Annotation											{ $$ = null; } // Vivian not sure, as annotation equals to empty
+		: Annotation											{ $$ = $1; } // Vivian 
 		| PUBLIC												{ $$ = $1; } // Vivian
         | STATIC												{ $$ = $1;} // vivian
         ;
