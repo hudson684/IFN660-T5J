@@ -18,7 +18,10 @@ namespace IFN660_Java_ECMAScript.AST
         public void DumpValue(int indent)
         {
             Indent(indent);
-            Console.WriteLine("{0}", GetType().ToString());
+            if (this is Declaration)
+                Console.WriteLine("{0} - {1}", GetType().ToString(), GetHashCode());
+            else
+                Console.WriteLine("{0}", GetType().ToString());
 
             Indent(indent);
             Console.WriteLine("{");
@@ -31,8 +34,18 @@ namespace IFN660_Java_ECMAScript.AST
                 
                 if (value is Node)
                 {
-                    Console.WriteLine("{0}:", field.Name);
-                    ((Node)value).DumpValue(indent + 2);
+
+                    if ((value is Declaration))
+                    {
+                        Console.WriteLine("{0}: {1}", field.Name, value.GetHashCode());
+                        //Indent(indent + 2);
+                        //Console.WriteLine("{0}", value.GetHashCode());
+                    }
+                    else
+                    {
+                        Console.WriteLine("{0}:", field.Name);
+                        ((Node)value).DumpValue(indent + 2);
+                    }
                 }
                 else
                     Console.WriteLine("{0}: {1}", field.Name, value);

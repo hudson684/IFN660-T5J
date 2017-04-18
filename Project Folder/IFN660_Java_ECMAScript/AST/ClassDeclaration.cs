@@ -8,14 +8,14 @@ namespace IFN660_Java_ECMAScript.AST
     {
         private List<Modifier> classModifiers;
         private String classIdentifier;
-        private MethodDeclaration methodDeclaration;
+        private List<MethodDeclaration> methodDeclarations;
        // private ClassDeclaration classDeclaration;
 
-        public ClassDeclaration(String classIdentifier, List<Modifier> classModifiers, MethodDeclaration methodDeclaration = null)
+        public ClassDeclaration(String classIdentifier, List<Modifier> classModifiers, List<MethodDeclaration> methodDeclarations = null)
         {
             this.classIdentifier = classIdentifier;
             this.classModifiers = classModifiers;
-            this.methodDeclaration = methodDeclaration;
+            this.methodDeclarations = methodDeclarations;
         }
 
         public string GetName()
@@ -25,7 +25,32 @@ namespace IFN660_Java_ECMAScript.AST
 
         public override Boolean ResolveNames(LexicalScope scope)
         {
-            return methodDeclaration.ResolveNames(scope); 
+            // Step 1: set the new scope
+            var newScope = new LexicalScope();
+            newScope.ParentScope = scope;
+            newScope.Symbol_table = new Dictionary<string, Declaration>();
+
+            // Step 2: Check for declarations in the new scope and add to symbol_table of old scope
+            if (methodDeclarations != null)
+            {
+                foreach (MethodDeclaration each in methodDeclarations)
+                {
+                    newScope.Symbol_table.Add(each.GetName(), each);
+                }
+            }
+
+            // Step 3: ResolveNames for each method
+            bool loopResolve = true;
+
+            if (methodDeclarations != null)
+            {
+                foreach (MethodDeclaration each in methodDeclarations)
+                {
+                    loopResolve = loopResolve & each.ResolveNames(newScope);
+                }
+            }
+
+            return loopResolve;
         }
 
     }

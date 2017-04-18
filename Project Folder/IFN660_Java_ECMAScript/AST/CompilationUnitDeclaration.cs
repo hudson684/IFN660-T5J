@@ -23,37 +23,28 @@ namespace IFN660_Java_ECMAScript.AST
             // Step 1: set the new scope
             var newScope = new LexicalScope();
             newScope.ParentScope = scope;
+            newScope.Symbol_table = new Dictionary<string, Declaration>();
 
             // Step 2: Check for declarations in the new scope and add to symbol_table of old scope
             foreach (ClassDeclaration each in ClassDeclarations)
             {
-                if (newScope.Symbol_table == null)
-                {
-                    newScope.Symbol_table = new Dictionary<string, Declaration>
-                        { { each.GetName(), each } };
-                }
-                else
-                {
-                    newScope.Symbol_table.Add(each.GetName(), each);
-                }
+                newScope.Symbol_table.Add(each.GetName(), each);
             }
             
             // Step 3: ResolveNames for each part of the complilation unit
-            //   Maybe we don't need to ResolveNames for ImportDeclarations? - Nathan
             bool loopResolve = true;
 
-            //foreach (ImportDeclaration each in ImportDeclarations)
-            //{
-            //    loopResolve = loopResolve & each.ResolveNames(newScope);
-            //}
-
-            foreach (ClassDeclaration each in ClassDeclarations)
+            if (ClassDeclarations != null)
             {
-                loopResolve = loopResolve & each.ResolveNames(newScope);
+                foreach (ClassDeclaration each in ClassDeclarations)
+                {
+                    loopResolve = loopResolve & each.ResolveNames(newScope);
+                }
             }
 
-            // need to get loops for lists
-            return loopResolve; // PackageDeclaration.ResolveNames(newScope) & loopResolve;
+            // need to do something special with package declarations and import declarations - Nathan
+
+            return loopResolve; 
         }
     }
 
