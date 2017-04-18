@@ -4,7 +4,7 @@ using System.Collections.Generic;
 namespace IFN660_Java_ECMAScript.AST
 {
  
-    public class ClassDeclaration: Node
+    public class ClassDeclaration: Node, Declaration
     {
         private List<Modifier> classModifiers;
         private String classIdentifier;
@@ -18,6 +18,10 @@ namespace IFN660_Java_ECMAScript.AST
             this.methodDeclaration = methodDeclaration;
         }
 
+        public string GetName()
+        {
+            return classIdentifier;
+        }
 
         public override Boolean ResolveNames(LexicalScope scope)
         {

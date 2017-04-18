@@ -1,6 +1,9 @@
-using System; 
+#define AST_MANUAL
+
+using System;
 using System.IO;
 using IFN660_Java_ECMAScript.AST;
+using System.Collections.Generic;
 
 namespace IFN660_Java_ECMAScript
 {
@@ -8,23 +11,19 @@ namespace IFN660_Java_ECMAScript
     {
         static void Main(string[] args)
         {
-            Scanner scanner = new Scanner(
-               new FileStream(args[0], FileMode.Open));
-            //Parser parser = new Parser(scanner);
-            //parser.Parse();
-            //Parser.root.DumpValue(0);
+
+#if AST_MANUAL
+            //var xExpres = new Exception { }
             
-            ////var xExpres = new Exception { }
-            /*
             var mods = new List<Modifier> { Modifier.PUBLIC, Modifier.STATIC };
             var classMods = new List<Modifier> { Modifier.PUBLIC };
 
-            var argList = new List<VariableDefinitionStatement> { new VariableDefinitionStatement(new ArrayType(new NamedType("STRING")), "args") }; // "args" was varexpr
+            var argList = new List<VariableDeclaration> { new VariableDeclaration(new ArrayType(new NamedType("STRING")), "args") };
 
             var lhs = new VariableExpression("x");
             var rhs = new IntegerLiteralExpression(42);
 
-            var assignVar = new VariableDefinitionStatement(new NamedType("INTEGER"), "x"); // "x" was lhs
+            var assignVar = new VariableDeclaration(new NamedType("INTEGER"), "x");
 
             var assignExpr = new AssignmentExpression(lhs, rhs);
             var assignStmt = new ExpressionStatement(assignExpr);
@@ -37,10 +36,22 @@ namespace IFN660_Java_ECMAScript
 
             var pro = new CompilationUnitDeclaration(null, null, classes);
 
+            // Semantic Analysis
+            var rootScope = new LexicalScope();
+            pro.ResolveNames(rootScope);
+
             pro.DumpValue(0);
-            */
-       Arr
+            
+#else
+            Scanner scanner = new Scanner(
+               new FileStream(args[0], FileMode.Open));
+            //Parser parser = new Parser(scanner);
+            //parser.Parse();
+            //Parser.root.DumpValue(0);
+#endif
+
         }
+
         bool SemanticAnalysis(Node root)
         {
             return root.ResolveNames(null);
