@@ -152,33 +152,33 @@ ClassModifier
 		;
 
 Annotation
-		: /* empty */											{ } // Tristan
+		: /* empty */											{ $$ = null } // Tristan
 		;
 
 //GROUP C TRACKING
-TypeParameters_opt : /* empty */								{ } // Tristan
+TypeParameters_opt : /* empty */								{ $$ = null } // Tristan
 		;
 
-SuperClass_opt : /* empty */									{ } // Tristan
+SuperClass_opt : /* empty */									{ $$ = null } // Tristan
 		;
 
-Superinterfaces_opt : /* empty */								{ } // Tristan
+Superinterfaces_opt : /* empty */								{ $$ = null } // Tristan
 		;
 
 ClassBody 
-		: '{' ClassBodyDeclarations '}'							{ } // Tristan
+		: '{' ClassBodyDeclarations '}'							{ $$ = new ClassDeclaration($2)} // Tristan
 		;
 
 // Group A End
 
 // PartB by Adon Mofified by Josh to remove MemberDeclarations as it is unessisary
 ClassBodyDeclarations
-		: ClassBodyDeclarations ClassBodyDeclaration			{ } // Tristan
-		| /* empty */											{ } // Tristan
+		: ClassBodyDeclarations ClassBodyDeclaration			{ $$ =  $$ = $1; $$.Add($2); } // Tristan
+		| /* empty */											{ $$ = null } // Tristan
         ;
 
 ClassBodyDeclaration
-		: ClassMemberDeclaration								{ } // Tristan
+		: ClassMemberDeclaration								{ $$ = $1} // Tristan
         ;
 
 // Fixed by An
@@ -188,11 +188,7 @@ ClassMemberDeclaration
 
 // Change ClassMemberDeclaration to MethodDeclaration -An	
 MethodDeclaration
-<<<<<<< HEAD
-		: MethodModifiers MethodHeader MethodBody				{$$ = new MethodDeclaration($1, $2, $3)} // Sneha
-=======
 		: MethodModifiers MethodHeader MethodBody				{ $$ = new MethodDeclaration($1,$2,$3);} // Vivian
->>>>>>> 7cfcf3570659cb8ec52dca3fd94750745b887045
         ;
 
 MethodModifiers
@@ -215,8 +211,8 @@ MethodHeader
 
 //WORK BY JOSH HUDSON
 Result 
-		: VOID													{$$ = new List<Statement>();} // Khoa
-		| UnannType												{$$ = new } // Khoa
+		: VOID													{$$ = $1} // Khoa
+		| UnannType												{$$ = $1} // Khoa
 	   	;
 
 Throws_opt
@@ -225,14 +221,9 @@ Throws_opt
 
 // Fixed spelling error	 
 MethodDeclarator
-		: IDENTIFIER '(' FormalParameterList_Opt ')' Dims_Opt	{ } // Khoa
+		: IDENTIFIER '(' FormalParameterList_Opt ')' Dims_Opt	{$$ =  new ArrayList($1, $3, $5)} // Khoa
 		;
 
-/* Removed by Nathan
-Identifier
-		: Main													{ } // Khoa
-		;
-*/
 //PLACEHOLDER - Josh - Tri
 FormalParameterList_Opt
 		: FormalParameterList									{ } // An
@@ -384,30 +375,30 @@ StatementWithoutTrailingSubstatement
 		;
 
 ExpressionStatement
-		: StatementExpression ';'								{ } // Khoa
+		: StatementExpression ';'								{ $$ = new ExpressionStatement($1) } // Khoa
 		;
 
 StatementExpression
-		: Assignment											{ } // Khoa
+		: Assignment											{ $$ = new StatementExpression($1)} // Khoa
 		;
 
 // End Work by Tristan
 //work by sneha
 
 Assignment
-		: LeftHandSide AssignmentOperator Expression			{ } // Khoa
+		: LeftHandSide AssignmentOperator Expression			{ $$ = new AssignmentExpression($1, $3) } // Khoa
 		;
 
 LeftHandSide
-		: ExpressionName										{ } // Khoa
+		: ExpressionName										{ $$ = $1} // Khoa
 		;
 
 ExpressionName
-		: IDENTIFIER											{ } // Khoa
+		: IDENTIFIER											{ $$ = $1 } // Khoa
 		;
 
 AssignmentOperator
-		: '='													{ } // Khoa
+		: '='													 // Khoa
 		;
 
 AssignmentExpression
