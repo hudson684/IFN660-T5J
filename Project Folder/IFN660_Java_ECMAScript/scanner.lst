@@ -3,9 +3,9 @@
 //  GPLEX error listing for lex source file <scanner.lex>
 // ==========================================================================
 //  Version:  1.2.2
-//  Machine:  DESKTOP-I68NCGT
-//  DateTime: 4/15/2017 6:09:44 PM
-//  UserName: An
+//  Machine:  VDI-VL17-085
+//  DateTime: 18/04/2017 1:05:58 AM
+//  UserName: n9540377
 // ==========================================================================
 
 
@@ -39,7 +39,7 @@ UnicodeInputCharacter						{UnicodeEscape}|{RawInputCharacter}
 
 /* 3.4  Line Terminators - Joshua Hudson &  Vivian Lee */
 LineTerminator								{CR}{LF}?|{LF}
-InputCharacter								{UnicodeInputCharacter}|^\r|^\n]
+InputCharacter								{UnicodeInputCharacter}|[^\r|^\n] //Khoa - add missing opening square bracket
 
 /* 3.6 White Space */
 WhiteSpace									{SP}|{HT}|{FF}|{LineTerminator}
