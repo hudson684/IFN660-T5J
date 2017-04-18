@@ -12,16 +12,29 @@ namespace IFN660_Java_ECMAScript
         protected Dictionary<string, Declaration> symbol_table;
         public LexicalScope()
         {
-            parentScope = null;
-            symbol_table.Clear();
+            this.parentScope = null;
+            this.symbol_table = new Dictionary<string, Declaration>();
+        }
+
+        public LexicalScope ParentScope
+        {
+            get;
+            set;
+        }
+
+        public Dictionary<string, Declaration> Symbol_table
+        {
+            get;
+            set;
         }
 
         public Declaration ResolveHere(string symbol)
         {
-            var it = symbol_table.Where(p => p.Key == symbol).Select(p => p.Value) as Declaration;
-            if (it != null)
+            Declaration it;
+            if (Symbol_table.TryGetValue(symbol, out it))
                 return it;
-            else return null;
+            else
+                return null;
         }
 
         public Declaration Resolve(string symbol)
@@ -29,8 +42,8 @@ namespace IFN660_Java_ECMAScript
             Declaration local = ResolveHere(symbol);
             if (local != null)
                 return local;
-            else if (parentScope != null)
-                return parentScope.Resolve(symbol);
+            else if (ParentScope != null)
+                return ParentScope.Resolve(symbol);
             else
                 return null;
         }

@@ -29,12 +29,12 @@ namespace IFN660_Java_ECMAScript.AST
     public class VariableExpression : Expression
     {
         private string value;
-        private Declaration decl;
+        private Declaration declarationRef;
 
         public VariableExpression(string value)
         {
             this.value = value;
-            this.decl = null;
+            this.declarationRef = null;
         }
 
         public override bool ResolveNames(LexicalScope scope)
@@ -42,15 +42,15 @@ namespace IFN660_Java_ECMAScript.AST
             // check for valid declaration...
             if (scope != null)
             {
-                decl = scope.Resolve(value);
+                declarationRef = scope.Resolve(value);
             }
 
-            if (decl == null)
-                Console.WriteLine("Error: Undeclared indentifier - {0}", value);
+            if (declarationRef == null)
+                Debug.WriteLine("Error: Undeclared indentifier", value);
             else
-                Console.WriteLine("Found variable {0} in scope", value);
+                Debug.WriteLine("Found variable in scope", value);
 
-            return decl != null;
+            return declarationRef != null;
         }
     }
 
