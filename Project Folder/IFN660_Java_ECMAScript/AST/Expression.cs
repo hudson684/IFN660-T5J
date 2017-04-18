@@ -73,7 +73,18 @@ namespace IFN660_Java_ECMAScript.AST
             return lhs.ResolveNames(scope) & rhs.ResolveNames(scope);
         }
     }
-
+    public class StatementExpression : Expression
+    {
+        private Expression exp;
+        public StatementExpression(Expression exp)
+        {
+            this.exp = exp; 
+        }
+        public override bool ResolveNames(LexicalScope scope)
+        {
+            return exp.ResolveNames(scope);
+        }
+    }
 }
 
 
