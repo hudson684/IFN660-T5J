@@ -584,7 +584,7 @@ ConstructorModifier
 		;
 
 ConstructorDeclarator
-		: TypeParameters_opt SimpleTypeName '(' FormalParameterList_opt')'
+		: TypeParameters_opt SimpleTypeName '(' FormalParameterList_opt ')'
 		;
 
 SimpleTypeName
@@ -592,7 +592,7 @@ SimpleTypeName
 		;
 ////////// Todo //////////////////////
 ConstructorBody
-		: '{' ExplicitConstructorInvocation_opt BlockStatements_opt'}'
+		: '{' ExplicitConstructorInvocation_opt BlockStatements_opt '}'
 		;
 
 ExplicitConstructorInvocation_opt
@@ -601,10 +601,10 @@ ExplicitConstructorInvocation_opt
 		;
 
 ExplicitConstructorInvocation
-		: TypeArguments_opt THIS '(' ArgumentList_opt')' ';'
-		| TypeArguments_opt SUPER '(' ArgumentList_opt')' ';'
-		| ExpressionName '.' TypeArguments_opt SUPER '(' ArgumentList_opt')' ';'
-		| Primary '.' TypeArguments_opt SUPER '(' ArgumentList_opt')' ';'
+		: TypeArguments_opt THIS '(' ArgumentList_opt ')' ';'
+		| TypeArguments_opt SUPER '(' ArgumentList_opt ')' ';'
+		| ExpressionName '.' TypeArguments_opt SUPER '(' ArgumentList_opt ')' ';'
+		| Primary '.' TypeArguments_opt SUPER '(' ArgumentList_opt ')' ';'
 		;
 
 TypeArgumentList_opt
@@ -751,7 +751,7 @@ InterfaceMethodDeclaration
 		;
 
 InterfaceMethodModifiers
-		: InterfaceModifers InterfaceMethodModifier
+		: InterfaceMethodModifers InterfaceMethodModifier
 		|
 		;
 
@@ -825,8 +825,8 @@ NormalAnnotation
 		;
 
 ElementValuePairList_opt
-		: 
-		| ElementValuePairList
+		: ElementValuePairList
+		| 
 		;
 
 ElementValuePairList
@@ -845,7 +845,7 @@ ElementValue
 		;
 
 ElementValueArrayInitializer
-		: '{' ElementValueList '}'
+		: '{' ElementValueList Comma_opt'}'
 		;
 
 ElementValueList
@@ -896,12 +896,12 @@ BlockStatements
 		;
 
 BlockStatement
-		: LocalVariableDeclarationsAndStatement					
+		: LocalVariableDeclarationStatement					
 		| Statement												
 		| ClassDeclaration										
 		;
 
-LocalVariableDeclarationsAndStatement
+LocalVariableDeclarationStatement
 		: LocalVariableDeclaration ';'							
 		;
 
@@ -1044,17 +1044,26 @@ ForStatementNoShortIf
 		;
 
 BasicForStatement
-		: FOR '(' ForInit ';' Expression ';' ForUpdate ')' Statement
+		: FOR '(' ForInit_opt ';' Expression_opt ';' ForUpdate_opt ')' Statement
 		;
 
 BasicForStatementNoShortIf
-		: FOR '(' ForInit ';' Expression ';' ForUpdate ')' StatementNoShortIf
+		: FOR '(' ForInit_opt ';' Expression_opt ';' ForUpdate_opt ')' StatementNoShortIf
 		;
 
+ForInit_opt
+		: ForInit
+		|
+		;
 ForInit
 		: 
 		| StatementExpressionList
 		| LocalVariableDeclaration
+		;
+
+ForUpdate_opt
+		: ForUpdate
+		|
 		;
 
 ForUpdate
@@ -1097,7 +1106,7 @@ SynchronizedStatement
 
 TryStatement
 		: TRY Block Catches
-		| TRY Block Catches_opt Finally_opt
+		| TRY Block Catches_opt Finally
 		| TryWithResourcesStatement
 		;
 
@@ -1462,3 +1471,4 @@ public Parser(Scanner scanner) : base(scanner)
 {
 }
 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 
