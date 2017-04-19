@@ -3,14 +3,14 @@ using System.Collections.Generic;
 
 namespace IFN660_Java_ECMAScript.AST
 {
-    public class CompilationUnitDeclaration : Node
+    public class CompilationUnitDeclaration : Statement
     {
-        private PackageDeclarationStatement PackageDeclaration;
-        private List<ImportDeclaration> ImportDeclarations;
-        private List<ClassDeclaration> ClassDeclarations;
+        private Statement PackageDeclaration;
+        private List<Statement> ImportDeclarations;
+        private List<Statement> ClassDeclarations;
 
 
-        public CompilationUnitDeclaration(PackageDeclarationStatement PackageDeclaration, List<ImportDeclaration> ImportDeclarations, List<ClassDeclaration> ClassDeclarations)
+        public CompilationUnitDeclaration(Statement PackageDeclaration, List<Statement> ImportDeclarations, List<Statement> ClassDeclarations)
         {
             this.PackageDeclaration = PackageDeclaration;
             this.ImportDeclarations = ImportDeclarations;

@@ -1,4 +1,4 @@
-#define AST_MANUAL // comment out this line to use parser&scanner
+//#define AST_MANUAL // comment out this line to use parser&scanner
 
 using System.IO;
 using IFN660_Java_ECMAScript.AST;
@@ -17,7 +17,7 @@ namespace IFN660_Java_ECMAScript
             var mods = new List<Modifier> { Modifier.PUBLIC, Modifier.STATIC };
             var classMods = new List<Modifier> { Modifier.PUBLIC };
 
-            var argList = new List<VariableDeclaration> { new VariableDeclaration(new ArrayType(new NamedType("STRING")), "args") };
+            var argList = new List<Statement> { new VariableDeclaration(new ArrayType(new NamedType("STRING")), "args") };
 
             var lhs = new VariableExpression("x");
             var rhs = new IntegerLiteralExpression(42);
@@ -32,34 +32,40 @@ namespace IFN660_Java_ECMAScript
             var statementList = new List<Statement> { assignVar, assignStmt };
 
             var method = new MethodDeclaration("Main", mods, statementList, new NamedType("VOID"), argList);
-            var classDec = new ClassDeclaration("HelloWorld", classMods, new List<MethodDeclaration> { method });
+            var classDec = new ClassDeclaration("HelloWorld", classMods, new List<Statement> { method });
 
-            var classes = new List<ClassDeclaration>  { classDec };
+            var classes = new List<Statement>  { classDec };
 
             var pro = new CompilationUnitDeclaration(null, null, classes);
 
             // Semantic Analysis
-            bool nameResolutionSuccess;
-            nameResolutionSuccess = pro.ResolveNames(null);
+            SemanticAnalysis(pro);
 
             pro.DumpValue(0);
 
-            if (!nameResolutionSuccess)
-                System.Console.WriteLine("*** ERROR - Name Resolution Failed ***");
 
 #else
             Scanner scanner = new Scanner(
                new FileStream(args[0], FileMode.Open));
             Parser parser = new Parser(scanner);
             parser.Parse();
+
+            SemanticAnalysis(Parser.root);
+
             Parser.root.DumpValue(0);
 #endif
 
         }
 
-        bool SemanticAnalysis(Node root)
+        static bool SemanticAnalysis(Node root)
         {
-            return root.ResolveNames(null);
+            bool nameResolutionSuccess;
+
+            nameResolutionSuccess = root.ResolveNames(null);
+            if (!nameResolutionSuccess)
+                System.Console.WriteLine("*** ERROR - Name Resolution Failed ***");
+
+            return nameResolutionSuccess;
         }
     }
 }

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace IFN660_Java_ECMAScript.AST
 {
-    public class MethodDeclaration : Node, Declaration
+    public class MethodDeclaration : Statement, Declaration
     {
 
         //changed made by Josh to fix incorrect code be Adon.
@@ -12,9 +12,9 @@ namespace IFN660_Java_ECMAScript.AST
         //private MethodDeclaration methodDeclaration;
         private Type returnType;
         private List<Statement> statementList;
-        private List<VariableDeclaration> args;
+        private List<Statement> args;
 
-        public MethodDeclaration(String methodIdentifier, List<Modifier> methodModifiers, List<Statement> statementList, Type returnType, List<VariableDeclaration> args)
+        public MethodDeclaration(String methodIdentifier, List<Modifier> methodModifiers, List<Statement> statementList, Type returnType, List<Statement> args)
         {
             this.methodIdentifier = methodIdentifier;
             this.methodModifiers = methodModifiers;

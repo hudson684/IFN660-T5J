@@ -107,7 +107,7 @@
   <Target Name="BeforeBuild">
     <Message Text="Generating Scanner" />
     <Exec Command="gplex.exe /unicode scanner.lex" />
-    <Exec Command="Gppg.exe /gplex parser.y &gt; parser.cs" />
+    <Exec Command="Gppg.exe /gplex /conflicts parser.y &gt; parser.cs" />
   </Target>
   <!--Target Name="AfterBuild">
   </Target>

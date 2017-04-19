@@ -91,24 +91,7 @@ namespace IFN660_Java_ECMAScript.AST
         }
     }
 
-    public class VariableDefinitionStatement : Statement
-    {
-        private Type VariableType;
-        private string VariableName;
-
-        public VariableDefinitionStatement(Type VariableType, string VariableName)
-        {
-            this.VariableType = VariableType;
-            this.VariableName = VariableName;
-        }
-
-        public override bool ResolveNames(LexicalScope scope)
-        {
-            // do something here...
-            return true;
-        }
-
-    }
+  
     public class VariableDeclaration : Statement, Declaration
     {
         private Type type;

@@ -87,7 +87,7 @@ IntergerLiteral								{DecimalIntegerLiteral}|{HexIntegerLiteral}|{OctalInteger
 /* 3.10.2 Floating-Point Literals */
 /* DecimalFloatingPointLiteral */
 FloatTypeSuffix								[fFdD]
-Sign										[+-]
+Sign										'+'|'-' //[+-]
 SignedInteger								{Sign}?{Digits}
 ExponentIndicator							[eE]
 ExponentPart								{ExponentIndicator}{SignedInteger}
@@ -129,16 +129,16 @@ Separators									[\(\)\{\}\[\]\;\,\.\@]
 Operators									[\=\>\<\!\~\?\:\+\-\*\/\&\|\^\%]
 %%
 
-										/* 3.3 Unicode Escapes */
+/* 3.3 Unicode Escapes */
 {UnicodeInputCharacter}						/*{yylval.name = yytext;return (int)Tokens.UnicodeInputCharacter;}*/
-										/* 3.4 Line Terminators */
+/* 3.4 Line Terminators */
 {LineTerminator}							/* Line Terminator */
-										/* 3.6 WhiteSpace */
+/* 3.6 WhiteSpace */
 {WhiteSpace}								/* White space */
-										/* 3.7 Comment */
+/* 3.7 Comment */
 {Comment}									/* Comment */
 
-										/* 3.9 KEYWORDS An */
+/* 3.9 KEYWORDS An */
 abstract									{return (int)Tokens.ABSTRACT;}
 assert										{return (int)Tokens.ASSERT;}
 boolean										{return (int)Tokens.BOOLEAN;}
@@ -249,8 +249,7 @@ while										{return (int)Tokens.WHILE;}
 "::"										{return (int)Tokens.DOUBLE_COLON;}	
 										
 
-										/* 3.12 OPERATOR  - An */
-
+/* 3.12 OPERATOR  - An */
 {Operators}									{return yytext[0];}
 "=="										{return (int)Tokens.EQUAL;}
 ">="										{return (int)Tokens.GREATER_OR_EQUAL;}

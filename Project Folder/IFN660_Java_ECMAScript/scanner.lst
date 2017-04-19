@@ -3,9 +3,9 @@
 //  GPLEX error listing for lex source file <scanner.lex>
 // ==========================================================================
 //  Version:  1.2.2
-//  Machine:  VDI-VL17-085
-//  DateTime: 18/04/2017 1:05:58 AM
-//  UserName: n9540377
+//  Machine:  VDI-VL17-008
+//  DateTime: 19/04/2017 10:50:55 PM
+//  UserName: n9648500
 // ==========================================================================
 
 
@@ -98,10 +98,7 @@ IntergerLiteral								{DecimalIntegerLiteral}|{HexIntegerLiteral}|{OctalInteger
 /* 3.10.2 Floating-Point Literals */
 /* DecimalFloatingPointLiteral */
 FloatTypeSuffix								[fFdD]
-Sign										[+-]
-//-------------^^
-// Warning: No upper bound to range, "'+','-'" included as set class members
-// -------------------------------------------------------------------------
+Sign										'+'|'-' //[+-]
 SignedInteger								{Sign}?{Digits}
 ExponentIndicator							[eE]
 ExponentPart								{ExponentIndicator}{SignedInteger}
@@ -143,28 +140,16 @@ Separators									[\(\)\{\}\[\]\;\,\.\@]
 Operators									[\=\>\<\!\~\?\:\+\-\*\/\&\|\^\%]
 %%
 
-										/* 3.3 Unicode Escapes */
+/* 3.3 Unicode Escapes */
 {UnicodeInputCharacter}						/*{yylval.name = yytext;return (int)Tokens.UnicodeInputCharacter;}*/
-										/* 3.4 Line Terminators */
-//--------^^^^^^^^^^^^^^^^^^^^^^^^^^
-// Warning: Code between rules, ignored
-// ------------------------------------
+/* 3.4 Line Terminators */
 {LineTerminator}							/* Line Terminator */
-										/* 3.6 WhiteSpace */
-//--------^^^^^^^^^^^^^^^^^^^^
-// Warning: Code between rules, ignored
-// ------------------------------------
+/* 3.6 WhiteSpace */
 {WhiteSpace}								/* White space */
-										/* 3.7 Comment */
-//--------^^^^^^^^^^^^^^^^^
-// Warning: Code between rules, ignored
-// ------------------------------------
+/* 3.7 Comment */
 {Comment}									/* Comment */
 
-										/* 3.9 KEYWORDS An */
-//--------^^^^^^^^^^^^^^^^^^^^^
-// Warning: Code between rules, ignored
-// ------------------------------------
+/* 3.9 KEYWORDS An */
 abstract									{return (int)Tokens.ABSTRACT;}
 assert										{return (int)Tokens.ASSERT;}
 boolean										{return (int)Tokens.BOOLEAN;}
