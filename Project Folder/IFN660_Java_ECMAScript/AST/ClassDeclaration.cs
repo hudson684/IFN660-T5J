@@ -4,14 +4,14 @@ using System.Collections.Generic;
 namespace IFN660_Java_ECMAScript.AST
 {
  
-    public class ClassDeclaration: Node, Declaration
+    public class ClassDeclaration: Statement, Declaration
     {
         private List<Modifier> classModifiers;
         private String classIdentifier;
-        private List<MethodDeclaration> methodDeclarations;
+        private List<Statement> methodDeclarations;
        // private ClassDeclaration classDeclaration;
 
-        public ClassDeclaration(String classIdentifier, List<Modifier> classModifiers, List<MethodDeclaration> methodDeclarations = null)
+        public ClassDeclaration(String classIdentifier, List<Modifier> classModifiers, List<Statement> methodDeclarations = null)
         {
             this.classIdentifier = classIdentifier;
             this.classModifiers = classModifiers;

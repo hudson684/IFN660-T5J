@@ -4,5 +4,10 @@
     {
         PUBLIC,
         STATIC,
+        PROTECTED,
+        PRIVATE,
+        ABSTRACT,
+        FINAL,
+        STRICTFP
     }
 }
