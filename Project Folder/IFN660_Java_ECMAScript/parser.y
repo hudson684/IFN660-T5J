@@ -20,26 +20,38 @@ public static Statement root;
 	public AST.Type type;
 	public Modifier modf;
 	public List<Modifier> modfs;
-	public ArrayList arlst;
+	public ArrayList arrlst;
 }
 
 // Types
 %type <expr> Literal, StatementExpression, Assignment, LeftHandSide, ExpressionName
 %type <expr> TypeParameters_opt, Superclass_opt, Superinterfaces_opt
-%type <expr> PrimaryNoNewArray, ArrayAccess, AssignmentExpression
+%type <expr> AssignmentExpression
+%type <expr> Expression, LambdaExpression, LambdaExpression, LambdaBody
+%type <expr> ConditionalExpression, ConditionalOrExpression, ConditionalAndExpression
+%type <expr> InclusiveOrExpression, ExclusiveOrExpression, AndExpression, EqualityExpression
+%type <expr> RelationalExpression, ShiftExpression, AdditiveExpression, MultiplicativeExpression
+%type <expr> UnaryExpression, PostfixExpression, Primary
+
 %type <stmt> Statement, CompilationUnit, TypeDeclaration, ClassDeclaration, NormalClassDeclaration, ClassBodyDeclaration
-%type <stmt> ExpressionStatement, StatementWithoutTrailingSubstatement, LocalVariableDeclaration, LocalVariableDeclarationsAndStatement
+%type <stmt> ExpressionStatement, StatementWithoutTrailingSubstatement, LocalVariableDeclaration, LocalVariableDeclarationStatement
 %type <stmt> BlockStatement, Throws_opt, ClassMemberDeclaration, MethodDeclaration, FormalParameter
 %type <stmt> PackageDeclaration_opt
+
 %type <stmts> TypeDeclarations, ClassBody, ClassBodyDeclarations, BlockStatements, BlockStatements_Opt, Block
 %type <stmts> MethodBody, FormalParameters, FormalParameterList, FormalParameterList_Opt 
 %type <stmts> ImportDeclarations
+
 %type <type> Result, FloatingPointType, IntegralType, NumericType
 %type <type> UnannType, UnannPrimitiveType, UnannReferenceType, UnannArrayType, UnannTypeVariable
+
 %type <modf> ClassModifier, MethodModifier, VariableModifier
+
 %type <modfs> ClassModifiers, MethodModifiers, VariableModifiers
+
 %type <name> VariableDeclaratorId, VariableDeclarator
-%type <arlst> MethodHeader, MethodDeclarator
+
+%type <arrlst> MethodHeader, MethodDeclarator
 
 // Tokens
 %token <num> NUMBER
@@ -239,7 +251,7 @@ VariableModifier
 
 //End work by Tri
 // Work by Vivian
-Dims_Opt // not doing anything with Dims at the moment - Nathan
+Dims_Opt 
 		: Dims													{ } // An
 		| /* Empty */											{ } // An
 		;
@@ -318,17 +330,17 @@ BlockStatements
 		;
 
 BlockStatement
-		: LocalVariableDeclarationsAndStatement					{ $$ = $1; } // Vivian
+		: LocalVariableDeclarationStatement						{ $$ = $1; } // Vivian
 		| Statement												{ $$ = $1; } // Vivian
 		;
 
-LocalVariableDeclarationsAndStatement
+LocalVariableDeclarationStatement
 		: LocalVariableDeclaration ';'							{ $$ = $1; } // Vivian - updated by Nathan
 		;
 
 LocalVariableDeclaration
-		: UnannType VariableDeclarator							{ $$ = new VariableDeclaration($1, $2); } // Vivian
-		//: UnannType VariableDeclaratorList { $$ = new VariableDeclaration($1, $2); } // Vivian - too hard at the moment - Nathan
+		: UnannType VariableDeclarator						{ $$ = new VariableDeclaration($1, $2); } // Vivian
+		//: VariableModifiers UnannType VariableDeclaratorList	{ $$ = new VariableDeclaration($1, $2); } // Vivian - too hard at the moment - Nathan
 		;
 
 // Too hard at the moment - Nathan
@@ -366,7 +378,7 @@ StatementExpression
 //work by sneha
 
 Assignment
-		: LeftHandSide AssignmentOperator AssignmentExpression	{ $$ = new AssignmentExpression($1, $3); } // Khoa
+		: LeftHandSide AssignmentOperator Expression			{ $$ = new AssignmentExpression($1, $3); } // Khoa
 		;
 
 LeftHandSide
@@ -382,22 +394,106 @@ AssignmentOperator
 		;
 
 AssignmentExpression
-		: ArrayAccess											{ $$ = $1; } // Nathan
+		: Assignment											{ $$ = $1; } // Nathan
+		| ConditionalExpression									{ $$ = $1; } // Nathan
 		;
 
-ArrayAccess
-		: PrimaryNoNewArray										{ $$ = $1; } // Nathan
-		;
+//ArrayAccess
+//		: PrimaryNoNewArray										{ $$ = $1; } // Nathan
+//		;
 
-PrimaryNoNewArray
+Primary
 		: Literal												{ $$ = $1; } // Nathan
 		;
 
 Literal
 		: IntegerLiteral										{ $$ = new IntegerLiteralExpression($1); } // Nathan
 		;
-
 // end of sneha Work
+
+// Nathan
+Expression
+		: LambdaExpression										{ $$ = $1; } // Nathan
+		| AssignmentExpression									{ $$ = $1; } // Nathan
+		;
+
+LambdaExpression
+		: LambdaParameters ARROW LambdaBody						{ } // not implemented yet - Nathan
+		;
+
+LambdaParameters
+		: /* empty */											{ } // not implemented yet - Nathan
+		;
+
+LambdaBody
+		: /* empty */											{ } // not implemented yet
+		;
+
+ConditionalExpression
+		: ConditionalOrExpression												{ $$ = $1; } // Nathan
+		//| ConditionalOrExpression '?' Expression ':' ConditionalExpression	{ $$ = new TernaryExpression($1, $3, $5); } // not implemented yet - Nathan
+		//| ConditionalOrExpression '?' Expression ':' LambdaExpression			{ $$ = new TernaryExpression($1, $3, $5); } // not implemented yet - Nathan
+		;
+
+ConditionalOrExpression
+		: ConditionalAndExpression										{ $$ = $1; } // Nathan
+		| ConditionalOrExpression LOGICAL_OR ConditionalAndExpression	{ $$ = new BinaryExpression($1, "||", $3); } // Nathan
+		;
+
+ConditionalAndExpression
+		: InclusiveOrExpression											{ $$ = $1; } // Nathan
+		| ConditionalAndExpression LOGICAL_AND InclusiveOrExpression	{ $$ = new BinaryExpression($1, "&&", $3); } // Nathan
+		;
+
+InclusiveOrExpression
+		: ExclusiveOrExpression											{ $$ = $1; } //Nathan
+		// more here - Nathan
+		;
+
+ExclusiveOrExpression
+		: AndExpression													{ $$ = $1; } //Nathan
+		// more here - Nathan
+		;
+
+AndExpression
+		: EqualityExpression											{ $$ = $1; } //Nathan
+		// more here - Nathan
+		;
+
+EqualityExpression
+		: RelationalExpression											{ $$ = $1; } //Nathan
+		// more here - Nathan
+		;
+
+RelationalExpression
+		: ShiftExpression												{ $$ = $1; } //Nathan
+		// more here - Nathan
+		;
+
+ShiftExpression
+		: AdditiveExpression											{ $$ = $1; } //Nathan
+		// more here - Nathan
+		;
+
+AdditiveExpression
+		: MultiplicativeExpression											{ $$ = $1; } //Nathan
+		// more here - Nathan
+		;
+
+MultiplicativeExpression
+		: UnaryExpression											{ $$ = $1; } //Nathan
+		// more here - Nathan
+		;
+
+UnaryExpression
+		: PostfixExpression											{ $$ = $1; } //Nathan
+		// more here - Nathan
+		;
+
+PostfixExpression
+		: Primary													{ $$ = $1; } //Nathan
+		// more here - Nathan
+		;
 
 %%
 
