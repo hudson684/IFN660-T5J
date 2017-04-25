@@ -19,7 +19,7 @@ namespace IFN660_Java_ECMAScript.AST
         {
             Indent(indent);
             if (this is Declaration)
-                Console.WriteLine("{0} - {1}", GetType().ToString(), GetHashCode());
+                Console.WriteLine("{0} - {1:X8}", GetType().ToString(), GetHashCode());
             else
                 Console.WriteLine("{0}", GetType().ToString());
 
@@ -37,7 +37,7 @@ namespace IFN660_Java_ECMAScript.AST
 
                     if ((value is Declaration))
                     {
-                        Console.WriteLine("{0}: {1}", field.Name, value.GetHashCode());
+                        Console.WriteLine("{0}: {1:X8}", field.Name, value.GetHashCode());
                         //Indent(indent + 2);
                         //Console.WriteLine("{0}", value.GetHashCode());
                     }
