@@ -177,7 +177,7 @@ ClassBodyDeclarations
         ;
 
 ClassBodyDeclaration
-		: ClassMemberDeclaration								{ $$ = $1; } // Tristan
+		: ClassMemberDeclaration								{ $$ = $1; } // Tristan - done by Khoa
         ;
 
 // Fixed by An
@@ -319,17 +319,17 @@ MethodBody
 //		;
 
 Block 
-		: '{' BlockStatements_Opt '}'							{ $$ = $2; } // Tristan
+		: '{' BlockStatements_Opt '}'							{ $$ = $2; } // Tristan - done by Khoa
 		;
 
 BlockStatements_Opt
-		: BlockStatements										{ $$ = $1; } // Tristan
-		| /* Empty */											{ $$ = null; } // Tristan
+		: BlockStatements										{ $$ = $1; } // Tristan - done by Khoa
+		| /* Empty */											{ $$ = null; } // Tristan - done by Khoa
 		;
 
 BlockStatements
-		: BlockStatement										{ $$ = new List<Statement> { $1 }; } // Tristan 
-		| BlockStatements BlockStatement						{ $$ = $1; $$.Add($2); } // Tristan
+		: BlockStatement										{ $$ = new List<Statement> { $1 }; } // Tristan - done by Khoa
+		| BlockStatements BlockStatement						{ $$ = $1; $$.Add($2); } // Tristan - done by Khoa
 		;
 
 BlockStatement
@@ -366,7 +366,7 @@ Statement
 
 // Tristan
 StatementWithoutTrailingSubstatement
-		: ExpressionStatement 									{ $$ = $1; } // Nathan
+		: ExpressionStatement 									{ $$ = $1; } // Nathan - done by Khoa
 		;
 
 ExpressionStatement
