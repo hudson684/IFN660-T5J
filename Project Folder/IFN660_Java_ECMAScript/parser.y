@@ -148,7 +148,7 @@ ClassModifier
 		| STATIC 												{ $$ = Modifier.STATIC; } // Adon
 		| FINAL 												{ $$ = Modifier.FINAL; } // Adon
 		| STRICTFP 												{ $$ = Modifier.STRICTFP; } // Adon
-		; //: Annotation { $$ = $1; } // Adon - removed by Nathan - too hard at the moment
+		; //: Annotation										{ $$ = $1; } // Adon - removed by Nathan - too hard at the moment
 
 
 //GROUP C TRACKING
@@ -195,7 +195,7 @@ MethodModifiers
 MethodModifier 
 		: PUBLIC												{ $$ = Modifier.PUBLIC; } // Vivian
         | STATIC												{ $$ = Modifier.STATIC; } // vivian
-        ; //: Annotation { $$ = $1; } // Vivian - removed by Nathan - too hard at the moment
+        ; //: Annotation										{ $$ = $1; } // Vivian - removed by Nathan - too hard at the moment
 
 MethodHeader
 		: Result MethodDeclarator Throws_opt					{$$ = new ArrayList() { $1, $2, $3 } ; } // Khoa
@@ -247,18 +247,18 @@ VariableModifiers
 
 VariableModifier 
 		: FINAL													{ $$ = Modifier.FINAL; } // Tri - updated by Nathan
-		; //: Annotation { $$ = $1; } // Tri - removed by Nathan - too hard at the moment
+		; //: Annotation										{ $$ = $1; } // Tri - removed by Nathan - too hard at the moment
 
 //End work by Tri
 // Work by Vivian
 Dims_Opt 
-		: Dims													{ } // An
-		| /* Empty */											{ } // An
+		: Dims													{ $$ = $1; } // An - updated by Adon
+		| /* Empty */											{ } // An - not implemented yet
 		;
 
 Dims
 		: '['']'									
-		//Annotations '['']'	{ $$ = $1; } // Needs work - Tri - removed by Nathan - too hard at the moment
+		//Annotations '['']'									{ $$ = $1; } // Needs work - Tri - removed by Nathan - too hard at the moment
 		;
 
 UnannType
@@ -339,7 +339,7 @@ LocalVariableDeclarationStatement
 		;
 
 LocalVariableDeclaration
-		: UnannType VariableDeclarator						{ $$ = new VariableDeclaration($1, $2); } // Vivian
+		: UnannType VariableDeclarator							{ $$ = new VariableDeclaration($1, $2); } // Vivian
 		//: VariableModifiers UnannType VariableDeclaratorList	{ $$ = new VariableDeclaration($1, $2); } // Vivian - too hard at the moment - Nathan
 		;
 
@@ -476,22 +476,22 @@ ShiftExpression
 		;
 
 AdditiveExpression
-		: MultiplicativeExpression											{ $$ = $1; } //Nathan
+		: MultiplicativeExpression										{ $$ = $1; } //Nathan
 		// more here - Nathan
 		;
 
 MultiplicativeExpression
-		: UnaryExpression											{ $$ = $1; } //Nathan
+		: UnaryExpression												{ $$ = $1; } //Nathan
 		// more here - Nathan
 		;
 
 UnaryExpression
-		: PostfixExpression											{ $$ = $1; } //Nathan
+		: PostfixExpression												{ $$ = $1; } //Nathan
 		// more here - Nathan
 		;
 
 PostfixExpression
-		: Primary													{ $$ = $1; } //Nathan
+		: Primary														{ $$ = $1; } //Nathan
 		// more here - Nathan
 		;
 
