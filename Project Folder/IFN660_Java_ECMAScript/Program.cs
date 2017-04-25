@@ -64,7 +64,7 @@ namespace IFN660_Java_ECMAScript
             nameResolutionSuccess = root.ResolveNames(null);
             if (!nameResolutionSuccess)
                 System.Console.WriteLine("*** ERROR - Name Resolution Failed ***");
-
+            root.TypeCheck();
             return nameResolutionSuccess;
         }
     }

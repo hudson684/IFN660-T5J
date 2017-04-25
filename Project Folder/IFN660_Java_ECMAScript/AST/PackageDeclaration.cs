@@ -6,11 +6,16 @@ using System.Threading.Tasks;
 
 namespace IFN660_Java_ECMAScript.AST
 {
-    public class  PackageDeclarationStatement : Statement
-    {
-        public override bool ResolveNames(LexicalScope scope)
-        {
-            return true;
-        }
-    }
+	public class PackageDeclarationStatement : Statement
+	{
+		public override bool ResolveNames(LexicalScope scope)
+		{
+			return true;
+		}
+		public override Boolean TypeCheck()
+		{
+			return true;
+		}
+
+	}
 }
