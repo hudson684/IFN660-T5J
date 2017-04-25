@@ -8,43 +8,32 @@ namespace IFN660_Java_ECMAScript.AST
     {
         private List<Modifier> classModifiers;
         private String classIdentifier;
-        private List<Statement> methodDeclarations;
+        private List<Statement> classBody;
        // private ClassDeclaration classDeclaration;
 
-        public ClassDeclaration(String classIdentifier, List<Modifier> classModifiers, List<Statement> methodDeclarations = null)
+        public ClassDeclaration(String classIdentifier, List<Modifier> classModifiers, List<Statement> classBody = null)
         {
             this.classIdentifier = classIdentifier;
             this.classModifiers = classModifiers;
-            this.methodDeclarations = methodDeclarations;
+            this.classBody = classBody;
         }
 
-        public string GetName()
+        public List<string> GetName()
         {
-            return classIdentifier;
+            return new List<string> { classIdentifier };
         }
 
         public override Boolean ResolveNames(LexicalScope scope)
         {
-            // Step 1: set the new scope
-            var newScope = new LexicalScope();
-            newScope.ParentScope = scope;
-            newScope.Symbol_table = new Dictionary<string, Declaration>();
+            // Step 1: Create new scope and populate the symbol table
+            var newScope = getNewScope(scope, classBody, null);
 
-            // Step 2: Check for declarations in the new scope and add to symbol_table of old scope
-            if (methodDeclarations != null)
-            {
-                foreach (MethodDeclaration each in methodDeclarations)
-                {
-                    newScope.Symbol_table.Add(each.GetName(), each);
-                }
-            }
-
-            // Step 3: ResolveNames for each method
+            // Step 2: ResolveNames for each method
             bool loopResolve = true;
 
-            if (methodDeclarations != null)
+            if (classBody != null)
             {
-                foreach (MethodDeclaration each in methodDeclarations)
+                foreach (Statement each in classBody)
                 {
                     loopResolve = loopResolve & each.ResolveNames(newScope);
                 }

@@ -8,6 +8,6 @@ namespace IFN660_Java_ECMAScript
 {
     public interface Declaration
     {
-        string GetName();
+        List<string> GetName();
     }
 }

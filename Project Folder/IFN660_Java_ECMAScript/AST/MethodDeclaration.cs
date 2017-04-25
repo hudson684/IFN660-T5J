@@ -23,40 +23,17 @@ namespace IFN660_Java_ECMAScript.AST
             this.args = args;
         }
 
-        public string GetName()
+        public List<string> GetName()
         {
-            return methodIdentifier;
+            return new List<string> { methodIdentifier };
         }
 
         public override Boolean ResolveNames(LexicalScope scope)
         {
-            // Step 1: set the new scope
-            var newScope = new LexicalScope();
-            newScope.ParentScope = scope;
-            newScope.Symbol_table = new Dictionary<string, Declaration>();
+            // Step 1: Create new scope and populate the symbol table
+            var newScope = getNewScope(scope, statementList, args);
 
-            // Step 2: Check for declarations in the new scope and add to symbol_table of old scope
-            if (statementList != null)
-            {
-                foreach (Statement each in statementList)
-                {
-                    Declaration decl = each as Declaration; // try to cast statement as a declaration
-                    if (decl != null)
-                    {
-                        newScope.Symbol_table.Add(decl.GetName(), decl);
-                    }
-                }
-            }
-
-            if (args != null)
-            {
-                foreach (VariableDeclaration each in args)
-                {
-                    newScope.Symbol_table.Add(each.GetName(), each);
-                }
-            }
-
-            // Step 3: ResolveNames for each statement
+            // Step 2: ResolveNames for each statement
             bool loopResolve = true;
 
             if (statementList != null)

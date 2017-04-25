@@ -77,5 +77,39 @@ namespace IFN660_Java_ECMAScript.AST
             Indent(indent);
             Console.WriteLine("}");
         }
+
+        public static LexicalScope getNewScope(LexicalScope oldScope, List<Statement> statementList, List<Statement> argList)
+        {
+            // Step 1: set the new scope
+            var newScope = new LexicalScope();
+            newScope.ParentScope = oldScope;
+            newScope.Symbol_table = new Dictionary<string, Declaration>();
+
+            // Step 2: Check for declarations in the new scope and add to symbol_table of old scope
+            if (statementList != null)
+            {
+                foreach (Statement each in statementList)
+                {
+                    Declaration decl = each as Declaration; // try to cast statement as a declaration
+                    if (decl != null)
+                    {
+                        foreach (string name in decl.GetName())
+                        {
+                            newScope.Symbol_table.Add(name, decl);
+                        }
+                    }
+                }
+            }
+
+            if (argList != null)
+            {
+                foreach (VariableDeclaration each in argList)
+                {
+                    newScope.Symbol_table.Add(each.GetName()[0], each);
+                }
+            }
+
+            return newScope;
+        }
     }
 }

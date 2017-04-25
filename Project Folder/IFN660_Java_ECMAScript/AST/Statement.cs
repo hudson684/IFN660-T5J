@@ -102,14 +102,35 @@ namespace IFN660_Java_ECMAScript.AST
             this.name = name;
         }
 
-        public string GetName()
+        public List<string> GetName()
         {
-            return name;
+            return new List<string> { name };
         }
 
         public override bool ResolveNames(LexicalScope scope)
         {
-            // do something here...
+            return type.ResolveNames(scope);
+        }
+    };
+
+    public class VariableDeclarationList : Statement, Declaration
+    {
+        private Type type;
+        private List<string> names;
+
+        public VariableDeclarationList(Type type, List<string> names)
+        {
+            this.type = type;
+            this.names = names;
+        }
+
+        public List<string> GetName()
+        {
+            return names;
+        }
+
+        public override bool ResolveNames(LexicalScope scope)
+        {
             return type.ResolveNames(scope);
         }
     };

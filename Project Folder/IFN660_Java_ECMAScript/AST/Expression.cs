@@ -72,11 +72,11 @@ namespace IFN660_Java_ECMAScript.AST
     //changed made by Josh so that the assignmentStatement is correct
     public class BinaryExpression : Expression
     {
-        private Expression lhs,rhs;
+        private Expression lhs, rhs;
         private string oper;
         public BinaryExpression(Expression lhs, string oper, Expression rhs)
         {
-            this.lhs = rhs;
+            this.lhs = lhs;
             this.rhs = rhs;
             this.oper = oper;
         }
