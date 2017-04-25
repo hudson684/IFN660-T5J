@@ -7,10 +7,11 @@
 public static Statement root;
 %}
 
+
 %union
 {
     public long num;
-	public double floatnum;
+	public float floatnum;
 	public bool boolval;
 	public char charval;
     public string name;
@@ -43,7 +44,7 @@ public static Statement root;
 %type <stmts> MethodBody, FormalParameters, FormalParameterList, FormalParameterList_Opt 
 %type <stmts> ImportDeclarations
 
-%type <type> Result, FloatingPointType, IntegralType, NumericType
+%type <type> Result, FloatingPointType, IntegralType, NumbericType
 %type <type> UnannType, UnannPrimitiveType, UnannReferenceType, UnannArrayType, UnannTypeVariable
 
 %type <modf> ClassModifier, MethodModifier, VariableModifier
@@ -73,7 +74,7 @@ public static Statement root;
 %token CONST      FLOAT      NATIVE       SUPER       WHILE
 
 // 3.10 Literals
-%token <num> IntegerLiteral
+%token <intnum> IntegerLiteral
 %token <floatnum> FloatingPointLiteral
 %token <boolval> BooleanLiteral
 %token <charval> CharacterLiteral
@@ -103,178 +104,21 @@ public static Statement root;
 %%
 
 Program : CompilationUnit										{root = $1;}
+		//| Type										
         ;
 
-Empty	:
+
+// Types, Values and Variable 
+Type	: PrimitiveType										
+		| ReferenceType										
 		;
 
-// Group A Start
-CompilationUnit 
-		: PackageDeclaration_opt ImportDeclarations TypeDeclarations	{ $$ = new CompilationUnitDeclaration($1,$2,$3);  } // Josh
+PrimitiveType
+		: Annotations NumbericType
+		| Annotations BOOLEAN
 		;
 
-PackageDeclaration_opt
-		: /* empty */											
-		;
-		
-ImportDeclarations
-		: /*empty*/												
-		;
-
-TypeDeclarations 
-		: TypeDeclarations TypeDeclaration						{ $$ = $1; $$.Add($2); } // needs work - Josh
-		| /* empty */											{ $$ = new List<Statement>();}											
-		;
-
-TypeDeclaration 
-		: ClassDeclaration /* need to add InterfaceDeclaration */ { $$ = $1; } // Vivian
-		;
-
-ClassDeclaration 
-		: NormalClassDeclaration /* need to add EnumDeclaration */ { $$ = $1; } // Vivian
-		;
-
-NormalClassDeclaration 
-		: ClassModifiers CLASS IDENTIFIER TypeParameters_opt Superclass_opt Superinterfaces_opt ClassBody {  $$ = new ClassDeclaration($3,$1,$7); } // Vivian
-		;
-
-ClassModifiers 
-		: ClassModifiers ClassModifier							{ $$ = $1; $$.Add($2); } // Vivian - Updated by Nathan
-		| /* empty */											{ $$ = new List<Modifier>(); } // Vivian - Updated by Nathan
-		;
-
-ClassModifier 
-		: PUBLIC												{ $$ = Modifier.PUBLIC; } // Adon
-		| PROTECTED 											{ $$ = Modifier.PROTECTED; } // Adon
-		| PRIVATE 												{ $$ = Modifier.PRIVATE; } // Adon
-		| ABSTRACT 												{ $$ = Modifier.ABSTRACT; } // Adon
-		| STATIC 												{ $$ = Modifier.STATIC; } // Adon
-		| FINAL 												{ $$ = Modifier.FINAL; } // Adon
-		| STRICTFP 												{ $$ = Modifier.STRICTFP; } // Adon
-		; //: Annotation										{ $$ = $1; } // Adon - removed by Nathan - too hard at the moment
-
-
-//GROUP C TRACKING
-TypeParameters_opt : /* empty */								{ $$ = null; } // Tristan
-		;
-
-Superclass_opt : /* empty */									{ $$ = null; } // Tristan
-		;
-
-Superinterfaces_opt : /* empty */								{ $$ = null; } // Tristan
-		;
-
-ClassBody 
-		: '{' ClassBodyDeclarations '}'							{ $$ = $2; } // Tristan
-		;
-
-// Group A End
-
-// PartB by Adon Mofified by Josh to remove MemberDeclarations as it is unessisary
-ClassBodyDeclarations
-		: ClassBodyDeclarations ClassBodyDeclaration			{ $$ = $1; $$.Add($2); } // Tristan
-		| /* empty */											{ $$ = new List<Statement>(); } // Tristan - updated by Nathan
-        ;
-
-ClassBodyDeclaration
-		: ClassMemberDeclaration								{ $$ = $1; } // Tristan
-        ;
-
-// Fixed by An
-ClassMemberDeclaration
-		: MethodDeclaration										{ $$ = $1; } // Vivian
-		;
-
-// Change ClassMemberDeclaration to MethodDeclaration -An	
-MethodDeclaration
-		: MethodModifiers MethodHeader MethodBody				{ $$ = new MethodDeclaration( (string)((ArrayList)$2[1])[0], $1, $3, (AST.Type)$2[0], (List<Statement>)((ArrayList)$2[1])[1]); } // Vivian - updated by Nathan
-        ;
-
-MethodModifiers
-        : MethodModifiers MethodModifier						{ $$ = $1; $$.Add($2); } // Vivian
-		| /* Empty */											{ $$ = new List<Modifier>(); } // Vivian
-        ;
-
-MethodModifier 
-		: PUBLIC												{ $$ = Modifier.PUBLIC; } // Vivian
-        | STATIC												{ $$ = Modifier.STATIC; } // vivian
-        ; //: Annotation										{ $$ = $1; } // Vivian - removed by Nathan - too hard at the moment
-
-MethodHeader
-		: Result MethodDeclarator Throws_opt					{$$ = new ArrayList() { $1, $2, $3 } ; } // Khoa
-        ;
-
-// End Fix
-// End GroupB
-
-//WORK BY JOSH HUDSON
-Result 
-		: VOID													{$$ = new NamedType("VOID"); } // Khoa
-		| UnannType												{$$ = $1; } // Khoa
-	   	;
-
-Throws_opt
-		: Empty													{$$ = null; } // Khoa - updated by Nathan
-	  	;
-
-// Fixed spelling error	 
-MethodDeclarator
-		: IDENTIFIER '(' FormalParameterList_Opt ')' Dims_Opt	{$$ =  new ArrayList() { $1, $3, $5 };} // Khoa
-		;
-
-//PLACEHOLDER - Josh - Tri
-FormalParameterList_Opt
-		: FormalParameterList									{ $$ = $1; } // Nathan
-		| /* empty */											{ $$ = null; } // Nathan
-		;
-
-// JOSHUA'S WORK END
-
-//Work by Tri
-FormalParameterList 
-		: FormalParameters 										{ $$ = $1; } // Nathan
-		;
-
-FormalParameters 
-		: FormalParameter 										{ $$ = new List<Statement> { $1 }; } // Nathan 
-		| FormalParameters ',' FormalParameter					{ $$ = $1; $$.Add($3); } // Nathan
-		;
-
-FormalParameter 
-		:  VariableModifiers UnannType VariableDeclaratorId		{ $$ = new VariableDeclaration($2, $3); } // Nathan - doesn't allow VariableModifiers at the moment
-		;
-VariableModifiers 
-		: VariableModifiers VariableModifier					{ $$ = $1; $$.Add($2); } // Nathan
-		| /* empty */											{ $$ = new List<Modifier>(); }// Nathan
-		;
-
-VariableModifier 
-		: FINAL													{ $$ = Modifier.FINAL; } // Tri - updated by Nathan
-		; //: Annotation										{ $$ = $1; } // Tri - removed by Nathan - too hard at the moment
-
-//End work by Tri
-// Work by Vivian
-Dims_Opt 
-		: Dims													{ $$ = $1; } // An - updated by Adon
-		| /* Empty */											{ } // An - not implemented yet
-		;
-
-Dims
-		: '['']'									
-		//Annotations '['']'									{ $$ = $1; } // Needs work - Tri - removed by Nathan - too hard at the moment
-		;
-
-UnannType
-		: UnannReferenceType									{ $$ = $1; } // Tri
-		| UnannPrimitiveType									{ $$ = $1; } // Tri
-		;
-
-UnannPrimitiveType
-		: NumericType											{ $$ = $1; } // Josh
-		| BOOLEAN												{ $$ = new NamedType("BOOLEAN"); } // Josh
-		;
-
-NumericType
+NumbericType
 		: IntegralType											{ $$ = $1; } // Josh
 		| FloatingPointType										{ $$ = $1; } // Josh
 		;
@@ -292,32 +136,812 @@ FloatingPointType
 		| DOUBLE												{ $$ = new NamedType("DOUBLE"); } // Vivian - updated by Nathan
 		;
 
-UnannReferenceType
-		: UnannArrayType										{ $$ = $1; } // Vivian
+
+ReferenceType
+		: ClassOrInterfaceType
+		| TypeVariable
+		| ArrayType							// Cause reduce/reduce conflict
 		;
 
-// Vivian's work end
-// Work by Khoa - Fixed by An
-UnannArrayType
-		: UnannTypeVariable Dims								{ $$ = new ArrayType($1); } // Adon: Not sure but Dims returns Annotation in the end and Annotation returns thing so we put $$ = $1 here
-		;	
-			
+ClassOrInterfaceType
+		: ClassType
+		| InterfaceType
+		;
+
+ClassType
+		: Annotations IDENTIFIER TypeArguments_opt
+		| ClassOrInterfaceType '.' Annotations IDENTIFIER TypeArguments_opt
+		;
+
+InterfaceType
+		: ClassType
+		;
+
+TypeVariable
+		: Annotations IDENTIFIER
+		;
+
+ArrayType
+		: PrimitiveType Dims
+		| ClassOrInterfaceType Dims
+		| TypeVariable Dims
+		;
+
+Dims
+		: Annotations '['']'									//{ $$ = $1; } // Needs work - Tri - removed by Nathan - too hard at the moment - need further development
+		| Dims Annotations '['']'								//in AST branch, it is displayes as '['']'
+		;
+
+Dims_Opt 
+		: /* Empty */											{ } // An - not implemented yet
+		| Dims													{ $$ = $1; } // An - updated by Adon
+		;
+
+TypeParameter
+		: TypeParameterModifiers IDENTIFIER TypeBound_opt
+		;
+
+TypeParameterModifiers
+		: TypeParameterModifiers TypeParameterModifier
+		|
+		;
+
+TypeParameterModifier
+		: Annotation
+		;
+
+TypeBound_opt
+		: TypeBound
+		|
+		;
+
+TypeBound
+		: EXTENDS TypeVariable
+		| EXTENDS ClassOrInterfaceType AdditionalBounds
+		;
+
+AdditionalBounds
+		: AdditionalBounds AdditionalBound
+		|
+		;
+
+AdditionalBound
+		: '&' InterfaceType
+		;
+
+TypeArguments_opt
+		: 
+		| TypeArguments
+		;
+
+TypeArguments
+		: '<' TypeArgumentList '>'				// Reduce/Reduce confict here
+		;
+
+TypeArgumentList
+		: TypeArgument
+		| TypeArgumentList ',' TypeArgument
+		;
+
+TypeArgument
+		: ReferenceType
+		| Wildcard
+		;
+
+Wildcard
+		: Annotations '?' WildcardBounds_opt
+		;
+
+WildcardBounds_opt
+		: 
+		| WildcardBounds
+		;
+
+WildcardBounds
+		: EXTENDS ReferenceType
+		| SUPER ReferenceType
+		;
+
+/*******************************************************************************************
+********************************* Names **************************************
+*******************************************************************************************/
+TypeName
+		: IDENTIFIER
+		| PackageOrTypeName '.' IDENTIFIER
+		;
+
+PackageOrTypeName
+		: IDENTIFIER
+		| PackageOrTypeName '.' IDENTIFIER
+		;
+
+ExpressionName
+		: IDENTIFIER											{ $$ = new VariableExpression($1);  } // Khoa - updated by Nathan
+		| AmbigousName '.' IDENTIFIER
+		;
+
+MethodName
+		: IDENTIFIER
+		;
+
+PackageName
+		: IDENTIFIER
+		| PackageName '.' IDENTIFIER
+		;
+
+AmbigousName
+		: IDENTIFIER
+		| AmbigousName '.' IDENTIFIER
+		;
+
+/*******************************************************************************************
+********************************* Packages **************************************
+*******************************************************************************************/
+CompilationUnit 
+		: PackageDeclaration_opt ImportDeclarations TypeDeclarations	{ $$ = new CompilationUnitDeclaration($1,$2,$3);  } // Josh
+		;
+
+
+PackageDeclaration_opt
+		: PackageDeclaration											
+		| 
+		;
+
+PackageDeclaration
+		: PackageModifiers PACKAGE IDENTIFIER ';'
+		| PackageDeclaration '.' IDENTIFIER ';'
+		;
+
+PackageModifiers
+		: PackageModifiers PackageModifier
+		|
+		;
+
+PackageModifier
+		: Annotation
+		;
+
+ImportDeclarations
+		: ImportDeclarations ImportDeclaration
+		|
+		;
+
+ImportDeclaration
+		: SingleTypeImportDeclaration 
+		| TypeImportOnDemandDeclaration 
+		| SingleStaticImportDeclaration 
+		| StaticImportOnDemandDeclaration
+		;
+
+SingleTypeImportDeclaration
+		: IMPORT TypeName ';'
+		;
+
+TypeImportOnDemandDeclaration
+		: IMPORT PackageOrTypeName '.' '*' ';'
+		;
+
+SingleStaticImportDeclaration
+		: IMPORT STATIC TypeName '.' IDENTIFIER ';'
+		;
+
+StaticImportOnDemandDeclaration
+		: IMPORT STATIC TypeName '.' '*' ';'
+		;
+
+TypeDeclarations 
+		: TypeDeclarations TypeDeclaration						{ $$ = $1; $$.Add($2); } // needs work - Josh
+		| /* empty */											{ $$ = new List<Statement>();}											
+		;
+
+TypeDeclaration 
+		: ClassDeclaration /* need to add InterfaceDeclaration */ { $$ = $1; } // Vivian
+		| InterfaceDeclaration 
+		| ';'
+		;
+
+/*******************************************************************************************
+********************************* Classes **************************************
+*******************************************************************************************/
+ClassDeclaration 
+		: NormalClassDeclaration /* need to add EnumDeclaration */ { $$ = $1; } // Vivian
+		| EnumDeclaration
+		;
+
+NormalClassDeclaration 
+		: ClassModifiers CLASS IDENTIFIER TypeParameters_opt Superclass_opt Superinterfaces_opt ClassBody {  $$ = new ClassDeclaration($3,$1,$7); } // Vivian
+		;
+
+ClassModifiers 
+		: ClassModifiers ClassModifier							{ $$ = $1; $$.Add($2); } // Vivian - Updated by Nathan
+		| /* empty */											{ $$ = new List<Modifier>(); } // Vivian - Updated by Nathan
+		;
+
+ClassModifier 
+		: Annotation											//{ $$ = $1; } // Adon - removed by Nathan - too hard at the moment - require further development
+		| PUBLIC												{ $$ = Modifier.PUBLIC; } // Adon
+		| PROTECTED 											{ $$ = Modifier.PROTECTED; } // Adon
+		| PRIVATE 												{ $$ = Modifier.PRIVATE; } // Adon
+		| ABSTRACT 												{ $$ = Modifier.ABSTRACT; } // Adon
+		| STATIC 												{ $$ = Modifier.STATIC; } // Adon
+		| FINAL 												{ $$ = Modifier.FINAL; } // Adon
+		| STRICTFP 												{ $$ = Modifier.STRICTFP; } // Adon
+		;
+
+TypeParameters_opt 
+		: /* empty */											{ $$ = null; } // Tristan
+		| TypeParameters						
+		;
+
+TypeParameters
+		: '<' TypeParameterList '>'
+		;
+
+TypeParameterList
+		: TypeParameter
+		| TypeParameterList ',' TypeParameter
+		;
+
+SuperClass_opt								
+		: SuperClass
+		| /* empty */											{ $$ = null; } // Tristan
+		;
+
+SuperClass
+		: EXTENDS ClassType
+		;
+
+Superinterfaces_opt
+		: Superinterfaces
+		| /* empty */											{ $$ = null; } // Tristan
+		;
+
+Superinterfaces
+		: IMPLEMENTS InterfaceTypeList
+		;
+
+InterfaceTypeList
+		: InterfaceType
+		| InterfaceTypeList ',' InterfaceType
+		;
+
+ClassBody 
+		: '{' ClassBodyDeclarations '}'							{ $$ = $2; } // Tristan
+		;
+
+
+ClassBodyDeclarations
+		: ClassBodyDeclarations ClassBodyDeclaration			{ $$ = $1; $$.Add($2); } // Tristan
+		| /* empty */											{ $$ = new List<Statement>(); } // Tristan - updated by Nathan
+        ;
+
+ClassBodyDeclaration
+		: ClassMemberDeclaration								{ $$ = $1; } // Tristan								
+		| InstanceInitializer 
+		| StaticInitializer 
+		| ConstructorDeclaration
+		;
+
+ClassMemberDeclaration
+		: FieldDeclaration 
+		| MethodDeclaration										{ $$ = $1; } // Vivian
+		| ClassDeclaration 
+		| InterfaceDeclaration 									
+		| ';'
+		;
+
+FieldDeclaration
+		: FieldModifiers UnannType VariableDeclaratorList ';'
+		;
+
+FieldModifiers
+		: FieldModifiers FieldModifier
+		|
+		;
+
+FieldModifier
+		: PUBLIC
+		| PROTECTED
+		| PRIVATE
+		| STATIC
+		| FINAL
+		| TRANSIENT
+		| VOLATILE
+		;
+
+VariableDeclaratorList
+		: VariableDeclarator									{ $$ = new List<string> { $1 }; } // Nathan
+		| VariableDeclaratorList ',' VariableDeclarator			{ $$ = $1; $$.Add($3); } // Nathan
+		;
+
+VariableDeclarator
+		: VariableDeclaratorId									{ $$ = $1; } // Nathan; this line only exist in AST branch, require further development, probably we have to replace it with next line, which is An's rule
+		| VariableDeclaratorId	VariableDeclarator_opt										
+		;
+
+VariableDeclarator_opt
+		: '=' VariableInitializer
+		|
+		;
+
+VariableInitializer
+		: Expression
+		| ArrayInitializer
+		;
+
+VariableDeclaratorId
+		: IDENTIFIER Dims_Opt									{ $$ = $1; } // Nathan
+		;
+
+UnannType
+		: UnannReferenceType									{ $$ = $1; } // Tri
+		| UnannPrimitiveType									{ $$ = $1; } // Tri
+		;
+
+UnannPrimitiveType
+		: NumbericType											{ $$ = $1; } // Josh
+		| BOOLEAN												{ $$ = new NamedType("BOOLEAN"); } // Josh
+		;
+
+UnannReferenceType
+		: UnannClassOrInterfaceType 
+		| UnannTypeVariable 
+		| UnannArrayType										{ $$ = $1; } // Vivian
+		;
+
+UnannClassOrInterfaceType
+		: UnannClassType
+		| UnannInterfaceType
+		;
+
+UnannClassType
+		: IDENTIFIER TypeArguments_opt
+		| UnannClassOrInterfaceType '.' Annotations IDENTIFIER TypeArguments_opt
+		;
+
+UnannInterfaceType
+		: UnannClassType
+		;
+
 UnannTypeVariable
-		: IDENTIFIER											{ $$ = new NamedType($1); } // Adon
+		: IDENTIFIER 											{ $$ = new NamedType($1); } // Adon
+		;
+
+UnannArrayType
+		: UnannPrimitiveType Dims								{ $$ = new ArrayType($1); } // Adon: Not sure but Dims returns Annotation in the end and Annotation returns thing so we put $$ = $1 here
+		| UnannClassOrInterfaceType Dims 
+		| UnannTypeVariable Dims								
 		;	
 
-// Start work by An
+MethodDeclaration
+		: MethodModifiers MethodHeader MethodBody				{ $$ = new MethodDeclaration( (string)((ArrayList)$2[1])[0], $1, $3, (AST.Type)$2[0], (List<Statement>)((ArrayList)$2[1])[1]); } // Vivian - updated by Nathan
+        ;
+
+MethodModifiers
+        : MethodModifiers MethodModifier						{ $$ = $1; $$.Add($2); } // Vivian
+		| /* Empty */											{ $$ = new List<Modifier>(); } // Vivian
+        ;
+
+MethodModifier
+		: Annotation											//{ $$ = $1; } // Vivian - removed by Nathan - too hard at the moment - need further development
+		| PUBLIC												{ $$ = Modifier.PUBLIC; } // Vivian												
+        | STATIC												{ $$ = Modifier.STATIC; } // vivian											
+        | FINAL
+		| SYNCHRONIZED
+		| NATIVE
+		| STRICTFP
+		;
+
+MethodHeader
+		: Result MethodDeclarator Throws_opt					{$$ = new ArrayList() { $1, $2, $3 } ; } // Khoa
+		| TypeParameters Annotations Result MethodDeclarator Throws_opt
+		;
+
+Result 
+		: VOID													{$$ = new NamedType("VOID"); } // Khoa
+		| UnannType												{$$ = $1; } // Khoa
+	   	;
+
+MethodDeclarator
+		: IDENTIFIER '(' FormalParameterList_Opt ')' Dims_Opt	{$$ =  new ArrayList() { $1, $3, $5 };} // Khoa
+		;
+
+//PLACEHOLDER - Josh - Tri
+FormalParameterList_Opt
+		: FormalParameterList									{ $$ = $1; } // Nathan
+		| /* empty */											{ $$ = null; } // Nathan
+		;
+
+FormalParameterList 
+		: FormalParameters 										{ $$ = $1; } // Nathan; this line only exist in AST branch, require further modifications
+		| ReceiverParameter
+		| FormalParameters ',' LastFormalParameter 						
+		| LastFormalParameter 									
+		;
+
+
+FormalParameters 
+		: FormalParameter 										{ $$ = new List<Statement> { $1 }; } // Nathan 
+		| ReceiverParameter 
+		| FormalParameters ',' FormalParameter					{ $$ = $1; $$.Add($3); } // Nathan
+		;
+
+FormalParameter 
+		:  VariableModifiers UnannType VariableDeclaratorId		{ $$ = new VariableDeclaration($2, $3); } // Nathan - doesn't allow VariableModifiers at the moment
+		;
+
+VariableModifiers 
+		: VariableModifiers VariableModifier					{ $$ = $1; $$.Add($2); } // Nathan
+		| /* empty */											{ $$ = new List<Modifier>(); }// Nathan
+		;
+
+VariableModifier 
+		: Annotation											//{ $$ = $1; } // Tri - removed by Nathan - too hard at the moment - need further development
+		| FINAL													{ $$ = Modifier.FINAL; } // Tri - updated by Nathan
+		;
+
+LastFormalParameter
+		: VariableModifiers UnannType Annotations ELLIPSIS VariableDeclaratorId
+		| FormalParameter
+		;
+
+ReceiverParameter
+		: Annotations UnannType Identifier_opt THIS
+		;
+
+Identifier_opt
+		: IDENTIFIER '.'
+		|
+		;
+
+Throws_opt
+		: Throws
+		| /* Empty */											{$$ = null; } // Khoa - updated by Nathan													
+	  	;
+Throws
+		: THROWS ExceptionTypeList
+		;
+
+ExceptionTypeList
+		: ExceptionType	
+		| ExceptionTypeList ',' ExceptionType
+		;
+
+ExceptionType
+		: ClassType
+		| TypeVariable
+		;
+
 MethodBody
 		:  Block 												{ $$= $1; }  // Adon
 		| ';'													{ $$= null;} // Adon
 		;
 
-// Removed by Nathan - too hard at the moment
+InstanceInitializer
+		: Block
+		;
+
+StaticInitializer
+		: STATIC Block
+		;
+
+ConstructorDeclaration
+		: ConstructorModifiers ConstructorDeclarator Throws_opt ConstructorBody
+		;
+
+ConstructorModifiers
+		: ConstructorModifiers ConstructorModifier
+		|
+		;
+
+ConstructorModifier
+		: Annotation
+		| PUBLIC
+		| PROTECTED
+		| PRIVATE
+		;
+
+ConstructorDeclarator
+		: TypeParameters_opt SimpleTypeName '(' FormalParameterList_opt ')'
+		;
+
+SimpleTypeName
+		: IDENTIFIER
+		;
+////////// Todo //////////////////////
+ConstructorBody
+		: '{' ExplicitConstructorInvocation_opt BlockStatements_opt '}'
+		;
+
+ExplicitConstructorInvocation_opt
+		: ExplicitConstructorInvocation
+		|
+		;
+
+ExplicitConstructorInvocation
+		: TypeArguments_opt THIS '(' ArgumentList_opt ')' ';'
+		| TypeArguments_opt SUPER '(' ArgumentList_opt ')' ';'
+		| ExpressionName '.' TypeArguments_opt SUPER '(' ArgumentList_opt ')' ';'
+		| Primary '.' TypeArguments_opt SUPER '(' ArgumentList_opt ')' ';'
+		;
+
+TypeArgumentList_opt
+		: TypeArgumentList
+		|
+		;
+
+ArgumentList_opt
+		: ArgumentList
+		|
+		;
+
+ArgumentList
+		: Expression 
+		| ArgumentList ',' Expression
+		;
+
+EnumDeclaration
+		: ClassModifiers ENUM IDENTIFIER Superinterfaces_opt EnumBody
+		;
+
+EnumBody
+		: '{' EnumConstantList_opt Comma_opt EnumBodyDeclarations_opt '}'
+		;
+
+EnumConstantList_opt
+		: EnumConstantList
+		|
+		;
+
+Comma_opt
+		: ','
+		|
+		;
+
+EnumBodyDeclarations_opt
+		: EnumBodyDeclarations
+		|
+		;
+
+EnumConstantList
+		: EnumConstant 
+		| EnumConstantList ',' EnumConstant
+		;
+
+EnumConstant
+		: EnumConstantModifiers IDENTIFIER ArgumentListWithBracket_opt ClassBody_opt
+		;
+
+EnumConstantModifiers
+		: EnumConstantModifiers EnumConstantModifier
+		|
+		;
+
+EnumConstantModifier
+		: Annotation
+		;
+
+ArgumentListWithBracket_opt
+		: '(' ArgumentList_opt ')'
+		|
+		;
+
+ClassBody_opt
+		: ClassBody
+		|
+		;
+
+EnumBodyDeclarations
+		: ';' ClassBodyDeclarations
+		;
+
+/*******************************************************************************************
+********************************* Interfaces **************************************
+*******************************************************************************************/
+InterfaceDeclaration
+		: NormalClassDeclaration
+		| AnnotationTypeDeclaration
+		;
+
+NormalClassDeclaration
+		: InterfaceModifers INTERFACE IDENTIFIER TypeParameters_opt ExtendsInterfaces_opt InterfaceBody
+		;
+
+InterfaceModifers
+		: InterfaceModifers InterfaceModifer
+		|
+		;
+
+InterfaceModifer
+		: Annotation
+		| PUBLIC
+		| PROTECTED
+		| PRIVATE
+		| ABSTRACT
+		| STATIC
+		| STRICTFP
+		;
+
+ExtendsInterfaces_opt
+		: ExtendsInterfaces
+		|
+		;
+
+ExtendsInterfaces
+		: EXTENDS InterfaceTypeList
+		;
+
+InterfaceBody
+		: '{' InterfaceMemberDeclarations'}'
+		;
+
+InterfaceMemberDeclarations
+		: InterfaceMemberDeclarations InterfaceMemberDeclaration
+		|
+		;
+
+InterfaceMemberDeclaration
+		: ConstantDeclaration 
+		| InterfaceMethodDeclaration 
+		| ClassDeclaration
+		| InterfaceDeclaration
+		| ';'
+		;
+
+ConstantDeclaration
+		: ConstantModifiers UnannType VariableDeclaratorList ';'
+		;
+
+ConstantModifiers
+		: ConstantModifiers ConstantModifier
+		|
+		;
+
+ConstantModifier
+		: Annotation
+		| PUBLIC
+		| STATIC
+		| FINAL
+		;
+
+InterfaceMethodDeclaration
+		: InterfaceMethodModifiers MethodHeader MethodBody
+		;
+
+InterfaceMethodModifiers
+		: InterfaceMethodModifers InterfaceMethodModifier
+		|
+		;
+
+InterfaceMethodModifier
+		: Annotation
+		| PUBLIC
+		| ABSTRACT
+		| DEFAULT	
+		| STATIC	
+		| STRICTFP
+		;
+
+AnnotationTypeDeclaration
+		: InterfaceModifers '@' INTERFACE IDENTIFIER AnnotationTypeBody
+		;
+
+AnnotationTypeBody
+		: '{' AnnotationTypeMemberDeclarations'}'
+		;
+
+AnnotationTypeMemberDeclarations
+		: AnnotationTypeMemberDeclarations AnnotationTypeMemberDeclaration
+		|
+		;
+
+AnnotationTypeMemberDeclaration
+		: AnnotationTypeElementDeclaration
+		| ConstantDeclaration
+		| ClassDeclaration
+		| InterfaceDeclaration
+		| ';'
+		;
+
+AnnotationTypeElementDeclaration
+		: AnnotationTypeElementModifers UnannType IDENTIFIER '(' ')' Dims_opt DefaultValue_opt ';'
+		;
+
+AnnotationTypeElementModifers	
+		: AnnotationTypeElementModifers AnnotationTypeElementModifer
+		|
+		;
+
+AnnotationTypeElementModifer
+		: Annotation
+		| PUBLIC
+		| ABSTRACT
+		;
+
+DefaultValue_opt
+		: DefaultValue
+		|
+		;
+
+DefaultValue
+		: DEFAULT ElementValue
+		;
+
+
+// Removed by Nathan - too hard at the moment - require further development
 //Annotations
 //		: Annotations Annotation								{ $$ = new Anotations($2); } // Adon
 //		| /* Empty */											{ $$ = null; } // Adon
 //		;
 
+
+Annotation
+		: NormalAnnotation											
+		| MarkerAnnotation
+		| SingleElementAnnotation
+		;
+
+NormalAnnotation
+		: '@' TypeName '(' ElementValuePairList_opt ')'
+		;
+
+ElementValuePairList_opt
+		: ElementValuePairList
+		| 
+		;
+
+ElementValuePairList
+		: ElementValuePair
+		| ElementValuePairList ',' ElementValuePair
+		;
+
+ElementValuePair
+		: IDENTIFIER '=' ElementValue
+		;
+
+ElementValue
+		: ConditionalExpression
+		| ElementValueArrayInitializer
+		| Annotation
+		;
+
+ElementValueArrayInitializer
+		: '{' ElementValueList Comma_opt'}'
+		;
+
+ElementValueList
+		: ElementValue 
+		| ElementValueList ',' ElementValue
+		;
+
+MarkerAnnotation
+		: '@' TypeName
+		;
+
+SingleElementAnnotation							// Reduce/Reduce conflict on ')' - NormalAnnotation
+		: '@' TypeName '(' ElementValue ')'
+		;
+
+/*******************************************************************************************
+********************************* Arrays **************************************
+*******************************************************************************************/
+ArrayInitializer
+		: '{' VariableInitializerList_opt Comma_opt'}'
+		;
+
+VariableInitializerList_opt
+		: VariableInitializerList
+		|
+		;
+
+VariableInitializerList
+		: VariableInitializer 
+		| VariableInitializerList ',' VariableInitializer
+		;
+
+/*******************************************************************************************
+********************************* Blocks and Statements **************************************
+*******************************************************************************************/
 Block 
 		: '{' BlockStatements_Opt '}'							{ $$ = $2; } // Tristan
 		;
@@ -334,7 +958,8 @@ BlockStatements
 
 BlockStatement
 		: LocalVariableDeclarationStatement						{ $$ = $1; } // Vivian
-		| Statement												{ $$ = $1; } // Vivian
+		| Statement												{ $$ = $1; } // Vivian										
+		| ClassDeclaration										
 		;
 
 LocalVariableDeclarationStatement
@@ -342,31 +967,52 @@ LocalVariableDeclarationStatement
 		;
 
 LocalVariableDeclaration
-		: UnannType VariableDeclaratorList						{ $$ = new VariableDeclarationList($1, $2); } // Vivian
-		//: VariableModifiers UnannType VariableDeclaratorList	{ $$ = new VariableDeclarationList($1, $2); } // Vivian - too hard at the moment - Nathan
+		: UnannType VariableDeclaratorList						{ $$ = new VariableDeclarationList($1, $2); } // Vivian; this line only exist in AST branch - Adon
+		//: VariableModifiers UnannType VariableDeclaratorList	{ $$ = new VariableDeclarationList($1, $2); } // Vivian - too hard at the moment - Nathan - require further development
 		;
 
-// Too hard at the moment - Nathan
-VariableDeclaratorList
-		: VariableDeclarator									{ $$ = new List<string> { $1 }; } // Nathan
-		| VariableDeclaratorList ',' VariableDeclarator			{ $$ = $1; $$.Add($3); } // Nathan
-		;
-
-VariableDeclarator
-		: VariableDeclaratorId									{ $$ = $1; } // Nathan
-		;
-
-VariableDeclaratorId
-		: IDENTIFIER Dims_Opt									{ $$ = $1; } // Nathan
-		;
-// Nathan
-Statement
+Statement 
 		: StatementWithoutTrailingSubstatement					{$$ = $1; } // Nathan
+        | LabeledStatement 
+		| IfThenStatement 
+		| IfThenElseStatement 
+		| WhileStatement 
+		| ForStatement
 		;
 
-// Tristan
+StatementNoShortIf
+		: StatementWithoutTrailingSubstatement
+		| LabeledStatementNoShortIf
+		| IfThenElseStatementNoShortIf
+		| WhileStatementNoShortIf
+		| ForStatementNoShortIf
+		;
+
 StatementWithoutTrailingSubstatement
-		: ExpressionStatement 									{ $$ = $1; } // Nathan
+		: Block
+		| EmptyStatement
+		| ExpressionStatement 									{ $$ = $1; } // Nathan
+		| AssertStatement
+		| SwitchStatement 
+		| DoStatement 
+		| BreakStatement 
+		| ContinueStatement 
+		| ReturnStatement 
+		| SynchronizedStatement 
+		| ThrowStatement 
+		| TryStatement
+		;
+
+EmptyStatement
+		: ';'
+		;
+
+LabeledStatement
+		: IDENTIFIER ':' Statement
+		;
+
+LabeledStatementNoShortIf
+		: IDENTIFIER ':' StatementNoShortIf
 		;
 
 ExpressionStatement
@@ -375,49 +1021,338 @@ ExpressionStatement
 
 StatementExpression
 		: Assignment											{ $$ = $1; } // Khoa - updated by Nathan
+		| PreIncrementExpression 
+		| PreDecrementExpression 
+		| PostIncrementExpression 
+		| PostDecrementExpression 
+		| MethodInvocation 
+		| ClassInstanceCreationExpression	
 		;
 
-// End Work by Tristan
-//work by sneha
-
-Assignment
-		: LeftHandSide AssignmentOperator Expression			{ $$ = new AssignmentExpression($1, $3); } // Khoa
+IfThenStatement
+		: IF '(' Expression ')' Statement
 		;
 
-LeftHandSide
-		: ExpressionName										{ $$ = $1; } // Khoa
+IfThenElseStatement
+		: IF '(' Expression ')' StatementNoShortIf ELSE Statement	
 		;
 
-ExpressionName
-		: IDENTIFIER											{ $$ = new VariableExpression($1);  } // Khoa - updated by Nathan
+IfThenElseStatementNoShortIf
+		: IF '(' Expression ')' StatementNoShortIf ELSE StatementNoShortIf
 		;
 
-AssignmentOperator
-		: '='													 // Khoa
+AssertStatement
+		: ASSERT Expression ';' 
+		| ASSERT Expression ':' Expression ';'
 		;
 
-AssignmentExpression
-		: Assignment											{ $$ = $1; } // Nathan
-		| ConditionalExpression									{ $$ = $1; } // Nathan
+SwitchStatement
+		: SWITCH '(' Expression ')' SwitchBlock
 		;
 
+SwitchBlock
+		: '{' SwitchBlockStatementGroups SwitchLabel_repeat '}'
+		;
+
+SwitchBlockStatementGroups
+		: SwitchBlockStatementGroups SwitchBlockStatementGroup
+		|
+		;
+
+SwitchBlockStatementGroup
+		: SwitchLabels BlockStatements
+		;
+
+SwitchLabel_repeat
+		: SwitchLabel_repeat SwitchLabel
+		|
+		;
+
+SwitchLabels
+		: SwitchLabel
+		| SwitchLabels SwitchLabel
+		;
+
+SwitchLabel
+		: CASE ConstantExpression ':'
+		| CASE EnumConstantName ':'
+		| DEFAULT ':'
+		;
+
+EnumConstantName
+		: IDENTIFIER
+		;
+
+WhileStatement
+		: WHILE '(' Expression ')' Statement
+		;
+
+WhileStatementNoShortIf
+		: WHILE '(' Expression ')' StatementNoShortIf
+		;
+
+DoStatement
+		: DO Statement WHILE '(' Expression ')' ';'
+		;
+
+ForStatement
+		: BasicForStatement 
+		| EnhancedForStatement
+		;
+
+ForStatementNoShortIf
+		: BasicForStatementNoShortIf 
+		| EnhancedForStatementNoShortIf
+		;
+
+BasicForStatement
+		: FOR '(' ForInit_opt ';' Expression_opt ';' ForUpdate_opt ')' Statement
+		;
+
+BasicForStatementNoShortIf
+		: FOR '(' ForInit_opt ';' Expression_opt ';' ForUpdate_opt ')' StatementNoShortIf
+		;
+
+ForInit_opt
+		: ForInit
+		|
+		;
+ForInit
+		: 
+		| StatementExpressionList
+		| LocalVariableDeclaration
+		;
+
+ForUpdate_opt
+		: ForUpdate
+		|
+		;
+
+ForUpdate
+		: 
+		| StatementExpressionList
+		;
+
+StatementExpressionList
+		: StatementExpression 
+		| StatementExpressionList ',' StatementExpression
+		;
+
+EnhancedForStatement
+		: FOR '(' VariableModifiers UnannType VariableDeclaratorId ':' Expression ')' Statement
+		;
+
+EnhancedForStatementNoShortIf
+		: FOR '(' VariableModifiers UnannType VariableDeclaratorId ':' Expression ')' StatementNoShortIf
+		;
+
+BreakStatement
+		: BREAK Identifier_opt ';'
+		;
+
+ContinueStatement
+		: CONTINUE Identifier_opt ';'
+		;
+
+ReturnStatement
+		: RETURN Expression_opt ';'
+		;	
+
+ThrowStatement
+		: THROW Expression ';'
+		;
+
+SynchronizedStatement
+		: SYNCHRONIZED '(' Expression ')' Block
+		;
+
+TryStatement
+		: TRY Block Catches
+		| TRY Block Catches_opt Finally
+		| TryWithResourcesStatement
+		;
+
+Catches_opt
+		: Catches
+		|
+		;
+
+Catches
+		: CatchClause
+		| Catches CatchClause
+		;
+
+CatchClause
+		: CATCH '(' CatchFromalParameter ')' Block
+		;
+
+CatchFromalParameter
+		: VariableModifiers CatchType VariableDeclaratorId
+		;
+
+CatchType
+		: UnannClassType 
+		| CatchType '|' CatchType
+		;
+
+Finally_opt
+		: Finally
+		|
+		;
+
+Finally
+		: FINALLY Block
+		;
+
+TryWithResourcesStatement
+		: TRY ResourceSpecification Block Catches_opt Finally_opt
+		;
+
+ResourceSpecification
+		: '(' ResourceList SemmiColon_opt ')'
+		;
+
+SemmiColon_opt
+		: ';'
+		|
+		;
+
+ResourceList
+		: Resource 
+		| ResourceList ';' Resource
+		;
+
+Resource
+		: VariableModifiers UnannType VariableDeclaratorId '=' Expression
+		;
+
+/*******************************************************************************************
+********************************* Expression **************************************
+*******************************************************************************************/
 Primary
 		: PrimaryNoNewArray										{ $$ = $1; } // Nathan
+		| ArrayCreationExpression
 		;
 
 PrimaryNoNewArray
-		: Literal												{ $$ = $1; } // Nathan
+		: 
+		| Literal												{ $$ = $1; } // Nathan, this line only exists in AST branch, and AST does not have empty
+		| ClassLiteral
+		| THIS
+		| TypeName '.' THIS
+		| '(' Expression ')'
+		| ClassInstanceCreationExpression
+		| FieldAccess
+		| ArrayAccess
+		| MethodInvocation
+		| MethodReference												
 		;
 
-Literal
-		: IntegerLiteral										{ $$ = new IntegerLiteralExpression($1); } // Nathan
+ClassLiteral
+		: TypeName SquareBrackets '.' CLASS
+		| NumbericType SquareBrackets '.' CLASS
+		| BOOLEAN SquareBrackets '.' CLASS
+		| VOID '.' CLASS
 		;
-// end of sneha Work
 
-// Nathan
+SquareBrackets
+		: SquareBrackets '['']'
+		|
+		;
+
+ClassInstanceCreationExpression
+		: UnqualifiedClassInstanceCreationExpression
+		| ExpressionName '.' UnqualifiedClassInstanceCreationExpression
+		| Primary '.' UnqualifiedClassInstanceCreationExpression
+		;
+
+UnqualifiedClassInstanceCreationExpression
+		: NEW TypeArguments_opt ClassOrInterfaceTypeToInstantiate '(' ArgumentList_opt')' ClassBody_opt
+		;
+
+ClassOrInterfaceTypeToInstantiate
+		: Annotations IDENTIFIER ClassOrInterfaceTypeToInstantiate_repeat TypeArgumentsOrDiamond_opt
+		;
+
+ClassOrInterfaceTypeToInstantiate_repeat
+		: ClassOrInterfaceTypeToInstantiate_repeat '.' Annotations IDENTIFIER
+		|
+		;
+
+TypeArgumentsOrDiamond_opt
+		: TypeArgumentsOrDiamond
+		|
+		;
+
+TypeArgumentsOrDiamond
+		: TypeArguments
+		| '<''>'
+		;
+
+FieldAccess
+		: Primary '.' IDENTIFIER
+		| SUPER '.' IDENTIFIER
+		| TypeName '.' SUPER '.' IDENTIFIER
+		;
+
+ArrayAccess
+		: ExpressionName '[' Expression ']'
+		| PrimaryNoNewArray '[' Expression ']'
+		;
+
+MethodInvocation
+		: MethodName '(' ArgumentList_opt')'
+		| TypeName '.' TypeArguments_opt IDENTIFIER '(' ArgumentList_opt')'
+		| ExpressionName '.' TypeArguments_opt IDENTIFIER '(' ArgumentList_opt')'
+		| Primary '.' TypeArguments_opt IDENTIFIER '(' ArgumentList_opt')'
+		| SUPER '.' TypeArguments_opt IDENTIFIER '(' ArgumentList_opt')'
+		| TypeName '.' SUPER '.' TypeArguments_opt IDENTIFIER '(' ArgumentList_opt')'
+		;
+
+ArgumentList_opt
+		: ArgumentList
+		|
+		;
+
+ArgumentList
+		: Expression
+		| ArgumentList ',' Expression
+		;
+
+MethodReference
+		: ExpressionName DOUBLE_COLON TypeArguments_opt IDENTIFIER
+		| ReferenceType DOUBLE_COLON TypeArguments_opt IDENTIFIER
+		| Primary DOUBLE_COLON TypeArguments_opt IDENTIFIER
+		| SUPER DOUBLE_COLON TypeArguments_opt IDENTIFIER
+		| TypeName '.' SUPER DOUBLE_COLON TypeArguments_opt IDENTIFIER
+		| ClassType DOUBLE_COLON TypeArguments_opt NEW
+		| ArrayType DOUBLE_COLON NEW
+		;
+
+ArrayCreationExpression
+		: NEW PrimitiveType DimExprs Dims_opt
+		| NEW ClassOrInterfaceType DimExprs Dims_opt
+		| NEW PrimitiveType Dims ArrayInitializer
+		| NEW ClassOrInterfaceType Dims ArrayInitializer
+		;
+
+DimExprs
+		: DimExpr 
+		| DimExprs DimExpr
+		;
+
+DimExpr
+		: Annotations '[' Expression ']'
+		;
+
 Expression
 		: LambdaExpression										{ $$ = $1; } // Nathan
 		| AssignmentExpression									{ $$ = $1; } // Nathan
+		;
+
+Expression_opt
+		: Expression
+		|
 		;
 
 LambdaExpression
@@ -425,17 +1360,55 @@ LambdaExpression
 		;
 
 LambdaParameters
-		: /* empty */											{ } // not implemented yet - Nathan
+		: IDENTIFIER
+		| '(' FormalParameterList_opt ')'
+		| '(' InferredFormalParameterList')'
+		;
+
+InferredFormalParameterList
+		: IDENTIFIER 
+		| InferredFormalParameterList ',' IDENTIFIER
 		;
 
 LambdaBody
-		: /* empty */											{ } // not implemented yet
+		: Expression
+		| Block
+		;
+
+AssignmentExpression
+		: ConditionalExpression									{ $$ = $1; } // Nathan
+		| Assignment											{ $$ = $1; } // Nathan
+		;
+
+Assignment
+		: LeftHandSide AssignmentOperator Expression			{ $$ = new AssignmentExpression($1, $3); } // Khoa
+		;
+
+LeftHandSide
+		: ExpressionName										{ $$ = $1; } // Khoa
+		| FieldAccess
+		| ArrayAccess
+		;
+
+AssignmentOperator
+		: '='													 // Khoa
+		| MULTIPLICATION_ASSIGNMENT
+		| DIVISION_ASSIGNMENT
+		| MODULUS_ASSIGNMENT
+		| ADDITION_ASSIGNMENT
+		| SUBTRACTION_ASSIGNMENT
+		| LEFT_SHIFT_ASSIGNMENT
+		| SIGNED_RIGHT_SHIFT_ASSIGNMENT
+		| UNSIGNED_RIGHT_SHIFT_ASSIGNMENT
+		| BITWISE_AND_ASSIGNMENT
+		| BITWISE_XOR_ASSIGNMENT
+		| BITWISE_OR_ASSIGNMENT
 		;
 
 ConditionalExpression
 		: ConditionalOrExpression												{ $$ = $1; } // Nathan
-		//| ConditionalOrExpression '?' Expression ':' ConditionalExpression	{ $$ = new TernaryExpression($1, $3, $5); } // not implemented yet - Nathan
-		//| ConditionalOrExpression '?' Expression ':' LambdaExpression			{ $$ = new TernaryExpression($1, $3, $5); } // not implemented yet - Nathan
+		//| ConditionalOrExpression '?' Expression ':' ConditionalExpression	{ $$ = new TernaryExpression($1, $3, $5); } // not implemented yet - Nathan; need further development
+		//| ConditionalOrExpression '?' Expression ':' LambdaExpression			{ $$ = new TernaryExpression($1, $3, $5); } // not implemented yet - Nathan; need further development
 		;
 
 ConditionalOrExpression
@@ -450,54 +1423,110 @@ ConditionalAndExpression
 
 InclusiveOrExpression
 		: ExclusiveOrExpression											{ $$ = $1; } //Nathan
-		// more here - Nathan
+		| InclusiveOrExpression '|' ExclusiveOrExpression
 		;
 
 ExclusiveOrExpression
 		: AndExpression													{ $$ = $1; } //Nathan
-		// more here - Nathan
+		| ExclusiveOrExpression '^' AndExpression
 		;
 
 AndExpression
 		: EqualityExpression											{ $$ = $1; } //Nathan
-		// more here - Nathan
+		| AndExpression '&' EqualityExpression
 		;
 
 EqualityExpression
 		: RelationalExpression											{ $$ = $1; } //Nathan
-		// more here - Nathan
-		;
+		| EqualityExpression EQUAL RelationalExpression 
+		| EqualityExpression NOT_EQUAL RelationalExpression
+		;		
 
 RelationalExpression
 		: ShiftExpression												{ $$ = $1; } //Nathan
-		// more here - Nathan
+		| RelationalExpression '<' ShiftExpression
+		| RelationalExpression '>' ShiftExpression
+		| RelationalExpression LESS_THAN_OR_EQUAL ShiftExpression
+		| RelationalExpression GREATER_OR_EQUAL ShiftExpression
+		| RelationalExpression INSTANCEOF ReferenceType
 		;
 
 ShiftExpression
 		: AdditiveExpression											{ $$ = $1; } //Nathan
-		// more here - Nathan
+		| ShiftExpression LEFT_SHIFT AdditiveExpression
+		| ShiftExpression SIGNED_RIGHT_SHIFT AdditiveExpression
+		| ShiftExpression UNSIGNED_RIGHT_SHIFT AdditiveExpression
 		;
 
 AdditiveExpression
-		: MultiplicativeExpression									{ $$ = $1; } //Nathan
-		| AdditiveExpression '+' MultiplicativeExpression			{ $$ = new BinaryExpression($1, "+", $3); } //Nathan
-		| AdditiveExpression '-' MultiplicativeExpression			{ $$ = new BinaryExpression($1, "+", $3); } //Nathan
+		: MultiplicativeExpression										{ $$ = $1; } //Nathan
+		| AdditiveExpression '+' MultiplicativeExpression
+		| AdditiveExpression '-' MultiplicativeExpression
 		;
 
 MultiplicativeExpression
-		: UnaryExpression											{ $$ = $1; } //Nathan
-		// more here - Nathan
+		: UnaryExpression
+		| MultiplicativeExpression '*' UnaryExpression
+		| MultiplicativeExpression '/' UnaryExpression
+		| MultiplicativeExpression '%' UnaryExpression
 		;
 
 UnaryExpression
-		: PostfixExpression											{ $$ = $1; } //Nathan
-		// more here - Nathan
+		: PostfixExpression											{ $$ = $1; } //Nathan; this line only exists in AST branch but this rule does exist in UnaryExpressionNotPlusMinus
+		| PreIncrementExpression
+		| PreDecrementExpression
+		| '+' UnaryExpression
+		| '-' UnaryExpression
+		| UnaryExpressionNotPlusMinus
+		;
+
+PreIncrementExpression
+		: '+''+' UnaryExpression
+		;
+
+PreDecrementExpression
+		: '-''-' UnaryExpression
+		;
+
+UnaryExpressionNotPlusMinus
+		: PostfixExpression
+		| '~' UnaryExpression
+		| '!' UnaryExpression
+		| CastExpression
 		;
 
 PostfixExpression
 		: Primary													{ $$ = $1; } //Nathan
 		| ExpressionName											{ $$ = $1; } //Nathan
-		// more here - Nathan
+		| PostIncrementExpression
+		| PostDecrementExpression
+		;
+
+PostIncrementExpression
+		: PostfixExpression '+''+'
+		;
+
+PostDecrementExpression
+		: PostfixExpression '-''-'
+		;
+
+CastExpression
+		: '(' PrimitiveType ')' UnaryExpression
+		| '(' ReferenceType AdditionalBounds ')' UnaryExpressionNotPlusMinus
+		| '(' ReferenceType AdditionalBounds ')' LambdaExpression
+		;
+
+ConstantExpression
+		: Expression
+		;
+
+Literal
+		: IntegerLiteral										{ $$ = new IntegerLiteralExpression($1); } // Nathan
+		| FloatingPointLiteral
+		| BooleanLiteral
+		| CharacterLiteral
+		| StringLiteral
+		| NullLiteral
 		;
 
 %%
@@ -505,3 +1534,5 @@ PostfixExpression
 public Parser(Scanner scanner) : base(scanner)
 {
 }
+
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 
