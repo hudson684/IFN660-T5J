@@ -73,8 +73,8 @@ namespace IFN660_Java_ECMAScript.AST
     public class BinaryExpression : Expression
     {
         private Expression lhs,rhs;
-        private char oper;
-        public BinaryExpression(Expression lhs, char oper, Expression rhs)
+        private string oper;
+        public BinaryExpression(Expression lhs, string oper, Expression rhs)
         {
             this.lhs = rhs;
             this.rhs = rhs;
