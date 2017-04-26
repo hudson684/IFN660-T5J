@@ -8,6 +8,60 @@ namespace IFN660_Java_ECMAScript.AST
 {
 	public abstract class Type : Node
 	{
+		public static bool operator == (Type t1, Type t2)
+		{
+			return (object)t1 == (object)t2 || (object)o1 != null && (object)o2 !=null;
+		}
+
+		public static bool operator != (Type t1, Type t2)
+		{
+			return !(t1 == t2);
+		}
+		public bool Equals(Type type)
+		{
+			return this == type;
+		}
+		// override object.Equals
+		public override bool Equals (object obj)
+		{
+			return Equals(object) as Type;
+		}
+		
+		// override object.GetHashCode
+		public override int GetHashCode()
+		{
+			Type type = this.type;
+			// TODO: write your implementation of GetHashCode() here
+			throw new System.NotImplementedException();
+			return base.GetHashCode();
+		}
+
+		public bool IsAssignableFrom(Type type)
+		{
+			if(this.Equals(type))
+			{
+				return true;
+			}else if(type == null)
+			{
+				return false;
+			}else{
+				return type.IsSubclassOf(this);
+			}
+		}
+
+		public bool IsSubclassOf(Type type)
+		{
+			Type thisType = this.BaseType;
+			while (thisType != null)
+			{
+				if(thisType.Equals(type))
+				{
+					return true;
+				}
+				thisType = thisType.BaseType;
+			}
+			return false;
+		}
 	}
 
 	public class NamedType : Type
