@@ -47,9 +47,9 @@ public static Statement root;
 %type <type> Result, FloatingPointType, IntegralType, NumbericType
 %type <type> UnannType, UnannPrimitiveType, UnannReferenceType, UnannArrayType, UnannTypeVariable
 
-%type <modf> ClassModifier, MethodModifier, VariableModifier
+%type <modf> ClassModifier, MethodModifier, VariableModifier, TypeParameterModifier, PackageModifier, FieldModifier, ConstructorModifier, EnumConstantModifier, InterfaceMethodModifier, AnnotationTypeElementModifer
 
-%type <modfs> ClassModifiers, MethodModifiers, VariableModifiers
+%type <modfs> ClassModifiers, MethodModifiers, VariableModifiers, TypeParameterModifiers, PackageModifiers, FieldModifiers, ConstructorModifier, EnumConstantModifiers, InterfaceMethodModifiers, AnnotationTypeElementModifers
 
 %type <name> VariableDeclaratorId, VariableDeclarator
 
@@ -182,7 +182,7 @@ TypeParameter
 		;
 
 TypeParameterModifiers
-		: TypeParameterModifiers TypeParameterModifier
+		: TypeParameterModifiers TypeParameterModifier			{ $$ = $1; $$.Add($2); } // Khoa
 		|
 		;
 
@@ -293,7 +293,7 @@ PackageDeclaration
 		;
 
 PackageModifiers
-		: PackageModifiers PackageModifier
+		: PackageModifiers PackageModifier					{ $$ = $1; $$.Add($2); } // Khoa
 		|
 		;
 
@@ -302,15 +302,15 @@ PackageModifier
 		;
 
 ImportDeclarations
-		: ImportDeclarations ImportDeclaration
+		: ImportDeclarations ImportDeclaration				{ $$ = $1; $$.Add($2); } // Khoa
 		|
 		;
 
 ImportDeclaration
-		: SingleTypeImportDeclaration 
-		| TypeImportOnDemandDeclaration 
-		| SingleStaticImportDeclaration 
-		| StaticImportOnDemandDeclaration
+		: SingleTypeImportDeclaration						{ $$ = $1; } // Khoa
+		| TypeImportOnDemandDeclaration						{ $$ = $1; } // Khoa
+		| SingleStaticImportDeclaration						{ $$ = $1; } // Khoa
+		| StaticImportOnDemandDeclaration					{ $$ = $1; } // Khoa
 		;
 
 SingleTypeImportDeclaration
@@ -370,16 +370,16 @@ ClassModifier
 
 TypeParameters_opt 
 		: /* empty */											{ $$ = null; } // Tristan
-		| TypeParameters						
+		| TypeParameters										{ $$ = $1; } // Khoa
 		;
 
 TypeParameters
-		: '<' TypeParameterList '>'
+		: '<' TypeParameterList '>'								{ $$ = $1; } // Khoa
 		;
 
 TypeParameterList
-		: TypeParameter
-		| TypeParameterList ',' TypeParameter
+		: TypeParameter											{ $$ = $1; } // Khoa
+		| TypeParameterList ',' TypeParameter					{ $$ = $1; $$.Add($3); } // Khoa
 		;
 
 SuperClass_opt								
@@ -423,30 +423,30 @@ ClassBodyDeclaration
 		;
 
 ClassMemberDeclaration
-		: FieldDeclaration 
+		: FieldDeclaration										{ $$ = $1; } // Khoa
 		| MethodDeclaration										{ $$ = $1; } // Vivian
-		| ClassDeclaration 
-		| InterfaceDeclaration 									
+		| ClassDeclaration										{ $$ = $1; } // Khoa
+		| InterfaceDeclaration 									{ $$ = $1; } // Khoa
 		| ';'
 		;
 
 FieldDeclaration
-		: FieldModifiers UnannType VariableDeclaratorList ';'
+		: FieldModifiers UnannType VariableDeclaratorList ';'	{ $$ = $1; $$ = new VariableDeclarationList($1, $2); } // Khoa
 		;
 
 FieldModifiers
-		: FieldModifiers FieldModifier
+		: FieldModifiers FieldModifier							{ $$ = $1; $$.Add($2); } // Khoa
 		|
 		;
 
 FieldModifier
-		: PUBLIC
-		| PROTECTED
-		| PRIVATE
-		| STATIC
-		| FINAL
-		| TRANSIENT
-		| VOLATILE
+		: PUBLIC												{ $$ = Modifier.PUBLIC; } // Khoa
+		| PROTECTED												{ $$ = Modifier.PROTECTED; } // Khoa
+		| PRIVATE												{ $$ = Modifier.PRIVATE; } // Khoa
+		| STATIC												{ $$ = Modifier.STATIC; } // Khoa
+		| FINAL													{ $$ = Modifier.FINAL; } // Khoa
+		| TRANSIENT												{ $$ = Modifier.TRANSIENT; } // Khoa
+		| VOLATILE												{ $$ = Modifier.VOLATILE; } // Khoa
 		;
 
 VariableDeclaratorList
@@ -526,10 +526,10 @@ MethodModifier
 		: Annotation											//{ $$ = $1; } // Vivian - removed by Nathan - too hard at the moment - need further development
 		| PUBLIC												{ $$ = Modifier.PUBLIC; } // Vivian												
         | STATIC												{ $$ = Modifier.STATIC; } // vivian											
-        | FINAL
-		| SYNCHRONIZED
-		| NATIVE
-		| STRICTFP
+        | FINAL													{ $$ = Modifier.FINAL; }  // Khoa
+		| SYNCHRONIZED											{ $$ = Modifier.SYNCHRONIZED; } // Khoa
+		| NATIVE												{ $$ = Modifier.NATIVE; } // Khoa
+		| STRICTFP												{ $$ = Modifier.STRICTFP; } // Khoa
 		;
 
 MethodHeader
@@ -603,13 +603,13 @@ Throws
 		;
 
 ExceptionTypeList
-		: ExceptionType	
-		| ExceptionTypeList ',' ExceptionType
+		: ExceptionType											{ $$ = $1; } // Khoa
+		| ExceptionTypeList ',' ExceptionType					{ $$ = $1; $$.Add($3); } // Khoa
 		;
 
 ExceptionType
-		: ClassType
-		| TypeVariable
+		: ClassType												{ $$ = $1; } // Khoa
+		| TypeVariable											{ $$ = $1; } // Khoa
 		;
 
 MethodBody
@@ -618,7 +618,7 @@ MethodBody
 		;
 
 InstanceInitializer
-		: Block
+		: Block													{ $$ = $1; } // Khoa
 		;
 
 StaticInitializer
@@ -630,7 +630,7 @@ ConstructorDeclaration
 		;
 
 ConstructorModifiers
-		: ConstructorModifiers ConstructorModifier
+		: ConstructorModifiers ConstructorModifier				{ $$ = $1; $$.Add($2); } // Khoa
 		|
 		;
 
@@ -713,7 +713,7 @@ EnumConstant
 		;
 
 EnumConstantModifiers
-		: EnumConstantModifiers EnumConstantModifier
+		: EnumConstantModifiers EnumConstantModifier			{ $$ = $1; $$.Add($2); } // Khoa
 		|
 		;
 
@@ -748,18 +748,18 @@ NormalClassDeclaration
 		;
 
 InterfaceModifers
-		: InterfaceModifers InterfaceModifer
+		: InterfaceModifers InterfaceModifer					{ $$ = $1; $$.Add($2); } // Khoa
 		|
 		;
 
 InterfaceModifer
-		: Annotation
-		| PUBLIC
-		| PROTECTED
-		| PRIVATE
-		| ABSTRACT
-		| STATIC
-		| STRICTFP
+		: Annotation											
+		| PUBLIC												{ $$ = Modifier.PUBLIC; } // Khoa										
+		| PROTECTED												{ $$ = Modifier.PROTECTED; } // Khoa
+		| PRIVATE												{ $$ = Modifier.PRIVATE; } // Khoa
+		| ABSTRACT												{ $$ = Modifier.ABSTRACT; } // Khoa
+		| STATIC												{ $$ = Modifier.STATIC; } // Khoa
+		| STRICTFP												{ $$ = Modifier.STRICTFP; } // Khoa
 		;
 
 ExtendsInterfaces_opt
@@ -781,11 +781,11 @@ InterfaceMemberDeclarations
 		;
 
 InterfaceMemberDeclaration
-		: ConstantDeclaration 
-		| InterfaceMethodDeclaration 
-		| ClassDeclaration
-		| InterfaceDeclaration
-		| ';'
+		: ConstantDeclaration									{ $$ = $1; } //Khoa
+		| InterfaceMethodDeclaration							{ $$ = $1; } //Khoa
+		| ClassDeclaration										{ $$ = $1; } //Khoa
+		| InterfaceDeclaration									{ $$ = $1; } //Khoa
+		| ';'													{ $$ = null; } //Khoa
 		;
 
 ConstantDeclaration
@@ -793,15 +793,15 @@ ConstantDeclaration
 		;
 
 ConstantModifiers
-		: ConstantModifiers ConstantModifier
+		: ConstantModifiers ConstantModifier					{ $$ = $1; $$.Add($2); } // Khoa
 		|
 		;
 
 ConstantModifier
 		: Annotation
-		| PUBLIC
-		| STATIC
-		| FINAL
+		| PUBLIC											{ $$ = Modifier.PUBLIC; } // Khoa
+		| STATIC											{ $$ = Modifier.STATIC; } // Khoa
+		| FINAL												{ $$ = Modifier.FINAL; } // Khoa
 		;
 
 InterfaceMethodDeclaration
@@ -809,17 +809,17 @@ InterfaceMethodDeclaration
 		;
 
 InterfaceMethodModifiers
-		: InterfaceMethodModifers InterfaceMethodModifier
+		: InterfaceMethodModifers InterfaceMethodModifier	{ $$ = $1; $$.Add($2); } // Khoa
 		|
 		;
 
 InterfaceMethodModifier
 		: Annotation
-		| PUBLIC
-		| ABSTRACT
-		| DEFAULT	
-		| STATIC	
-		| STRICTFP
+		| PUBLIC										{ $$ = Modifier.PUBLIC; } // Khoa
+		| ABSTRACT										{ $$ = Modifier.ABSTRACT; } // Khoa
+		| DEFAULT										{ $$ = Modifier.DEFAULT; } // Khoa
+		| STATIC										{ $$ = Modifier.STATIC; } // Khoa
+		| STRICTFP										{ $$ = Modifier.STRICTFP; } // Khoa
 		;
 
 AnnotationTypeDeclaration
@@ -848,14 +848,14 @@ AnnotationTypeElementDeclaration
 		;
 
 AnnotationTypeElementModifers	
-		: AnnotationTypeElementModifers AnnotationTypeElementModifer
+		: AnnotationTypeElementModifers AnnotationTypeElementModifer	{ $$ = $1; $$.Add($2); } // Khoa
 		|
 		;
 
 AnnotationTypeElementModifer
 		: Annotation
-		| PUBLIC
-		| ABSTRACT
+		| PUBLIC										{ $$ = Modifier.PUBLIC; } // Khoa
+		| ABSTRACT										{ $$ = Modifier.ABSTRACT; } // Khoa
 		;
 
 DefaultValue_opt
@@ -973,15 +973,15 @@ LocalVariableDeclaration
 
 Statement 
 		: StatementWithoutTrailingSubstatement					{$$ = $1; } // Nathan
-        | LabeledStatement 
-		| IfThenStatement 
-		| IfThenElseStatement 
-		| WhileStatement 
-		| ForStatement
+        | LabeledStatement										{$$ = $1; } // Khoa
+		| IfThenStatement										{$$ = $1; } // Khoa
+		| IfThenElseStatement									{$$ = $1; } // Khoa
+		| WhileStatement										{$$ = $1; } // Khoa
+		| ForStatement											{$$ = $1; } // Khoa
 		;
 
 StatementNoShortIf
-		: StatementWithoutTrailingSubstatement
+		: StatementWithoutTrailingSubstatement					{$$ = $1; } // Khoa
 		| LabeledStatementNoShortIf
 		| IfThenElseStatementNoShortIf
 		| WhileStatementNoShortIf
@@ -990,21 +990,21 @@ StatementNoShortIf
 
 StatementWithoutTrailingSubstatement
 		: Block
-		| EmptyStatement
+		| EmptyStatement										{ $$ = $1; } // Khoa, need to define EmptyStatement 
 		| ExpressionStatement 									{ $$ = $1; } // Nathan
-		| AssertStatement
-		| SwitchStatement 
-		| DoStatement 
-		| BreakStatement 
-		| ContinueStatement 
-		| ReturnStatement 
-		| SynchronizedStatement 
-		| ThrowStatement 
-		| TryStatement
+		| AssertStatement										{ $$ = $1; } // Khoa, need to define AssertStatement
+		| SwitchStatement										{ $$ = $1; } // Khoa, need to define SwitchStatement
+		| DoStatement											{ $$ = $1; } // Khoa, need to DoStatement
+		| BreakStatement										{ $$ = $1; } // Khoa, need to define BreakStatement
+		| ContinueStatement										{ $$ = $1; } // Khoa, need to define ContinueStatement
+		| ReturnStatement										{ $$ = $1; } // Khoa, need to define ReturnStatement
+		| SynchronizedStatement									{ $$ = $1; } // Khoa, need to define SynchronizedStatement
+		| ThrowStatement										{ $$ = $1; } // Khoa, need to define ThrowStatement
+		| TryStatement											{ $$ = $1; } // Khoa, need to define TryStatement
 		;
 
 EmptyStatement
-		: ';'
+		: ';'													{ $$ = null; } // Khoa
 		;
 
 LabeledStatement
@@ -1055,7 +1055,7 @@ SwitchBlock
 		;
 
 SwitchBlockStatementGroups
-		: SwitchBlockStatementGroups SwitchBlockStatementGroup
+		: SwitchBlockStatementGroups SwitchBlockStatementGroup		{ $$ = $1; $$.Add($2); } // Khoa
 		|
 		;
 
@@ -1473,11 +1473,11 @@ MultiplicativeExpression
 
 UnaryExpression
 		: PostfixExpression											{ $$ = $1; } //Nathan; this line only exists in AST branch but this rule does exist in UnaryExpressionNotPlusMinus
-		| PreIncrementExpression
-		| PreDecrementExpression
-		| '+' UnaryExpression
-		| '-' UnaryExpression
-		| UnaryExpressionNotPlusMinus
+		| PreIncrementExpression									{ $$ = $1; } // Khoa, same as Nathan's comment
+		| PreDecrementExpression									{ $$ = $1; } // Khoa, same as Nathan's comment
+		| '+' UnaryExpression										{ $$ = $1; } // Khoa, same as Nathan's comment
+		| '-' UnaryExpression										{ $$ = $1; } // Khoa, same as Nathan's comment
+		| UnaryExpressionNotPlusMinus								{ $$ = $1; } // Khoa, same as Nathan's comment
 		;
 
 PreIncrementExpression
@@ -1535,4 +1535,3 @@ public Parser(Scanner scanner) : base(scanner)
 {
 }
 
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 
