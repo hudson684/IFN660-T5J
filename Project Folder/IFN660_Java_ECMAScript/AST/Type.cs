@@ -6,60 +6,134 @@ using System.Threading.Tasks;
 
 namespace IFN660_Java_ECMAScript.AST
 {
-    public abstract class Type : Node
-    {
-    }
+	public abstract class Type : Node
+	{
+		public static bool operator == (Type t1, Type t2)
+		{
+			return (object)t1 == (object)t2 || (object)o1 != null && (object)o2 !=null;
+		}
 
-    public class NamedType : Type
-    {
-        private string elementType;
+		public static bool operator != (Type t1, Type t2)
+		{
+			return !(t1 == t2);
+		}
+		public bool Equals(Type type)
+		{
+			return this == type;
+		}
+		// override object.Equals
+		public override bool Equals (object obj)
+		{
+			return Equals(object) as Type;
+		}
+		
+		// override object.GetHashCode
+		public override int GetHashCode()
+		{
+			Type type = this.type;
+			// TODO: write your implementation of GetHashCode() here
+			throw new System.NotImplementedException();
+			return base.GetHashCode();
+		}
 
-        public NamedType(string elementType)
-        {
-            this.elementType = elementType;
-        }
+		public bool IsAssignableFrom(Type type)
+		{
+			if(this.Equals(type))
+			{
+				return true;
+			}else if(type == null)
+			{
+				return false;
+			}else{
+				return type.IsSubclassOf(this);
+			}
+		}
 
-        public override bool ResolveNames(LexicalScope scope)
-        {
-            return true;
-        }
-    }
+		public bool IsSubclassOf(Type type)
+		{
+			Type thisType = this.BaseType;
+			while (thisType != null)
+			{
+				if(thisType.Equals(type))
+				{
+					return true;
+				}
+				thisType = thisType.BaseType;
+			}
+			return false;
+		}
+	}
 
-    public class IntType : Type
-    {
+	public class NamedType : Type
+	{
+		private string elementType;
 
-        public override bool ResolveNames(LexicalScope scope)
-        {
-            return true;
-        }
-    }
+		public NamedType(string elementType)
+		{
+			this.elementType = elementType;
+		}
 
-    public class BoolType : Type
-    {
+		public override bool ResolveNames(LexicalScope scope)
+		{
+			return true;
+		}
+		public override Boolean TypeCheck()
+		{
+			return true;
+		}
 
-        public override bool ResolveNames(LexicalScope scope)
-        {
-            return true;
-        }
-    }
+	}
+
+	public class IntType : Type
+	{
+
+		public override bool ResolveNames(LexicalScope scope)
+		{
+			return true;
+		}
+		public override Boolean TypeCheck()
+		{
+			return true;
+		}
+
+	}
+
+	public class BoolType : Type
+	{
+
+		public override bool ResolveNames(LexicalScope scope)
+		{
+			return true;
+		}
+		public override Boolean TypeCheck()
+		{
+			return true;
+		}
+
+	}
 
 
-    public class ArrayType : Type
-    {
-        private Type elementType;
+	public class ArrayType : Type
+	{
+		private Type elementType;
 
-        public ArrayType(Type elementType) 
-        {
-            this.elementType = elementType;
-        }
+		public ArrayType(Type elementType)
+		{
+			this.elementType = elementType;
+		}
 
-        public override bool ResolveNames(LexicalScope scope)
-        {
-            return true;
-        }
-    }
-    
-    /*
+		public override bool ResolveNames(LexicalScope scope)
+		{
+			return true;
+		}
+		public override Boolean TypeCheck()
+		{
+			return true;
+		}
+
+	}
+
+	/*
     public class VoidType : Type
     {
         public VoidType ()

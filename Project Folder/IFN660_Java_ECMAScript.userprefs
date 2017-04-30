@@ -1,0 +1,22 @@
+﻿<Properties StartupConfiguration="{BD93C183-AD36-4321-9416-6770D1E4F9B4}|Default">
+  <MonoDevelop.Ide.Workbench ActiveDocument="IFN660_Java_ECMAScript/AST/Type.cs">
+    <Files>
+      <File FileName="IFN660_Java_ECMAScript/AST/Expression.cs" Line="111" Column="3" />
+      <File FileName="IFN660_Java_ECMAScript/AST/Node.cs" Line="15" Column="31" />
+      <File FileName="IFN660_Java_ECMAScript/AST/ImportDeclaration.cs" Line="21" Column="3" />
+      <File FileName="IFN660_Java_ECMAScript/AST/MethodDeclaration.cs" Line="52" Column="3" />
+      <File FileName="IFN660_Java_ECMAScript/AST/Modifier.cs" Line="1" Column="1" />
+      <File FileName="IFN660_Java_ECMAScript/AST/PackageDeclaration.cs" Line="18" Column="3" />
+      <File FileName="IFN660_Java_ECMAScript/AST/Parameters.cs" Line="25" Column="3" />
+      <File FileName="IFN660_Java_ECMAScript/AST/Statement.cs" Line="176" Column="4" />
+      <File FileName="IFN660_Java_ECMAScript/AST/Type.cs" Line="1" Column="1" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MultiItemStartupConfigurations />
+  <MonoDevelop.Ide.ItemProperties.IFN660__Java__ECMAScript PreferredExecutionTarget="MonoDevelop.Default" />
+</Properties>
