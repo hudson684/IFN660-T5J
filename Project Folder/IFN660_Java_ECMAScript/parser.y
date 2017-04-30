@@ -1030,20 +1030,20 @@ StatementExpression
 		;
 
 IfThenStatement
-		: IF '(' Expression ')' Statement
+		: IF '(' Expression ')' Statement										{ $$ = new IfStatement($3, $5); } // Khoa. Not sure what to do with token IF
 		;
 
 IfThenElseStatement
-		: IF '(' Expression ')' StatementNoShortIf ELSE Statement	
+		: IF '(' Expression ')' StatementNoShortIf ELSE Statement				{ $$ = new IfStatement($3, $5, $7); } // Khoa. Not sure what to do with token IF
 		;
 
 IfThenElseStatementNoShortIf
-		: IF '(' Expression ')' StatementNoShortIf ELSE StatementNoShortIf
+		: IF '(' Expression ')' StatementNoShortIf ELSE StatementNoShortIf		{ $$ = new IfStatement($3, $5, $7); } // Khoa. Not sure what to do with token IF
 		;
 
 AssertStatement
-		: ASSERT Expression ';' 
-		| ASSERT Expression ':' Expression ';'
+		: ASSERT Expression ';'													{ $$ = new AssertStatement($2); }	 // Khoa. Not sure what to do with token ASSERT
+		| ASSERT Expression ':' Expression ';'									{ $$ = new AssertStatement($2, $4); }	 // Khoa. Not sure what to do with token ASSERT
 		;
 
 SwitchStatement
@@ -1130,7 +1130,7 @@ ForUpdate_opt
 
 ForUpdate
 		: 
-		| StatementExpressionList
+		| StatementExpressionList											
 		;
 
 StatementExpressionList

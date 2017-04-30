@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Runtime.InteropServices;
 
 namespace IFN660_Java_ECMAScript.AST
 {
@@ -11,7 +12,7 @@ namespace IFN660_Java_ECMAScript.AST
     {
         private Expression Cond;
         private Statement Then, Else;
-        public IfStatement(Expression Cond, Statement Then, Statement Else)
+        public IfStatement(Expression Cond, Statement Then, [Optional]Statement Else)  // Khoa. Wrote this to fit with both IfThenStatement & IfThenElseStatement. Another approach is wrote 2 different functions
         {
             this.Cond = Cond; this.Then = Then; this.Else = Else;
         }
@@ -91,6 +92,20 @@ namespace IFN660_Java_ECMAScript.AST
         }
     }
 
+    public class AssertStatement : Statement
+    {
+        private Expression expr1, expr2;
+
+        public AssertStatement (Expression expr1, [Optional] Expression expr2)
+        {
+            this.expr1 = expr1; this.expr2 = expr2;
+        }
+
+        public override bool ResolveNames(LexicalScope scope)
+        {
+            return expr1.ResolveNames(scope) & expr2.ResolveNames(scope);
+        }
+    }
   
     public class VariableDeclaration : Statement, Declaration
     {
