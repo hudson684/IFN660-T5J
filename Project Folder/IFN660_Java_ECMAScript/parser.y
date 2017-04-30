@@ -44,12 +44,12 @@ public static Statement root;
 %type <stmts> MethodBody, FormalParameters, FormalParameterList, FormalParameterList_Opt 
 %type <stmts> ImportDeclarations
 
-%type <type> Result, FloatingPointType, IntegralType, NumbericType
+%type <type> Result, FloatingPointType, IntegralType, NumbericType, PrimitiveType, FloatingPointType, ReferenceType, ClassType, InterfaceType, ArrayType      // Khoa, added additional Types created by An
 %type <type> UnannType, UnannPrimitiveType, UnannReferenceType, UnannArrayType, UnannTypeVariable
 
-%type <modf> ClassModifier, MethodModifier, VariableModifier, TypeParameterModifier, PackageModifier, FieldModifier, ConstructorModifier, EnumConstantModifier, InterfaceMethodModifier, AnnotationTypeElementModifer
+%type <modf> ClassModifier, MethodModifier, VariableModifier, TypeParameterModifier, PackageModifier, FieldModifier, ConstructorModifier, EnumConstantModifier, InterfaceMethodModifier, AnnotationTypeElementModifer    // Khoa, added additional Modifiers created by An
 
-%type <modfs> ClassModifiers, MethodModifiers, VariableModifiers, TypeParameterModifiers, PackageModifiers, FieldModifiers, ConstructorModifier, EnumConstantModifiers, InterfaceMethodModifiers, AnnotationTypeElementModifers
+%type <modfs> ClassModifiers, MethodModifiers, VariableModifiers, TypeParameterModifiers, PackageModifiers, FieldModifiers, ConstructorModifier, EnumConstantModifiers, InterfaceMethodModifiers, AnnotationTypeElementModifers       // Khoa, added additional Modifiers created by An
 
 %type <name> VariableDeclaratorId, VariableDeclarator
 
@@ -109,8 +109,8 @@ Program : CompilationUnit										{root = $1;}
 
 
 // Types, Values and Variable 
-Type	: PrimitiveType										
-		| ReferenceType										
+Type	: PrimitiveType											{ $$ = $1; } // Khoa								
+		| ReferenceType											{ $$ = $1; } // Khoa	
 		;
 
 PrimitiveType
@@ -197,11 +197,11 @@ TypeBound_opt
 
 TypeBound
 		: EXTENDS TypeVariable
-		| EXTENDS ClassOrInterfaceType AdditionalBounds
+		| EXTENDS ClassOrInterfaceType AdditionalBounds			
 		;
 
 AdditionalBounds
-		: AdditionalBounds AdditionalBound
+		: AdditionalBounds AdditionalBound						{ $$ = $1; $$.Add($2); } // Khoa
 		|
 		;
 
@@ -211,7 +211,7 @@ AdditionalBound
 
 TypeArguments_opt
 		: 
-		| TypeArguments
+		| TypeArguments											{ $$ = $1; } //Khoa 
 		;
 
 TypeArguments
@@ -220,7 +220,7 @@ TypeArguments
 
 TypeArgumentList
 		: TypeArgument
-		| TypeArgumentList ',' TypeArgument
+		| TypeArgumentList ',' TypeArgument						{ $$ = $1; $$.Add($2); } // Khoa
 		;
 
 TypeArgument
@@ -234,7 +234,7 @@ Wildcard
 
 WildcardBounds_opt
 		: 
-		| WildcardBounds
+		| WildcardBounds										{ $$ = $1; } //Khoa
 		;
 
 WildcardBounds
@@ -543,7 +543,7 @@ Result
 	   	;
 
 MethodDeclarator
-		: IDENTIFIER '(' FormalParameterList_Opt ')' Dims_Opt	{$$ =  new ArrayList() { $1, $3, $5 };} // Khoa
+		: IDENTIFIER '(' FormalParameterList_Opt ')' Dims_Opt	{ $$ =  new ArrayList() { $1, $3, $5 };} // Khoa
 		;
 
 //PLACEHOLDER - Josh - Tri
@@ -554,15 +554,15 @@ FormalParameterList_Opt
 
 FormalParameterList 
 		: FormalParameters 										{ $$ = $1; } // Nathan; this line only exist in AST branch, require further modifications
-		| ReceiverParameter
-		| FormalParameters ',' LastFormalParameter 						
-		| LastFormalParameter 									
+		| ReceiverParameter										{ $$ = $1; } // Khoa
+		| FormalParameters ',' LastFormalParameter 				{ $$ = $1; $$.Add($3); } // Khoa		
+		| LastFormalParameter 									{ $$ = $1; } // Khoa
 		;
 
 
 FormalParameters 
 		: FormalParameter 										{ $$ = new List<Statement> { $1 }; } // Nathan 
-		| ReceiverParameter 
+		| ReceiverParameter										{ $$ = $1; } // Khoa
 		| FormalParameters ',' FormalParameter					{ $$ = $1; $$.Add($3); } // Nathan
 		;
 
@@ -982,14 +982,14 @@ Statement
 
 StatementNoShortIf
 		: StatementWithoutTrailingSubstatement					{$$ = $1; } // Khoa
-		| LabeledStatementNoShortIf
-		| IfThenElseStatementNoShortIf
-		| WhileStatementNoShortIf
-		| ForStatementNoShortIf
+		| LabeledStatementNoShortIf								{$$ = $1; } // Khoa
+		| IfThenElseStatementNoShortIf							{$$ = $1; } // Khoa
+		| WhileStatementNoShortIf								{$$ = $1; } // Khoa
+		| ForStatementNoShortIf									{$$ = $1; } // Khoa
 		;
 
 StatementWithoutTrailingSubstatement
-		: Block
+		: Block													{ $$ = $1; } // Khoa
 		| EmptyStatement										{ $$ = $1; } // Khoa, need to define EmptyStatement 
 		| ExpressionStatement 									{ $$ = $1; } // Nathan
 		| AssertStatement										{ $$ = $1; } // Khoa, need to define AssertStatement
@@ -1084,11 +1084,11 @@ EnumConstantName
 		;
 
 WhileStatement
-		: WHILE '(' Expression ')' Statement
+		: WHILE '(' Expression ')' Statement								{ $$ = new WhileStatement($3, $5); }	//Khoa. Not sure what to do with token WHILE
 		;
 
 WhileStatementNoShortIf
-		: WHILE '(' Expression ')' StatementNoShortIf
+		: WHILE '(' Expression ')' StatementNoShortIf						{ $$ = new WhileStatement($3, $5); }	//Khoa. Not sure what to do with token WHILE
 		;
 
 DoStatement
