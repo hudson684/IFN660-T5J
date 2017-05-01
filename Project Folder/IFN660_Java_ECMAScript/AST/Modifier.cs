@@ -8,6 +8,11 @@
         PRIVATE,
         ABSTRACT,
         FINAL,
-        STRICTFP
+        STRICTFP,
+        NATIVE,
+        SYNCHRONIZED,
+        TRANSIENT,
+        VOLATILE,
+        DEFAULT
     }
 }
