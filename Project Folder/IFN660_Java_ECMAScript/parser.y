@@ -34,11 +34,14 @@ public static Statement root;
 %type <expr> InclusiveOrExpression, ExclusiveOrExpression, AndExpression, EqualityExpression
 %type <expr> RelationalExpression, ShiftExpression, AdditiveExpression, MultiplicativeExpression
 %type <expr> UnaryExpression, PostfixExpression, Primary
+%type <expr> Expression_opt											// Added by AN
 
 %type <stmt> Statement, CompilationUnit, TypeDeclaration, ClassDeclaration, NormalClassDeclaration, ClassBodyDeclaration
 %type <stmt> ExpressionStatement, StatementWithoutTrailingSubstatement, LocalVariableDeclaration, LocalVariableDeclarationStatement
 %type <stmt> BlockStatement, Throws_opt, ClassMemberDeclaration, MethodDeclaration, FormalParameter
-%type <stmt> PackageDeclaration_opt
+%type <stmt> PackageDeclaration_opt, WhileStatement , InstanceInitializer																// Added by AN
+%type <stmt> AssertStatement, IfThenElseStatementNoShortIf, StatementNoShortIf, IfThenStatement,WhileStatementNoShortIf					// Added by AN
+%type <stmt> IfThenElseStatement, BasicForStatement, ForUpdate, ForUpdate_opt, ForInit_opt, ForStatement, InterfaceMemberDeclaration	// Added by AN																										// Added by AN
 
 %type <stmts> TypeDeclarations, ClassBody, ClassBodyDeclarations, BlockStatements, BlockStatements_Opt, Block
 %type <stmts> MethodBody, FormalParameters, FormalParameterList, FormalParameterList_Opt 
@@ -48,8 +51,10 @@ public static Statement root;
 %type <type> UnannType, UnannPrimitiveType, UnannReferenceType, UnannArrayType, UnannTypeVariable
 
 %type <modf> ClassModifier, MethodModifier, VariableModifier, TypeParameterModifier, PackageModifier, FieldModifier, ConstructorModifier, EnumConstantModifier, InterfaceMethodModifier, AnnotationTypeElementModifer    // Khoa, added additional Modifiers created by An
+%type <modf> ConstantModifier, InterfaceModifer							// AN
 
 %type <modfs> ClassModifiers, MethodModifiers, VariableModifiers, TypeParameterModifiers, PackageModifiers, FieldModifiers, ConstructorModifier, EnumConstantModifiers, InterfaceMethodModifiers, AnnotationTypeElementModifers       // Khoa, added additional Modifiers created by An
+%type <modfs> ConstantModifiers, InterfaceModifers						// AN
 
 %type <name> VariableDeclaratorId, VariableDeclarator
 
@@ -74,7 +79,7 @@ public static Statement root;
 %token CONST      FLOAT      NATIVE       SUPER       WHILE
 
 // 3.10 Literals
-%token <intnum> IntegerLiteral
+%token <num> IntegerLiteral				// Fixed by AN
 %token <floatnum> FloatingPointLiteral
 %token <boolval> BooleanLiteral
 %token <charval> CharacterLiteral
@@ -417,7 +422,7 @@ ClassBodyDeclarations
 
 ClassBodyDeclaration
 		: ClassMemberDeclaration								{ $$ = $1; } // Tristan								
-		| InstanceInitializer 
+		| InstanceInitializer									{ $$ = $1;}  // AN
 		| StaticInitializer 
 		| ConstructorDeclaration
 		;
@@ -748,18 +753,18 @@ NormalClassDeclaration
 		;
 
 InterfaceModifers
-		: InterfaceModifers InterfaceModifer					//{ $$ = $1; $$.Add($2); } // Khoa
-		|
+		: InterfaceModifers InterfaceModifer					{ $$ = $1; $$.Add($2); } // Khoa
+		|														{ $$ = new List<Modifier>(); }	// AN
 		;
 
 InterfaceModifer
 		: Annotation											
-		| PUBLIC												//{ $$ = Modifier.PUBLIC; } // Khoa										
-		| PROTECTED												//{ $$ = Modifier.PROTECTED; } // Khoa
-		| PRIVATE												//{ $$ = Modifier.PRIVATE; } // Khoa
-		| ABSTRACT												//{ $$ = Modifier.ABSTRACT; } // Khoa
-		| STATIC												//{ $$ = Modifier.STATIC; } // Khoa
-		| STRICTFP												//{ $$ = Modifier.STRICTFP; } // Khoa
+		| PUBLIC												{ $$ = Modifier.PUBLIC; } // Khoa										
+		| PROTECTED												{ $$ = Modifier.PROTECTED; } // Khoa
+		| PRIVATE												{ $$ = Modifier.PRIVATE; } // Khoa
+		| ABSTRACT												{ $$ = Modifier.ABSTRACT; } // Khoa
+		| STATIC												{ $$ = Modifier.STATIC; } // Khoa
+		| STRICTFP												{ $$ = Modifier.STRICTFP; } // Khoa
 		;
 
 ExtendsInterfaces_opt
@@ -781,10 +786,10 @@ InterfaceMemberDeclarations
 		;
 
 InterfaceMemberDeclaration
-		: ConstantDeclaration									{ $$ = $1; } //Khoa
-		| InterfaceMethodDeclaration							{ $$ = $1; } //Khoa
-		| ClassDeclaration										//{ $$ = $1; } //Khoa
-		| InterfaceDeclaration									{ $$ = $1; } //Khoa
+		: ConstantDeclaration									//{ $$ = $1; } //Khoa
+		| InterfaceMethodDeclaration							//{ $$ = $1; } //Khoa
+		| ClassDeclaration										{ $$ = $1; } //Khoa
+		| InterfaceDeclaration									//{ $$ = $1; } //Khoa
 		| ';'													//{ $$ = null; } //Khoa
 		;
 
@@ -793,15 +798,15 @@ ConstantDeclaration
 		;
 
 ConstantModifiers
-		: ConstantModifiers ConstantModifier					//{ $$ = $1; $$.Add($2); } // Khoa
-		|
+		: ConstantModifiers ConstantModifier					{ $$ = $1; $$.Add($2); }		// Khoa
+		|														{ $$ = new List<Modifier>(); }	// AN
 		;
 
 ConstantModifier
 		: Annotation
-		| PUBLIC											//{ $$ = Modifier.PUBLIC; } // Khoa
-		| STATIC											//{ $$ = Modifier.STATIC; } // Khoa
-		| FINAL												//{ $$ = Modifier.FINAL; } // Khoa
+		| PUBLIC											{ $$ = Modifier.PUBLIC; } // Khoa
+		| STATIC											{ $$ = Modifier.STATIC; } // Khoa
+		| FINAL												{ $$ = Modifier.FINAL; } // Khoa
 		;
 
 InterfaceMethodDeclaration
@@ -982,17 +987,17 @@ Statement
 
 StatementNoShortIf
 		: StatementWithoutTrailingSubstatement					//{$$ = $1; } // Khoa
-		| LabeledStatementNoShortIf								{$$ = $1; } // Khoa
+		| LabeledStatementNoShortIf								//{$$ = $1; } // Khoa
 		| IfThenElseStatementNoShortIf							{$$ = $1; } // Khoa
 		| WhileStatementNoShortIf								{$$ = $1; } // Khoa
-		| ForStatementNoShortIf									{$$ = $1; } // Khoa
+		| ForStatementNoShortIf									//{$$ = $1; } // Khoa
 		;
 
 StatementWithoutTrailingSubstatement
 		: Block													//{ $$ = $1; } // Khoa
 		| EmptyStatement										//{ $$ = $1; } // Khoa, need to define EmptyStatement 
 		| ExpressionStatement 									{ $$ = $1; } // Nathan
-		| AssertStatement										//{ $$ = $1; } // Khoa, need to define AssertStatement
+		| AssertStatement										{ $$ = $1; } // Khoa, need to define AssertStatement
 		| SwitchStatement										//{ $$ = $1; } // Khoa, need to define SwitchStatement
 		| DoStatement											//{ $$ = $1; } // Khoa, need to DoStatement
 		| BreakStatement										//{ $$ = $1; } // Khoa, need to define BreakStatement
@@ -1004,7 +1009,7 @@ StatementWithoutTrailingSubstatement
 		;
 
 EmptyStatement
-		: ';'													//{ $$ = null; } // Khoa
+		: ';'													//{ $$ = null;} // Khoa
 		;
 
 LabeledStatement
@@ -1030,20 +1035,20 @@ StatementExpression
 		;
 
 IfThenStatement
-		: IF '(' Expression ')' Statement										//{ $$ = new IfStatement($3, $5); } // Khoa. Not sure what to do with token IF
+		: IF '(' Expression ')' Statement										{ $$ = new IfStatement($3, $5); } // Khoa. Not sure what to do with token IF
 		;
 
 IfThenElseStatement
-		: IF '(' Expression ')' StatementNoShortIf ELSE Statement				//{ $$ = new IfStatement($3, $5, $7); } // Khoa. Not sure what to do with token IF
+		: IF '(' Expression ')' StatementNoShortIf ELSE Statement				{ $$ = new IfStatement($3, $5, $7); } // Khoa. Not sure what to do with token IF
 		;
 
 IfThenElseStatementNoShortIf
-		: IF '(' Expression ')' StatementNoShortIf ELSE StatementNoShortIf		//{ $$ = new IfStatement($3, $5, $7); } // Khoa. Not sure what to do with token IF
+		: IF '(' Expression ')' StatementNoShortIf ELSE StatementNoShortIf		{ $$ = new IfStatement($3, $5, $7); } // Khoa. Not sure what to do with token IF
 		;
 
 AssertStatement
-		: ASSERT Expression ';'													//{ $$ = new AssertStatement($2); }	 // Khoa. Not sure what to do with token ASSERT
-		| ASSERT Expression ':' Expression ';'									//{ $$ = new AssertStatement($2, $4); }	 // Khoa. Not sure what to do with token ASSERT
+		: ASSERT Expression ';'													{ $$ = new AssertStatement($2); }	 // Khoa. Not sure what to do with token ASSERT
+		| ASSERT Expression ':' Expression ';'									{ $$ = new AssertStatement($2, $4); }	 // Khoa. Not sure what to do with token ASSERT
 		;
 
 SwitchStatement
@@ -1084,11 +1089,11 @@ EnumConstantName
 		;
 
 WhileStatement
-		: WHILE '(' Expression ')' Statement								//{ $$ = new WhileStatement($3, $5); }	//Khoa. Not sure what to do with token WHILE
+		: WHILE '(' Expression ')' Statement								{ $$ = new WhileStatement($3,new List<Statement>{$5}); }	//Khoa. Not sure what to do with token WHILE. Edited by AN
 		;
 
 WhileStatementNoShortIf
-		: WHILE '(' Expression ')' StatementNoShortIf						//{ $$ = new WhileStatement($3, $5); }	//Khoa. Not sure what to do with token WHILE
+		: WHILE '(' Expression ')' StatementNoShortIf						{ $$ = new WhileStatement($3, new List<Statement>{$5}); }	//Khoa. Not sure what to do with token WHILE. Edited by AN
 		;
 
 DoStatement
@@ -1096,17 +1101,17 @@ DoStatement
 		;
 
 ForStatement
-		: BasicForStatement 
+		: BasicForStatement													{$$ = $1;}  // AN
 		| EnhancedForStatement
 		;
 
 ForStatementNoShortIf
-		: BasicForStatementNoShortIf 
+		: BasicForStatementNoShortIf										{$$ = $1;}  // AN
 		| EnhancedForStatementNoShortIf
 		;
 
 BasicForStatement
-		: FOR '(' ForInit_opt ';' Expression_opt ';' ForUpdate_opt ')' Statement
+		: FOR '(' ForInit_opt ';' Expression_opt ';' ForUpdate_opt ')' Statement		{$$ = new ForStatement($3,$5,$7,new List<Statement>{$9});}
 		;
 
 BasicForStatementNoShortIf
@@ -1521,7 +1526,7 @@ ConstantExpression
 		;
 
 Literal
-		: IntegerLiteral										//{ $$ = new IntegerLiteralExpression($1); } // Nathan
+		: IntegerLiteral										{ $$ = new IntegerLiteralExpression($1); } // Nathan
 		| FloatingPointLiteral
 		| BooleanLiteral
 		| CharacterLiteral
