@@ -8,6 +8,14 @@ namespace IFN660_Java_ECMAScript.AST
     {
     };
 
+    public class EmptyStatement : Statement
+    {
+        public override bool ResolveNames(LexicalScope scope)
+        {
+            return true;
+        }
+    }
+
     public class IfStatement : Statement
     {
         private Expression Cond;
