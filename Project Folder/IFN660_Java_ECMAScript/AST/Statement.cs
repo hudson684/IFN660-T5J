@@ -145,8 +145,13 @@ namespace IFN660_Java_ECMAScript.AST
 		}
 		public override Boolean TypeCheck()
 		{
-			return true;
+			return type.TypeCheck();
 		}
+
+        public Type GetType()
+        {
+            return type;
+        }
 	}
 
 	public class VariableDeclarationList : Statement, Declaration
@@ -172,7 +177,12 @@ namespace IFN660_Java_ECMAScript.AST
 
 		public override Boolean TypeCheck()
 		{
-			return true;
+			return type.TypeCheck();
 		}
+
+        public Type GetType()
+        {
+            return type;
+        }
 	}
 }

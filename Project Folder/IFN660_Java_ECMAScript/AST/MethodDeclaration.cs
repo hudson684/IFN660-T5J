@@ -51,5 +51,10 @@ namespace IFN660_Java_ECMAScript.AST
 			return true;
 		}
 
+        public Type GetType()
+        {
+            return null;
+        }
+
 	}
 }

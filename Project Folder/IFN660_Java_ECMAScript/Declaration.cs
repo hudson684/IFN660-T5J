@@ -8,6 +8,7 @@ namespace IFN660_Java_ECMAScript
 {
     public interface Declaration
     {
+        AST.Type GetType();
         List<string> GetName();
     }
 }

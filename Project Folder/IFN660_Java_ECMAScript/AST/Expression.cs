@@ -28,6 +28,14 @@ namespace IFN660_Java_ECMAScript.AST
 		}
 		public override Boolean TypeCheck()
 		{
+            lhs.TypeCheck();
+            rhs.TypeCheck();
+            if (!rhs.type.IsAssignableFrom(lhs.type))
+            {
+                System.Console.WriteLine("Type error in AssignmentExpression\n");
+                throw new Exception("TypeCheck error");
+            }
+            type = rhs.type;
 			return true;
 		}
 
@@ -63,6 +71,7 @@ namespace IFN660_Java_ECMAScript.AST
 		}
 		public override Boolean TypeCheck()
 		{
+            type = declarationRef.GetType();
 			return true;
 		}
 
@@ -83,8 +92,9 @@ namespace IFN660_Java_ECMAScript.AST
 		}
 		public override Boolean TypeCheck()
 		{
+            type = new IntType();
 			return true;
-		}
+		} 
 
 	}
 
@@ -106,7 +116,35 @@ namespace IFN660_Java_ECMAScript.AST
 		}
 		public override Boolean TypeCheck()
 		{
-			return true;
+            lhs.TypeCheck();
+            rhs.TypeCheck();
+            switch (oper)
+            {
+                case "<":
+                    if (!lhs.type.Equals(new IntType()) || !lhs.type.Equals(new IntType()))
+                    {
+                        System.Console.WriteLine("Invalid arguments for less than expression\n");
+                        throw new Exception("TypeCheck error");
+                    }
+                    type = new BoolType();
+                    break;
+                case "+":
+                    if (!lhs.type.Equals(new IntType()) || !lhs.type.Equals(new IntType()))
+                    {
+                        System.Console.WriteLine("Invalid arguments for less than expression\n");
+                        throw new Exception("TypeCheck error");
+                    }
+                    type = new IntType();
+                    break;
+               
+                default:
+                    {
+                        System.Console.WriteLine("Unexpected binary operator %c \n", oper);
+                        throw new Exception("TypeCheck error");
+                    }
+                    break;
+            }
+            return true;
 		}
 
 	}

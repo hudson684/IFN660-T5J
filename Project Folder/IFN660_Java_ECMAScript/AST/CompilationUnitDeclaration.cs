@@ -37,6 +37,11 @@ namespace IFN660_Java_ECMAScript.AST
 
             return loopResolve; 
         }
+
+        public override Boolean TypeCheck()
+        {
+            return true;
+        }
     }
 
 }
