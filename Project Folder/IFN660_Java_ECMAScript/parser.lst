@@ -1,10 +1,10 @@
 
 // ==========================================================================
-//  GPPG error listing for yacc source file <parser.y - 5/2/2017 19:28:00>
+//  GPPG error listing for yacc source file <parser.y - 5/2/2017 23:33:39>
 // ==========================================================================
 //  Version:  1.5.2
 //  Machine:  AIR
-//  DateTime: 5/2/2017 19:28:00
+//  DateTime: 5/2/2017 23:33:40
 //  UserName: Air
 // ==========================================================================
 
@@ -82,13 +82,19 @@ public static Statement root;
 %token CHAR       FINAL      INTERFACE    STATIC      VOID
 %token CLASS      FINALLY    LONG         STRICTFP    VOLATILE
 %token CONST      FLOAT      NATIVE       SUPER       WHILE
+%token STRING
 
 // 3.10 Literals
 %token <num> IntegerLiteral
 %token <floatnum> FloatingPointLiteral
 %token <boolval> BooleanLiteral
 %token <charval> CharacterLiteral
-%token <name> StringLiteral
+%token <charval\[\]> StringLiteral
+//------------^^^^
+// Error: This character is invalid in this context
+// Error: Syntax error, unexpected '[', expecting '>'
+// Error: This character is invalid in this context
+// --------------------------------------------------
 %token NullLiteral
 
 // 3.11 Separators
@@ -421,11 +427,12 @@ PrimaryNoNewArray
 		;
 
 Literal
+		: IntegerLiteral										{ $$ = new IntegerLiteralExpression($1); } // Nathan
+		| FloatingPointLiteral									{ $$ = new FloatingPointLiteralExpression($1); } // Adon
+		| BooleanLiteral										{ $$ = new BooleanLiteralExpression($1); } // Adon
 		| CharacterLiteral										{ $$ = new CharacterLiteralExpression($1); } // Adon
-// Error: Syntax error, unexpected '|', expecting ':'
-// --------------------------------------------------
-		| StringLiteral
-		| NullLiteral
+		| StringLiteral											{ $$ = new StringLiteralExpression($1); } // Adon - Need more work
+		//| NullLiteral - Need more work
 		;
 // end of sneha Work
 

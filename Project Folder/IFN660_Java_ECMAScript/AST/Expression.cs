@@ -56,7 +56,6 @@ namespace IFN660_Java_ECMAScript.AST
 
     public class IntegerLiteralExpression : Expression
     {
-
         private long value;
         public IntegerLiteralExpression(long value)
         {
@@ -88,7 +87,6 @@ namespace IFN660_Java_ECMAScript.AST
     }
     public class FloatingPointLiteralExpression : Expression
     {
-
         private double value;
         public FloatingPointLiteralExpression(double value)
         {
@@ -118,7 +116,6 @@ namespace IFN660_Java_ECMAScript.AST
 
     public class CharacterLiteralExpression : Expression
     {
-
         private char value;
         public CharacterLiteralExpression(char value)
         {
@@ -131,20 +128,19 @@ namespace IFN660_Java_ECMAScript.AST
         }
     }
 
-    //public class StringLiteralExpression : Expression
-    //{
+    public class StringLiteralExpression : Expression
+    {
+        private string value;
+        public StringLiteralExpression(string value)
+        {
+            this.value = value;
+        }
 
-    //    private string value;
-    //    public StringLiteralExpression(string value)
-    //    {
-    //        this.value = value;
-    //    }
-
-    //    public override bool ResolveNames(LexicalScope scope)
-    //    {
-    //        return true;
-    //    }
-    //}
+        public override bool ResolveNames(LexicalScope scope)
+        {
+            return true;
+        }
+    }
 }
 
 

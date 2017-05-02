@@ -8,6 +8,6 @@
 		char m;
 		long n;
 		double o;
-		x=42;
+		x=4_2;
 	}
 }

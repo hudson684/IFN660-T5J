@@ -6,9 +6,9 @@
 //
 //  GPLEX Version:  1.2.2
 //  Machine:  AIR
-//  DateTime: 5/2/2017 23:11:08
+//  DateTime: 5/2/2017 23:40:00
 //  UserName: Air
-//  GPLEX input file <scanner.lex - 5/2/2017 23:11:07>
+//  GPLEX input file <scanner.lex - 5/2/2017 23:39:11>
 //  GPLEX frame file <embedded resource>
 //
 //  Option settings: unicode, parser, minimize
@@ -2439,7 +2439,6 @@ double getHexDecimalPart(string inString)
 
     return outDouble;
 }
-
 public override void yyerror( string format, params object[] args )
 {
     System.Console.Error.WriteLine("Error: line {0}, {1}", lines,

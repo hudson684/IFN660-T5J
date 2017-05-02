@@ -437,7 +437,6 @@ double getHexDecimalPart(string inString)
 
     return outDouble;
 }
-
 public override void yyerror( string format, params object[] args )
 {
     System.Console.Error.WriteLine("Error: line {0}, {1}", lines,
