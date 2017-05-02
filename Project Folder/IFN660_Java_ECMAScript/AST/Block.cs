@@ -18,7 +18,9 @@ namespace IFN660_Java_ECMAScript.AST
         public override bool ResolveNames(LexicalScope scope)
         {
             // Step 1: Create new scope and populate the symbol table
-            var newScope = getNewScope(scope, statements);
+            // Special case with blocks - add to symbol table line by line as the names are resolved.
+            // This is the catch the situation where the declaration is after the use of the variable.
+            var newScope = getNewScope(scope, null); 
 
             // Step 2: ResolveNames for each part of the complilation unit
             bool loopResolve = true;
@@ -27,6 +29,11 @@ namespace IFN660_Java_ECMAScript.AST
             {
                 foreach (Statement each in statements)
                 {
+                    Declaration decl = each as Declaration; // try to cast statement as a declaration
+                    if (decl != null)
+                    {
+                        decl.AddItemsToSymbolTable(newScope);
+                    }
                     loopResolve = loopResolve & each.ResolveNames(newScope);
                 }
             }
