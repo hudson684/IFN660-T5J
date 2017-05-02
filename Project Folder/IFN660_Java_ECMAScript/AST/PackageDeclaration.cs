@@ -12,9 +12,9 @@ namespace IFN660_Java_ECMAScript.AST
 		{
 			return true;
 		}
-		public override Boolean TypeCheck()
+		public override void TypeCheck()
 		{
-			return true;
+			
 		}
 
 	}

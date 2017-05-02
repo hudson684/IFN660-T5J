@@ -38,9 +38,13 @@ namespace IFN660_Java_ECMAScript.AST
             return loopResolve; 
         }
 
-        public override Boolean TypeCheck()
+        public override void TypeCheck()
         {
-            return true;
+            ClassDeclarations.ForEach(x => x.TypeCheck());
+            
+            // 2 lines belwo will give errors cause we did not implemented anything within 2 classesl.
+            //this.PackageDeclaration.TypeCheck();
+            //ImportDeclarations.ForEach(x => x.TypeCheck());
         }
     }
 

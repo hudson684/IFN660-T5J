@@ -46,9 +46,11 @@ namespace IFN660_Java_ECMAScript.AST
 
 			return loopResolve;
 		}
-		public override Boolean TypeCheck()
+		public override void TypeCheck()
 		{
-			return true;
+            returnType.TypeCheck();
+            statementList.ForEach(x => x.TypeCheck());
+            args.ForEach(x => x.TypeCheck());
 		}
 
         public Type GetType()

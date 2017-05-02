@@ -8,7 +8,7 @@ namespace IFN660_Java_ECMAScript.AST
 	{
 
 		public abstract Boolean ResolveNames(LexicalScope scope);
-		public abstract Boolean TypeCheck();
+		public abstract void TypeCheck();
 
 		void Indent(int n)
 		{
@@ -112,5 +112,14 @@ namespace IFN660_Java_ECMAScript.AST
 
 			return newScope;
 		}
-	}
+
+        // Helper function to do List typecheck
+        //public static void ListTypeCheck<T>(List<T> list) where T : Node
+        //{
+        //    foreach (T each in list)
+        //    {
+        //        each.TypeCheck();
+        //    }
+        //}
+    }
 }

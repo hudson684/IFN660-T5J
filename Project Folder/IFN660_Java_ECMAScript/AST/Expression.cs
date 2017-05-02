@@ -26,7 +26,7 @@ namespace IFN660_Java_ECMAScript.AST
 		{
 			return lhs.ResolveNames(scope) & rhs.ResolveNames(scope);
 		}
-		public override Boolean TypeCheck()
+		public override void TypeCheck()
 		{
             lhs.TypeCheck();
             rhs.TypeCheck();
@@ -36,7 +36,6 @@ namespace IFN660_Java_ECMAScript.AST
                 throw new Exception("TypeCheck error");
             }
             type = rhs.type;
-			return true;
 		}
 
 
@@ -69,10 +68,10 @@ namespace IFN660_Java_ECMAScript.AST
 
 			return declarationRef != null;
 		}
-		public override Boolean TypeCheck()
+		public override void TypeCheck()
 		{
             type = declarationRef.GetType();
-			return true;
+			
 		}
 
 	}
@@ -90,10 +89,9 @@ namespace IFN660_Java_ECMAScript.AST
 		{
 			return true;
 		}
-		public override Boolean TypeCheck()
+		public override void TypeCheck()
 		{
             type = new IntType();
-			return true;
 		} 
 
 	}
@@ -114,7 +112,7 @@ namespace IFN660_Java_ECMAScript.AST
 		{
 			return lhs.ResolveNames(scope) & rhs.ResolveNames(scope);
 		}
-		public override Boolean TypeCheck()
+		public override void TypeCheck()
 		{
             lhs.TypeCheck();
             rhs.TypeCheck();
@@ -144,7 +142,6 @@ namespace IFN660_Java_ECMAScript.AST
                     }
                     break;
             }
-            return true;
 		}
 
 	}
