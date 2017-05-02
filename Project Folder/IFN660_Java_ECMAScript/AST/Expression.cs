@@ -86,7 +86,65 @@ namespace IFN660_Java_ECMAScript.AST
             return lhs.ResolveNames(scope) & rhs.ResolveNames(scope);
         }
     }
+    public class FloatingPointLiteralExpression : Expression
+    {
 
+        private double value;
+        public FloatingPointLiteralExpression(double value)
+        {
+            this.value = value;
+        }
+
+        public override bool ResolveNames(LexicalScope scope)
+        {
+            return true;
+        }
+    }
+
+    public class BooleanLiteralExpression : Expression
+    {
+
+        private bool value;
+        public BooleanLiteralExpression(bool value)
+        {
+            this.value = value;
+        }
+
+        public override bool ResolveNames(LexicalScope scope)
+        {
+            return true;
+        }
+    }
+
+    public class CharacterLiteralExpression : Expression
+    {
+
+        private char value;
+        public CharacterLiteralExpression(char value)
+        {
+            this.value = value;
+        }
+
+        public override bool ResolveNames(LexicalScope scope)
+        {
+            return true;
+        }
+    }
+
+    //public class StringLiteralExpression : Expression
+    //{
+
+    //    private string value;
+    //    public StringLiteralExpression(string value)
+    //    {
+    //        this.value = value;
+    //    }
+
+    //    public override bool ResolveNames(LexicalScope scope)
+    //    {
+    //        return true;
+    //    }
+    //}
 }
 
 

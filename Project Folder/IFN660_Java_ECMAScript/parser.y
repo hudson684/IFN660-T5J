@@ -71,6 +71,7 @@ public static Statement root;
 %token CHAR       FINAL      INTERFACE    STATIC      VOID
 %token CLASS      FINALLY    LONG         STRICTFP    VOLATILE
 %token CONST      FLOAT      NATIVE       SUPER       WHILE
+%token STRING
 
 // 3.10 Literals
 %token <num> IntegerLiteral
@@ -411,6 +412,11 @@ PrimaryNoNewArray
 
 Literal
 		: IntegerLiteral										{ $$ = new IntegerLiteralExpression($1); } // Nathan
+		| FloatingPointLiteral									{ $$ = new FloatingPointLiteralExpression($1); } // Adon
+		| BooleanLiteral										{ $$ = new BooleanLiteralExpression($1); } // Adon
+		| CharacterLiteral										{ $$ = new CharacterLiteralExpression($1); } // Adon - Need more work
+		//| StringLiteral											{ $$ = new StringLiteralExpression($1); } // Adon - Need more work
+		//| NullLiteral
 		;
 // end of sneha Work
 

@@ -1,11 +1,11 @@
 
 // ==========================================================================
-//  GPPG error listing for yacc source file <parser.y - 25/04/2017 10:03:36 AM>
+//  GPPG error listing for yacc source file <parser.y - 5/2/2017 19:28:00>
 // ==========================================================================
 //  Version:  1.5.2
-//  Machine:  VDI-VL17-050
-//  DateTime: 25/04/2017 10:03:37 AM
-//  UserName: n9648500
+//  Machine:  AIR
+//  DateTime: 5/2/2017 19:28:00
+//  UserName: Air
 // ==========================================================================
 
 
@@ -32,12 +32,13 @@ public static Statement root;
 	public Modifier modf;
 	public List<Modifier> modfs;
 	public ArrayList arrlst;
+	public List<string> strlst;
 }
 
 // Types
 %type <expr> Literal, StatementExpression, Assignment, LeftHandSide, ExpressionName
 %type <expr> TypeParameters_opt, Superclass_opt, Superinterfaces_opt
-%type <expr> PrimaryNoNewArray, ArrayAccess, AssignmentExpression
+%type <expr> AssignmentExpression, PrimaryNoNewArray
 %type <expr> Expression, LambdaExpression, LambdaExpression, LambdaBody
 %type <expr> ConditionalExpression, ConditionalOrExpression, ConditionalAndExpression
 %type <expr> InclusiveOrExpression, ExclusiveOrExpression, AndExpression, EqualityExpression
@@ -63,6 +64,8 @@ public static Statement root;
 %type <name> VariableDeclaratorId, VariableDeclarator
 
 %type <arrlst> MethodHeader, MethodDeclarator
+
+%type <strlst> VariableDeclaratorList
 
 // Tokens
 %token <num> NUMBER
@@ -109,17 +112,6 @@ public static Statement root;
 %left '+'
 
 %%
-// Error: NonTerminal symbol "PrimaryNoNewArray" has no productions
-// Warning: NonTerminal symbol "ArrayAccess" is unreachable
-// Error: NonTerminal symbol "ArrayAccess" has no productions
-// Warning: NonTerminal symbol "PrimaryNoNewArray" is unreachable
-// Error: There are 2 non-terminating NonTerminal Symbols
-   //  {PrimaryNoNewArray, ArrayAccess}
-// Warning: Terminating PrimaryNoNewArray fixes the following size-1 NonTerminal set
-   // {PrimaryNoNewArray}
-// Warning: Terminating ArrayAccess fixes the following size-1 NonTerminal set
-   // {ArrayAccess}
-// ---------------------------------------------------------------------------------
 
 Program : CompilationUnit										{root = $1;}
         ;
@@ -170,7 +162,7 @@ ClassModifier
 		| STATIC 												{ $$ = Modifier.STATIC; } // Adon
 		| FINAL 												{ $$ = Modifier.FINAL; } // Adon
 		| STRICTFP 												{ $$ = Modifier.STRICTFP; } // Adon
-		; //: Annotation { $$ = $1; } // Adon - removed by Nathan - too hard at the moment
+		; //: Annotation										{ $$ = $1; } // Adon - removed by Nathan - too hard at the moment
 
 
 //GROUP C TRACKING
@@ -196,7 +188,7 @@ ClassBodyDeclarations
         ;
 
 ClassBodyDeclaration
-		: ClassMemberDeclaration								{ $$ = $1; } // Tristan
+		: ClassMemberDeclaration								{ $$ = $1; } // Tristan - done by Khoa
         ;
 
 // Fixed by An
@@ -217,7 +209,7 @@ MethodModifiers
 MethodModifier 
 		: PUBLIC												{ $$ = Modifier.PUBLIC; } // Vivian
         | STATIC												{ $$ = Modifier.STATIC; } // vivian
-        ; //: Annotation { $$ = $1; } // Vivian - removed by Nathan - too hard at the moment
+        ; //: Annotation										{ $$ = $1; } // Vivian - removed by Nathan - too hard at the moment
 
 MethodHeader
 		: Result MethodDeclarator Throws_opt					{$$ = new ArrayList() { $1, $2, $3 } ; } // Khoa
@@ -269,18 +261,18 @@ VariableModifiers
 
 VariableModifier 
 		: FINAL													{ $$ = Modifier.FINAL; } // Tri - updated by Nathan
-		; //: Annotation { $$ = $1; } // Tri - removed by Nathan - too hard at the moment
+		; //: Annotation										{ $$ = $1; } // Tri - removed by Nathan - too hard at the moment
 
 //End work by Tri
 // Work by Vivian
 Dims_Opt 
-		: Dims													{ } // An
-		| /* Empty */											{ } // An
+		: Dims													{ $$ = $1; } // An - updated by Adon
+		| /* Empty */											{ } // An - not implemented yet
 		;
 
 Dims
 		: '['']'									
-		//Annotations '['']'	{ $$ = $1; } // Needs work - Tri - removed by Nathan - too hard at the moment
+		//Annotations '['']'									{ $$ = $1; } // Needs work - Tri - removed by Nathan - too hard at the moment
 		;
 
 UnannType
@@ -338,17 +330,17 @@ MethodBody
 //		;
 
 Block 
-		: '{' BlockStatements_Opt '}'							{ $$ = $2; } // Tristan
+		: '{' BlockStatements_Opt '}'							{ $$ = $2; } // Tristan - done by Khoa
 		;
 
 BlockStatements_Opt
-		: BlockStatements										{ $$ = $1; } // Tristan
-		| /* Empty */											{ $$ = null; } // Tristan
+		: BlockStatements										{ $$ = $1; } // Tristan - done by Khoa
+		| /* Empty */											{ $$ = null; } // Tristan - done by Khoa
 		;
 
 BlockStatements
-		: BlockStatement										{ $$ = new List<Statement> { $1 }; } // Tristan 
-		| BlockStatements BlockStatement						{ $$ = $1; $$.Add($2); } // Tristan
+		: BlockStatement										{ $$ = new List<Statement> { $1 }; } // Tristan - done by Khoa
+		| BlockStatements BlockStatement						{ $$ = $1; $$.Add($2); } // Tristan - done by Khoa
 		;
 
 BlockStatement
@@ -361,15 +353,15 @@ LocalVariableDeclarationStatement
 		;
 
 LocalVariableDeclaration
-		: UnannType VariableDeclarator						{ $$ = new VariableDeclaration($1, $2); } // Vivian
-		//: VariableModifiers UnannType VariableDeclaratorList	{ $$ = new VariableDeclaration($1, $2); } // Vivian - too hard at the moment - Nathan
+		: UnannType VariableDeclaratorList						{ $$ = new VariableDeclarationList($1, $2); } // Vivian
+		//: VariableModifiers UnannType VariableDeclaratorList	{ $$ = new VariableDeclarationList($1, $2); } // Vivian - too hard at the moment - Nathan
 		;
 
 // Too hard at the moment - Nathan
-//VariableDeclaratorList
-//		: VariableDeclarator									{ $$ = new List<string> { $1 } } // Nathan
-//		| VariableDeclaratorList VariableDeclarator				{ $$ = $1; $$.Add($2); } // Nathan
-//		;
+VariableDeclaratorList
+		: VariableDeclarator									{ $$ = new List<string> { $1 }; } // Nathan
+		| VariableDeclaratorList ',' VariableDeclarator			{ $$ = $1; $$.Add($3); } // Nathan
+		;
 
 VariableDeclarator
 		: VariableDeclaratorId									{ $$ = $1; } // Nathan
@@ -385,7 +377,7 @@ Statement
 
 // Tristan
 StatementWithoutTrailingSubstatement
-		: ExpressionStatement 									{ $$ = $1; } // Nathan
+		: ExpressionStatement 									{ $$ = $1; } // Nathan - done by Khoa
 		;
 
 ExpressionStatement
@@ -420,16 +412,20 @@ AssignmentExpression
 		| ConditionalExpression									{ $$ = $1; } // Nathan
 		;
 
-//ArrayAccess
-//		: PrimaryNoNewArray										{ $$ = $1; } // Nathan
-//		;
-
 Primary
+		: PrimaryNoNewArray										{ $$ = $1; } // Nathan
+		;
+
+PrimaryNoNewArray
 		: Literal												{ $$ = $1; } // Nathan
 		;
 
 Literal
-		: IntegerLiteral										{ $$ = new IntegerLiteralExpression($1); } // Nathan
+		| CharacterLiteral										{ $$ = new CharacterLiteralExpression($1); } // Adon
+// Error: Syntax error, unexpected '|', expecting ':'
+// --------------------------------------------------
+		| StringLiteral
+		| NullLiteral
 		;
 // end of sneha Work
 
@@ -498,8 +494,9 @@ ShiftExpression
 		;
 
 AdditiveExpression
-		: MultiplicativeExpression											{ $$ = $1; } //Nathan
-		// more here - Nathan
+		: MultiplicativeExpression									{ $$ = $1; } //Nathan
+		| AdditiveExpression '+' MultiplicativeExpression			{ $$ = new BinaryExpression($1, "+", $3); } //Nathan
+		| AdditiveExpression '-' MultiplicativeExpression			{ $$ = new BinaryExpression($1, "+", $3); } //Nathan
 		;
 
 MultiplicativeExpression
@@ -514,6 +511,7 @@ UnaryExpression
 
 PostfixExpression
 		: Primary													{ $$ = $1; } //Nathan
+		| ExpressionName											{ $$ = $1; } //Nathan
 		// more here - Nathan
 		;
 
