@@ -22,12 +22,12 @@ namespace IFN660_Java_ECMAScript.AST
 			return Cond.ResolveNames(scope) & Then.ResolveNames(scope) & Else.ResolveNames(scope);
 		}
 
-		public override Boolean TypeCheck()
+		public override void TypeCheck()
 		{
-			var type = this.Cond.TypeCheck();
+			this.Cond.TypeCheck();
 			try
 			{
-				if (!Cond.GetType().Equals(new Boolean()))
+				if (!Cond.type.Equals(new BoolType()))
 				{
 					Console.WriteLine("Invalid type for if statement condition\n");
 				}
@@ -36,7 +36,8 @@ namespace IFN660_Java_ECMAScript.AST
 			{
 				throw new Exception("TypeCheck error");
 			}
-			return type;
+            Then.TypeCheck();
+            Else.TypeCheck();
 		}
 	}
 
@@ -63,10 +64,23 @@ namespace IFN660_Java_ECMAScript.AST
 
 			return Cond.ResolveNames(scope) & loopResolve;
 		}
-		public override Boolean TypeCheck()
+		public override void TypeCheck()
 		{
-			return true;
-		}
+            this.Cond.TypeCheck();
+            try
+            {
+                if (!Cond.type.Equals(new BoolType()))
+                {
+                    Console.WriteLine("Invalid type for if statement condition\n");
+                }
+            }
+            catch (Exception e)
+            {
+                throw new Exception("TypeCheck error");
+            }
+            StmtList.ForEach(x => x.TypeCheck());
+        }
+    
 	}
 
 	public class ForStatement : Statement
@@ -97,10 +111,26 @@ namespace IFN660_Java_ECMAScript.AST
 			return ForInit.ResolveNames(scope) & TestExpr.ResolveNames(scope) & ForUpdate.ResolveNames(scope) & loopResolve;
 		}
 
-		public override Boolean TypeCheck()
+		public override void TypeCheck()
 		{
-			return true;
-		}
+            ForInit.TypeCheck();
+            ForUpdate.TypeCheck();
+            StmtList.ForEach(x => x.TypeCheck());
+
+            this.TestExpr.TypeCheck();
+            try
+            {
+                if (!TestExpr.type.Equals(new BoolType()))
+                {
+                    Console.WriteLine("Invalid type for if statement condition\n");
+                }
+            }
+            catch (Exception e)
+            {
+                throw new Exception("TypeCheck error");
+            }
+
+        }
 	}
 
 	public class ExpressionStatement : Statement
@@ -116,10 +146,21 @@ namespace IFN660_Java_ECMAScript.AST
 		{
 			return expr.ResolveNames(scope);
 		}
-		public override Boolean TypeCheck()
+		public override void TypeCheck()
 		{
-			return true;
-		}
+            this.expr.TypeCheck();
+            try
+            {
+                if (!expr.type.Equals(new BoolType()))
+                {
+                    Console.WriteLine("Invalid type for if statement condition\n");
+                }
+            }
+            catch (Exception e)
+            {
+                throw new Exception("TypeCheck error");
+            }
+        }
 
 	}
 
@@ -143,10 +184,15 @@ namespace IFN660_Java_ECMAScript.AST
 		{
 			return type.ResolveNames(scope);
 		}
-		public override Boolean TypeCheck()
+		public override void TypeCheck()
 		{
-			return true;
+			
 		}
+
+        public Type GetType()
+        {
+            return type;
+        }
 	}
 
 	public class VariableDeclarationList : Statement, Declaration
@@ -172,9 +218,14 @@ namespace IFN660_Java_ECMAScript.AST
 			return type.ResolveNames(scope);
 		}
 
-		public override Boolean TypeCheck()
+		public override void TypeCheck()
 		{
-			return true;
+			
 		}
+
+        public Type GetType()
+        {
+            return type;
+        }
 	}
 }

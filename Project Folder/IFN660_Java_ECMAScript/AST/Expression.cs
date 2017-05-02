@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -26,9 +26,16 @@ namespace IFN660_Java_ECMAScript.AST
 		{
 			return lhs.ResolveNames(scope) & rhs.ResolveNames(scope);
 		}
-		public override Boolean TypeCheck()
+		public override void TypeCheck()
 		{
-			return true;
+            lhs.TypeCheck();
+            rhs.TypeCheck();
+            if (!rhs.type.IsAssignableFrom(lhs.type))
+            {
+                System.Console.WriteLine("Type error in AssignmentExpression\n");
+                throw new Exception("TypeCheck error");
+            }
+            type = rhs.type;
 		}
 
 
@@ -61,9 +68,10 @@ namespace IFN660_Java_ECMAScript.AST
 
 			return declarationRef != null;
 		}
-		public override Boolean TypeCheck()
+		public override void TypeCheck()
 		{
-			return true;
+            type = declarationRef.GetType();
+			
 		}
 
 	}
@@ -81,10 +89,10 @@ namespace IFN660_Java_ECMAScript.AST
 		{
 			return true;
 		}
-		public override Boolean TypeCheck()
+		public override void TypeCheck()
 		{
-			return true;
-		}
+            type = new IntType();
+		} 
 
 	}
 
@@ -104,13 +112,44 @@ namespace IFN660_Java_ECMAScript.AST
 		{
 			return lhs.ResolveNames(scope) & rhs.ResolveNames(scope);
 		}
-		public override Boolean TypeCheck()
+		public override void TypeCheck()
 		{
-			return true;
+            lhs.TypeCheck();
+            rhs.TypeCheck();
+            switch (oper)
+            {
+                case "<":
+                    if (!lhs.type.Equals(new IntType()) || !lhs.type.Equals(new IntType()))
+                    {
+                        System.Console.WriteLine("Invalid arguments for less than expression\n");
+                        throw new Exception("TypeCheck error");
+                    }
+                    type = new BoolType();
+                    break;
+                case "+":
+                    if (!lhs.type.Equals(new IntType()) || !lhs.type.Equals(new IntType()))
+                    {
+                        System.Console.WriteLine("Invalid arguments for less than expression\n");
+                        throw new Exception("TypeCheck error");
+                    }
+                    type = new IntType();
+                    break;
+               
+                default:
+                    {
+                        System.Console.WriteLine("Unexpected binary operator %c \n", oper);
+                        throw new Exception("TypeCheck error");
+                    }
+                    break;
+            }
 		}
 
+
 	}
+	
 
 }
+
+	
 
 

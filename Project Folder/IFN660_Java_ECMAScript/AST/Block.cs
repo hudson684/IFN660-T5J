@@ -34,10 +34,9 @@ namespace IFN660_Java_ECMAScript.AST
             return loopResolve;
         }
 
-        public override bool TypeCheck()
+        public override void TypeCheck()
         {
             // do something here - Nathan
-            return true;
         }
 
     }

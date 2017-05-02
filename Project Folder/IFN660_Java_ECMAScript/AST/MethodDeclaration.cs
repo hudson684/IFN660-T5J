@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 
 namespace IFN660_Java_ECMAScript.AST
@@ -34,19 +34,27 @@ namespace IFN660_Java_ECMAScript.AST
 			var newScope = getNewScope(scope, args);
 
 			// Step 2: ResolveNames for each statement
-			bool resolved = true;
+			bool loopResolve = true;
 
 			if (statementList != null)
 			{
-                resolved = statementList.ResolveNames(newScope);
+                loopResolve = statementList.ResolveNames(newScope);
 			}
 
-			return resolved;
+			return loopResolve;
 		}
-		public override Boolean TypeCheck()
+
+		public override void TypeCheck()
 		{
-			return true;
+            returnType.TypeCheck();
+            //statementList.ForEach(x => x.TypeCheck());
+            args.ForEach(x => x.TypeCheck());
 		}
+
+        public Type GetType()
+        {
+            return null;
+        }
 
 	}
 }

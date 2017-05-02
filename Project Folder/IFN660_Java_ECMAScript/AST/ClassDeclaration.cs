@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 
 namespace IFN660_Java_ECMAScript.AST
@@ -41,9 +41,15 @@ namespace IFN660_Java_ECMAScript.AST
             return loopResolve;
         }
 
-        public override bool TypeCheck()
+        public override void TypeCheck()
         {
-            return true;
+            classBody.ForEach(x => x.TypeCheck());
         }
+
+        public Type GetType()
+        {
+            return null;
+        }
+
     }
 }
