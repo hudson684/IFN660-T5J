@@ -79,7 +79,7 @@ namespace IFN660_Java_ECMAScript.AST
 			Console.WriteLine("}");
 		}
 
-		public static LexicalScope getNewScope(LexicalScope oldScope, List<Statement> statementList, List<Statement> argList)
+		public static LexicalScope getNewScope(LexicalScope oldScope, List<Statement> statementList)
 		{
 			// Step 1: set the new scope
 			var newScope = new LexicalScope();
@@ -94,19 +94,8 @@ namespace IFN660_Java_ECMAScript.AST
 					Declaration decl = each as Declaration; // try to cast statement as a declaration
 					if (decl != null)
 					{
-						foreach (string name in decl.GetName())
-						{
-							newScope.Symbol_table.Add(name, decl);
-						}
+                        decl.AddItemsToSymbolTable(newScope);
 					}
-				}
-			}
-
-			if (argList != null)
-			{
-				foreach (VariableDeclaration each in argList)
-				{
-					newScope.Symbol_table.Add(each.GetName()[0], each);
 				}
 			}
 

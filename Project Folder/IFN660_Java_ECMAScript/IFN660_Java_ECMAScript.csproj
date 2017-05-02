@@ -46,6 +46,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AST\Block.cs" />
     <Compile Include="AST\CompilationUnitDeclaration.cs" />
     <Compile Include="Declaration.cs" />
     <Compile Include="LexicalScope.cs" />

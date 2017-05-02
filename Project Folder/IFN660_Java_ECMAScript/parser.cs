@@ -3,10 +3,10 @@
 // (see accompanying GPPGcopyright.rtf)
 
 // GPPG version 1.5.2
-// Machine:  VDI-VL17-050
-// DateTime: 25/04/2017 2:25:18 PM
+// Machine:  VDI-VL17-028
+// DateTime: 2/05/2017 9:13:24 PM
 // UserName: n9648500
-// Input file <parser.y - 25/04/2017 2:25:13 PM>
+// Input file <parser.y - 2/05/2017 4:58:26 PM>
 
 // options: conflicts lines gplex conflicts
 
@@ -77,11 +77,11 @@ public class ScanObj {
 [GeneratedCodeAttribute( "Gardens Point Parser Generator", "1.5.2")]
 public class Parser: ShiftReduceParser<ValueType, LexLocation>
 {
-  // Verbatim content from parser.y - 25/04/2017 2:25:13 PM
+  // Verbatim content from parser.y - 2/05/2017 4:58:26 PM
 #line 7 "parser.y"
 public static Statement root;
 #line default
-  // End verbatim content from parser.y - 25/04/2017 2:25:13 PM
+  // End verbatim content from parser.y - 2/05/2017 4:58:26 PM
 
 #pragma warning disable 649
   private static Dictionary<int, string> aliases;
@@ -99,16 +99,16 @@ public static Statement root;
       "ClassDeclaration", "NormalClassDeclaration", "ClassBodyDeclaration", "ExpressionStatement", 
       "StatementWithoutTrailingSubstatement", "LocalVariableDeclaration", "LocalVariableDeclarationStatement", 
       "BlockStatement", "Throws_opt", "ClassMemberDeclaration", "MethodDeclaration", 
-      "FormalParameter", "PackageDeclaration_opt", "TypeDeclarations", "ClassBody", 
-      "ClassBodyDeclarations", "BlockStatements", "BlockStatements_Opt", "Block", 
-      "MethodBody", "FormalParameters", "FormalParameterList", "FormalParameterList_Opt", 
-      "ImportDeclarations", "Result", "FloatingPointType", "IntegralType", "NumericType", 
-      "UnannType", "UnannPrimitiveType", "UnannReferenceType", "UnannArrayType", 
-      "UnannTypeVariable", "ClassModifier", "MethodModifier", "VariableModifier", 
-      "ClassModifiers", "MethodModifiers", "VariableModifiers", "VariableDeclaratorId", 
-      "VariableDeclarator", "MethodHeader", "MethodDeclarator", "VariableDeclaratorList", 
-      "Program", "$accept", "Empty", "Dims_Opt", "Dims", "AssignmentOperator", 
-      "LambdaParameters", };
+      "FormalParameter", "PackageDeclaration_opt", "Block", "MethodBody", "TypeDeclarations", 
+      "ClassBody", "ClassBodyDeclarations", "BlockStatements", "BlockStatements_Opt", 
+      "FormalParameters", "FormalParameterList", "FormalParameterList_Opt", "ImportDeclarations", 
+      "Result", "FloatingPointType", "IntegralType", "NumericType", "UnannType", 
+      "UnannPrimitiveType", "UnannReferenceType", "UnannArrayType", "UnannTypeVariable", 
+      "ClassModifier", "MethodModifier", "VariableModifier", "ClassModifiers", 
+      "MethodModifiers", "VariableModifiers", "VariableDeclaratorId", "VariableDeclarator", 
+      "MethodHeader", "MethodDeclarator", "VariableDeclaratorList", "Program", 
+      "$accept", "Empty", "Dims_Opt", "Dims", "AssignmentOperator", "LambdaParameters", 
+      };
 
   static Parser() {
     states[0] = new State(-5,new int[]{-75,1,-29,3,-43,4});
@@ -116,7 +116,7 @@ public static Statement root;
     states[2] = new State(-1);
     states[3] = new State(-2);
     states[4] = new State(-6,new int[]{-54,5});
-    states[5] = new State(-8,new int[]{-44,6});
+    states[5] = new State(-8,new int[]{-46,6});
     states[6] = new State(new int[]{129,-4,172,-13,155,-13,150,-13,145,-13,132,-13,170,-13,168,-13,175,-13},new int[]{-30,7,-31,8,-32,9,-67,10});
     states[7] = new State(-7);
     states[8] = new State(-9);
@@ -126,19 +126,19 @@ public static Statement root;
     states[12] = new State(-21,new int[]{-6,13});
     states[13] = new State(-22,new int[]{-7,14});
     states[14] = new State(-23,new int[]{-8,15});
-    states[15] = new State(new int[]{123,17},new int[]{-45,16});
+    states[15] = new State(new int[]{123,17},new int[]{-47,16});
     states[16] = new State(-11);
-    states[17] = new State(-26,new int[]{-46,18});
+    states[17] = new State(-26,new int[]{-48,18});
     states[18] = new State(new int[]{125,19,171,-31,131,-31,152,-31,165,-31,164,-31,174,-31,167,-31,178,-31,148,-31,142,-31,155,-31,170,-31},new int[]{-33,20,-40,21,-41,22,-68,23});
     states[19] = new State(-24);
     states[20] = new State(-25);
     states[21] = new State(-27);
     states[22] = new State(-28);
     states[23] = new State(new int[]{171,131,131,128,152,54,165,55,164,56,174,57,167,58,178,60,148,61,142,62,155,133,170,134},new int[]{-72,24,-65,110,-55,111,-59,132,-61,46,-62,47,-63,48,-60,51,-58,52,-57,53,-56,59});
-    states[24] = new State(new int[]{123,27,59,109},new int[]{-50,25,-49,26});
+    states[24] = new State(new int[]{123,27,59,109},new int[]{-45,25,-44,26});
     states[25] = new State(-29);
     states[26] = new State(-67);
-    states[27] = new State(new int[]{131,50,152,54,165,55,164,56,174,57,167,58,178,60,148,61,142,62,125,-71},new int[]{-48,28,-47,30,-38,108,-37,32,-36,33,-59,35,-61,46,-62,47,-63,48,-60,51,-58,52,-57,53,-56,59,-28,63,-35,64,-34,65,-2,66,-3,68,-4,69,-5,107});
+    states[27] = new State(new int[]{131,50,152,54,165,55,164,56,174,57,167,58,178,60,148,61,142,62,125,-71},new int[]{-50,28,-49,30,-38,108,-37,32,-36,33,-59,35,-61,46,-62,47,-63,48,-60,51,-58,52,-57,53,-56,59,-28,63,-35,64,-34,65,-2,66,-3,68,-4,69,-5,107});
     states[28] = new State(new int[]{125,29});
     states[29] = new State(-69);
     states[30] = new State(new int[]{131,50,152,54,165,55,164,56,174,57,167,58,178,60,148,61,142,62,125,-70},new int[]{-38,31,-37,32,-36,33,-59,35,-61,46,-62,47,-63,48,-60,51,-58,52,-57,53,-56,59,-28,63,-35,64,-34,65,-2,66,-3,68,-4,69,-5,107});
@@ -260,14 +260,14 @@ public static Statement root;
     rules[1] = new Rule(-76, new int[]{-75,129});
     rules[2] = new Rule(-75, new int[]{-29});
     rules[3] = new Rule(-77, new int[]{});
-    rules[4] = new Rule(-29, new int[]{-43,-54,-44});
+    rules[4] = new Rule(-29, new int[]{-43,-54,-46});
     rules[5] = new Rule(-43, new int[]{});
     rules[6] = new Rule(-54, new int[]{});
-    rules[7] = new Rule(-44, new int[]{-44,-30});
-    rules[8] = new Rule(-44, new int[]{});
+    rules[7] = new Rule(-46, new int[]{-46,-30});
+    rules[8] = new Rule(-46, new int[]{});
     rules[9] = new Rule(-30, new int[]{-31});
     rules[10] = new Rule(-31, new int[]{-32});
-    rules[11] = new Rule(-32, new int[]{-67,172,131,-6,-7,-8,-45});
+    rules[11] = new Rule(-32, new int[]{-67,172,131,-6,-7,-8,-47});
     rules[12] = new Rule(-67, new int[]{-67,-64});
     rules[13] = new Rule(-67, new int[]{});
     rules[14] = new Rule(-64, new int[]{155});
@@ -280,12 +280,12 @@ public static Statement root;
     rules[21] = new Rule(-6, new int[]{});
     rules[22] = new Rule(-7, new int[]{});
     rules[23] = new Rule(-8, new int[]{});
-    rules[24] = new Rule(-45, new int[]{123,-46,125});
-    rules[25] = new Rule(-46, new int[]{-46,-33});
-    rules[26] = new Rule(-46, new int[]{});
+    rules[24] = new Rule(-47, new int[]{123,-48,125});
+    rules[25] = new Rule(-48, new int[]{-48,-33});
+    rules[26] = new Rule(-48, new int[]{});
     rules[27] = new Rule(-33, new int[]{-40});
     rules[28] = new Rule(-40, new int[]{-41});
-    rules[29] = new Rule(-41, new int[]{-68,-72,-50});
+    rules[29] = new Rule(-41, new int[]{-68,-72,-45});
     rules[30] = new Rule(-68, new int[]{-68,-65});
     rules[31] = new Rule(-68, new int[]{});
     rules[32] = new Rule(-65, new int[]{155});
@@ -323,13 +323,13 @@ public static Statement root;
     rules[64] = new Rule(-61, new int[]{-62});
     rules[65] = new Rule(-62, new int[]{-63,-79});
     rules[66] = new Rule(-63, new int[]{131});
-    rules[67] = new Rule(-50, new int[]{-49});
-    rules[68] = new Rule(-50, new int[]{59});
-    rules[69] = new Rule(-49, new int[]{123,-48,125});
-    rules[70] = new Rule(-48, new int[]{-47});
-    rules[71] = new Rule(-48, new int[]{});
-    rules[72] = new Rule(-47, new int[]{-38});
-    rules[73] = new Rule(-47, new int[]{-47,-38});
+    rules[67] = new Rule(-45, new int[]{-44});
+    rules[68] = new Rule(-45, new int[]{59});
+    rules[69] = new Rule(-44, new int[]{123,-50,125});
+    rules[70] = new Rule(-50, new int[]{-49});
+    rules[71] = new Rule(-50, new int[]{});
+    rules[72] = new Rule(-49, new int[]{-38});
+    rules[73] = new Rule(-49, new int[]{-49,-38});
     rules[74] = new Rule(-38, new int[]{-37});
     rules[75] = new Rule(-38, new int[]{-28});
     rules[76] = new Rule(-37, new int[]{-36,59});
@@ -511,7 +511,7 @@ public static Statement root;
         break;
       case 29: // MethodDeclaration -> MethodModifiers, MethodHeader, MethodBody
 #line 190 "parser.y"
-                                               { CurrentSemanticValue.stmt = new MethodDeclaration( (string)((ArrayList)ValueStack[ValueStack.Depth-2].arrlst[1])[0], ValueStack[ValueStack.Depth-3].modfs, ValueStack[ValueStack.Depth-1].stmts, (AST.Type)ValueStack[ValueStack.Depth-2].arrlst[0], (List<Statement>)((ArrayList)ValueStack[ValueStack.Depth-2].arrlst[1])[1]); }
+                                               { CurrentSemanticValue.stmt = new MethodDeclaration( (string)((ArrayList)ValueStack[ValueStack.Depth-2].arrlst[1])[0], ValueStack[ValueStack.Depth-3].modfs, ValueStack[ValueStack.Depth-1].stmt, (AST.Type)ValueStack[ValueStack.Depth-2].arrlst[0], (List<Statement>)((ArrayList)ValueStack[ValueStack.Depth-2].arrlst[1])[1]); }
 #line default
         break;
       case 30: // MethodModifiers -> MethodModifiers, MethodModifier
@@ -696,17 +696,17 @@ public static Statement root;
         break;
       case 67: // MethodBody -> Block
 #line 311 "parser.y"
-                       { CurrentSemanticValue.stmts= ValueStack[ValueStack.Depth-1].stmts; }
+                       { CurrentSemanticValue.stmt= ValueStack[ValueStack.Depth-1].stmt; }
 #line default
         break;
       case 68: // MethodBody -> ';'
 #line 312 "parser.y"
-                    { CurrentSemanticValue.stmts= null;}
+                    { CurrentSemanticValue.stmt= null;}
 #line default
         break;
       case 69: // Block -> '{', BlockStatements_Opt, '}'
 #line 322 "parser.y"
-                                      { CurrentSemanticValue.stmts = ValueStack[ValueStack.Depth-2].stmts; }
+                                      { CurrentSemanticValue.stmt = new BlockStatement(ValueStack[ValueStack.Depth-2].stmts); }
 #line default
         break;
       case 70: // BlockStatements_Opt -> BlockStatements
@@ -923,7 +923,7 @@ public static Statement root;
         break;
       case 113: // AdditiveExpression -> AdditiveExpression, '-', MultiplicativeExpression
 #line 484 "parser.y"
-                                                      { CurrentSemanticValue.expr = new BinaryExpression(ValueStack[ValueStack.Depth-3].expr, "+", ValueStack[ValueStack.Depth-1].expr); }
+                                                      { CurrentSemanticValue.expr = new BinaryExpression(ValueStack[ValueStack.Depth-3].expr, "-", ValueStack[ValueStack.Depth-1].expr); }
 #line default
         break;
       case 114: // MultiplicativeExpression -> UnaryExpression

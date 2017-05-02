@@ -134,12 +134,12 @@ namespace IFN660_Java_ECMAScript.AST
 			this.name = name;
 		}
 
-		public List<string> GetName()
-		{
-			return new List<string> { name };
-		}
+        public void AddItemsToSymbolTable(LexicalScope scope)
+        {
+            scope.Symbol_table.Add(name, this);
+        }
 
-		public override bool ResolveNames(LexicalScope scope)
+        public override bool ResolveNames(LexicalScope scope)
 		{
 			return type.ResolveNames(scope);
 		}
@@ -160,12 +160,14 @@ namespace IFN660_Java_ECMAScript.AST
 			this.names = names;
 		}
 
-		public List<string> GetName()
-		{
-			return names;
-		}
 
-		public override bool ResolveNames(LexicalScope scope)
+        public void AddItemsToSymbolTable(LexicalScope scope)
+        {
+            foreach (string each in names)
+                scope.Symbol_table.Add(each, this);
+        }
+
+        public override bool ResolveNames(LexicalScope scope)
 		{
 			return type.ResolveNames(scope);
 		}

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 
 namespace IFN660_Java_ECMAScript.AST
 {
- 
     public class ClassDeclaration: Statement, Declaration
     {
         private List<Modifier> classModifiers;
@@ -18,15 +17,15 @@ namespace IFN660_Java_ECMAScript.AST
             this.classBody = classBody;
         }
 
-        public List<string> GetName()
+        public void AddItemsToSymbolTable(LexicalScope scope)
         {
-            return new List<string> { classIdentifier };
+            scope.Symbol_table.Add(classIdentifier, this);
         }
 
         public override Boolean ResolveNames(LexicalScope scope)
         {
             // Step 1: Create new scope and populate the symbol table
-            var newScope = getNewScope(scope, classBody, null);
+            var newScope = getNewScope(scope, classBody);
 
             // Step 2: ResolveNames for each method
             bool loopResolve = true;
@@ -42,5 +41,9 @@ namespace IFN660_Java_ECMAScript.AST
             return loopResolve;
         }
 
+        public override bool TypeCheck()
+        {
+            return true;
+        }
     }
 }

@@ -31,7 +31,7 @@ namespace IFN660_Java_ECMAScript
             //var statementList = new List<Statement> { assignVar, assignStmt, assignStmt2 };
             var statementList = new List<Statement> { assignVar, assignStmt };
 
-            var method = new MethodDeclaration("Main", mods, statementList, new NamedType("VOID"), argList);
+            var method = new MethodDeclaration("Main", mods, new BlockStatement(statementList), new NamedType("VOID"), argList);
             var classDec = new ClassDeclaration("HelloWorld", classMods, new List<Statement> { method });
 
             var classes = new List<Statement>  { classDec };

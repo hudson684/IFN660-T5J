@@ -37,10 +37,10 @@ public static Statement root;
 %type <stmt> Statement, CompilationUnit, TypeDeclaration, ClassDeclaration, NormalClassDeclaration, ClassBodyDeclaration
 %type <stmt> ExpressionStatement, StatementWithoutTrailingSubstatement, LocalVariableDeclaration, LocalVariableDeclarationStatement
 %type <stmt> BlockStatement, Throws_opt, ClassMemberDeclaration, MethodDeclaration, FormalParameter
-%type <stmt> PackageDeclaration_opt
+%type <stmt> PackageDeclaration_opt, Block, MethodBody
 
-%type <stmts> TypeDeclarations, ClassBody, ClassBodyDeclarations, BlockStatements, BlockStatements_Opt, Block
-%type <stmts> MethodBody, FormalParameters, FormalParameterList, FormalParameterList_Opt 
+%type <stmts> TypeDeclarations, ClassBody, ClassBodyDeclarations, BlockStatements, BlockStatements_Opt
+%type <stmts> FormalParameters, FormalParameterList, FormalParameterList_Opt 
 %type <stmts> ImportDeclarations
 
 %type <type> Result, FloatingPointType, IntegralType, NumericType
@@ -319,7 +319,7 @@ MethodBody
 //		;
 
 Block 
-		: '{' BlockStatements_Opt '}'							{ $$ = $2; } // Tristan
+		: '{' BlockStatements_Opt '}'							{ $$ = new BlockStatement($2); } // Tristan
 		;
 
 BlockStatements_Opt
@@ -481,7 +481,7 @@ ShiftExpression
 AdditiveExpression
 		: MultiplicativeExpression									{ $$ = $1; } //Nathan
 		| AdditiveExpression '+' MultiplicativeExpression			{ $$ = new BinaryExpression($1, "+", $3); } //Nathan
-		| AdditiveExpression '-' MultiplicativeExpression			{ $$ = new BinaryExpression($1, "+", $3); } //Nathan
+		| AdditiveExpression '-' MultiplicativeExpression			{ $$ = new BinaryExpression($1, "-", $3); } //Nathan
 		;
 
 MultiplicativeExpression
