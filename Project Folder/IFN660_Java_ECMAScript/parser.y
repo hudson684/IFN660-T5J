@@ -450,54 +450,101 @@ ConditionalAndExpression
 
 InclusiveOrExpression
 		: ExclusiveOrExpression											{ $$ = $1; } //Nathan
-		// more here - Nathan
+		| InclusiveOrExpression '|' ExclusiveOrExpression
 		;
 
 ExclusiveOrExpression
 		: AndExpression													{ $$ = $1; } //Nathan
-		// more here - Nathan
+		| ExclusiveOrExpression '^' AndExpression
 		;
 
 AndExpression
 		: EqualityExpression											{ $$ = $1; } //Nathan
-		// more here - Nathan
+		| AndExpression '&' EqualityExpression
 		;
 
 EqualityExpression
 		: RelationalExpression											{ $$ = $1; } //Nathan
-		// more here - Nathan
-		;
+		| EqualityExpression EQUAL RelationalExpression 
+		| EqualityExpression NOT_EQUAL RelationalExpression
+		;		
 
 RelationalExpression
 		: ShiftExpression												{ $$ = $1; } //Nathan
-		// more here - Nathan
+		| RelationalExpression '<' ShiftExpression
+		| RelationalExpression '>' ShiftExpression
+		| RelationalExpression LESS_THAN_OR_EQUAL ShiftExpression
+		| RelationalExpression GREATER_OR_EQUAL ShiftExpression
+		| RelationalExpression INSTANCEOF ReferenceType
 		;
 
 ShiftExpression
 		: AdditiveExpression											{ $$ = $1; } //Nathan
-		// more here - Nathan
+		| ShiftExpression LEFT_SHIFT AdditiveExpression
+		| ShiftExpression SIGNED_RIGHT_SHIFT AdditiveExpression
+		| ShiftExpression UNSIGNED_RIGHT_SHIFT AdditiveExpression
 		;
 
 AdditiveExpression
-		: MultiplicativeExpression									{ $$ = $1; } //Nathan
-		| AdditiveExpression '+' MultiplicativeExpression			{ $$ = new BinaryExpression($1, "+", $3); } //Nathan
-		| AdditiveExpression '-' MultiplicativeExpression			{ $$ = new BinaryExpression($1, "+", $3); } //Nathan
+		: MultiplicativeExpression										{ $$ = $1; } //Nathan
+		| AdditiveExpression '+' MultiplicativeExpression
+		| AdditiveExpression '-' MultiplicativeExpression
 		;
 
 MultiplicativeExpression
-		: UnaryExpression											{ $$ = $1; } //Nathan
-		// more here - Nathan
+		: UnaryExpression
+		| MultiplicativeExpression '*' UnaryExpression
+		| MultiplicativeExpression '/' UnaryExpression
+		| MultiplicativeExpression '%' UnaryExpression
 		;
 
 UnaryExpression
-		: PostfixExpression											{ $$ = $1; } //Nathan
-		// more here - Nathan
+		: PostfixExpression											{ $$ = $1; }   // Nathan; fixed by Khoa
+		| PreIncrementExpression									{ $$ = $1; } // Khoa
+		| PreDecrementExpression									{ $$ = $1; } // Khoa
+		| '+' UnaryExpression										{ $$ = new UnaryExpression($2); } // Khoa
+		| '-' UnaryExpression										{ $$ = new UnaryExpression($2); } // Khoa
+		| UnaryExpressionNotPlusMinus								{ $$ = $1; } // Khoa
+		;
+
+PreIncrementExpression
+		: '+''+' UnaryExpression									{ $$ = new UnaryExpression($2); }  // Khoa
+		;
+
+PreDecrementExpression
+		: '-''-' UnaryExpression									{ $$ = new UnaryExpression($2); } // Khoa
+		;
+
+UnaryExpressionNotPlusMinus
+		: PostfixExpression											{ $$ = $1} // Khoa
+		| '~' UnaryExpression										{ $$ = new UnaryExpression($2); } // Khoa
+		| '!' UnaryExpression										{ $$ = new UnaryExpression($2); } // Khoa
+		| CastExpression											{ $$ = $1} // Khoa
 		;
 
 PostfixExpression
 		: Primary													{ $$ = $1; } //Nathan
 		| ExpressionName											{ $$ = $1; } //Nathan
-		// more here - Nathan
+		| PostIncrementExpression
+		| PostDecrementExpression
+		;
+
+PostIncrementExpression
+		: PostfixExpression '+''+'
+		;
+
+PostDecrementExpression
+		: PostfixExpression '-''-'
+		;
+
+CastExpression
+		: '(' PrimitiveType ')' UnaryExpression
+		| '(' ReferenceType AdditionalBounds ')' UnaryExpressionNotPlusMinus
+		| '(' ReferenceType AdditionalBounds ')' LambdaExpression
+		;
+
+ConstantExpression
+		: Expression
 		;
 
 %%

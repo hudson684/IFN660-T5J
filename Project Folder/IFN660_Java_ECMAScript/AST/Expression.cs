@@ -72,7 +72,7 @@ namespace IFN660_Java_ECMAScript.AST
     //changed made by Josh so that the assignmentStatement is correct
     public class BinaryExpression : Expression
     {
-        private Expression lhs, rhs;
+        private Expression lhs;
         private string oper;
         public BinaryExpression(Expression lhs, string oper, Expression rhs)
         {
@@ -86,7 +86,19 @@ namespace IFN660_Java_ECMAScript.AST
             return lhs.ResolveNames(scope) & rhs.ResolveNames(scope);
         }
     }
+    public class UnaryExpression : Expression
+    {
+        private Expression expression;
+        public UnaryExpression(Expression expression)
+        {
+            this.expression = expression;
+        }
 
+        public override bool ResolveNames(LexicalScope scope)
+        {
+            return expression.ResolveNames(scope);
+        }
+    }
 }
 
 
