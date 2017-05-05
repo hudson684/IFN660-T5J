@@ -3,6 +3,6 @@
     public static void main(String[] args) 
 	{
 		int x ;
-		x = 42;
+		x = 42 & 21;
     }
 }

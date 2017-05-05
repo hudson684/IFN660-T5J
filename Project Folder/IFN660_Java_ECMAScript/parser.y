@@ -450,22 +450,21 @@ ConditionalAndExpression
 
 InclusiveOrExpression
 		: ExclusiveOrExpression											{ $$ = $1; } //Nathan
-		// more here - Nathan
+		| InclusiveOrExpression '|' ExclusiveOrExpression				{ $$ = new BinaryExpression($1, "|", $3); } //sneha
 		;
 
 ExclusiveOrExpression
 		: AndExpression													{ $$ = $1; } //Nathan
-		// more here - Nathan
+		| ExclusiveOrExpression '^' AndExpression						{ $$ = new BinaryExpression($1, "^", $3); } //sneha
 		;
 
 AndExpression
 		: EqualityExpression											{ $$ = $1; } //Nathan
-		// more here - Nathan
+		| AndExpression '&' EqualityExpression							{ $$ = new BinaryExpression($1, "&", $3); } //sneha
 		;
 
 EqualityExpression
 		: RelationalExpression											{ $$ = $1; } //Nathan
-		// more here - Nathan
 		;
 
 RelationalExpression
@@ -481,7 +480,7 @@ ShiftExpression
 AdditiveExpression
 		: MultiplicativeExpression									{ $$ = $1; } //Nathan
 		| AdditiveExpression '+' MultiplicativeExpression			{ $$ = new BinaryExpression($1, "+", $3); } //Nathan
-		| AdditiveExpression '-' MultiplicativeExpression			{ $$ = new BinaryExpression($1, "+", $3); } //Nathan
+		| AdditiveExpression '-' MultiplicativeExpression			{ $$ = new BinaryExpression($1, "-", $3); } //Nathan
 		;
 
 MultiplicativeExpression
