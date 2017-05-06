@@ -30,12 +30,19 @@ namespace IFN660_Java_ECMAScript.AST
 		{
             lhs.TypeCheck();
             rhs.TypeCheck();
-            if (!rhs.type.IsAssignableFrom(lhs.type))
+
+            // check that the types are the same
+            if (!lhs.type.isTheSameAs(rhs.type))
             {
-                System.Console.WriteLine("Type error in AssignmentExpression\n");
-                throw new Exception("TypeCheck error");
+                if (!lhs.type.isCompatibleWith(rhs.type))
+                {
+                    System.Console.WriteLine("Type error in AssignmentExpression\n");
+                    throw new Exception("TypeCheck error");
+                }
             }
-            type = rhs.type;
+
+            // set type to the lhs type
+            type = lhs.type;
 		}
 
 
@@ -70,7 +77,7 @@ namespace IFN660_Java_ECMAScript.AST
 		}
 		public override void TypeCheck()
 		{
-            type = declarationRef.GetType();
+            type = declarationRef.ObtainType();
 			
 		}
 
@@ -91,7 +98,7 @@ namespace IFN660_Java_ECMAScript.AST
 		}
 		public override void TypeCheck()
 		{
-            type = new IntType();
+            type = new NamedType("INT");
 		} 
 
 	}
@@ -119,20 +126,20 @@ namespace IFN660_Java_ECMAScript.AST
             switch (oper)
             {
                 case "<":
-                    if (!lhs.type.Equals(new IntType()) || !lhs.type.Equals(new IntType()))
+                    if (!lhs.type.Equals(new NamedType("INT")) || !lhs.type.Equals(new NamedType("INT")))
                     {
                         System.Console.WriteLine("Invalid arguments for less than expression\n");
                         throw new Exception("TypeCheck error");
                     }
-                    type = new BoolType();
+                    type = new NamedType("BOOLEAN");
                     break;
                 case "+":
-                    if (!lhs.type.Equals(new IntType()) || !lhs.type.Equals(new IntType()))
+                    if (!lhs.type.Equals(new NamedType("INT")) || !lhs.type.Equals(new NamedType("INT")))
                     {
                         System.Console.WriteLine("Invalid arguments for less than expression\n");
                         throw new Exception("TypeCheck error");
                     }
-                    type = new IntType();
+                    type = new NamedType("INT");
                     break;
                
                 default:

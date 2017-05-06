@@ -46,9 +46,9 @@ namespace IFN660_Java_ECMAScript.AST
             classBody.ForEach(x => x.TypeCheck());
         }
 
-        public Type GetType()
+        public Type ObtainType()
         {
-            return null;
+            return new NamedType("CLASS");
         }
 
     }

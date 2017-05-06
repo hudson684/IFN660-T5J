@@ -27,7 +27,7 @@ namespace IFN660_Java_ECMAScript.AST
 			this.Cond.TypeCheck();
 			try
 			{
-				if (!Cond.type.Equals(new BoolType()))
+				if (!Cond.type.Equals(new NamedType("BOOLEAN")))
 				{
 					Console.WriteLine("Invalid type for if statement condition\n");
 				}
@@ -69,7 +69,7 @@ namespace IFN660_Java_ECMAScript.AST
             this.Cond.TypeCheck();
             try
             {
-                if (!Cond.type.Equals(new BoolType()))
+                if (!Cond.type.Equals(new NamedType("BOOLEAN")))
                 {
                     Console.WriteLine("Invalid type for if statement condition\n");
                 }
@@ -120,7 +120,7 @@ namespace IFN660_Java_ECMAScript.AST
             this.TestExpr.TypeCheck();
             try
             {
-                if (!TestExpr.type.Equals(new BoolType()))
+                if (!TestExpr.type.Equals(new NamedType("BOOLEAN")))
                 {
                     Console.WriteLine("Invalid type for if statement condition\n");
                 }
@@ -149,9 +149,9 @@ namespace IFN660_Java_ECMAScript.AST
 		public override void TypeCheck()
 		{
             this.expr.TypeCheck();
-            try
+            /*try
             {
-                if (!expr.type.Equals(new BoolType()))
+                if (!expr.type.Equals(new NamedType("BOOLEAN")))
                 {
                     Console.WriteLine("Invalid type for if statement condition\n");
                 }
@@ -159,7 +159,7 @@ namespace IFN660_Java_ECMAScript.AST
             catch (Exception e)
             {
                 throw new Exception("TypeCheck error");
-            }
+            }*/
         }
 
 	}
@@ -189,7 +189,7 @@ namespace IFN660_Java_ECMAScript.AST
 			
 		}
 
-        public Type GetType()
+        public Type ObtainType()
         {
             return type;
         }
@@ -223,7 +223,7 @@ namespace IFN660_Java_ECMAScript.AST
 			
 		}
 
-        public Type GetType()
+        public Type ObtainType()
         {
             return type;
         }

@@ -8,7 +8,8 @@ namespace IFN660_Java_ECMAScript.AST
 {
 	public abstract class Type : Node
 	{
-		public static bool operator == (Type t1, Type t2)
+        /*
+        public static bool operator == (Type t1, Type t2)
 		{
 			return (object)t1 == (object)t2 || (object)t1 != null && (object)t2 !=null;
 		}
@@ -35,8 +36,15 @@ namespace IFN660_Java_ECMAScript.AST
 		//	throw new System.NotImplementedException();
 		//	return ReferenceEquals(type,this)? base.GetHashCode():type.GetHashCode();
 		//}
+        */
 
-		public bool IsAssignableFrom(Type type)
+        public abstract bool isTheSameAs(Type type);
+        public abstract bool isCompatibleWith(Type type);
+
+        
+
+        /*
+        public bool IsAssignableFrom(Type type)
 		{
 			if(this.Equals(type))
 			{
@@ -62,13 +70,14 @@ namespace IFN660_Java_ECMAScript.AST
             //}
             return false;
         }
+        */
 	}
 
 	public class NamedType : Type
 	{
 		private string elementType;
 
-		public NamedType(string elementType)
+        public NamedType(string elementType)
 		{
 			this.elementType = elementType;
 		}
@@ -82,9 +91,119 @@ namespace IFN660_Java_ECMAScript.AST
            
 		}
 
-	}
+        public override bool isTheSameAs(Type type)
+        {
+            NamedType nType = type as NamedType; // try to cast type argument as NamedType
+            if (nType != null)
+            {
+                if (this.elementType == nType.elementType)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            else
+            {
+                return false;
+            }
+        }
 
-	public class IntType : Type
+        public override bool isCompatibleWith(Type type)
+        {
+            bool compatible = true;
+            String[] primitives = { "BOOLEAN", "BYTE", "SHORT", "CHAR", "INT", "LONG", "FLOAT", "DOUBLE" };
+
+            NamedType nType = type as NamedType; // try to cast type argument as NamedType
+            if (nType != null)
+            {
+                if (primitives.Contains(this.elementType))
+                {
+                    if (primitives.Contains(nType.elementType))
+                    {
+                        // Widening Primitve Conversion - see 5.1.2 of the Java spec
+
+                        int thisIndex = Array.IndexOf(primitives, this.elementType);
+                        int thatIndex = Array.IndexOf(primitives, nType.elementType);
+
+                        // check if either are boolean
+                        if (thisIndex == 0 || thatIndex == 0)
+                            compatible = false;
+
+                        if (thisIndex > thatIndex) // should be OK, just need to check a couple of special cases
+                        {
+                            if (thisIndex == 3) // nothing can be converted to a char
+                                compatible = false;
+                        }
+                        else
+                        {
+                            compatible = false; // can't convert higher index to lower index
+                        }
+                    }
+                    else
+                    {
+                        // do something to handle referenceTypes
+                        compatible = false;
+                    }
+                }
+                else
+                {
+                    // do something to handle referenceTypes
+                    compatible = false;
+                }
+            }
+            else
+            {
+                compatible = false;
+            }
+
+            return compatible;
+        }
+
+    }
+
+    public class ArrayType : Type
+    {
+        private Type elementType;
+
+        public ArrayType(Type elementType)
+        {
+            this.elementType = elementType;
+        }
+
+        public override bool ResolveNames(LexicalScope scope)
+        {
+            return true;
+        }
+        public override void TypeCheck()
+        {
+
+        }
+
+        public override bool isTheSameAs(Type type)
+        {
+            ArrayType nType = type as ArrayType; // try to cast type argument as ArrayType
+            if (nType != null)
+            {
+                return this.elementType.isTheSameAs(nType.elementType); //recursive call to check the next level type is the same
+            }
+            else
+            {
+                return false;
+            }
+
+        }
+
+        public override bool isCompatibleWith(Type type)
+        {
+            return true;
+        }
+    }
+
+        /*
+     * public class IntType : Type
 	{
         public override bool ResolveNames(LexicalScope scope)
 		{
@@ -112,48 +231,27 @@ namespace IFN660_Java_ECMAScript.AST
 		}
 
 	}
-
-
-	public class ArrayType : Type
-	{
-		private Type elementType;
-
-		public ArrayType(Type elementType)
-		{
-			this.elementType = elementType;
-		}
-
-		public override bool ResolveNames(LexicalScope scope)
-		{
-			return true;
-		}
-		public override void TypeCheck()
-		{
-			
-		}
-
-	}
-
-	/*
-    public class VoidType : Type
-    {
-        public VoidType ()
+    */
+        /*
+        public class VoidType : Type
         {
+            public VoidType ()
+            {
+            }
         }
-    }
 
-    public class StringType : Type
-    {
-        public StringType ()
+        public class StringType : Type
         {
+            public StringType ()
+            {
+            }
         }
-    }
 
-    public class IntegerType : Type
-    {
-        public IntegerType()
+        public class IntegerType : Type
         {
+            public IntegerType()
+            {
+            }
         }
-    }
-     * */
+         * */
 }

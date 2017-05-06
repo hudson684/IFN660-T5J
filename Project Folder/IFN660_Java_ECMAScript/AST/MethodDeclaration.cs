@@ -47,13 +47,13 @@ namespace IFN660_Java_ECMAScript.AST
 		public override void TypeCheck()
 		{
             returnType.TypeCheck();
-            //statementList.ForEach(x => x.TypeCheck());
+            statementList.TypeCheck();
             args.ForEach(x => x.TypeCheck());
 		}
 
-        public Type GetType()
+        public Type ObtainType()
         {
-            return null;
+            return returnType;
         }
 
 	}
