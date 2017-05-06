@@ -468,44 +468,44 @@ ConditionalAndExpression
 
 InclusiveOrExpression
 		: ExclusiveOrExpression											{ $$ = $1; } //Nathan
-		| InclusiveOrExpression '|' ExclusiveOrExpression
+		| InclusiveOrExpression '|' ExclusiveOrExpression				{ $$ = new BinaryExpression($1, "|", $3); }
 		;
 
 ExclusiveOrExpression
 		: AndExpression													{ $$ = $1; } //Nathan
-		| ExclusiveOrExpression '^' AndExpression
+		| ExclusiveOrExpression '^' AndExpression						{ $$ = new BinaryExpression($1, "^", $3); }
 		;
 
 AndExpression
 		: EqualityExpression											{ $$ = $1; } //Nathan
-		| AndExpression '&' EqualityExpression
+		| AndExpression '&' EqualityExpression							{ $$ = new BinaryExpression($1, "&", $3); }
 		;
 
 EqualityExpression
 		: RelationalExpression											{ $$ = $1; } //Nathan
-		| EqualityExpression EQUAL RelationalExpression 
-		| EqualityExpression NOT_EQUAL RelationalExpression
+		| EqualityExpression EQUAL RelationalExpression					{ $$ = new BinaryExpression($1, "==", $3); }
+		| EqualityExpression NOT_EQUAL RelationalExpression				{ $$ = new BinaryExpression($1, "!=", $3); }	
 		;		
 
 RelationalExpression
 		: ShiftExpression												{ $$ = $1; } //Nathan
-		| RelationalExpression '<' ShiftExpression
-		| RelationalExpression '>' ShiftExpression
-		| RelationalExpression LESS_THAN_OR_EQUAL ShiftExpression
-		| RelationalExpression GREATER_OR_EQUAL ShiftExpression
-		| RelationalExpression INSTANCEOF ReferenceType
+		| RelationalExpression '<' ShiftExpression						{ $$ = new BinaryExpression($1, "<", $3); }
+		| RelationalExpression '>' ShiftExpression						{ $$ = new BinaryExpression($1, ">", $3); }
+		| RelationalExpression LESS_THAN_OR_EQUAL ShiftExpression		{ $$ = new BinaryExpression($1, "<=", $3); }
+		| RelationalExpression GREATER_OR_EQUAL ShiftExpression			{ $$ = new BinaryExpression($1, ">=", $3); }
+		| RelationalExpression INSTANCEOF ReferenceType					{ $$ = new BinaryExpression($1, "instanceof", $3); }
 		;
 
 ShiftExpression
 		: AdditiveExpression											{ $$ = $1; } //Nathan
-		| ShiftExpression LEFT_SHIFT AdditiveExpression
-		| ShiftExpression SIGNED_RIGHT_SHIFT AdditiveExpression
-		| ShiftExpression UNSIGNED_RIGHT_SHIFT AdditiveExpression
+		| ShiftExpression LEFT_SHIFT AdditiveExpression					{ $$ = new BinaryExpression($1, "<<", $3); }
+		| ShiftExpression SIGNED_RIGHT_SHIFT AdditiveExpression			{ $$ = new BinaryExpression($1, ">>", $3); }
+		| ShiftExpression UNSIGNED_RIGHT_SHIFT AdditiveExpression		{ $$ = new BinaryExpression($1, ">>>", $3); }
 		;
 
 AdditiveExpression
 		: MultiplicativeExpression										{ $$ = $1; } //Nathan
-		| AdditiveExpression '+' MultiplicativeExpression
+		| AdditiveExpression '+' MultiplicativeExpression				
 		| AdditiveExpression '-' MultiplicativeExpression
 		;
 
