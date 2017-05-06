@@ -87,6 +87,42 @@ namespace IFN660_Java_ECMAScript.AST
             return lhs.ResolveNames(scope) & rhs.ResolveNames(scope);
         }
     }
+
+    public class InstanceOfExpression : Expression
+    {
+        private Expression lhs;
+        private Type type;
+        public InstanceOfExpression(Expression lhs, Type type)
+        {
+            this.lhs = lhs;
+            this.type = type;
+        }
+
+        public override bool ResolveNames(LexicalScope scope)
+        {
+            return lhs.ResolveNames(scope);
+        }
+    }
+
+    public class MathematicalExpression : Expression
+    {
+        private Expression lhs;
+        private Expression rhs;
+        private string oper;
+        public MathematicalExpression(Expression lhs, string oper, Expression rhs)
+        {
+            this.lhs = lhs;
+            this.rhs = rhs;
+            this.oper = oper;
+        }
+
+        public override bool ResolveNames(LexicalScope scope)
+        {
+            return lhs.ResolveNames(scope) & rhs.ResolveNames(scope);
+        }
+    }
+
+
     public class PreUnaryExpression : Expression
     {
         private Expression expression;

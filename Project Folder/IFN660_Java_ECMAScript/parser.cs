@@ -4,9 +4,9 @@
 
 // GPPG version 1.5.2
 // Machine:  DESKTOP-1VMC0S8
-// DateTime: 6/05/2017 1:08:00 PM
+// DateTime: 6/05/2017 1:37:16 PM
 // UserName: hudso
-// Input file <parser.y - 6/05/2017 1:07:55 PM>
+// Input file <parser.y - 6/05/2017 1:37:12 PM>
 
 // options: conflicts lines gplex conflicts
 
@@ -77,11 +77,11 @@ public class ScanObj {
 [GeneratedCodeAttribute( "Gardens Point Parser Generator", "1.5.2")]
 public class Parser: ShiftReduceParser<ValueType, LexLocation>
 {
-  // Verbatim content from parser.y - 6/05/2017 1:07:55 PM
+  // Verbatim content from parser.y - 6/05/2017 1:37:12 PM
 #line 7 "parser.y"
 public static Statement root;
 #line default
-  // End verbatim content from parser.y - 6/05/2017 1:07:55 PM
+  // End verbatim content from parser.y - 6/05/2017 1:37:12 PM
 
 #pragma warning disable 649
   private static Dictionary<int, string> aliases;
@@ -106,25 +106,25 @@ public static Statement root;
       "MethodBody", "FormalParameters", "FormalParameterList", "FormalParameterList_Opt", 
       "ImportDeclarations", "Result", "FloatingPointType", "IntegralType", "NumericType", 
       "UnannType", "UnannPrimitiveType", "UnannReferenceType", "UnannArrayType", 
-      "UnannTypeVariable", "ClassModifier", "MethodModifier", "VariableModifier", 
-      "ClassModifiers", "MethodModifiers", "VariableModifiers", "VariableDeclaratorId", 
-      "VariableDeclarator", "MethodHeader", "MethodDeclarator", "VariableDeclaratorList", 
-      "Program", "$accept", "Empty", "Dims_Opt", "Dims", "PrimitiveType", "ReferenceType", 
-      "TypeVariable", "AssignmentOperator", "LambdaParameters", "AdditionalBounds", 
-      "AdditionalBound", "ConstantExpression", };
+      "UnannTypeVariable", "ReferenceType", "ClassModifier", "MethodModifier", 
+      "VariableModifier", "ClassModifiers", "MethodModifiers", "VariableModifiers", 
+      "VariableDeclaratorId", "VariableDeclarator", "MethodHeader", "MethodDeclarator", 
+      "VariableDeclaratorList", "Program", "$accept", "Empty", "Dims_Opt", "Dims", 
+      "PrimitiveType", "TypeVariable", "AssignmentOperator", "LambdaParameters", 
+      "AdditionalBounds", "AdditionalBound", "ConstantExpression", };
 
   static Parser() {
-    states[0] = new State(-5,new int[]{-81,1,-35,3,-49,4});
+    states[0] = new State(-5,new int[]{-82,1,-35,3,-49,4});
     states[1] = new State(new int[]{129,2});
     states[2] = new State(-1);
     states[3] = new State(-2);
     states[4] = new State(-6,new int[]{-60,5});
     states[5] = new State(-8,new int[]{-50,6});
-    states[6] = new State(new int[]{129,-4,172,-13,155,-13,150,-13,145,-13,132,-13,170,-13,168,-13,175,-13},new int[]{-36,7,-37,8,-38,9,-73,10});
+    states[6] = new State(new int[]{129,-4,172,-13,155,-13,150,-13,145,-13,132,-13,170,-13,168,-13,175,-13},new int[]{-36,7,-37,8,-38,9,-74,10});
     states[7] = new State(-7);
     states[8] = new State(-9);
     states[9] = new State(-10);
-    states[10] = new State(new int[]{172,11,155,198,150,199,145,200,132,201,170,202,168,203,175,204},new int[]{-70,197});
+    states[10] = new State(new int[]{172,11,155,198,150,199,145,200,132,201,170,202,168,203,175,204},new int[]{-71,197});
     states[11] = new State(new int[]{131,12});
     states[12] = new State(-21,new int[]{-6,13});
     states[13] = new State(-22,new int[]{-7,14});
@@ -132,12 +132,12 @@ public static Statement root;
     states[15] = new State(new int[]{123,17},new int[]{-51,16});
     states[16] = new State(-11);
     states[17] = new State(-26,new int[]{-52,18});
-    states[18] = new State(new int[]{125,19,171,-31,131,-31,152,-31,165,-31,164,-31,174,-31,167,-31,178,-31,148,-31,142,-31,155,-31,170,-31},new int[]{-39,20,-46,21,-47,22,-74,23});
+    states[18] = new State(new int[]{125,19,171,-31,131,-31,152,-31,165,-31,164,-31,174,-31,167,-31,178,-31,148,-31,142,-31,155,-31,170,-31},new int[]{-39,20,-46,21,-47,22,-75,23});
     states[19] = new State(-24);
     states[20] = new State(-25);
     states[21] = new State(-27);
     states[22] = new State(-28);
-    states[23] = new State(new int[]{171,193,131,190,152,54,165,55,164,56,174,57,167,58,178,60,148,61,142,62,155,195,170,196},new int[]{-78,24,-71,172,-61,173,-65,194,-67,46,-68,47,-69,48,-66,51,-64,52,-63,53,-62,59});
+    states[23] = new State(new int[]{171,193,131,190,152,54,165,55,164,56,174,57,167,58,178,60,148,61,142,62,155,195,170,196},new int[]{-79,24,-72,172,-61,173,-65,194,-67,46,-68,47,-69,48,-66,51,-64,52,-63,53,-62,59});
     states[24] = new State(new int[]{123,27,59,171},new int[]{-56,25,-55,26});
     states[25] = new State(-29);
     states[26] = new State(-73);
@@ -149,12 +149,12 @@ public static Statement root;
     states[32] = new State(-80);
     states[33] = new State(new int[]{59,34});
     states[34] = new State(-82);
-    states[35] = new State(new int[]{131,40},new int[]{-80,36,-77,45,-76,39});
+    states[35] = new State(new int[]{131,40},new int[]{-81,36,-78,45,-77,39});
     states[36] = new State(new int[]{44,37,59,-83});
-    states[37] = new State(new int[]{131,40},new int[]{-77,38,-76,39});
+    states[37] = new State(new int[]{131,40},new int[]{-78,38,-77,39});
     states[38] = new State(-85);
     states[39] = new State(-86);
-    states[40] = new State(new int[]{91,43,44,-49,59,-49,41,-49},new int[]{-84,41,-85,42});
+    states[40] = new State(new int[]{91,43,44,-49,59,-49,41,-49},new int[]{-85,41,-86,42});
     states[41] = new State(-87);
     states[42] = new State(-48);
     states[43] = new State(new int[]{93,44});
@@ -162,7 +162,7 @@ public static Statement root;
     states[45] = new State(-84);
     states[46] = new State(-51);
     states[47] = new State(-70);
-    states[48] = new State(new int[]{91,43},new int[]{-85,49});
+    states[48] = new State(new int[]{91,43},new int[]{-86,49});
     states[49] = new State(-71);
     states[50] = new State(new int[]{91,-72,61,-94});
     states[51] = new State(-52);
@@ -242,7 +242,7 @@ public static Statement root;
     states[125] = new State(new int[]{182,108,131,79,197,113,198,116,43,118,45,120,126,123,33,125,40,128},new int[]{-25,126,-26,102,-27,105,-10,106,-1,107,-5,109,-32,110,-33,111,-28,112,-29,115,-30,122,-31,127});
     states[126] = new State(-147);
     states[127] = new State(-148);
-    states[128] = new State(-55,new int[]{-86,129,-87,132});
+    states[128] = new State(-55,new int[]{-87,129,-70,132});
     states[129] = new State(new int[]{41,130});
     states[130] = new State(new int[]{182,108,131,79,197,113,198,116,43,118,45,120,126,123,33,125,40,128},new int[]{-25,131,-26,102,-27,105,-10,106,-1,107,-5,109,-32,110,-33,111,-28,112,-29,115,-30,122,-31,127});
     states[131] = new State(-155);
@@ -271,7 +271,7 @@ public static Statement root;
     states[154] = new State(new int[]{199,96,200,146,201,148,60,-123,62,-123,192,-123,191,-123,159,-123,190,-123,193,-123,38,-123,94,-123,124,-123,195,-123,196,-123,59,-123});
     states[155] = new State(new int[]{182,108,131,79,197,113,198,116,43,118,45,120,126,123,33,125,40,128},new int[]{-22,156,-23,150,-24,145,-25,142,-26,102,-27,105,-10,106,-1,107,-5,109,-32,110,-33,111,-28,112,-29,115,-30,122,-31,127});
     states[156] = new State(new int[]{199,96,200,146,201,148,60,-124,62,-124,192,-124,191,-124,159,-124,190,-124,193,-124,38,-124,94,-124,124,-124,195,-124,196,-124,59,-124});
-    states[157] = new State(-57,new int[]{-87,158});
+    states[157] = new State(-57,new int[]{-70,158});
     states[158] = new State(-125);
     states[159] = new State(new int[]{199,96,200,146,201,148,60,-120,62,-120,192,-120,191,-120,159,-120,190,-120,193,-120,38,-120,94,-120,124,-120,195,-120,196,-120,59,-120});
     states[160] = new State(new int[]{182,108,131,79,197,113,198,116,43,118,45,120,126,123,33,125,40,128},new int[]{-21,161,-22,159,-23,150,-24,145,-25,142,-26,102,-27,105,-10,106,-1,107,-5,109,-32,110,-33,111,-28,112,-29,115,-30,122,-31,127});
@@ -287,21 +287,21 @@ public static Statement root;
     states[170] = new State(-78);
     states[171] = new State(-74);
     states[172] = new State(-30);
-    states[173] = new State(new int[]{131,177},new int[]{-79,174});
-    states[174] = new State(-3,new int[]{-45,175,-83,176});
+    states[173] = new State(new int[]{131,177},new int[]{-80,174});
+    states[174] = new State(-3,new int[]{-45,175,-84,176});
     states[175] = new State(-34);
     states[176] = new State(-37);
     states[177] = new State(new int[]{40,178});
-    states[178] = new State(new int[]{131,-46,152,-46,165,-46,164,-46,174,-46,167,-46,178,-46,148,-46,142,-46,168,-46,41,-40},new int[]{-59,179,-58,182,-57,183,-48,192,-75,186});
+    states[178] = new State(new int[]{131,-46,152,-46,165,-46,164,-46,174,-46,167,-46,178,-46,148,-46,142,-46,168,-46,41,-40},new int[]{-59,179,-58,182,-57,183,-48,192,-76,186});
     states[179] = new State(new int[]{41,180});
-    states[180] = new State(new int[]{91,43,123,-49,59,-49},new int[]{-84,181,-85,42});
+    states[180] = new State(new int[]{91,43,123,-49,59,-49},new int[]{-85,181,-86,42});
     states[181] = new State(-38);
     states[182] = new State(-39);
     states[183] = new State(new int[]{44,184,41,-41});
-    states[184] = new State(-46,new int[]{-48,185,-75,186});
+    states[184] = new State(-46,new int[]{-48,185,-76,186});
     states[185] = new State(-43);
-    states[186] = new State(new int[]{131,190,152,54,165,55,164,56,174,57,167,58,178,60,148,61,142,62,168,191},new int[]{-65,187,-72,189,-67,46,-68,47,-69,48,-66,51,-64,52,-63,53,-62,59});
-    states[187] = new State(new int[]{131,40},new int[]{-76,188});
+    states[186] = new State(new int[]{131,190,152,54,165,55,164,56,174,57,167,58,178,60,148,61,142,62,168,191},new int[]{-65,187,-73,189,-67,46,-68,47,-69,48,-66,51,-64,52,-63,53,-62,59});
+    states[187] = new State(new int[]{131,40},new int[]{-77,188});
     states[188] = new State(-44);
     states[189] = new State(-45);
     states[190] = new State(-72);
@@ -322,9 +322,9 @@ public static Statement root;
 
     for (int sNo = 0; sNo < states.Length; sNo++) states[sNo].number = sNo;
 
-    rules[1] = new Rule(-82, new int[]{-81,129});
-    rules[2] = new Rule(-81, new int[]{-35});
-    rules[3] = new Rule(-83, new int[]{});
+    rules[1] = new Rule(-83, new int[]{-82,129});
+    rules[2] = new Rule(-82, new int[]{-35});
+    rules[3] = new Rule(-84, new int[]{});
     rules[4] = new Rule(-35, new int[]{-49,-60,-50});
     rules[5] = new Rule(-49, new int[]{});
     rules[6] = new Rule(-60, new int[]{});
@@ -332,16 +332,16 @@ public static Statement root;
     rules[8] = new Rule(-50, new int[]{});
     rules[9] = new Rule(-36, new int[]{-37});
     rules[10] = new Rule(-37, new int[]{-38});
-    rules[11] = new Rule(-38, new int[]{-73,172,131,-6,-7,-8,-51});
-    rules[12] = new Rule(-73, new int[]{-73,-70});
-    rules[13] = new Rule(-73, new int[]{});
-    rules[14] = new Rule(-70, new int[]{155});
-    rules[15] = new Rule(-70, new int[]{150});
-    rules[16] = new Rule(-70, new int[]{145});
-    rules[17] = new Rule(-70, new int[]{132});
-    rules[18] = new Rule(-70, new int[]{170});
-    rules[19] = new Rule(-70, new int[]{168});
-    rules[20] = new Rule(-70, new int[]{175});
+    rules[11] = new Rule(-38, new int[]{-74,172,131,-6,-7,-8,-51});
+    rules[12] = new Rule(-74, new int[]{-74,-71});
+    rules[13] = new Rule(-74, new int[]{});
+    rules[14] = new Rule(-71, new int[]{155});
+    rules[15] = new Rule(-71, new int[]{150});
+    rules[16] = new Rule(-71, new int[]{145});
+    rules[17] = new Rule(-71, new int[]{132});
+    rules[18] = new Rule(-71, new int[]{170});
+    rules[19] = new Rule(-71, new int[]{168});
+    rules[20] = new Rule(-71, new int[]{175});
     rules[21] = new Rule(-6, new int[]{});
     rules[22] = new Rule(-7, new int[]{});
     rules[23] = new Rule(-8, new int[]{});
@@ -350,37 +350,37 @@ public static Statement root;
     rules[26] = new Rule(-52, new int[]{});
     rules[27] = new Rule(-39, new int[]{-46});
     rules[28] = new Rule(-46, new int[]{-47});
-    rules[29] = new Rule(-47, new int[]{-74,-78,-56});
-    rules[30] = new Rule(-74, new int[]{-74,-71});
-    rules[31] = new Rule(-74, new int[]{});
-    rules[32] = new Rule(-71, new int[]{155});
-    rules[33] = new Rule(-71, new int[]{170});
-    rules[34] = new Rule(-78, new int[]{-61,-79,-45});
+    rules[29] = new Rule(-47, new int[]{-75,-79,-56});
+    rules[30] = new Rule(-75, new int[]{-75,-72});
+    rules[31] = new Rule(-75, new int[]{});
+    rules[32] = new Rule(-72, new int[]{155});
+    rules[33] = new Rule(-72, new int[]{170});
+    rules[34] = new Rule(-79, new int[]{-61,-80,-45});
     rules[35] = new Rule(-61, new int[]{171});
     rules[36] = new Rule(-61, new int[]{-65});
-    rules[37] = new Rule(-45, new int[]{-83});
-    rules[38] = new Rule(-79, new int[]{131,40,-59,41,-84});
+    rules[37] = new Rule(-45, new int[]{-84});
+    rules[38] = new Rule(-80, new int[]{131,40,-59,41,-85});
     rules[39] = new Rule(-59, new int[]{-58});
     rules[40] = new Rule(-59, new int[]{});
     rules[41] = new Rule(-58, new int[]{-57});
     rules[42] = new Rule(-57, new int[]{-48});
     rules[43] = new Rule(-57, new int[]{-57,44,-48});
-    rules[44] = new Rule(-48, new int[]{-75,-65,-76});
-    rules[45] = new Rule(-75, new int[]{-75,-72});
-    rules[46] = new Rule(-75, new int[]{});
-    rules[47] = new Rule(-72, new int[]{168});
-    rules[48] = new Rule(-84, new int[]{-85});
-    rules[49] = new Rule(-84, new int[]{});
-    rules[50] = new Rule(-85, new int[]{91,93});
+    rules[44] = new Rule(-48, new int[]{-76,-65,-77});
+    rules[45] = new Rule(-76, new int[]{-76,-73});
+    rules[46] = new Rule(-76, new int[]{});
+    rules[47] = new Rule(-73, new int[]{168});
+    rules[48] = new Rule(-85, new int[]{-86});
+    rules[49] = new Rule(-85, new int[]{});
+    rules[50] = new Rule(-86, new int[]{91,93});
     rules[51] = new Rule(-65, new int[]{-67});
     rules[52] = new Rule(-65, new int[]{-66});
     rules[53] = new Rule(-66, new int[]{-64});
     rules[54] = new Rule(-66, new int[]{142});
-    rules[55] = new Rule(-86, new int[]{});
-    rules[56] = new Rule(-86, new int[]{});
-    rules[57] = new Rule(-87, new int[]{});
-    rules[58] = new Rule(-87, new int[]{});
-    rules[59] = new Rule(-87, new int[]{});
+    rules[55] = new Rule(-87, new int[]{});
+    rules[56] = new Rule(-87, new int[]{});
+    rules[57] = new Rule(-70, new int[]{});
+    rules[58] = new Rule(-70, new int[]{});
+    rules[59] = new Rule(-70, new int[]{});
     rules[60] = new Rule(-88, new int[]{});
     rules[61] = new Rule(-64, new int[]{-63});
     rules[62] = new Rule(-64, new int[]{-62});
@@ -392,7 +392,7 @@ public static Statement root;
     rules[68] = new Rule(-62, new int[]{178});
     rules[69] = new Rule(-62, new int[]{148});
     rules[70] = new Rule(-67, new int[]{-68});
-    rules[71] = new Rule(-68, new int[]{-69,-85});
+    rules[71] = new Rule(-68, new int[]{-69,-86});
     rules[72] = new Rule(-69, new int[]{131});
     rules[73] = new Rule(-56, new int[]{-55});
     rules[74] = new Rule(-56, new int[]{59});
@@ -404,11 +404,11 @@ public static Statement root;
     rules[80] = new Rule(-44, new int[]{-43});
     rules[81] = new Rule(-44, new int[]{-34});
     rules[82] = new Rule(-43, new int[]{-42,59});
-    rules[83] = new Rule(-42, new int[]{-65,-80});
-    rules[84] = new Rule(-80, new int[]{-77});
-    rules[85] = new Rule(-80, new int[]{-80,44,-77});
-    rules[86] = new Rule(-77, new int[]{-76});
-    rules[87] = new Rule(-76, new int[]{131,-84});
+    rules[83] = new Rule(-42, new int[]{-65,-81});
+    rules[84] = new Rule(-81, new int[]{-78});
+    rules[85] = new Rule(-81, new int[]{-81,44,-78});
+    rules[86] = new Rule(-78, new int[]{-77});
+    rules[87] = new Rule(-77, new int[]{131,-85});
     rules[88] = new Rule(-34, new int[]{-41});
     rules[89] = new Rule(-41, new int[]{-40});
     rules[90] = new Rule(-40, new int[]{-2,59});
@@ -446,7 +446,7 @@ public static Statement root;
     rules[122] = new Rule(-21, new int[]{-21,62,-22});
     rules[123] = new Rule(-21, new int[]{-21,192,-22});
     rules[124] = new Rule(-21, new int[]{-21,191,-22});
-    rules[125] = new Rule(-21, new int[]{-21,159,-87});
+    rules[125] = new Rule(-21, new int[]{-21,159,-70});
     rules[126] = new Rule(-22, new int[]{-23});
     rules[127] = new Rule(-22, new int[]{-22,199,-23});
     rules[128] = new Rule(-22, new int[]{-22,200,-23});
@@ -476,9 +476,9 @@ public static Statement root;
     rules[152] = new Rule(-26, new int[]{-33});
     rules[153] = new Rule(-32, new int[]{-26,197});
     rules[154] = new Rule(-33, new int[]{-26,198});
-    rules[155] = new Rule(-31, new int[]{40,-86,41,-25});
-    rules[156] = new Rule(-31, new int[]{40,-87,-91,41,-30});
-    rules[157] = new Rule(-31, new int[]{40,-87,-91,41,-12});
+    rules[155] = new Rule(-31, new int[]{40,-87,41,-25});
+    rules[156] = new Rule(-31, new int[]{40,-70,-91,41,-30});
+    rules[157] = new Rule(-31, new int[]{40,-70,-91,41,-12});
     rules[158] = new Rule(-91, new int[]{});
     rules[159] = new Rule(-91, new int[]{});
     rules[160] = new Rule(-92, new int[]{});
@@ -995,9 +995,19 @@ public static Statement root;
                                     { CurrentSemanticValue.expr = ValueStack[ValueStack.Depth-1].expr; }
 #line default
         break;
+      case 112: // InclusiveOrExpression -> InclusiveOrExpression, '|', ExclusiveOrExpression
+#line 471 "parser.y"
+                                                       { CurrentSemanticValue.expr = new BinaryExpression(ValueStack[ValueStack.Depth-3].expr, "|", ValueStack[ValueStack.Depth-1].expr); }
+#line default
+        break;
       case 113: // ExclusiveOrExpression -> AndExpression
 #line 475 "parser.y"
                               { CurrentSemanticValue.expr = ValueStack[ValueStack.Depth-1].expr; }
+#line default
+        break;
+      case 114: // ExclusiveOrExpression -> ExclusiveOrExpression, '^', AndExpression
+#line 476 "parser.y"
+                                                 { CurrentSemanticValue.expr = new BinaryExpression(ValueStack[ValueStack.Depth-3].expr, "^", ValueStack[ValueStack.Depth-1].expr); }
 #line default
         break;
       case 115: // AndExpression -> EqualityExpression
@@ -1005,9 +1015,24 @@ public static Statement root;
                                  { CurrentSemanticValue.expr = ValueStack[ValueStack.Depth-1].expr; }
 #line default
         break;
+      case 116: // AndExpression -> AndExpression, '&', EqualityExpression
+#line 481 "parser.y"
+                                               { CurrentSemanticValue.expr = new BinaryExpression(ValueStack[ValueStack.Depth-3].expr, "&", ValueStack[ValueStack.Depth-1].expr); }
+#line default
+        break;
       case 117: // EqualityExpression -> RelationalExpression
 #line 485 "parser.y"
                                    { CurrentSemanticValue.expr = ValueStack[ValueStack.Depth-1].expr; }
+#line default
+        break;
+      case 118: // EqualityExpression -> EqualityExpression, EQUAL, RelationalExpression
+#line 486 "parser.y"
+                                                      { CurrentSemanticValue.expr = new BinaryExpression(ValueStack[ValueStack.Depth-3].expr, "==", ValueStack[ValueStack.Depth-1].expr); }
+#line default
+        break;
+      case 119: // EqualityExpression -> EqualityExpression, NOT_EQUAL, RelationalExpression
+#line 487 "parser.y"
+                                                         { CurrentSemanticValue.expr = new BinaryExpression(ValueStack[ValueStack.Depth-3].expr, "!=", ValueStack[ValueStack.Depth-1].expr); }
 #line default
         break;
       case 120: // RelationalExpression -> ShiftExpression
@@ -1015,14 +1040,80 @@ public static Statement root;
                                { CurrentSemanticValue.expr = ValueStack[ValueStack.Depth-1].expr; }
 #line default
         break;
+      case 121: // RelationalExpression -> RelationalExpression, '<', ShiftExpression
+#line 492 "parser.y"
+                                                  { CurrentSemanticValue.expr = new BinaryExpression(ValueStack[ValueStack.Depth-3].expr, "<", ValueStack[ValueStack.Depth-1].expr); }
+#line default
+        break;
+      case 122: // RelationalExpression -> RelationalExpression, '>', ShiftExpression
+#line 493 "parser.y"
+                                                  { CurrentSemanticValue.expr = new BinaryExpression(ValueStack[ValueStack.Depth-3].expr, ">", ValueStack[ValueStack.Depth-1].expr); }
+#line default
+        break;
+      case 123: // RelationalExpression -> RelationalExpression, LESS_THAN_OR_EQUAL, 
+                //                         ShiftExpression
+#line 494 "parser.y"
+                                                             { CurrentSemanticValue.expr = new BinaryExpression(ValueStack[ValueStack.Depth-3].expr, "<=", ValueStack[ValueStack.Depth-1].expr); }
+#line default
+        break;
+      case 124: // RelationalExpression -> RelationalExpression, GREATER_OR_EQUAL, ShiftExpression
+#line 495 "parser.y"
+                                                            { CurrentSemanticValue.expr = new BinaryExpression(ValueStack[ValueStack.Depth-3].expr, ">=", ValueStack[ValueStack.Depth-1].expr); }
+#line default
+        break;
+      case 125: // RelationalExpression -> RelationalExpression, INSTANCEOF, ReferenceType
+#line 496 "parser.y"
+                                                      { CurrentSemanticValue.expr = new InstanceOfExpression(ValueStack[ValueStack.Depth-3].expr, ValueStack[ValueStack.Depth-1].type); }
+#line default
+        break;
       case 126: // ShiftExpression -> AdditiveExpression
 #line 500 "parser.y"
                                  { CurrentSemanticValue.expr = ValueStack[ValueStack.Depth-1].expr; }
 #line default
         break;
+      case 127: // ShiftExpression -> ShiftExpression, LEFT_SHIFT, AdditiveExpression
+#line 501 "parser.y"
+                                                      { CurrentSemanticValue.expr = new BinaryExpression(ValueStack[ValueStack.Depth-3].expr, "<<", ValueStack[ValueStack.Depth-1].expr); }
+#line default
+        break;
+      case 128: // ShiftExpression -> ShiftExpression, SIGNED_RIGHT_SHIFT, AdditiveExpression
+#line 502 "parser.y"
+                                                            { CurrentSemanticValue.expr = new BinaryExpression(ValueStack[ValueStack.Depth-3].expr, ">>", ValueStack[ValueStack.Depth-1].expr); }
+#line default
+        break;
+      case 129: // ShiftExpression -> ShiftExpression, UNSIGNED_RIGHT_SHIFT, AdditiveExpression
+#line 503 "parser.y"
+                                                             { CurrentSemanticValue.expr = new BinaryExpression(ValueStack[ValueStack.Depth-3].expr, ">>>", ValueStack[ValueStack.Depth-1].expr); }
+#line default
+        break;
       case 130: // AdditiveExpression -> MultiplicativeExpression
 #line 507 "parser.y"
                                       { CurrentSemanticValue.expr = ValueStack[ValueStack.Depth-1].expr; }
+#line default
+        break;
+      case 131: // AdditiveExpression -> AdditiveExpression, '+', MultiplicativeExpression
+#line 508 "parser.y"
+                                                       { CurrentSemanticValue.expr = new MathematicalExpression(ValueStack[ValueStack.Depth-3].expr, "+", ValueStack[ValueStack.Depth-1].expr); }
+#line default
+        break;
+      case 132: // AdditiveExpression -> AdditiveExpression, '-', MultiplicativeExpression
+#line 509 "parser.y"
+                                                       { CurrentSemanticValue.expr = new MathematicalExpression(ValueStack[ValueStack.Depth-3].expr, "-", ValueStack[ValueStack.Depth-1].expr); }
+#line default
+        break;
+      case 134: // MultiplicativeExpression -> MultiplicativeExpression, '*', UnaryExpression
+#line 514 "parser.y"
+                                                     { CurrentSemanticValue.expr = new MathematicalExpression(ValueStack[ValueStack.Depth-3].expr, "*", ValueStack[ValueStack.Depth-1].expr); }
+#line default
+        break;
+      case 135: // MultiplicativeExpression -> MultiplicativeExpression, '/', UnaryExpression
+#line 515 "parser.y"
+                                                     { CurrentSemanticValue.expr = new MathematicalExpression(ValueStack[ValueStack.Depth-3].expr, "/", ValueStack[ValueStack.Depth-1].expr); }
+#line default
+        break;
+      case 136: // MultiplicativeExpression -> MultiplicativeExpression, '%', UnaryExpression
+#line 516 "parser.y"
+                                                     { CurrentSemanticValue.expr = new MathematicalExpression(ValueStack[ValueStack.Depth-3].expr, "%", ValueStack[ValueStack.Depth-1].expr); }
 #line default
         break;
       case 137: // UnaryExpression -> PostfixExpression

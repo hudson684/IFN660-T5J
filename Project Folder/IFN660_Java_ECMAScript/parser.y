@@ -46,7 +46,7 @@ public static Statement root;
 %type <stmts> ImportDeclarations
 
 %type <type> Result, FloatingPointType, IntegralType, NumericType
-%type <type> UnannType, UnannPrimitiveType, UnannReferenceType, UnannArrayType, UnannTypeVariable
+%type <type> UnannType, UnannPrimitiveType, UnannReferenceType, UnannArrayType, UnannTypeVariable, ReferenceType
 
 %type <modf> ClassModifier, MethodModifier, VariableModifier
 
@@ -493,7 +493,7 @@ RelationalExpression
 		| RelationalExpression '>' ShiftExpression						{ $$ = new BinaryExpression($1, ">", $3); }
 		| RelationalExpression LESS_THAN_OR_EQUAL ShiftExpression		{ $$ = new BinaryExpression($1, "<=", $3); }
 		| RelationalExpression GREATER_OR_EQUAL ShiftExpression			{ $$ = new BinaryExpression($1, ">=", $3); }
-		| RelationalExpression INSTANCEOF ReferenceType					{ $$ = new BinaryExpression($1, "instanceof", $3); }
+		| RelationalExpression INSTANCEOF ReferenceType					{ $$ = new InstanceOfExpression($1, $3); }
 		;
 
 ShiftExpression
@@ -505,17 +505,17 @@ ShiftExpression
 
 AdditiveExpression
 		: MultiplicativeExpression										{ $$ = $1; } //Nathan
-		| AdditiveExpression '+' MultiplicativeExpression				
-		| AdditiveExpression '-' MultiplicativeExpression
+		| AdditiveExpression '+' MultiplicativeExpression				{ $$ = new MathematicalExpression($1, "+", $3); }
+		| AdditiveExpression '-' MultiplicativeExpression				{ $$ = new MathematicalExpression($1, "-", $3); }
 		;
 
 MultiplicativeExpression
 		: UnaryExpression
-		| MultiplicativeExpression '*' UnaryExpression
-		| MultiplicativeExpression '/' UnaryExpression
-		| MultiplicativeExpression '%' UnaryExpression
+		| MultiplicativeExpression '*' UnaryExpression					{ $$ = new MathematicalExpression($1, "*", $3); }
+		| MultiplicativeExpression '/' UnaryExpression					{ $$ = new MathematicalExpression($1, "/", $3); }
+		| MultiplicativeExpression '%' UnaryExpression					{ $$ = new MathematicalExpression($1, "%", $3); }
 		;
-
+		
 UnaryExpression
 		: PostfixExpression											{ $$ = $1; }   // Nathan; fixed by Khoa
 		| PreIncrementExpression									{ $$ = $1; } // Khoa
