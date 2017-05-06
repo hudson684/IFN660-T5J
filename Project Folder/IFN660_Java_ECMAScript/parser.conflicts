@@ -1,4 +1,4 @@
-// Parser Conflict Information for grammar file "parser.y - 6/05/2017 12:32:29 PM"
+// Parser Conflict Information for grammar file "parser.y - 6/05/2017 1:02:30 PM"
 
 Shift/Reduce conflict on symbol "'+'", parser will shift
  Reduce 137:	UnaryExpression -> PostfixExpression
@@ -152,198 +152,30 @@ Reduce/Reduce conflict in state 102 on symbol "';'", parser will reduce producti
  Reduce 137:	UnaryExpression -> PostfixExpression
  Reduce 145:	UnaryExpressionNotPlusMinus -> PostfixExpression
 
-Reduce/Reduce conflict in state 117 on symbol "'*'", parser will reduce production 140
- Reduce 143:	PreIncrementExpression -> '+', '+', UnaryExpression
- Reduce 140:	UnaryExpression -> '+', UnaryExpression
-
-Reduce/Reduce conflict in state 117 on symbol "'/'", parser will reduce production 140
- Reduce 143:	PreIncrementExpression -> '+', '+', UnaryExpression
- Reduce 140:	UnaryExpression -> '+', UnaryExpression
-
-Reduce/Reduce conflict in state 117 on symbol "'%'", parser will reduce production 140
- Reduce 143:	PreIncrementExpression -> '+', '+', UnaryExpression
- Reduce 140:	UnaryExpression -> '+', UnaryExpression
-
-Reduce/Reduce conflict in state 117 on symbol "'+'", parser will reduce production 140
- Reduce 143:	PreIncrementExpression -> '+', '+', UnaryExpression
- Reduce 140:	UnaryExpression -> '+', UnaryExpression
-
-Reduce/Reduce conflict in state 117 on symbol "'-'", parser will reduce production 140
- Reduce 143:	PreIncrementExpression -> '+', '+', UnaryExpression
- Reduce 140:	UnaryExpression -> '+', UnaryExpression
-
-Reduce/Reduce conflict in state 117 on symbol "LEFT_SHIFT", parser will reduce production 140
- Reduce 143:	PreIncrementExpression -> '+', '+', UnaryExpression
- Reduce 140:	UnaryExpression -> '+', UnaryExpression
-
-Reduce/Reduce conflict in state 117 on symbol "SIGNED_RIGHT_SHIFT", parser will reduce production 140
- Reduce 143:	PreIncrementExpression -> '+', '+', UnaryExpression
- Reduce 140:	UnaryExpression -> '+', UnaryExpression
-
-Reduce/Reduce conflict in state 117 on symbol "UNSIGNED_RIGHT_SHIFT", parser will reduce production 140
- Reduce 143:	PreIncrementExpression -> '+', '+', UnaryExpression
- Reduce 140:	UnaryExpression -> '+', UnaryExpression
-
-Reduce/Reduce conflict in state 117 on symbol "'<'", parser will reduce production 140
- Reduce 143:	PreIncrementExpression -> '+', '+', UnaryExpression
- Reduce 140:	UnaryExpression -> '+', UnaryExpression
-
-Reduce/Reduce conflict in state 117 on symbol "'>'", parser will reduce production 140
- Reduce 143:	PreIncrementExpression -> '+', '+', UnaryExpression
- Reduce 140:	UnaryExpression -> '+', UnaryExpression
-
-Reduce/Reduce conflict in state 117 on symbol "LESS_THAN_OR_EQUAL", parser will reduce production 140
- Reduce 143:	PreIncrementExpression -> '+', '+', UnaryExpression
- Reduce 140:	UnaryExpression -> '+', UnaryExpression
-
-Reduce/Reduce conflict in state 117 on symbol "GREATER_OR_EQUAL", parser will reduce production 140
- Reduce 143:	PreIncrementExpression -> '+', '+', UnaryExpression
- Reduce 140:	UnaryExpression -> '+', UnaryExpression
-
-Reduce/Reduce conflict in state 117 on symbol "INSTANCEOF", parser will reduce production 140
- Reduce 143:	PreIncrementExpression -> '+', '+', UnaryExpression
- Reduce 140:	UnaryExpression -> '+', UnaryExpression
-
-Reduce/Reduce conflict in state 117 on symbol "EQUAL", parser will reduce production 140
- Reduce 143:	PreIncrementExpression -> '+', '+', UnaryExpression
- Reduce 140:	UnaryExpression -> '+', UnaryExpression
-
-Reduce/Reduce conflict in state 117 on symbol "NOT_EQUAL", parser will reduce production 140
- Reduce 143:	PreIncrementExpression -> '+', '+', UnaryExpression
- Reduce 140:	UnaryExpression -> '+', UnaryExpression
-
-Reduce/Reduce conflict in state 117 on symbol "'&'", parser will reduce production 140
- Reduce 143:	PreIncrementExpression -> '+', '+', UnaryExpression
- Reduce 140:	UnaryExpression -> '+', UnaryExpression
-
-Reduce/Reduce conflict in state 117 on symbol "'^'", parser will reduce production 140
- Reduce 143:	PreIncrementExpression -> '+', '+', UnaryExpression
- Reduce 140:	UnaryExpression -> '+', UnaryExpression
-
-Reduce/Reduce conflict in state 117 on symbol "'|'", parser will reduce production 140
- Reduce 143:	PreIncrementExpression -> '+', '+', UnaryExpression
- Reduce 140:	UnaryExpression -> '+', UnaryExpression
-
-Reduce/Reduce conflict in state 117 on symbol "LOGICAL_AND", parser will reduce production 140
- Reduce 143:	PreIncrementExpression -> '+', '+', UnaryExpression
- Reduce 140:	UnaryExpression -> '+', UnaryExpression
-
-Reduce/Reduce conflict in state 117 on symbol "LOGICAL_OR", parser will reduce production 140
- Reduce 143:	PreIncrementExpression -> '+', '+', UnaryExpression
- Reduce 140:	UnaryExpression -> '+', UnaryExpression
-
-Reduce/Reduce conflict in state 117 on symbol "';'", parser will reduce production 140
- Reduce 143:	PreIncrementExpression -> '+', '+', UnaryExpression
- Reduce 140:	UnaryExpression -> '+', UnaryExpression
-
-Reduce/Reduce conflict in state 121 on symbol "'*'", parser will reduce production 141
- Reduce 144:	PreDecrementExpression -> '-', '-', UnaryExpression
- Reduce 141:	UnaryExpression -> '-', UnaryExpression
-
-Reduce/Reduce conflict in state 121 on symbol "'/'", parser will reduce production 141
- Reduce 144:	PreDecrementExpression -> '-', '-', UnaryExpression
- Reduce 141:	UnaryExpression -> '-', UnaryExpression
-
-Reduce/Reduce conflict in state 121 on symbol "'%'", parser will reduce production 141
- Reduce 144:	PreDecrementExpression -> '-', '-', UnaryExpression
- Reduce 141:	UnaryExpression -> '-', UnaryExpression
-
-Reduce/Reduce conflict in state 121 on symbol "'+'", parser will reduce production 141
- Reduce 144:	PreDecrementExpression -> '-', '-', UnaryExpression
- Reduce 141:	UnaryExpression -> '-', UnaryExpression
-
-Reduce/Reduce conflict in state 121 on symbol "'-'", parser will reduce production 141
- Reduce 144:	PreDecrementExpression -> '-', '-', UnaryExpression
- Reduce 141:	UnaryExpression -> '-', UnaryExpression
-
-Reduce/Reduce conflict in state 121 on symbol "LEFT_SHIFT", parser will reduce production 141
- Reduce 144:	PreDecrementExpression -> '-', '-', UnaryExpression
- Reduce 141:	UnaryExpression -> '-', UnaryExpression
-
-Reduce/Reduce conflict in state 121 on symbol "SIGNED_RIGHT_SHIFT", parser will reduce production 141
- Reduce 144:	PreDecrementExpression -> '-', '-', UnaryExpression
- Reduce 141:	UnaryExpression -> '-', UnaryExpression
-
-Reduce/Reduce conflict in state 121 on symbol "UNSIGNED_RIGHT_SHIFT", parser will reduce production 141
- Reduce 144:	PreDecrementExpression -> '-', '-', UnaryExpression
- Reduce 141:	UnaryExpression -> '-', UnaryExpression
-
-Reduce/Reduce conflict in state 121 on symbol "'<'", parser will reduce production 141
- Reduce 144:	PreDecrementExpression -> '-', '-', UnaryExpression
- Reduce 141:	UnaryExpression -> '-', UnaryExpression
-
-Reduce/Reduce conflict in state 121 on symbol "'>'", parser will reduce production 141
- Reduce 144:	PreDecrementExpression -> '-', '-', UnaryExpression
- Reduce 141:	UnaryExpression -> '-', UnaryExpression
-
-Reduce/Reduce conflict in state 121 on symbol "LESS_THAN_OR_EQUAL", parser will reduce production 141
- Reduce 144:	PreDecrementExpression -> '-', '-', UnaryExpression
- Reduce 141:	UnaryExpression -> '-', UnaryExpression
-
-Reduce/Reduce conflict in state 121 on symbol "GREATER_OR_EQUAL", parser will reduce production 141
- Reduce 144:	PreDecrementExpression -> '-', '-', UnaryExpression
- Reduce 141:	UnaryExpression -> '-', UnaryExpression
-
-Reduce/Reduce conflict in state 121 on symbol "INSTANCEOF", parser will reduce production 141
- Reduce 144:	PreDecrementExpression -> '-', '-', UnaryExpression
- Reduce 141:	UnaryExpression -> '-', UnaryExpression
-
-Reduce/Reduce conflict in state 121 on symbol "EQUAL", parser will reduce production 141
- Reduce 144:	PreDecrementExpression -> '-', '-', UnaryExpression
- Reduce 141:	UnaryExpression -> '-', UnaryExpression
-
-Reduce/Reduce conflict in state 121 on symbol "NOT_EQUAL", parser will reduce production 141
- Reduce 144:	PreDecrementExpression -> '-', '-', UnaryExpression
- Reduce 141:	UnaryExpression -> '-', UnaryExpression
-
-Reduce/Reduce conflict in state 121 on symbol "'&'", parser will reduce production 141
- Reduce 144:	PreDecrementExpression -> '-', '-', UnaryExpression
- Reduce 141:	UnaryExpression -> '-', UnaryExpression
-
-Reduce/Reduce conflict in state 121 on symbol "'^'", parser will reduce production 141
- Reduce 144:	PreDecrementExpression -> '-', '-', UnaryExpression
- Reduce 141:	UnaryExpression -> '-', UnaryExpression
-
-Reduce/Reduce conflict in state 121 on symbol "'|'", parser will reduce production 141
- Reduce 144:	PreDecrementExpression -> '-', '-', UnaryExpression
- Reduce 141:	UnaryExpression -> '-', UnaryExpression
-
-Reduce/Reduce conflict in state 121 on symbol "LOGICAL_AND", parser will reduce production 141
- Reduce 144:	PreDecrementExpression -> '-', '-', UnaryExpression
- Reduce 141:	UnaryExpression -> '-', UnaryExpression
-
-Reduce/Reduce conflict in state 121 on symbol "LOGICAL_OR", parser will reduce production 141
- Reduce 144:	PreDecrementExpression -> '-', '-', UnaryExpression
- Reduce 141:	UnaryExpression -> '-', UnaryExpression
-
-Reduce/Reduce conflict in state 121 on symbol "';'", parser will reduce production 141
- Reduce 144:	PreDecrementExpression -> '-', '-', UnaryExpression
- Reduce 141:	UnaryExpression -> '-', UnaryExpression
-
-Reduce/Reduce conflict in state 128 on symbol "')'", parser will reduce production 55
+Reduce/Reduce conflict in state 130 on symbol "')'", parser will reduce production 55
  Reduce 55:	PrimitiveType -> /* empty */
  Reduce 56:	PrimitiveType -> /* empty */
 
-Reduce/Reduce conflict in state 128 on symbol "')'", parser will reduce production 55
+Reduce/Reduce conflict in state 130 on symbol "')'", parser will reduce production 55
  Reduce 55:	PrimitiveType -> /* empty */
  Reduce 57:	ReferenceType -> /* empty */
 
-Reduce/Reduce conflict in state 128 on symbol "')'", parser will reduce production 55
+Reduce/Reduce conflict in state 130 on symbol "')'", parser will reduce production 55
  Reduce 55:	PrimitiveType -> /* empty */
  Reduce 58:	ReferenceType -> /* empty */
 
-Reduce/Reduce conflict in state 128 on symbol "')'", parser will reduce production 55
+Reduce/Reduce conflict in state 130 on symbol "')'", parser will reduce production 55
  Reduce 55:	PrimitiveType -> /* empty */
  Reduce 59:	ReferenceType -> /* empty */
 
-Reduce/Reduce conflict in state 132 on symbol "')'", parser will reduce production 158
+Reduce/Reduce conflict in state 134 on symbol "')'", parser will reduce production 158
  Reduce 158:	AdditionalBounds -> /* empty */
  Reduce 159:	AdditionalBounds -> /* empty */
 
 Shift/Reduce conflict on symbol "'+'", parser will shift
  Reduce 145:	UnaryExpressionNotPlusMinus -> PostfixExpression
- Shift "'+'":	State-137 -> State-103
-  Items for From-state State 137
+ Shift "'+'":	State-139 -> State-103
+  Items for From-state State 139
     145 UnaryExpressionNotPlusMinus: PostfixExpression .
 	-lookahead: '*', '/', '%', '+', '-', LEFT_SHIFT, SIGNED_RIGHT_SHIFT, 
                 UNSIGNED_RIGHT_SHIFT, '<', '>', LESS_THAN_OR_EQUAL, 
@@ -356,8 +188,8 @@ Shift/Reduce conflict on symbol "'+'", parser will shift
 
 Shift/Reduce conflict on symbol "'-'", parser will shift
  Reduce 145:	UnaryExpressionNotPlusMinus -> PostfixExpression
- Shift "'-'":	State-137 -> State-105
-  Items for From-state State 137
+ Shift "'-'":	State-139 -> State-105
+  Items for From-state State 139
     145 UnaryExpressionNotPlusMinus: PostfixExpression .
 	-lookahead: '*', '/', '%', '+', '-', LEFT_SHIFT, SIGNED_RIGHT_SHIFT, 
                 UNSIGNED_RIGHT_SHIFT, '<', '>', LESS_THAN_OR_EQUAL, 

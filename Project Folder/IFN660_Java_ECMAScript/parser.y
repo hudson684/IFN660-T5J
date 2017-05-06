@@ -32,7 +32,9 @@ public static Statement root;
 %type <expr> ConditionalExpression, ConditionalOrExpression, ConditionalAndExpression
 %type <expr> InclusiveOrExpression, ExclusiveOrExpression, AndExpression, EqualityExpression
 %type <expr> RelationalExpression, ShiftExpression, AdditiveExpression, MultiplicativeExpression
-%type <expr> UnaryExpression, PostfixExpression, Primary
+%type <expr> UnaryExpression, PostfixExpression, Primary //Josh
+%type <expr> PreIncrementExpression,  PreDecrementExpression, UnaryExpressionNotPlusMinus //Josh
+%type <expr> CastExpression, PostIncrementExpression, PostDecrementExpression //Josh
 
 %type <stmt> Statement, CompilationUnit, TypeDeclaration, ClassDeclaration, NormalClassDeclaration, ClassBodyDeclaration
 %type <stmt> ExpressionStatement, StatementWithoutTrailingSubstatement, LocalVariableDeclaration, LocalVariableDeclarationStatement
@@ -518,31 +520,31 @@ UnaryExpression
 		: PostfixExpression											{ $$ = $1; }   // Nathan; fixed by Khoa
 		| PreIncrementExpression									{ $$ = $1; } // Khoa
 		| PreDecrementExpression									{ $$ = $1; } // Khoa
-		| '+' UnaryExpression										{ $$ = new UnaryExpression($2); } // Khoa
-		| '-' UnaryExpression										{ $$ = new UnaryExpression($2); } // Khoa
+		| '+' UnaryExpression										{ $$ = new UnaryExpression("+", $2); } // Khoa & Josh
+		| '-' UnaryExpression										{ $$ = new UnaryExpression("-", $2); } // Khoa & Josh
 		| UnaryExpressionNotPlusMinus								{ $$ = $1; } // Khoa
 		;
 
 PreIncrementExpression
-		: '+''+' UnaryExpression									{ $$ = new UnaryExpression($2); }  // Khoa
+		: INCREMENT UnaryExpression									{ $$ = new UnaryExpression("++", $2); }  // Khoa & Josh
 		;
 
 PreDecrementExpression
-		: '-''-' UnaryExpression									{ $$ = new UnaryExpression($2); } // Khoa
+		: DECREMENT UnaryExpression									{ $$ = new UnaryExpression("--", $2); } // Khoa & Josh
 		;
 
 UnaryExpressionNotPlusMinus
 		: PostfixExpression											{ $$ = $1;} // Khoa
-		| '~' UnaryExpression										{ $$ = new UnaryExpression($2); } // Khoa
-		| '!' UnaryExpression										{ $$ = new UnaryExpression($2); } // Khoa
+		| '~' UnaryExpression										{ $$ = new UnaryExpression("~", $2); } // Khoa & Josh
+		| '!' UnaryExpression										{ $$ = new UnaryExpression("!", $2); } // Khoa & Josh
 		| CastExpression											{ $$ = $1;} // Khoa
 		;
 
 PostfixExpression
 		: Primary													{ $$ = $1; } //Nathan
 		| ExpressionName											{ $$ = $1; } //Nathan
-		| PostIncrementExpression
-		| PostDecrementExpression
+		| PostIncrementExpression									{ $$ = $1; } //Josh
+		| PostDecrementExpression									{ $$ = $1; } //Josh
 		;
 
 PostIncrementExpression

@@ -90,9 +90,12 @@ namespace IFN660_Java_ECMAScript.AST
     public class UnaryExpression : Expression
     {
         private Expression expression;
-        public UnaryExpression(Expression expression)
+        private string oper;
+
+        public UnaryExpression(string oper, Expression expression)
         {
             this.expression = expression;
+            this.oper = oper;
         }
 
         public override bool ResolveNames(LexicalScope scope)
