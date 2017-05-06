@@ -274,6 +274,22 @@ UnannPrimitiveType
 		| BOOLEAN												{ $$ = new NamedType("BOOLEAN"); } // Josh
 		;
 
+
+PrimitiveType
+		: //Annotations NumericType
+		| //Annotations BOOLEAN
+		;
+
+ReferenceType
+		: //ClassOrInterfaceType
+		| //TypeVariable
+		| //ArrayType							// Cause reduce/reduce conflict
+		;
+
+TypeVariable
+		: //Annotations IDENTIFIER
+		;
+
 NumericType
 		: IntegralType											{ $$ = $1; } // Josh
 		| FloatingPointType										{ $$ = $1; } // Josh
@@ -314,7 +330,7 @@ MethodBody
 
 // Removed by Nathan - too hard at the moment
 //Annotations
-//		: Annotations Annotation								{ $$ = new Anotations($2); } // Adon
+//		: Annotations Annotation								{ $$ = new Annotations($2); } // Adon
 //		| /* Empty */											{ $$ = null; } // Adon
 //		;
 
@@ -516,10 +532,10 @@ PreDecrementExpression
 		;
 
 UnaryExpressionNotPlusMinus
-		: PostfixExpression											{ $$ = $1} // Khoa
+		: PostfixExpression											{ $$ = $1;} // Khoa
 		| '~' UnaryExpression										{ $$ = new UnaryExpression($2); } // Khoa
 		| '!' UnaryExpression										{ $$ = new UnaryExpression($2); } // Khoa
-		| CastExpression											{ $$ = $1} // Khoa
+		| CastExpression											{ $$ = $1;} // Khoa
 		;
 
 PostfixExpression
@@ -541,6 +557,15 @@ CastExpression
 		: '(' PrimitiveType ')' UnaryExpression
 		| '(' ReferenceType AdditionalBounds ')' UnaryExpressionNotPlusMinus
 		| '(' ReferenceType AdditionalBounds ')' LambdaExpression
+		;
+
+AdditionalBounds
+		: //AdditionalBounds AdditionalBound
+		|
+		;
+
+AdditionalBound
+		: //'&' InterfaceType
 		;
 
 ConstantExpression
