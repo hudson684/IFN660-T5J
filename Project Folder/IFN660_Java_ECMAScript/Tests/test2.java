@@ -3,9 +3,9 @@
     public static void main(String[] args) 
 	{
 		int x;
+		int y;
+		x = 42;
+		y = x + 1;
 
-		for(int i = 0; i < 10; i++){
-			x += 1;
-		}
     }
 }
