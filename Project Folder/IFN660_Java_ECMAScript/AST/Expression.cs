@@ -87,12 +87,29 @@ namespace IFN660_Java_ECMAScript.AST
             return lhs.ResolveNames(scope) & rhs.ResolveNames(scope);
         }
     }
-    public class UnaryExpression : Expression
+    public class PreUnaryExpression : Expression
     {
         private Expression expression;
         private string oper;
 
-        public UnaryExpression(string oper, Expression expression)
+        public PreUnaryExpression(string oper, Expression expression)
+        {
+            this.expression = expression;
+            this.oper = oper;
+        }
+
+        public override bool ResolveNames(LexicalScope scope)
+        {
+            return expression.ResolveNames(scope);
+        }
+    }
+
+    public class PostUnaryExpression : Expression
+    {
+        private Expression expression;
+        private string oper;
+
+        public PostUnaryExpression(Expression expression, string oper)
         {
             this.expression = expression;
             this.oper = oper;

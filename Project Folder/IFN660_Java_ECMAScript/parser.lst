@@ -1,10 +1,10 @@
 
 // ==========================================================================
-//  GPPG error listing for yacc source file <parser.y - 6/05/2017 1:02:30 PM>
+//  GPPG error listing for yacc source file <parser.y - 6/05/2017 1:07:55 PM>
 // ==========================================================================
 //  Version:  1.5.2
 //  Machine:  DESKTOP-1VMC0S8
-//  DateTime: 6/05/2017 1:02:37 PM
+//  DateTime: 6/05/2017 1:08:00 PM
 //  UserName: hudso
 // ==========================================================================
 
@@ -535,23 +535,23 @@ UnaryExpression
 		: PostfixExpression											{ $$ = $1; }   // Nathan; fixed by Khoa
 		| PreIncrementExpression									{ $$ = $1; } // Khoa
 		| PreDecrementExpression									{ $$ = $1; } // Khoa
-		| '+' UnaryExpression										{ $$ = new UnaryExpression("+", $2); } // Khoa & Josh
-		| '-' UnaryExpression										{ $$ = new UnaryExpression("-", $2); } // Khoa & Josh
+		| '+' UnaryExpression										{ $$ = new PreUnaryExpression("+", $2); } // Khoa & Josh
+		| '-' UnaryExpression										{ $$ = new PreUnaryExpression("-", $2); } // Khoa & Josh
 		| UnaryExpressionNotPlusMinus								{ $$ = $1; } // Khoa
 		;
 
 PreIncrementExpression
-		: INCREMENT UnaryExpression									{ $$ = new UnaryExpression("++", $2); }  // Khoa & Josh
+		: INCREMENT UnaryExpression									{ $$ = new PreUnaryExpression("++", $2); }  // Khoa & Josh
 		;
 
 PreDecrementExpression
-		: DECREMENT UnaryExpression									{ $$ = new UnaryExpression("--", $2); } // Khoa & Josh
+		: DECREMENT UnaryExpression									{ $$ = new PreUnaryExpression("--", $2); } // Khoa & Josh
 		;
 
 UnaryExpressionNotPlusMinus
 		: PostfixExpression											{ $$ = $1;} // Khoa
-		| '~' UnaryExpression										{ $$ = new UnaryExpression("~", $2); } // Khoa & Josh
-		| '!' UnaryExpression										{ $$ = new UnaryExpression("!", $2); } // Khoa & Josh
+		| '~' UnaryExpression										{ $$ = new PreUnaryExpression("~", $2); } // Khoa & Josh
+		| '!' UnaryExpression										{ $$ = new PreUnaryExpression("!", $2); } // Khoa & Josh
 		| CastExpression											{ $$ = $1;} // Khoa
 		;
 
@@ -563,11 +563,11 @@ PostfixExpression
 		;
 
 PostIncrementExpression
-		: PostfixExpression '+''+'
+		: PostfixExpression INCREMENT									{ $$ = new PostUnaryExpression($1, "++"); } // Khoa & Josh
 		;
 
 PostDecrementExpression
-		: PostfixExpression '-''-'
+		: PostfixExpression DECREMENT									{ $$ = new PostUnaryExpression($1, "--"); } // Khoa & Josh
 		;
 
 CastExpression
