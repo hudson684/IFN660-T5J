@@ -1,8 +1,10 @@
 //#define AST_MANUAL // comment out this line to use parser&scanner
 
+using System;
 using System.IO;
 using IFN660_Java_ECMAScript.AST;
 using System.Collections.Generic;
+
 
 namespace IFN660_Java_ECMAScript
 {
@@ -38,12 +40,12 @@ namespace IFN660_Java_ECMAScript
 
             var pro = new CompilationUnitDeclaration(null, null, classes);
 
+            
             // Semantic Analysis
             SemanticAnalysis(pro);
 
             pro.DumpValue(0);
-
-
+            
 #else
             Scanner scanner = new Scanner(
                new FileStream(args[0], FileMode.Open));
@@ -57,15 +59,20 @@ namespace IFN660_Java_ECMAScript
 
         }
 
-        static bool SemanticAnalysis(Node root)
+        static void SemanticAnalysis(Node root)
         {
             bool nameResolutionSuccess;
 
+            // name resolution
             nameResolutionSuccess = root.ResolveNames(null);
             if (!nameResolutionSuccess)
+            {
                 System.Console.WriteLine("*** ERROR - Name Resolution Failed ***");
+                throw new Exception("Name Resolution Error");
+            }
+            
+            // type checking
             root.TypeCheck();
-            return nameResolutionSuccess;
         }
     }
 }

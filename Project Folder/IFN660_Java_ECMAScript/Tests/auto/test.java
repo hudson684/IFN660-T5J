@@ -2,7 +2,8 @@
 {
 	public void Main (String[] args)
 	{
-		int x;
-		x=42;
+		int x, y;
+		x = 42;
+		y = x + 1;
 	}
 }

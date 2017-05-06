@@ -134,12 +134,23 @@ namespace IFN660_Java_ECMAScript.AST
                     type = new NamedType("BOOLEAN");
                     break;
                 case "+":
-                    if (!lhs.type.Equals(new NamedType("INT")) || !lhs.type.Equals(new NamedType("INT")))
+                    if (lhs.type.isTheSameAs(rhs.type) && !lhs.type.isTheSameAs(new NamedType("BOOLEAN")))
+                    {
+                        type = lhs.type;
+                    }
+                    else if (lhs.type.isCompatibleWith(rhs.type))
+                    {
+                        type = lhs.type;
+                    }
+                    else if (rhs.type.isCompatibleWith(lhs.type))
+                    {
+                        type = rhs.type;
+                    }
+                    else
                     {
                         System.Console.WriteLine("Invalid arguments for less than expression\n");
                         throw new Exception("TypeCheck error");
                     }
-                    type = new NamedType("INT");
                     break;
                
                 default:
@@ -147,7 +158,6 @@ namespace IFN660_Java_ECMAScript.AST
                         System.Console.WriteLine("Unexpected binary operator %c \n", oper);
                         throw new Exception("TypeCheck error");
                     }
-                    break;
             }
 		}
 
