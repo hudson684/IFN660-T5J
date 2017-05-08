@@ -2,8 +2,7 @@
 {
     public static void main(String[] args) 
 	{
-		for(int i = 0; i < 10; i++){
-			x += 1;
-		}
+		int x ;
+		x = 42 & 21;
     }
 }

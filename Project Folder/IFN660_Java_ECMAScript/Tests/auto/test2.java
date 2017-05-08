@@ -2,7 +2,10 @@
 {
 	public void Main (String[] args)
 	{
-		int x;
-		x=42;
+		int x,y;
+		string[] z;
+		x=42 + 33;
+		y = 16;
+		z=args;
 	}
 }

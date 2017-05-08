@@ -46,10 +46,23 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AST\CompilationUnitDeclaration.cs" />
+    <Compile Include="Declaration.cs" />
+    <Compile Include="LexicalScope.cs" />
     <Compile Include="parser.cs" />
+    <Compile Include="AST\ClassDeclaration.cs" />
+    <Compile Include="AST\ImportDeclaration.cs" />
+    <Compile Include="AST\Modifier.cs" />
+    <Compile Include="AST\Expression.cs" />
+    <Compile Include="AST\MethodDeclaration.cs" />
+    <Compile Include="AST\Node.cs" />
+    <Compile Include="AST\PackageDeclaration.cs" />
+    <Compile Include="AST\Parameters.cs" />
+    <Compile Include="AST\Type.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="scanner.cs" />
+    <Compile Include="AST\Statement.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -83,11 +96,13 @@
     <None Include="Tests\auto\test_Unicode_Escape.j" />
     <None Include="Tests\auto\test_Unicode_Escape.j.expected" />
     <None Include="Tests\test1.j" />
+    <None Include="Tests\test3.j" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="test1.txt" />
+    <Content Include="Tests\auto\test2.java" />
     <Content Include="Tests\auto\test.java" />
-    <Content Include="Tests\test2.java" />
+    <Content Include="Tests\test1.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
@@ -95,7 +110,7 @@
   <Target Name="BeforeBuild">
     <Message Text="Generating Scanner" />
     <Exec Command="gplex.exe /unicode scanner.lex" />
-    <Exec Command="Gppg.exe /gplex parser.y &gt; parser.cs" />
+    <Exec Command="Gppg.exe /gplex /conflicts parser.y &gt; parser.cs" />
   </Target>
   <!--Target Name="AfterBuild">
   </Target>
