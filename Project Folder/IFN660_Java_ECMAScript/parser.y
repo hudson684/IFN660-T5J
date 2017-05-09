@@ -39,13 +39,9 @@ public static Statement root;
 %type <stmt> Statement, CompilationUnit, TypeDeclaration, ClassDeclaration, NormalClassDeclaration, ClassBodyDeclaration
 %type <stmt> ExpressionStatement, StatementWithoutTrailingSubstatement, LocalVariableDeclaration, LocalVariableDeclarationStatement
 %type <stmt> BlockStatement, Throws_opt, ClassMemberDeclaration, MethodDeclaration, FormalParameter
-<<<<<<< HEAD
-%type <stmt> PackageDeclaration_opt
+%type <stmt> PackageDeclaration_opt, Block, MethodBody
 %type <stmt> StatementNoShortIf
 %type <stmt> IfThenStatement, IfThenElseStatement, IfThenElseStatementNoShortIf
-=======
-%type <stmt> PackageDeclaration_opt, Block, MethodBody
->>>>>>> typecheck
 
 %type <stmts> TypeDeclarations, ClassBody, ClassBodyDeclarations, BlockStatements, BlockStatements_Opt
 %type <stmts> FormalParameters, FormalParameterList, FormalParameterList_Opt 
@@ -284,18 +280,18 @@ UnannPrimitiveType
 
 
 PrimitiveType
-		: //Annotations NumericType
-		| //Annotations BOOLEAN
+		:  NumericType  //Annotations infront 
+		|  BOOLEAN      //Annotations infront
 		;
 
 ReferenceType
-		: //ClassOrInterfaceType
-		| //TypeVariable
-		| //ArrayType							// Cause reduce/reduce conflict
+		: TypeVariable
+        //| ClassOrInterfaceType
+		//| //ArrayType							// Cause reduce/reduce conflict
 		;
 
 TypeVariable
-		: //Annotations IDENTIFIER
+		:  IDENTIFIER //Annotations
 		;
 
 NumericType
@@ -343,11 +339,7 @@ MethodBody
 //		;
 
 Block 
-<<<<<<< HEAD
-		: '{' BlockStatements_Opt '}'							{ $$ = $2; } // Tristan - done by Khoa
-=======
 		: '{' BlockStatements_Opt '}'							{ $$ = new BlockStatement($2); } // Tristan
->>>>>>> typecheck
 		;
 
 BlockStatements_Opt
@@ -413,16 +405,16 @@ StatementExpression
 		;
 
 IfThenStatement
-		: IF '(' Expression ')' Statement						{ $$ = new IfThenStatement($3, $5); } // Adon
-		//: IF '(' Expression ')' BlockStatements						{ $$ = new IfThenStatement($3, $5); } // Adon
+		: IF '(' Expression ')' Statement						{ $$ = new IfStatement($3, $5,null); } // Adon
+		//: IF '(' Expression ')' BlockStatements						{ $$ = new IfStatement($3, $5,null); } // Adon
 		;
 
 IfThenElseStatement
-		: IF '(' Expression ')' StatementNoShortIf ELSE Statement				{ $$ = new IfThenElseStatement($3, $5, $7); } // Adon
+		: IF '(' Expression ')' StatementNoShortIf ELSE Statement				{ $$ = new IfStatement($3, $5, $7); } // Adon
 		;
 
 IfThenElseStatementNoShortIf
-		: IF '(' Expression ')' StatementNoShortIf ELSE StatementNoShortIf		{ $$ = new IfThenElseStatementNoShortIf($3, $5, $7); } //Adon
+		: IF '(' Expression ')' StatementNoShortIf ELSE StatementNoShortIf		{ $$ = new IfStatement($3, $5, $7); } //Adon
 		;
 
 // End Work by Tristan
@@ -459,14 +451,9 @@ PrimaryNoNewArray
 
 Literal
 		: IntegerLiteral										{ $$ = new IntegerLiteralExpression($1); } // Nathan
-<<<<<<< HEAD
 		| FloatingPointLiteral									{ $$ = new FloatingPointLiteralExpression($1); } // Adon
 		| BooleanLiteral										{ $$ = new BooleanLiteralExpression($1); } // Adon
 		| CharacterLiteral										{ $$ = new CharacterLiteralExpression($1); } // Adon
-=======
-		| BooleanLiteral										{ $$ = new BooleanLiteralExpression((bool)$1);} // AN
-		| FloatingPointLiteral									{ $$ = new FloatingPointLiteralExpression($1);}//AN
->>>>>>> typecheck
 		;
 // end of sneha Work
 
@@ -542,15 +529,9 @@ ShiftExpression
 		;
 
 AdditiveExpression
-<<<<<<< HEAD
-		: MultiplicativeExpression										{ $$ = $1; } //Nathan
-		| AdditiveExpression '+' MultiplicativeExpression				{ $$ = new MathematicalExpression($1, "+", $3); }
-		| AdditiveExpression '-' MultiplicativeExpression				{ $$ = new MathematicalExpression($1, "-", $3); }
-=======
 		: MultiplicativeExpression									{ $$ = $1; } //Nathan
 		| AdditiveExpression '+' MultiplicativeExpression			{ $$ = new BinaryExpression($1, "+", $3); } //Nathan
 		| AdditiveExpression '-' MultiplicativeExpression			{ $$ = new BinaryExpression($1, "-", $3); } //Nathan
->>>>>>> typecheck
 		;
 
 MultiplicativeExpression
@@ -561,13 +542,16 @@ MultiplicativeExpression
 		;
 		
 UnaryExpression
-		: PostfixExpression											{ $$ = $1; }   // Nathan; fixed by Khoa
-		| PreIncrementExpression									{ $$ = $1; } // Khoa
+		:  PreIncrementExpression									{ $$ = $1; } // Khoa
 		| PreDecrementExpression									{ $$ = $1; } // Khoa
 		| '+' UnaryExpression										{ $$ = new PreUnaryExpression("+", $2); } // Khoa & Josh
 		| '-' UnaryExpression										{ $$ = new PreUnaryExpression("-", $2); } // Khoa & Josh
 		| UnaryExpressionNotPlusMinus								{ $$ = $1; } // Khoa
-		;
+		//PostfixExpression											{ $$ = $1; }   // Nathan; fixed by Khoa 
+        // Reduce/reduce conflict here
+        // Since we can access PostfixExpression via UnaryExpressionNotPlusMinus
+        // Then just remove it to solve conflict - AN
+        ;
 
 PreIncrementExpression
 		: INCREMENT UnaryExpression									{ $$ = new PreUnaryExpression("++", $2); }  // Khoa & Josh
@@ -606,12 +590,12 @@ CastExpression
 		;
 
 AdditionalBounds
-		: //AdditionalBounds AdditionalBound
+		: AdditionalBounds AdditionalBound
 		|
 		;
 
 AdditionalBound
-		: //'&' InterfaceType
+		: '&' //InterfaceType
 		;
 
 ConstantExpression

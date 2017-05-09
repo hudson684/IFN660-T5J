@@ -75,4 +75,24 @@ namespace IFN660_Java_ECMAScript.AST
             type = new NamedType("FLOAT");
         }
     }
+
+    public class CharacterLiteralExpression : Expression
+    {
+        private char value;
+        public CharacterLiteralExpression(char value)
+        {
+            this.value = value;
+        }
+
+        public override bool ResolveNames(LexicalScope scope)
+        {
+            return true;
+        }
+        public override void TypeCheck()
+        {
+            type = new NamedType("CHAR");
+        }
+    }
+
+    
 }
