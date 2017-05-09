@@ -3,6 +3,11 @@
 	public void Main (String[] args)
 	{
 		int x;
-		x=42;
+		float y;
+		boolean z;
+		char m;
+		long n;
+		double o;
+		x=4_2;
 	}
 }

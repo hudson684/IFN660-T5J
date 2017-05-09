@@ -429,6 +429,9 @@ PrimaryNoNewArray
 
 Literal
 		: IntegerLiteral										{ $$ = new IntegerLiteralExpression($1); } // Nathan
+		| FloatingPointLiteral									{ $$ = new FloatingPointLiteralExpression($1); } // Adon
+		| BooleanLiteral										{ $$ = new BooleanLiteralExpression($1); } // Adon
+		| CharacterLiteral										{ $$ = new CharacterLiteralExpression($1); } // Adon
 		;
 // end of sneha Work
 

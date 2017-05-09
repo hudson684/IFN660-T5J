@@ -1,11 +1,11 @@
 
 // ==========================================================================
-//  GPPG error listing for yacc source file <parser.y - 6/05/2017 2:23:17 PM>
+//  GPPG error listing for yacc source file <parser.y - 5/9/2017 14:18:35>
 // ==========================================================================
 //  Version:  1.5.2
-//  Machine:  DESKTOP-1VMC0S8
-//  DateTime: 6/05/2017 2:25:15 PM
-//  UserName: hudso
+//  Machine:  AIR
+//  DateTime: 5/9/2017 14:19:04
+//  UserName: Air
 // ==========================================================================
 
 
@@ -444,6 +444,9 @@ PrimaryNoNewArray
 
 Literal
 		: IntegerLiteral										{ $$ = new IntegerLiteralExpression($1); } // Nathan
+		| FloatingPointLiteral									{ $$ = new FloatingPointLiteralExpression($1); } // Adon
+		| BooleanLiteral										{ $$ = new BooleanLiteralExpression($1); } // Adon
+		| CharacterLiteral										{ $$ = new CharacterLiteralExpression($1); } // Adon
 		;
 // end of sneha Work
 
