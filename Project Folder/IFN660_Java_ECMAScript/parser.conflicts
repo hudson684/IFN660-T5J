@@ -1,88 +1,92 @@
-// Parser Conflict Information for grammar file "parser.y - 5/9/2017 14:18:35"
+// Parser Conflict Information for grammar file "parser.y - 5/9/2017 17:02:49"
 
-Reduce/Reduce conflict in state 102 on symbol "'*'", parser will reduce production 140
- Reduce 140:	UnaryExpression -> PostfixExpression
- Reduce 148:	UnaryExpressionNotPlusMinus -> PostfixExpression
+Reduce/Reduce conflict in state 102 on symbol "'*'", parser will reduce production 147
+ Reduce 147:	UnaryExpression -> PostfixExpression
+ Reduce 155:	UnaryExpressionNotPlusMinus -> PostfixExpression
 
-Reduce/Reduce conflict in state 102 on symbol "'/'", parser will reduce production 140
- Reduce 140:	UnaryExpression -> PostfixExpression
- Reduce 148:	UnaryExpressionNotPlusMinus -> PostfixExpression
+Reduce/Reduce conflict in state 102 on symbol "'/'", parser will reduce production 147
+ Reduce 147:	UnaryExpression -> PostfixExpression
+ Reduce 155:	UnaryExpressionNotPlusMinus -> PostfixExpression
 
-Reduce/Reduce conflict in state 102 on symbol "'%'", parser will reduce production 140
- Reduce 140:	UnaryExpression -> PostfixExpression
- Reduce 148:	UnaryExpressionNotPlusMinus -> PostfixExpression
+Reduce/Reduce conflict in state 102 on symbol "'%'", parser will reduce production 147
+ Reduce 147:	UnaryExpression -> PostfixExpression
+ Reduce 155:	UnaryExpressionNotPlusMinus -> PostfixExpression
 
-Reduce/Reduce conflict in state 102 on symbol "'+'", parser will reduce production 140
- Reduce 140:	UnaryExpression -> PostfixExpression
- Reduce 148:	UnaryExpressionNotPlusMinus -> PostfixExpression
+Reduce/Reduce conflict in state 102 on symbol "'+'", parser will reduce production 147
+ Reduce 147:	UnaryExpression -> PostfixExpression
+ Reduce 155:	UnaryExpressionNotPlusMinus -> PostfixExpression
 
-Reduce/Reduce conflict in state 102 on symbol "'-'", parser will reduce production 140
- Reduce 140:	UnaryExpression -> PostfixExpression
- Reduce 148:	UnaryExpressionNotPlusMinus -> PostfixExpression
+Reduce/Reduce conflict in state 102 on symbol "'-'", parser will reduce production 147
+ Reduce 147:	UnaryExpression -> PostfixExpression
+ Reduce 155:	UnaryExpressionNotPlusMinus -> PostfixExpression
 
-Reduce/Reduce conflict in state 102 on symbol "LEFT_SHIFT", parser will reduce production 140
- Reduce 140:	UnaryExpression -> PostfixExpression
- Reduce 148:	UnaryExpressionNotPlusMinus -> PostfixExpression
+Reduce/Reduce conflict in state 102 on symbol "LEFT_SHIFT", parser will reduce production 147
+ Reduce 147:	UnaryExpression -> PostfixExpression
+ Reduce 155:	UnaryExpressionNotPlusMinus -> PostfixExpression
 
-Reduce/Reduce conflict in state 102 on symbol "SIGNED_RIGHT_SHIFT", parser will reduce production 140
- Reduce 140:	UnaryExpression -> PostfixExpression
- Reduce 148:	UnaryExpressionNotPlusMinus -> PostfixExpression
+Reduce/Reduce conflict in state 102 on symbol "SIGNED_RIGHT_SHIFT", parser will reduce production 147
+ Reduce 147:	UnaryExpression -> PostfixExpression
+ Reduce 155:	UnaryExpressionNotPlusMinus -> PostfixExpression
 
-Reduce/Reduce conflict in state 102 on symbol "UNSIGNED_RIGHT_SHIFT", parser will reduce production 140
- Reduce 140:	UnaryExpression -> PostfixExpression
- Reduce 148:	UnaryExpressionNotPlusMinus -> PostfixExpression
+Reduce/Reduce conflict in state 102 on symbol "UNSIGNED_RIGHT_SHIFT", parser will reduce production 147
+ Reduce 147:	UnaryExpression -> PostfixExpression
+ Reduce 155:	UnaryExpressionNotPlusMinus -> PostfixExpression
 
-Reduce/Reduce conflict in state 102 on symbol "'<'", parser will reduce production 140
- Reduce 140:	UnaryExpression -> PostfixExpression
- Reduce 148:	UnaryExpressionNotPlusMinus -> PostfixExpression
+Reduce/Reduce conflict in state 102 on symbol "'<'", parser will reduce production 147
+ Reduce 147:	UnaryExpression -> PostfixExpression
+ Reduce 155:	UnaryExpressionNotPlusMinus -> PostfixExpression
 
-Reduce/Reduce conflict in state 102 on symbol "'>'", parser will reduce production 140
- Reduce 140:	UnaryExpression -> PostfixExpression
- Reduce 148:	UnaryExpressionNotPlusMinus -> PostfixExpression
+Reduce/Reduce conflict in state 102 on symbol "'>'", parser will reduce production 147
+ Reduce 147:	UnaryExpression -> PostfixExpression
+ Reduce 155:	UnaryExpressionNotPlusMinus -> PostfixExpression
 
-Reduce/Reduce conflict in state 102 on symbol "LESS_THAN_OR_EQUAL", parser will reduce production 140
- Reduce 140:	UnaryExpression -> PostfixExpression
- Reduce 148:	UnaryExpressionNotPlusMinus -> PostfixExpression
+Reduce/Reduce conflict in state 102 on symbol "LESS_THAN_OR_EQUAL", parser will reduce production 147
+ Reduce 147:	UnaryExpression -> PostfixExpression
+ Reduce 155:	UnaryExpressionNotPlusMinus -> PostfixExpression
 
-Reduce/Reduce conflict in state 102 on symbol "GREATER_OR_EQUAL", parser will reduce production 140
- Reduce 140:	UnaryExpression -> PostfixExpression
- Reduce 148:	UnaryExpressionNotPlusMinus -> PostfixExpression
+Reduce/Reduce conflict in state 102 on symbol "GREATER_OR_EQUAL", parser will reduce production 147
+ Reduce 147:	UnaryExpression -> PostfixExpression
+ Reduce 155:	UnaryExpressionNotPlusMinus -> PostfixExpression
 
-Reduce/Reduce conflict in state 102 on symbol "INSTANCEOF", parser will reduce production 140
- Reduce 140:	UnaryExpression -> PostfixExpression
- Reduce 148:	UnaryExpressionNotPlusMinus -> PostfixExpression
+Reduce/Reduce conflict in state 102 on symbol "INSTANCEOF", parser will reduce production 147
+ Reduce 147:	UnaryExpression -> PostfixExpression
+ Reduce 155:	UnaryExpressionNotPlusMinus -> PostfixExpression
 
-Reduce/Reduce conflict in state 102 on symbol "EQUAL", parser will reduce production 140
- Reduce 140:	UnaryExpression -> PostfixExpression
- Reduce 148:	UnaryExpressionNotPlusMinus -> PostfixExpression
+Reduce/Reduce conflict in state 102 on symbol "EQUAL", parser will reduce production 147
+ Reduce 147:	UnaryExpression -> PostfixExpression
+ Reduce 155:	UnaryExpressionNotPlusMinus -> PostfixExpression
 
-Reduce/Reduce conflict in state 102 on symbol "NOT_EQUAL", parser will reduce production 140
- Reduce 140:	UnaryExpression -> PostfixExpression
- Reduce 148:	UnaryExpressionNotPlusMinus -> PostfixExpression
+Reduce/Reduce conflict in state 102 on symbol "NOT_EQUAL", parser will reduce production 147
+ Reduce 147:	UnaryExpression -> PostfixExpression
+ Reduce 155:	UnaryExpressionNotPlusMinus -> PostfixExpression
 
-Reduce/Reduce conflict in state 102 on symbol "'&'", parser will reduce production 140
- Reduce 140:	UnaryExpression -> PostfixExpression
- Reduce 148:	UnaryExpressionNotPlusMinus -> PostfixExpression
+Reduce/Reduce conflict in state 102 on symbol "'&'", parser will reduce production 147
+ Reduce 147:	UnaryExpression -> PostfixExpression
+ Reduce 155:	UnaryExpressionNotPlusMinus -> PostfixExpression
 
-Reduce/Reduce conflict in state 102 on symbol "'^'", parser will reduce production 140
- Reduce 140:	UnaryExpression -> PostfixExpression
- Reduce 148:	UnaryExpressionNotPlusMinus -> PostfixExpression
+Reduce/Reduce conflict in state 102 on symbol "'^'", parser will reduce production 147
+ Reduce 147:	UnaryExpression -> PostfixExpression
+ Reduce 155:	UnaryExpressionNotPlusMinus -> PostfixExpression
 
-Reduce/Reduce conflict in state 102 on symbol "'|'", parser will reduce production 140
- Reduce 140:	UnaryExpression -> PostfixExpression
- Reduce 148:	UnaryExpressionNotPlusMinus -> PostfixExpression
+Reduce/Reduce conflict in state 102 on symbol "'|'", parser will reduce production 147
+ Reduce 147:	UnaryExpression -> PostfixExpression
+ Reduce 155:	UnaryExpressionNotPlusMinus -> PostfixExpression
 
-Reduce/Reduce conflict in state 102 on symbol "LOGICAL_AND", parser will reduce production 140
- Reduce 140:	UnaryExpression -> PostfixExpression
- Reduce 148:	UnaryExpressionNotPlusMinus -> PostfixExpression
+Reduce/Reduce conflict in state 102 on symbol "LOGICAL_AND", parser will reduce production 147
+ Reduce 147:	UnaryExpression -> PostfixExpression
+ Reduce 155:	UnaryExpressionNotPlusMinus -> PostfixExpression
 
-Reduce/Reduce conflict in state 102 on symbol "LOGICAL_OR", parser will reduce production 140
- Reduce 140:	UnaryExpression -> PostfixExpression
- Reduce 148:	UnaryExpressionNotPlusMinus -> PostfixExpression
+Reduce/Reduce conflict in state 102 on symbol "LOGICAL_OR", parser will reduce production 147
+ Reduce 147:	UnaryExpression -> PostfixExpression
+ Reduce 155:	UnaryExpressionNotPlusMinus -> PostfixExpression
 
-Reduce/Reduce conflict in state 102 on symbol "';'", parser will reduce production 140
- Reduce 140:	UnaryExpression -> PostfixExpression
- Reduce 148:	UnaryExpressionNotPlusMinus -> PostfixExpression
+Reduce/Reduce conflict in state 102 on symbol "';'", parser will reduce production 147
+ Reduce 147:	UnaryExpression -> PostfixExpression
+ Reduce 155:	UnaryExpressionNotPlusMinus -> PostfixExpression
+
+Reduce/Reduce conflict in state 102 on symbol "')'", parser will reduce production 147
+ Reduce 147:	UnaryExpression -> PostfixExpression
+ Reduce 155:	UnaryExpressionNotPlusMinus -> PostfixExpression
 
 Reduce/Reduce conflict in state 131 on symbol "')'", parser will reduce production 55
  Reduce 55:	PrimitiveType -> /* empty */
@@ -100,9 +104,9 @@ Reduce/Reduce conflict in state 131 on symbol "')'", parser will reduce producti
  Reduce 55:	PrimitiveType -> /* empty */
  Reduce 59:	ReferenceType -> /* empty */
 
-Reduce/Reduce conflict in state 135 on symbol "')'", parser will reduce production 161
- Reduce 161:	AdditionalBounds -> /* empty */
- Reduce 162:	AdditionalBounds -> /* empty */
+Reduce/Reduce conflict in state 135 on symbol "')'", parser will reduce production 168
+ Reduce 168:	AdditionalBounds -> /* empty */
+ Reduce 169:	AdditionalBounds -> /* empty */
 
 Reduce/Reduce conflict in state 160 on symbol "'<'", parser will reduce production 57
  Reduce 57:	ReferenceType -> /* empty */
@@ -156,6 +160,10 @@ Reduce/Reduce conflict in state 160 on symbol "';'", parser will reduce producti
  Reduce 57:	ReferenceType -> /* empty */
  Reduce 58:	ReferenceType -> /* empty */
 
+Reduce/Reduce conflict in state 160 on symbol "')'", parser will reduce production 57
+ Reduce 57:	ReferenceType -> /* empty */
+ Reduce 58:	ReferenceType -> /* empty */
+
 Reduce/Reduce conflict in state 160 on symbol "'<'", parser will reduce production 57
  Reduce 57:	ReferenceType -> /* empty */
  Reduce 59:	ReferenceType -> /* empty */
@@ -205,6 +213,10 @@ Reduce/Reduce conflict in state 160 on symbol "LOGICAL_OR", parser will reduce p
  Reduce 59:	ReferenceType -> /* empty */
 
 Reduce/Reduce conflict in state 160 on symbol "';'", parser will reduce production 57
+ Reduce 57:	ReferenceType -> /* empty */
+ Reduce 59:	ReferenceType -> /* empty */
+
+Reduce/Reduce conflict in state 160 on symbol "')'", parser will reduce production 57
  Reduce 57:	ReferenceType -> /* empty */
  Reduce 59:	ReferenceType -> /* empty */
 

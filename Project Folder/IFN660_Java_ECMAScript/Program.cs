@@ -29,7 +29,11 @@ namespace IFN660_Java_ECMAScript
             //var assignExpr2 = new AssignmentExpression(lhs, new VariableExpression("Main"));
             //var assignStmt2 = new ExpressionStatement(assignExpr2);
             //var statementList = new List<Statement> { assignVar, assignStmt, assignStmt2 };
-            var statementList = new List<Statement> { assignVar, assignStmt };
+
+            //IfthenStatement test
+            var binaryExpression = new BinaryExpression(lhs, "==", rhs);
+            var ifThenStatement = new IfThenStatement(binaryExpression, assignStmt);
+            var statementList = new List<Statement> { assignVar, assignStmt, ifThenStatement };
 
             var method = new MethodDeclaration("Main", mods, statementList, new NamedType("VOID"), argList);
             var classDec = new ClassDeclaration("HelloWorld", classMods, new List<Statement> { method });

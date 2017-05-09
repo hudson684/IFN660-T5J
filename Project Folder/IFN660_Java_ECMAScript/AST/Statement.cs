@@ -7,18 +7,70 @@ namespace IFN660_Java_ECMAScript.AST
     {
     };
 
-    public class IfStatement : Statement
+    public class IfThenStatement : Statement
     {
-        private Expression Cond;
-        private Statement Then, Else;
-        public IfStatement(Expression Cond, Statement Then, Statement Else)
+        private Expression If;
+        private Statement Then;
+        public IfThenStatement(Expression If, Statement Then)
         {
-            this.Cond = Cond; this.Then = Then; this.Else = Else;
+            this.If = If; this.Then = Then;
         }
 
         public override bool ResolveNames(LexicalScope scope)
         {
-            return Cond.ResolveNames(scope) & Then.ResolveNames(scope) & Else.ResolveNames(scope);
+            return If.ResolveNames(scope) & Then.ResolveNames(scope);
+        }
+    }
+
+    //public class IfThenStatement : Statement
+    //{
+    //    private Expression If;
+    //    private List<Statement> Then;
+    //    public IfThenStatement(Expression If, List<Statement> Then)
+    //    {
+    //        this.Cond = If; this.Then = Then;
+    //    }
+
+    //    public override bool ResolveNames(LexicalScope scope)
+    //    {
+    //        bool loopResolve = true;
+
+    //        foreach (Statement each in Then)
+    //        {
+    //            loopResolve = loopResolve & each.ResolveNames(scope);
+    //        }
+
+    //        return If.ResolveNames(scope) & loopResolve;
+    //    }
+    //}
+
+    public class IfThenElseStatement : Statement
+    {
+        private Expression If;
+        private Statement Then, Else;
+        public IfThenElseStatement(Expression If, Statement Then, Statement Else)
+        {
+            this.If = If; this.Then = Then; this.Else = Else;
+        }
+
+        public override bool ResolveNames(LexicalScope scope)
+        {
+            return If.ResolveNames(scope) & Then.ResolveNames(scope) & Else.ResolveNames(scope);
+        }
+    }
+
+    public class IfThenElseStatementNoShortIf : Statement
+    {
+        private Expression If;
+        private Statement Then, Else;
+        public IfThenElseStatementNoShortIf(Expression If, Statement Then, Statement Else)
+        {
+            this.If = If; this.Then = Then; this.Else = Else;
+        }
+
+        public override bool ResolveNames(LexicalScope scope)
+        {
+            return If.ResolveNames(scope) & Then.ResolveNames(scope) & Else.ResolveNames(scope);
         }
     }
 

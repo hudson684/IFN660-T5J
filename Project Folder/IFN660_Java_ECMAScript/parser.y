@@ -40,6 +40,8 @@ public static Statement root;
 %type <stmt> ExpressionStatement, StatementWithoutTrailingSubstatement, LocalVariableDeclaration, LocalVariableDeclarationStatement
 %type <stmt> BlockStatement, Throws_opt, ClassMemberDeclaration, MethodDeclaration, FormalParameter
 %type <stmt> PackageDeclaration_opt
+%type <stmt> StatementNoShortIf
+%type <stmt> IfThenStatement, IfThenElseStatement, IfThenElseStatementNoShortIf
 
 %type <stmts> TypeDeclarations, ClassBody, ClassBodyDeclarations, BlockStatements, BlockStatements_Opt, Block
 %type <stmts> MethodBody, FormalParameters, FormalParameterList, FormalParameterList_Opt 
@@ -380,6 +382,13 @@ VariableDeclaratorId
 // Nathan
 Statement
 		: StatementWithoutTrailingSubstatement					{$$ = $1; } // Nathan
+		| IfThenStatement										{$$ = $1; } // Adon
+		| IfThenElseStatement									{$$ = $1; } // Adon
+		;
+		
+StatementNoShortIf
+		: StatementWithoutTrailingSubstatement					{$$ = $1; } // Adon
+		| IfThenElseStatementNoShortIf							{$$ = $1; } // Adon
 		;
 
 // Tristan
@@ -393,6 +402,19 @@ ExpressionStatement
 
 StatementExpression
 		: Assignment											{ $$ = $1; } // Khoa - updated by Nathan
+		;
+
+IfThenStatement
+		: IF '(' Expression ')' Statement						{ $$ = new IfThenStatement($3, $5); } // Adon
+		//: IF '(' Expression ')' BlockStatements						{ $$ = new IfThenStatement($3, $5); } // Adon
+		;
+
+IfThenElseStatement
+		: IF '(' Expression ')' StatementNoShortIf ELSE Statement				{ $$ = new IfThenElseStatement($3, $5, $7); } // Adon
+		;
+
+IfThenElseStatementNoShortIf
+		: IF '(' Expression ')' StatementNoShortIf ELSE StatementNoShortIf		{ $$ = new IfThenElseStatementNoShortIf($3, $5, $7); } //Adon
 		;
 
 // End Work by Tristan

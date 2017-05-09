@@ -1,10 +1,10 @@
 
 // ==========================================================================
-//  GPPG error listing for yacc source file <parser.y - 5/9/2017 14:18:35>
+//  GPPG error listing for yacc source file <parser.y - 5/9/2017 17:02:49>
 // ==========================================================================
 //  Version:  1.5.2
 //  Machine:  AIR
-//  DateTime: 5/9/2017 14:19:04
+//  DateTime: 5/9/2017 17:02:50
 //  UserName: Air
 // ==========================================================================
 
@@ -51,6 +51,8 @@ public static Statement root;
 %type <stmt> ExpressionStatement, StatementWithoutTrailingSubstatement, LocalVariableDeclaration, LocalVariableDeclarationStatement
 %type <stmt> BlockStatement, Throws_opt, ClassMemberDeclaration, MethodDeclaration, FormalParameter
 %type <stmt> PackageDeclaration_opt
+%type <stmt> StatementNoShortIf
+%type <stmt> IfThenStatement, IfThenElseStatement, IfThenElseStatementNoShortIf
 
 %type <stmts> TypeDeclarations, ClassBody, ClassBodyDeclarations, BlockStatements, BlockStatements_Opt, Block
 %type <stmts> MethodBody, FormalParameters, FormalParameterList, FormalParameterList_Opt 
@@ -395,6 +397,13 @@ VariableDeclaratorId
 // Nathan
 Statement
 		: StatementWithoutTrailingSubstatement					{$$ = $1; } // Nathan
+		| IfThenStatement										{$$ = $1; } // Adon
+		| IfThenElseStatement									{$$ = $1; } // Adon
+		;
+		
+StatementNoShortIf
+		: StatementWithoutTrailingSubstatement					{$$ = $1; } // Adon
+		| IfThenElseStatementNoShortIf							{$$ = $1; } // Adon
 		;
 
 // Tristan
@@ -408,6 +417,19 @@ ExpressionStatement
 
 StatementExpression
 		: Assignment											{ $$ = $1; } // Khoa - updated by Nathan
+		;
+
+IfThenStatement
+		: IF '(' Expression ')' Statement						{ $$ = new IfThenStatement($3, $5); } // Adon
+		//: IF '(' Expression ')' BlockStatements						{ $$ = new IfThenStatement($3, $5); } // Adon
+		;
+
+IfThenElseStatement
+		: IF '(' Expression ')' StatementNoShortIf ELSE Statement				{ $$ = new IfThenElseStatement($3, $5, $7); } // Adon
+		;
+
+IfThenElseStatementNoShortIf
+		: IF '(' Expression ')' StatementNoShortIf ELSE StatementNoShortIf		{ $$ = new IfThenElseStatementNoShortIf($3, $5, $7); } //Adon
 		;
 
 // End Work by Tristan
