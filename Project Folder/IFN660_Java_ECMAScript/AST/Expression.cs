@@ -44,9 +44,6 @@ namespace IFN660_Java_ECMAScript.AST
             // set type to the lhs type
             type = lhs.type;
 		}
-
-
-
 	}
 
 	public class VariableExpression : Expression
@@ -80,26 +77,6 @@ namespace IFN660_Java_ECMAScript.AST
             type = declarationRef.ObtainType();
 			
 		}
-
-	}
-
-	public class IntegerLiteralExpression : Expression
-	{
-
-		private long value;
-		public IntegerLiteralExpression(long value)
-		{
-			this.value = value;
-		}
-
-		public override bool ResolveNames(LexicalScope scope)
-		{
-			return true;
-		}
-		public override void TypeCheck()
-		{
-            type = new NamedType("INT");
-		} 
 
 	}
 
@@ -160,11 +137,7 @@ namespace IFN660_Java_ECMAScript.AST
                     }
             }
 		}
-
-
 	}
-	
-
 }
 
 	

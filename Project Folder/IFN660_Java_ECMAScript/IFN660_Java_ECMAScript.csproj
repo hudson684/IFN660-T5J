@@ -50,6 +50,7 @@
     <Compile Include="AST\CompilationUnitDeclaration.cs" />
     <Compile Include="AST\Declaration.cs" />
     <Compile Include="AST\LexicalScope.cs" />
+    <Compile Include="AST\Literals.cs" />
     <Compile Include="parser.cs" />
     <Compile Include="AST\ClassDeclaration.cs" />
     <Compile Include="AST\ImportDeclaration.cs" />

@@ -411,6 +411,8 @@ PrimaryNoNewArray
 
 Literal
 		: IntegerLiteral										{ $$ = new IntegerLiteralExpression($1); } // Nathan
+		| BooleanLiteral										{ $$ = new BooleanLiteralExpression((bool)$1);} // AN
+		| FloatingPointLiteral									{ $$ = new FloatingPointLiteralExpression($1);}//AN
 		;
 // end of sneha Work
 
