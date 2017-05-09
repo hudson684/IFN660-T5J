@@ -3,10 +3,17 @@
 // (see accompanying GPPGcopyright.rtf)
 
 // GPPG version 1.5.2
+<<<<<<< HEAD
 // Machine:  AIR
 // DateTime: 5/9/2017 17:02:50
 // UserName: Air
 // Input file <parser.y - 5/9/2017 17:02:49>
+=======
+// Machine:  VDI-VL17-061
+// DateTime: 9/05/2017 5:27:10 PM
+// UserName: n9768653
+// Input file <parser.y - 9/05/2017 5:22:40 PM>
+>>>>>>> typecheck
 
 // options: conflicts lines gplex conflicts
 
@@ -77,17 +84,30 @@ public class ScanObj {
 [GeneratedCodeAttribute( "Gardens Point Parser Generator", "1.5.2")]
 public class Parser: ShiftReduceParser<ValueType, LexLocation>
 {
+<<<<<<< HEAD
   // Verbatim content from parser.y - 5/9/2017 17:02:49
 #line 7 "parser.y"
 public static Statement root;
 #line default
   // End verbatim content from parser.y - 5/9/2017 17:02:49
+=======
+  // Verbatim content from parser.y - 9/05/2017 5:22:40 PM
+#line 7 "parser.y"
+public static Statement root;
+#line default
+  // End verbatim content from parser.y - 9/05/2017 5:22:40 PM
+>>>>>>> typecheck
 
 #pragma warning disable 649
   private static Dictionary<int, string> aliases;
 #pragma warning restore 649
+<<<<<<< HEAD
   private static Rule[] rules = new Rule[172];
   private static State[] states = new State[227];
+=======
+  private static Rule[] rules = new Rule[120];
+  private static State[] states = new State[145];
+>>>>>>> typecheck
   private static string[] nonTerms = new string[] {
       "Literal", "StatementExpression", "Assignment", "LeftHandSide", "ExpressionName", 
       "TypeParameters_opt", "Superclass_opt", "Superinterfaces_opt", "AssignmentExpression", 
@@ -101,6 +121,7 @@ public static Statement root;
       "ClassDeclaration", "NormalClassDeclaration", "ClassBodyDeclaration", "ExpressionStatement", 
       "StatementWithoutTrailingSubstatement", "LocalVariableDeclaration", "LocalVariableDeclarationStatement", 
       "BlockStatement", "Throws_opt", "ClassMemberDeclaration", "MethodDeclaration", 
+<<<<<<< HEAD
       "FormalParameter", "PackageDeclaration_opt", "StatementNoShortIf", "IfThenStatement", 
       "IfThenElseStatement", "IfThenElseStatementNoShortIf", "TypeDeclarations", 
       "ClassBody", "ClassBodyDeclarations", "BlockStatements", "BlockStatements_Opt", 
@@ -113,12 +134,25 @@ public static Statement root;
       "VariableDeclaratorList", "Program", "$accept", "Empty", "Dims_Opt", "Dims", 
       "PrimitiveType", "TypeVariable", "AssignmentOperator", "LambdaParameters", 
       "AdditionalBounds", "AdditionalBound", "ConstantExpression", };
+=======
+      "FormalParameter", "PackageDeclaration_opt", "Block", "MethodBody", "TypeDeclarations", 
+      "ClassBody", "ClassBodyDeclarations", "BlockStatements", "BlockStatements_Opt", 
+      "FormalParameters", "FormalParameterList", "FormalParameterList_Opt", "ImportDeclarations", 
+      "Result", "FloatingPointType", "IntegralType", "NumericType", "UnannType", 
+      "UnannPrimitiveType", "UnannReferenceType", "UnannArrayType", "UnannTypeVariable", 
+      "ClassModifier", "MethodModifier", "VariableModifier", "ClassModifiers", 
+      "MethodModifiers", "VariableModifiers", "VariableDeclaratorId", "VariableDeclarator", 
+      "MethodHeader", "MethodDeclarator", "VariableDeclaratorList", "Program", 
+      "$accept", "Empty", "Dims_Opt", "Dims", "AssignmentOperator", "LambdaParameters", 
+      };
+>>>>>>> typecheck
 
   static Parser() {
     states[0] = new State(-5,new int[]{-86,1,-35,3,-49,4});
     states[1] = new State(new int[]{129,2});
     states[2] = new State(-1);
     states[3] = new State(-2);
+<<<<<<< HEAD
     states[4] = new State(-6,new int[]{-64,5});
     states[5] = new State(-8,new int[]{-54,6});
     states[6] = new State(new int[]{129,-4,172,-13,155,-13,150,-13,145,-13,132,-13,170,-13,168,-13,175,-13},new int[]{-36,7,-37,8,-38,9,-78,10});
@@ -126,18 +160,35 @@ public static Statement root;
     states[8] = new State(-9);
     states[9] = new State(-10);
     states[10] = new State(new int[]{172,11,155,220,150,221,145,222,132,223,170,224,168,225,175,226},new int[]{-75,219});
+=======
+    states[4] = new State(-6,new int[]{-54,5});
+    states[5] = new State(-8,new int[]{-46,6});
+    states[6] = new State(new int[]{129,-4,172,-13,155,-13,150,-13,145,-13,132,-13,170,-13,168,-13,175,-13},new int[]{-30,7,-31,8,-32,9,-67,10});
+    states[7] = new State(-7);
+    states[8] = new State(-9);
+    states[9] = new State(-10);
+    states[10] = new State(new int[]{172,11,155,138,150,139,145,140,132,141,170,142,168,143,175,144},new int[]{-64,137});
+>>>>>>> typecheck
     states[11] = new State(new int[]{131,12});
     states[12] = new State(-21,new int[]{-6,13});
     states[13] = new State(-22,new int[]{-7,14});
     states[14] = new State(-23,new int[]{-8,15});
+<<<<<<< HEAD
     states[15] = new State(new int[]{123,17},new int[]{-55,16});
     states[16] = new State(-11);
     states[17] = new State(-26,new int[]{-56,18});
     states[18] = new State(new int[]{125,19,171,-31,131,-31,152,-31,165,-31,164,-31,174,-31,167,-31,178,-31,148,-31,142,-31,155,-31,170,-31},new int[]{-39,20,-46,21,-47,22,-79,23});
+=======
+    states[15] = new State(new int[]{123,17},new int[]{-47,16});
+    states[16] = new State(-11);
+    states[17] = new State(-26,new int[]{-48,18});
+    states[18] = new State(new int[]{125,19,171,-31,131,-31,152,-31,165,-31,164,-31,174,-31,167,-31,178,-31,148,-31,142,-31,155,-31,170,-31},new int[]{-33,20,-40,21,-41,22,-68,23});
+>>>>>>> typecheck
     states[19] = new State(-24);
     states[20] = new State(-25);
     states[21] = new State(-27);
     states[22] = new State(-28);
+<<<<<<< HEAD
     states[23] = new State(new int[]{171,215,131,212,152,54,165,55,164,56,174,57,167,58,178,60,148,61,142,62,155,217,170,218},new int[]{-83,24,-76,194,-65,195,-69,216,-71,46,-72,47,-73,48,-70,51,-68,52,-67,53,-66,59});
     states[24] = new State(new int[]{123,27,59,193},new int[]{-60,25,-59,26});
     states[25] = new State(-29);
@@ -148,6 +199,18 @@ public static Statement root;
     states[30] = new State(new int[]{131,50,152,54,165,55,164,56,174,57,167,58,178,60,148,61,142,62,139,174,125,-76},new int[]{-44,31,-43,32,-42,33,-69,35,-71,46,-72,47,-73,48,-70,51,-68,52,-67,53,-66,59,-34,63,-41,64,-40,65,-2,66,-3,68,-4,69,-5,172,-51,173,-52,182});
     states[31] = new State(-79);
     states[32] = new State(-80);
+=======
+    states[23] = new State(new int[]{171,133,131,130,152,54,165,55,164,56,174,57,167,58,178,60,148,61,142,62,155,135,170,136},new int[]{-72,24,-65,112,-55,113,-59,134,-61,46,-62,47,-63,48,-60,51,-58,52,-57,53,-56,59});
+    states[24] = new State(new int[]{123,27,59,111},new int[]{-45,25,-44,26});
+    states[25] = new State(-29);
+    states[26] = new State(-67);
+    states[27] = new State(new int[]{131,50,152,54,165,55,164,56,174,57,167,58,178,60,148,61,142,62,125,-71},new int[]{-50,28,-49,30,-38,110,-37,32,-36,33,-59,35,-61,46,-62,47,-63,48,-60,51,-58,52,-57,53,-56,59,-28,63,-35,64,-34,65,-2,66,-3,68,-4,69,-5,109});
+    states[28] = new State(new int[]{125,29});
+    states[29] = new State(-69);
+    states[30] = new State(new int[]{131,50,152,54,165,55,164,56,174,57,167,58,178,60,148,61,142,62,125,-70},new int[]{-38,31,-37,32,-36,33,-59,35,-61,46,-62,47,-63,48,-60,51,-58,52,-57,53,-56,59,-28,63,-35,64,-34,65,-2,66,-3,68,-4,69,-5,109});
+    states[31] = new State(-73);
+    states[32] = new State(-74);
+>>>>>>> typecheck
     states[33] = new State(new int[]{59,34});
     states[34] = new State(-82);
     states[35] = new State(new int[]{131,40},new int[]{-85,36,-82,45,-81,39});
@@ -182,6 +245,7 @@ public static Statement root;
     states[64] = new State(-88);
     states[65] = new State(-93);
     states[66] = new State(new int[]{59,67});
+<<<<<<< HEAD
     states[67] = new State(-94);
     states[68] = new State(-95);
     states[69] = new State(new int[]{61,171},new int[]{-93,70});
@@ -516,6 +580,208 @@ public static Statement root;
     rules[169] = new Rule(-95, new int[]{});
     rules[170] = new Rule(-96, new int[]{});
     rules[171] = new Rule(-97, new int[]{-11});
+=======
+    states[67] = new State(-84);
+    states[68] = new State(-85);
+    states[69] = new State(new int[]{61,108},new int[]{-80,70});
+    states[70] = new State(new int[]{131,79,182,99,184,100,183,101,194,-100},new int[]{-11,71,-12,72,-81,73,-9,76,-3,77,-4,69,-5,78,-14,80,-15,81,-16,107,-17,106,-18,86,-19,87,-20,88,-21,89,-22,90,-23,91,-24,105,-25,94,-26,95,-27,96,-10,97,-1,98});
+    states[71] = new State(-86);
+    states[72] = new State(-97);
+    states[73] = new State(new int[]{194,74});
+    states[74] = new State(-101,new int[]{-13,75});
+    states[75] = new State(-99);
+    states[76] = new State(-98);
+    states[77] = new State(-90);
+    states[78] = new State(new int[]{61,-87,43,-119,45,-119,195,-119,196,-119,59,-119});
+    states[79] = new State(-88);
+    states[80] = new State(-91);
+    states[81] = new State(new int[]{196,82,59,-102});
+    states[82] = new State(new int[]{182,99,184,100,183,101,131,79},new int[]{-16,83,-17,106,-18,86,-19,87,-20,88,-21,89,-22,90,-23,91,-24,105,-25,94,-26,95,-27,96,-10,97,-1,98,-5,102});
+    states[83] = new State(new int[]{195,84,196,-104,59,-104});
+    states[84] = new State(new int[]{182,99,184,100,183,101,131,79},new int[]{-17,85,-18,86,-19,87,-20,88,-21,89,-22,90,-23,91,-24,105,-25,94,-26,95,-27,96,-10,97,-1,98,-5,102});
+    states[85] = new State(-106);
+    states[86] = new State(-107);
+    states[87] = new State(-108);
+    states[88] = new State(-109);
+    states[89] = new State(-110);
+    states[90] = new State(-111);
+    states[91] = new State(new int[]{43,92,45,103,195,-112,196,-112,59,-112});
+    states[92] = new State(new int[]{182,99,184,100,183,101,131,79},new int[]{-24,93,-25,94,-26,95,-27,96,-10,97,-1,98,-5,102});
+    states[93] = new State(-114);
+    states[94] = new State(-116);
+    states[95] = new State(-117);
+    states[96] = new State(-118);
+    states[97] = new State(-92);
+    states[98] = new State(-93);
+    states[99] = new State(-94);
+    states[100] = new State(-95);
+    states[101] = new State(-96);
+    states[102] = new State(-119);
+    states[103] = new State(new int[]{182,99,184,100,183,101,131,79},new int[]{-24,104,-25,94,-26,95,-27,96,-10,97,-1,98,-5,102});
+    states[104] = new State(-115);
+    states[105] = new State(-113);
+    states[106] = new State(-105);
+    states[107] = new State(new int[]{195,84,196,-103,59,-103});
+    states[108] = new State(-89);
+    states[109] = new State(-87);
+    states[110] = new State(-72);
+    states[111] = new State(-68);
+    states[112] = new State(-30);
+    states[113] = new State(new int[]{131,117},new int[]{-73,114});
+    states[114] = new State(-3,new int[]{-39,115,-77,116});
+    states[115] = new State(-34);
+    states[116] = new State(-37);
+    states[117] = new State(new int[]{40,118});
+    states[118] = new State(new int[]{131,-46,152,-46,165,-46,164,-46,174,-46,167,-46,178,-46,148,-46,142,-46,168,-46,41,-40},new int[]{-53,119,-52,122,-51,123,-42,132,-69,126});
+    states[119] = new State(new int[]{41,120});
+    states[120] = new State(new int[]{91,43,123,-49,59,-49},new int[]{-78,121,-79,42});
+    states[121] = new State(-38);
+    states[122] = new State(-39);
+    states[123] = new State(new int[]{44,124,41,-41});
+    states[124] = new State(-46,new int[]{-42,125,-69,126});
+    states[125] = new State(-43);
+    states[126] = new State(new int[]{131,130,152,54,165,55,164,56,174,57,167,58,178,60,148,61,142,62,168,131},new int[]{-59,127,-66,129,-61,46,-62,47,-63,48,-60,51,-58,52,-57,53,-56,59});
+    states[127] = new State(new int[]{131,40},new int[]{-70,128});
+    states[128] = new State(-44);
+    states[129] = new State(-45);
+    states[130] = new State(-66);
+    states[131] = new State(-47);
+    states[132] = new State(-42);
+    states[133] = new State(-35);
+    states[134] = new State(-36);
+    states[135] = new State(-32);
+    states[136] = new State(-33);
+    states[137] = new State(-12);
+    states[138] = new State(-14);
+    states[139] = new State(-15);
+    states[140] = new State(-16);
+    states[141] = new State(-17);
+    states[142] = new State(-18);
+    states[143] = new State(-19);
+    states[144] = new State(-20);
+
+    for (int sNo = 0; sNo < states.Length; sNo++) states[sNo].number = sNo;
+
+    rules[1] = new Rule(-76, new int[]{-75,129});
+    rules[2] = new Rule(-75, new int[]{-29});
+    rules[3] = new Rule(-77, new int[]{});
+    rules[4] = new Rule(-29, new int[]{-43,-54,-46});
+    rules[5] = new Rule(-43, new int[]{});
+    rules[6] = new Rule(-54, new int[]{});
+    rules[7] = new Rule(-46, new int[]{-46,-30});
+    rules[8] = new Rule(-46, new int[]{});
+    rules[9] = new Rule(-30, new int[]{-31});
+    rules[10] = new Rule(-31, new int[]{-32});
+    rules[11] = new Rule(-32, new int[]{-67,172,131,-6,-7,-8,-47});
+    rules[12] = new Rule(-67, new int[]{-67,-64});
+    rules[13] = new Rule(-67, new int[]{});
+    rules[14] = new Rule(-64, new int[]{155});
+    rules[15] = new Rule(-64, new int[]{150});
+    rules[16] = new Rule(-64, new int[]{145});
+    rules[17] = new Rule(-64, new int[]{132});
+    rules[18] = new Rule(-64, new int[]{170});
+    rules[19] = new Rule(-64, new int[]{168});
+    rules[20] = new Rule(-64, new int[]{175});
+    rules[21] = new Rule(-6, new int[]{});
+    rules[22] = new Rule(-7, new int[]{});
+    rules[23] = new Rule(-8, new int[]{});
+    rules[24] = new Rule(-47, new int[]{123,-48,125});
+    rules[25] = new Rule(-48, new int[]{-48,-33});
+    rules[26] = new Rule(-48, new int[]{});
+    rules[27] = new Rule(-33, new int[]{-40});
+    rules[28] = new Rule(-40, new int[]{-41});
+    rules[29] = new Rule(-41, new int[]{-68,-72,-45});
+    rules[30] = new Rule(-68, new int[]{-68,-65});
+    rules[31] = new Rule(-68, new int[]{});
+    rules[32] = new Rule(-65, new int[]{155});
+    rules[33] = new Rule(-65, new int[]{170});
+    rules[34] = new Rule(-72, new int[]{-55,-73,-39});
+    rules[35] = new Rule(-55, new int[]{171});
+    rules[36] = new Rule(-55, new int[]{-59});
+    rules[37] = new Rule(-39, new int[]{-77});
+    rules[38] = new Rule(-73, new int[]{131,40,-53,41,-78});
+    rules[39] = new Rule(-53, new int[]{-52});
+    rules[40] = new Rule(-53, new int[]{});
+    rules[41] = new Rule(-52, new int[]{-51});
+    rules[42] = new Rule(-51, new int[]{-42});
+    rules[43] = new Rule(-51, new int[]{-51,44,-42});
+    rules[44] = new Rule(-42, new int[]{-69,-59,-70});
+    rules[45] = new Rule(-69, new int[]{-69,-66});
+    rules[46] = new Rule(-69, new int[]{});
+    rules[47] = new Rule(-66, new int[]{168});
+    rules[48] = new Rule(-78, new int[]{-79});
+    rules[49] = new Rule(-78, new int[]{});
+    rules[50] = new Rule(-79, new int[]{91,93});
+    rules[51] = new Rule(-59, new int[]{-61});
+    rules[52] = new Rule(-59, new int[]{-60});
+    rules[53] = new Rule(-60, new int[]{-58});
+    rules[54] = new Rule(-60, new int[]{142});
+    rules[55] = new Rule(-58, new int[]{-57});
+    rules[56] = new Rule(-58, new int[]{-56});
+    rules[57] = new Rule(-57, new int[]{152});
+    rules[58] = new Rule(-57, new int[]{165});
+    rules[59] = new Rule(-57, new int[]{164});
+    rules[60] = new Rule(-57, new int[]{174});
+    rules[61] = new Rule(-57, new int[]{167});
+    rules[62] = new Rule(-56, new int[]{178});
+    rules[63] = new Rule(-56, new int[]{148});
+    rules[64] = new Rule(-61, new int[]{-62});
+    rules[65] = new Rule(-62, new int[]{-63,-79});
+    rules[66] = new Rule(-63, new int[]{131});
+    rules[67] = new Rule(-45, new int[]{-44});
+    rules[68] = new Rule(-45, new int[]{59});
+    rules[69] = new Rule(-44, new int[]{123,-50,125});
+    rules[70] = new Rule(-50, new int[]{-49});
+    rules[71] = new Rule(-50, new int[]{});
+    rules[72] = new Rule(-49, new int[]{-38});
+    rules[73] = new Rule(-49, new int[]{-49,-38});
+    rules[74] = new Rule(-38, new int[]{-37});
+    rules[75] = new Rule(-38, new int[]{-28});
+    rules[76] = new Rule(-37, new int[]{-36,59});
+    rules[77] = new Rule(-36, new int[]{-59,-74});
+    rules[78] = new Rule(-74, new int[]{-71});
+    rules[79] = new Rule(-74, new int[]{-74,44,-71});
+    rules[80] = new Rule(-71, new int[]{-70});
+    rules[81] = new Rule(-70, new int[]{131,-78});
+    rules[82] = new Rule(-28, new int[]{-35});
+    rules[83] = new Rule(-35, new int[]{-34});
+    rules[84] = new Rule(-34, new int[]{-2,59});
+    rules[85] = new Rule(-2, new int[]{-3});
+    rules[86] = new Rule(-3, new int[]{-4,-80,-11});
+    rules[87] = new Rule(-4, new int[]{-5});
+    rules[88] = new Rule(-5, new int[]{131});
+    rules[89] = new Rule(-80, new int[]{61});
+    rules[90] = new Rule(-9, new int[]{-3});
+    rules[91] = new Rule(-9, new int[]{-14});
+    rules[92] = new Rule(-27, new int[]{-10});
+    rules[93] = new Rule(-10, new int[]{-1});
+    rules[94] = new Rule(-1, new int[]{182});
+    rules[95] = new Rule(-1, new int[]{184});
+    rules[96] = new Rule(-1, new int[]{183});
+    rules[97] = new Rule(-11, new int[]{-12});
+    rules[98] = new Rule(-11, new int[]{-9});
+    rules[99] = new Rule(-12, new int[]{-81,194,-13});
+    rules[100] = new Rule(-81, new int[]{});
+    rules[101] = new Rule(-13, new int[]{});
+    rules[102] = new Rule(-14, new int[]{-15});
+    rules[103] = new Rule(-15, new int[]{-16});
+    rules[104] = new Rule(-15, new int[]{-15,196,-16});
+    rules[105] = new Rule(-16, new int[]{-17});
+    rules[106] = new Rule(-16, new int[]{-16,195,-17});
+    rules[107] = new Rule(-17, new int[]{-18});
+    rules[108] = new Rule(-18, new int[]{-19});
+    rules[109] = new Rule(-19, new int[]{-20});
+    rules[110] = new Rule(-20, new int[]{-21});
+    rules[111] = new Rule(-21, new int[]{-22});
+    rules[112] = new Rule(-22, new int[]{-23});
+    rules[113] = new Rule(-23, new int[]{-24});
+    rules[114] = new Rule(-23, new int[]{-23,43,-24});
+    rules[115] = new Rule(-23, new int[]{-23,45,-24});
+    rules[116] = new Rule(-24, new int[]{-25});
+    rules[117] = new Rule(-25, new int[]{-26});
+    rules[118] = new Rule(-26, new int[]{-27});
+    rules[119] = new Rule(-26, new int[]{-5});
+>>>>>>> typecheck
   }
 
   protected override void Initialize() {
@@ -652,8 +918,13 @@ public static Statement root;
 #line default
         break;
       case 29: // MethodDeclaration -> MethodModifiers, MethodHeader, MethodBody
+<<<<<<< HEAD
 #line 194 "parser.y"
                                                { CurrentSemanticValue.stmt = new MethodDeclaration( (string)((ArrayList)ValueStack[ValueStack.Depth-2].arrlst[1])[0], ValueStack[ValueStack.Depth-3].modfs, ValueStack[ValueStack.Depth-1].stmts, (AST.Type)ValueStack[ValueStack.Depth-2].arrlst[0], (List<Statement>)((ArrayList)ValueStack[ValueStack.Depth-2].arrlst[1])[1]); }
+=======
+#line 190 "parser.y"
+                                               { CurrentSemanticValue.stmt = new MethodDeclaration( (string)((ArrayList)ValueStack[ValueStack.Depth-2].arrlst[1])[0], ValueStack[ValueStack.Depth-3].modfs, ValueStack[ValueStack.Depth-1].stmt, (AST.Type)ValueStack[ValueStack.Depth-2].arrlst[0], (List<Statement>)((ArrayList)ValueStack[ValueStack.Depth-2].arrlst[1])[1]); }
+>>>>>>> typecheck
 #line default
         break;
       case 30: // MethodModifiers -> MethodModifiers, MethodModifier
@@ -836,6 +1107,7 @@ public static Statement root;
                          { CurrentSemanticValue.type = new NamedType(ValueStack[ValueStack.Depth-1].name); }
 #line default
         break;
+<<<<<<< HEAD
       case 73: // MethodBody -> Block
 #line 331 "parser.y"
                        { CurrentSemanticValue.stmts= ValueStack[ValueStack.Depth-1].stmts; }
@@ -849,6 +1121,21 @@ public static Statement root;
       case 75: // Block -> '{', BlockStatements_Opt, '}'
 #line 342 "parser.y"
                                       { CurrentSemanticValue.stmts = ValueStack[ValueStack.Depth-2].stmts; }
+=======
+      case 67: // MethodBody -> Block
+#line 311 "parser.y"
+                       { CurrentSemanticValue.stmt= ValueStack[ValueStack.Depth-1].stmt; }
+#line default
+        break;
+      case 68: // MethodBody -> ';'
+#line 312 "parser.y"
+                    { CurrentSemanticValue.stmt= null;}
+#line default
+        break;
+      case 69: // Block -> '{', BlockStatements_Opt, '}'
+#line 322 "parser.y"
+                                      { CurrentSemanticValue.stmt = new BlockStatement(ValueStack[ValueStack.Depth-2].stmts); }
+>>>>>>> typecheck
 #line default
         break;
       case 76: // BlockStatements_Opt -> BlockStatements
@@ -1008,6 +1295,7 @@ public static Statement root;
                             { CurrentSemanticValue.expr = new IntegerLiteralExpression(ValueStack[ValueStack.Depth-1].num); }
 #line default
         break;
+<<<<<<< HEAD
       case 108: // Literal -> FloatingPointLiteral
 #line 454 "parser.y"
                                  { CurrentSemanticValue.expr = new FloatingPointLiteralExpression(ValueStack[ValueStack.Depth-1].floatnum); }
@@ -1268,6 +1556,132 @@ public static Statement root;
         break;
       case 160: // PostfixExpression -> ExpressionName
 #line 570 "parser.y"
+=======
+      case 95: // Literal -> BooleanLiteral
+#line 414 "parser.y"
+                            { CurrentSemanticValue.expr = new BooleanLiteralExpression((bool)ValueStack[ValueStack.Depth-1].boolval);}
+#line default
+        break;
+      case 96: // Literal -> FloatingPointLiteral
+#line 415 "parser.y"
+                                 { CurrentSemanticValue.expr = new FloatingPointLiteralExpression(ValueStack[ValueStack.Depth-1].floatnum);}
+#line default
+        break;
+      case 97: // Expression -> LambdaExpression
+#line 421 "parser.y"
+                              { CurrentSemanticValue.expr = ValueStack[ValueStack.Depth-1].expr; }
+#line default
+        break;
+      case 98: // Expression -> AssignmentExpression
+#line 422 "parser.y"
+                                 { CurrentSemanticValue.expr = ValueStack[ValueStack.Depth-1].expr; }
+#line default
+        break;
+      case 99: // LambdaExpression -> LambdaParameters, ARROW, LambdaBody
+#line 426 "parser.y"
+                                           { }
+#line default
+        break;
+      case 100: // LambdaParameters -> /* empty */
+#line 430 "parser.y"
+                          { }
+#line default
+        break;
+      case 101: // LambdaBody -> /* empty */
+#line 434 "parser.y"
+                          { }
+#line default
+        break;
+      case 102: // ConditionalExpression -> ConditionalOrExpression
+#line 438 "parser.y"
+                                       { CurrentSemanticValue.expr = ValueStack[ValueStack.Depth-1].expr; }
+#line default
+        break;
+      case 103: // ConditionalOrExpression -> ConditionalAndExpression
+#line 444 "parser.y"
+                                      { CurrentSemanticValue.expr = ValueStack[ValueStack.Depth-1].expr; }
+#line default
+        break;
+      case 104: // ConditionalOrExpression -> ConditionalOrExpression, LOGICAL_OR, 
+                //                            ConditionalAndExpression
+#line 445 "parser.y"
+                                                                { CurrentSemanticValue.expr = new BinaryExpression(ValueStack[ValueStack.Depth-3].expr, "||", ValueStack[ValueStack.Depth-1].expr); }
+#line default
+        break;
+      case 105: // ConditionalAndExpression -> InclusiveOrExpression
+#line 449 "parser.y"
+                                    { CurrentSemanticValue.expr = ValueStack[ValueStack.Depth-1].expr; }
+#line default
+        break;
+      case 106: // ConditionalAndExpression -> ConditionalAndExpression, LOGICAL_AND, 
+                //                             InclusiveOrExpression
+#line 450 "parser.y"
+                                                               { CurrentSemanticValue.expr = new BinaryExpression(ValueStack[ValueStack.Depth-3].expr, "&&", ValueStack[ValueStack.Depth-1].expr); }
+#line default
+        break;
+      case 107: // InclusiveOrExpression -> ExclusiveOrExpression
+#line 454 "parser.y"
+                                    { CurrentSemanticValue.expr = ValueStack[ValueStack.Depth-1].expr; }
+#line default
+        break;
+      case 108: // ExclusiveOrExpression -> AndExpression
+#line 459 "parser.y"
+                              { CurrentSemanticValue.expr = ValueStack[ValueStack.Depth-1].expr; }
+#line default
+        break;
+      case 109: // AndExpression -> EqualityExpression
+#line 464 "parser.y"
+                                 { CurrentSemanticValue.expr = ValueStack[ValueStack.Depth-1].expr; }
+#line default
+        break;
+      case 110: // EqualityExpression -> RelationalExpression
+#line 469 "parser.y"
+                                   { CurrentSemanticValue.expr = ValueStack[ValueStack.Depth-1].expr; }
+#line default
+        break;
+      case 111: // RelationalExpression -> ShiftExpression
+#line 474 "parser.y"
+                               { CurrentSemanticValue.expr = ValueStack[ValueStack.Depth-1].expr; }
+#line default
+        break;
+      case 112: // ShiftExpression -> AdditiveExpression
+#line 479 "parser.y"
+                                 { CurrentSemanticValue.expr = ValueStack[ValueStack.Depth-1].expr; }
+#line default
+        break;
+      case 113: // AdditiveExpression -> MultiplicativeExpression
+#line 484 "parser.y"
+                                     { CurrentSemanticValue.expr = ValueStack[ValueStack.Depth-1].expr; }
+#line default
+        break;
+      case 114: // AdditiveExpression -> AdditiveExpression, '+', MultiplicativeExpression
+#line 485 "parser.y"
+                                                      { CurrentSemanticValue.expr = new BinaryExpression(ValueStack[ValueStack.Depth-3].expr, "+", ValueStack[ValueStack.Depth-1].expr); }
+#line default
+        break;
+      case 115: // AdditiveExpression -> AdditiveExpression, '-', MultiplicativeExpression
+#line 486 "parser.y"
+                                                      { CurrentSemanticValue.expr = new BinaryExpression(ValueStack[ValueStack.Depth-3].expr, "-", ValueStack[ValueStack.Depth-1].expr); }
+#line default
+        break;
+      case 116: // MultiplicativeExpression -> UnaryExpression
+#line 490 "parser.y"
+                              { CurrentSemanticValue.expr = ValueStack[ValueStack.Depth-1].expr; }
+#line default
+        break;
+      case 117: // UnaryExpression -> PostfixExpression
+#line 495 "parser.y"
+                                { CurrentSemanticValue.expr = ValueStack[ValueStack.Depth-1].expr; }
+#line default
+        break;
+      case 118: // PostfixExpression -> Primary
+#line 500 "parser.y"
+                        { CurrentSemanticValue.expr = ValueStack[ValueStack.Depth-1].expr; }
+#line default
+        break;
+      case 119: // PostfixExpression -> ExpressionName
+#line 501 "parser.y"
+>>>>>>> typecheck
                              { CurrentSemanticValue.expr = ValueStack[ValueStack.Depth-1].expr; }
 #line default
         break;
@@ -1305,7 +1719,11 @@ public static Statement root;
         return CharToString((char)terminal);
   }
 
+<<<<<<< HEAD
 #line 603 "parser.y"
+=======
+#line 506 "parser.y"
+>>>>>>> typecheck
 
 public Parser(Scanner scanner) : base(scanner)
 {

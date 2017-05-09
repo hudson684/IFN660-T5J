@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 // Parser Conflict Information for grammar file "parser.y - 5/9/2017 17:02:49"
 
 Reduce/Reduce conflict in state 102 on symbol "'*'", parser will reduce production 147
@@ -219,5 +220,8 @@ Reduce/Reduce conflict in state 160 on symbol "';'", parser will reduce producti
 Reduce/Reduce conflict in state 160 on symbol "')'", parser will reduce production 57
  Reduce 57:	ReferenceType -> /* empty */
  Reduce 59:	ReferenceType -> /* empty */
+=======
+// Parser Conflict Information for grammar file "parser.y - 9/05/2017 5:22:40 PM"
+>>>>>>> typecheck
 
 // End conflict information for parser

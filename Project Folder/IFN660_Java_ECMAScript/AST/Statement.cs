@@ -1,189 +1,231 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
+using System;
 
 namespace IFN660_Java_ECMAScript.AST
 {
+
+	public abstract class Statement : Node
+	{
+	};
+
+	public class IfStatement : Statement
+	{
+		private Expression Cond;
+		private Statement Then, Else;
+		public IfStatement(Expression Cond, Statement Then, Statement Else)
+		{
+			this.Cond = Cond; this.Then = Then; this.Else = Else;
+		}
+
+		public override bool ResolveNames(LexicalScope scope)
+		{
+			return Cond.ResolveNames(scope) & Then.ResolveNames(scope) & Else.ResolveNames(scope);
+		}
+
+		public override void TypeCheck()
+		{
+			this.Cond.TypeCheck();
+			try
+			{
+				if (!Cond.type.Equals(new NamedType("BOOLEAN")))
+				{
+					Console.WriteLine("Invalid type for if statement condition\n");
+				}
+			}
+			catch (Exception e)
+			{
+				throw new Exception("TypeCheck error");
+			}
+            Then.TypeCheck();
+            Else.TypeCheck();
+		}
+	}
+
+	public class WhileStatement : Statement
+	{
+		// by Nathan
+		private Expression Cond;
+		private List<Statement> StmtList;
+
+		public WhileStatement(Expression Cond, List<Statement> StmtList)
+		{
+			this.Cond = Cond;
+			this.StmtList = StmtList;
+		}
+
+		public override bool ResolveNames(LexicalScope scope)
+		{
+			bool loopResolve = true;
+
+			foreach (Statement each in StmtList)
+			{
+				loopResolve = loopResolve & each.ResolveNames(scope);
+			}
+
+			return Cond.ResolveNames(scope) & loopResolve;
+		}
+		public override void TypeCheck()
+		{
+            this.Cond.TypeCheck();
+            try
+            {
+                if (!Cond.type.Equals(new NamedType("BOOLEAN")))
+                {
+                    Console.WriteLine("Invalid type for if statement condition\n");
+                }
+            }
+            catch (Exception e)
+            {
+                throw new Exception("TypeCheck error");
+            }
+            StmtList.ForEach(x => x.TypeCheck());
+        }
     
-    public abstract class Statement : Node
-    {
-    };
+	}
 
-    public class IfThenStatement : Statement
-    {
-        private Expression If;
-        private Statement Then;
-        public IfThenStatement(Expression If, Statement Then)
-        {
-            this.If = If; this.Then = Then;
-        }
+	public class ForStatement : Statement
+	{
+		// by Nathan - still testing
+		private Statement ForInit;
+		private Expression TestExpr;
+		private Statement ForUpdate;
+		private List<Statement> StmtList;
 
-        public override bool ResolveNames(LexicalScope scope)
-        {
-            return If.ResolveNames(scope) & Then.ResolveNames(scope);
-        }
-    }
+		public ForStatement(Statement ForInit, Expression TestExpr, Statement ForUpdate, List<Statement> StmtList)
+		{
+			this.ForInit = ForInit;
+			this.TestExpr = TestExpr;
+			this.ForUpdate = ForUpdate;
+			this.StmtList = StmtList;
+		}
 
-    //public class IfThenStatement : Statement
-    //{
-    //    private Expression If;
-    //    private List<Statement> Then;
-    //    public IfThenStatement(Expression If, List<Statement> Then)
-    //    {
-    //        this.Cond = If; this.Then = Then;
-    //    }
+		public override bool ResolveNames(LexicalScope scope)
+		{
+			bool loopResolve = true;
 
-    //    public override bool ResolveNames(LexicalScope scope)
-    //    {
-    //        bool loopResolve = true;
+			foreach (Statement each in StmtList)
+			{
+				loopResolve = loopResolve & each.ResolveNames(scope);
+			}
 
-    //        foreach (Statement each in Then)
-    //        {
-    //            loopResolve = loopResolve & each.ResolveNames(scope);
-    //        }
+			return ForInit.ResolveNames(scope) & TestExpr.ResolveNames(scope) & ForUpdate.ResolveNames(scope) & loopResolve;
+		}
 
-    //        return If.ResolveNames(scope) & loopResolve;
-    //    }
-    //}
+		public override void TypeCheck()
+		{
+            ForInit.TypeCheck();
+            ForUpdate.TypeCheck();
+            StmtList.ForEach(x => x.TypeCheck());
 
-    public class IfThenElseStatement : Statement
-    {
-        private Expression If;
-        private Statement Then, Else;
-        public IfThenElseStatement(Expression If, Statement Then, Statement Else)
-        {
-            this.If = If; this.Then = Then; this.Else = Else;
-        }
-
-        public override bool ResolveNames(LexicalScope scope)
-        {
-            return If.ResolveNames(scope) & Then.ResolveNames(scope) & Else.ResolveNames(scope);
-        }
-    }
-
-    public class IfThenElseStatementNoShortIf : Statement
-    {
-        private Expression If;
-        private Statement Then, Else;
-        public IfThenElseStatementNoShortIf(Expression If, Statement Then, Statement Else)
-        {
-            this.If = If; this.Then = Then; this.Else = Else;
-        }
-
-        public override bool ResolveNames(LexicalScope scope)
-        {
-            return If.ResolveNames(scope) & Then.ResolveNames(scope) & Else.ResolveNames(scope);
-        }
-    }
-
-    public class WhileStatement : Statement
-    {
-        // by Nathan
-        private Expression Cond;
-        private List<Statement> StmtList;
-
-        public WhileStatement(Expression Cond, List<Statement> StmtList)
-        {
-            this.Cond = Cond;
-            this.StmtList = StmtList;
-        }
-
-        public override bool ResolveNames(LexicalScope scope)
-        {
-            bool loopResolve = true;
-
-            foreach (Statement each in StmtList)
+            this.TestExpr.TypeCheck();
+            try
             {
-                loopResolve = loopResolve & each.ResolveNames(scope);
+                if (!TestExpr.type.Equals(new NamedType("BOOLEAN")))
+                {
+                    Console.WriteLine("Invalid type for if statement condition\n");
+                }
+            }
+            catch (Exception e)
+            {
+                throw new Exception("TypeCheck error");
             }
 
-            return Cond.ResolveNames(scope) & loopResolve;
         }
-    }
+	}
 
-    public class ForStatement : Statement
-    {
-        // by Nathan - still testing
-        private Statement ForInit;
-        private Expression TestExpr;
-        private Statement ForUpdate;
-        private List<Statement> StmtList;
+	public class ExpressionStatement : Statement
+	{
+		private Expression expr;
 
-        public ForStatement(Statement ForInit, Expression TestExpr, Statement ForUpdate, List<Statement> StmtList)
-        {
-            this.ForInit = ForInit;
-            this.TestExpr = TestExpr;
-            this.ForUpdate = ForUpdate;
-            this.StmtList = StmtList;
-        }
+		public ExpressionStatement(Expression expr)
+		{
+			this.expr = expr;
+		}
 
-        public override bool ResolveNames(LexicalScope scope)
-        {
-            bool loopResolve = true;
-
-            foreach (Statement each in StmtList)
+		public override bool ResolveNames(LexicalScope scope)
+		{
+			return expr.ResolveNames(scope);
+		}
+		public override void TypeCheck()
+		{
+            this.expr.TypeCheck();
+            /*try
             {
-                loopResolve = loopResolve & each.ResolveNames(scope);
+                if (!expr.type.Equals(new NamedType("BOOLEAN")))
+                {
+                    Console.WriteLine("Invalid type for if statement condition\n");
+                }
             }
-
-            return ForInit.ResolveNames(scope) & TestExpr.ResolveNames(scope) & ForUpdate.ResolveNames(scope) & loopResolve;
+            catch (Exception e)
+            {
+                throw new Exception("TypeCheck error");
+            }*/
         }
-    }
 
-    public class ExpressionStatement : Statement
-    {
-        private Expression expr;
+	}
 
-        public ExpressionStatement (Expression expr)
+
+	public class VariableDeclaration : Statement, Declaration
+	{
+		private Type type;
+		private string name;
+		public VariableDeclaration(Type type, string name)
+		{
+			this.type = type;
+			this.name = name;
+		}
+
+        public void AddItemsToSymbolTable(LexicalScope scope)
         {
-            this.expr = expr;
+            scope.Symbol_table.Add(name, this);
         }
 
         public override bool ResolveNames(LexicalScope scope)
+		{
+			return type.ResolveNames(scope);
+		}
+		public override void TypeCheck()
+		{
+			
+		}
+
+        public Type ObtainType()
         {
-            return expr.ResolveNames(scope);
+            return type;
         }
-    }
+	}
 
-  
-    public class VariableDeclaration : Statement, Declaration
-    {
-        private Type type;
-        private string name;
-        public VariableDeclaration(Type type, string name)
+	public class VariableDeclarationList : Statement, Declaration
+	{
+		private Type type;
+		private List<string> names;
+
+		public VariableDeclarationList(Type type, List<string> names)
+		{
+			this.type = type;
+			this.names = names;
+		}
+
+
+        public void AddItemsToSymbolTable(LexicalScope scope)
         {
-            this.type = type;
-            this.name = name;
-        }
-
-        public List<string> GetName()
-        {
-            return new List<string> { name };
-        }
-
-        public override bool ResolveNames(LexicalScope scope)
-        {
-            return type.ResolveNames(scope);
-        }
-    };
-
-    public class VariableDeclarationList : Statement, Declaration
-    {
-        private Type type;
-        private List<string> names;
-
-        public VariableDeclarationList(Type type, List<string> names)
-        {
-            this.type = type;
-            this.names = names;
-        }
-
-        public List<string> GetName()
-        {
-            return names;
+            foreach (string each in names)
+                scope.Symbol_table.Add(each, this);
         }
 
         public override bool ResolveNames(LexicalScope scope)
+		{
+			return type.ResolveNames(scope);
+		}
+
+		public override void TypeCheck()
+		{
+			
+		}
+
+        public Type ObtainType()
         {
-            return type.ResolveNames(scope);
+            return type;
         }
-    };
+	}
 }

@@ -39,12 +39,16 @@ public static Statement root;
 %type <stmt> Statement, CompilationUnit, TypeDeclaration, ClassDeclaration, NormalClassDeclaration, ClassBodyDeclaration
 %type <stmt> ExpressionStatement, StatementWithoutTrailingSubstatement, LocalVariableDeclaration, LocalVariableDeclarationStatement
 %type <stmt> BlockStatement, Throws_opt, ClassMemberDeclaration, MethodDeclaration, FormalParameter
+<<<<<<< HEAD
 %type <stmt> PackageDeclaration_opt
 %type <stmt> StatementNoShortIf
 %type <stmt> IfThenStatement, IfThenElseStatement, IfThenElseStatementNoShortIf
+=======
+%type <stmt> PackageDeclaration_opt, Block, MethodBody
+>>>>>>> typecheck
 
-%type <stmts> TypeDeclarations, ClassBody, ClassBodyDeclarations, BlockStatements, BlockStatements_Opt, Block
-%type <stmts> MethodBody, FormalParameters, FormalParameterList, FormalParameterList_Opt 
+%type <stmts> TypeDeclarations, ClassBody, ClassBodyDeclarations, BlockStatements, BlockStatements_Opt
+%type <stmts> FormalParameters, FormalParameterList, FormalParameterList_Opt 
 %type <stmts> ImportDeclarations
 
 %type <type> Result, FloatingPointType, IntegralType, NumericType
@@ -339,7 +343,11 @@ MethodBody
 //		;
 
 Block 
+<<<<<<< HEAD
 		: '{' BlockStatements_Opt '}'							{ $$ = $2; } // Tristan - done by Khoa
+=======
+		: '{' BlockStatements_Opt '}'							{ $$ = new BlockStatement($2); } // Tristan
+>>>>>>> typecheck
 		;
 
 BlockStatements_Opt
@@ -451,9 +459,14 @@ PrimaryNoNewArray
 
 Literal
 		: IntegerLiteral										{ $$ = new IntegerLiteralExpression($1); } // Nathan
+<<<<<<< HEAD
 		| FloatingPointLiteral									{ $$ = new FloatingPointLiteralExpression($1); } // Adon
 		| BooleanLiteral										{ $$ = new BooleanLiteralExpression($1); } // Adon
 		| CharacterLiteral										{ $$ = new CharacterLiteralExpression($1); } // Adon
+=======
+		| BooleanLiteral										{ $$ = new BooleanLiteralExpression((bool)$1);} // AN
+		| FloatingPointLiteral									{ $$ = new FloatingPointLiteralExpression($1);}//AN
+>>>>>>> typecheck
 		;
 // end of sneha Work
 
@@ -529,9 +542,15 @@ ShiftExpression
 		;
 
 AdditiveExpression
+<<<<<<< HEAD
 		: MultiplicativeExpression										{ $$ = $1; } //Nathan
 		| AdditiveExpression '+' MultiplicativeExpression				{ $$ = new MathematicalExpression($1, "+", $3); }
 		| AdditiveExpression '-' MultiplicativeExpression				{ $$ = new MathematicalExpression($1, "-", $3); }
+=======
+		: MultiplicativeExpression									{ $$ = $1; } //Nathan
+		| AdditiveExpression '+' MultiplicativeExpression			{ $$ = new BinaryExpression($1, "+", $3); } //Nathan
+		| AdditiveExpression '-' MultiplicativeExpression			{ $$ = new BinaryExpression($1, "-", $3); } //Nathan
+>>>>>>> typecheck
 		;
 
 MultiplicativeExpression
