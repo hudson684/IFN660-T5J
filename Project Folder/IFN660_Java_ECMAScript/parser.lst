@@ -1,10 +1,10 @@
 
 // ==========================================================================
-//  GPPG error listing for yacc source file <parser.y - 9/05/2017 8:33:18 PM>
+//  GPPG error listing for yacc source file <parser.y - 9/05/2017 11:16:07 PM>
 // ==========================================================================
 //  Version:  1.5.2
-//  Machine:  VDI-VL17-001
-//  DateTime: 9/05/2017 8:41:33 PM
+//  Machine:  VDI-VL17-056
+//  DateTime: 9/05/2017 11:24:15 PM
 //  UserName: n9648500
 // ==========================================================================
 
@@ -408,6 +408,7 @@ StatementNoShortIf
 // Tristan
 StatementWithoutTrailingSubstatement
 		: ExpressionStatement 									{ $$ = $1; } // Nathan - done by Khoa
+		| Block													{ $$ = $1; } // Nathan
 		;
 
 ExpressionStatement

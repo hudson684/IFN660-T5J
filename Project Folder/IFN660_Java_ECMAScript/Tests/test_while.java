@@ -3,9 +3,25 @@ public class HelloWorld
 {
 	public void Main (String[] args)
 	{
-		int i;
+		int i, j;
 		i = 0;
-		while (i < 4)
+
+		if (i < 4)
+		{
 			i = i + 1;
+			j = i;
+		}
+		else
+		{
+			i = j;
+			j = 3;
+		}
+
+		while (i < 4)
+		{
+			i = i + 1;
+			float k;
+			k = i;
+		}
 	}
 }

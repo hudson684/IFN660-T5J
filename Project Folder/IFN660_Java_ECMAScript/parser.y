@@ -395,6 +395,7 @@ StatementNoShortIf
 // Tristan
 StatementWithoutTrailingSubstatement
 		: ExpressionStatement 									{ $$ = $1; } // Nathan - done by Khoa
+		| Block													{ $$ = $1; } // Nathan
 		;
 
 ExpressionStatement
