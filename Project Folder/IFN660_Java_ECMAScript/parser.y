@@ -40,7 +40,7 @@ public static Statement root;
 %type <stmt> ExpressionStatement, StatementWithoutTrailingSubstatement, LocalVariableDeclaration, LocalVariableDeclarationStatement
 %type <stmt> BlockStatement, Throws_opt, ClassMemberDeclaration, MethodDeclaration, FormalParameter
 %type <stmt> PackageDeclaration_opt, Block, MethodBody
-%type <stmt> StatementNoShortIf
+%type <stmt> StatementNoShortIf, WhileStatement
 %type <stmt> IfThenStatement, IfThenElseStatement, IfThenElseStatementNoShortIf
 
 %type <stmts> TypeDeclarations, ClassBody, ClassBodyDeclarations, BlockStatements, BlockStatements_Opt
@@ -381,9 +381,10 @@ VariableDeclaratorId
 		;
 // Nathan
 Statement
-		: StatementWithoutTrailingSubstatement					{$$ = $1; } // Nathan
+		: StatementWithoutTrailingSubstatement					{ $$ = $1; } // Nathan
 		| IfThenStatement										{$$ = $1; } // Adon
 		| IfThenElseStatement									{$$ = $1; } // Adon
+		| WhileStatement										{ $$ = $1; } // Nathan
 		;
 		
 StatementNoShortIf
@@ -415,6 +416,10 @@ IfThenElseStatement
 
 IfThenElseStatementNoShortIf
 		: IF '(' Expression ')' StatementNoShortIf ELSE StatementNoShortIf		{ $$ = new IfStatement($3, $5, $7); } //Adon
+		;
+
+WhileStatement
+		: WHILE '(' Expression ')' Statement					{ $$ = new WhileStatement($3, $5); } // Nathan
 		;
 
 // End Work by Tristan

@@ -45,40 +45,33 @@ namespace IFN660_Java_ECMAScript.AST
 	{
 		// by Nathan
 		private Expression Cond;
-		private List<Statement> StmtList;
+		private Statement Statements;
 
-		public WhileStatement(Expression Cond, List<Statement> StmtList)
+		public WhileStatement(Expression Cond, Statement Statements)
 		{
 			this.Cond = Cond;
-			this.StmtList = StmtList;
+			this.Statements = Statements;
 		}
 
 		public override bool ResolveNames(LexicalScope scope)
 		{
-			bool loopResolve = true;
+            // 1. create new scope
+            var newScope = getNewScope(scope, null);
 
-			foreach (Statement each in StmtList)
-			{
-				loopResolve = loopResolve & each.ResolveNames(scope);
-			}
-
-			return Cond.ResolveNames(scope) & loopResolve;
+            // 2. resolve names in while condition and statement(s)
+			return Cond.ResolveNames(newScope) & Statements.ResolveNames(newScope);
 		}
 		public override void TypeCheck()
 		{
             this.Cond.TypeCheck();
-            try
+
+            if (!Cond.type.isTheSameAs(new NamedType("BOOLEAN")))
             {
-                if (!Cond.type.Equals(new NamedType("BOOLEAN")))
-                {
-                    Console.WriteLine("Invalid type for if statement condition\n");
-                }
-            }
-            catch (Exception e)
-            {
+                System.Console.WriteLine("Type error in WhileStatement\n");
                 throw new Exception("TypeCheck error");
             }
-            StmtList.ForEach(x => x.TypeCheck());
+
+            Statements.TypeCheck();
         }
     
 	}

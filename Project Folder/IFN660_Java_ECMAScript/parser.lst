@@ -1,11 +1,11 @@
 
 // ==========================================================================
-//  GPPG error listing for yacc source file <parser.y - 9/05/2017 6:29:41 PM>
+//  GPPG error listing for yacc source file <parser.y - 9/05/2017 8:33:18 PM>
 // ==========================================================================
 //  Version:  1.5.2
-//  Machine:  VDI-VL17-061
-//  DateTime: 9/05/2017 6:29:48 PM
-//  UserName: n9768653
+//  Machine:  VDI-VL17-001
+//  DateTime: 9/05/2017 8:41:33 PM
+//  UserName: n9648500
 // ==========================================================================
 
 
@@ -51,7 +51,7 @@ public static Statement root;
 %type <stmt> ExpressionStatement, StatementWithoutTrailingSubstatement, LocalVariableDeclaration, LocalVariableDeclarationStatement
 %type <stmt> BlockStatement, Throws_opt, ClassMemberDeclaration, MethodDeclaration, FormalParameter
 %type <stmt> PackageDeclaration_opt, Block, MethodBody
-%type <stmt> StatementNoShortIf
+%type <stmt> StatementNoShortIf, WhileStatement
 %type <stmt> IfThenStatement, IfThenElseStatement, IfThenElseStatementNoShortIf
 
 %type <stmts> TypeDeclarations, ClassBody, ClassBodyDeclarations, BlockStatements, BlockStatements_Opt
@@ -394,9 +394,10 @@ VariableDeclaratorId
 		;
 // Nathan
 Statement
-		: StatementWithoutTrailingSubstatement					{$$ = $1; } // Nathan
+		: StatementWithoutTrailingSubstatement					{ $$ = $1; } // Nathan
 		| IfThenStatement										{$$ = $1; } // Adon
 		| IfThenElseStatement									{$$ = $1; } // Adon
+		| WhileStatement										{ $$ = $1; } // Nathan
 		;
 		
 StatementNoShortIf
@@ -428,6 +429,10 @@ IfThenElseStatement
 
 IfThenElseStatementNoShortIf
 		: IF '(' Expression ')' StatementNoShortIf ELSE StatementNoShortIf		{ $$ = new IfStatement($3, $5, $7); } //Adon
+		;
+
+WhileStatement
+		: WHILE '(' Expression ')' Statement					{ $$ = new WhileStatement($3, $5); } // Nathan
 		;
 
 // End Work by Tristan

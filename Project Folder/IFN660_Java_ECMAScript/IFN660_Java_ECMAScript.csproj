@@ -104,6 +104,7 @@
     <Content Include="Tests\auto\test.java" />
     <Content Include="Tests\test1.txt" />
     <Content Include="Tests\test2.java" />
+    <Content Include="Tests\test_while.java" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

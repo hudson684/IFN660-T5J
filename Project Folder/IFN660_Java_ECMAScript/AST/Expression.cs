@@ -103,7 +103,7 @@ namespace IFN660_Java_ECMAScript.AST
             switch (oper)
             {
                 case "<":
-                    if (!lhs.type.Equals(new NamedType("INT")) || !lhs.type.Equals(new NamedType("INT")))
+                    if (!lhs.type.isTheSameAs(new NamedType("INT")) || !lhs.type.isTheSameAs(new NamedType("INT")))
                     {
                         System.Console.WriteLine("Invalid arguments for less than expression\n");
                         throw new Exception("TypeCheck error");
