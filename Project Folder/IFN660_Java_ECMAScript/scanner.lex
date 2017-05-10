@@ -280,7 +280,15 @@ while										{return (int)Tokens.WHILE;}
 ">>>="										{return (int)Tokens.SIGNED_RIGHT_SHIFT_ASSIGNMENT;}
 
 /* 3.8 IDENTIFIERS */
-{Identifier} 			                    { yylval.name = yytext; return (int)Tokens.IDENTIFIER; }
+{Identifier} 			                    {	if(IsValidIdentifier(yytext))
+												{
+													yylval.name = yytext; return (int)Tokens.IDENTIFIER;
+												}else{
+													throw new Exception(
+														String.Format(
+															"unexpected character '{0}'", yytext));
+												}
+											}
 
 .                            			{ 
 											throw new Exception(
@@ -335,7 +343,7 @@ double parseFloat (string inString, int intBase)
     inString = inString.ToUpper().Replace("_","");
 
     // Check if integer is float or double
-    if (inString.EndsWith("F"))
+    if (inString.EndsWith("F")|| inString.EndsWith("f"))
     {
         // This is a bit OTT at the moment. Leave it until we work out exactly what to do with longs
         inString = inString.TrimEnd('F');
@@ -349,20 +357,19 @@ double parseFloat (string inString, int intBase)
 		}
         return outFloat; 
     }
-    else
-    {
-		// double indicator may not be there but try to remove anyway
+	// double indicator may not be there but try to remove anyway
+	if(inString.EndsWith("D") || inString.EndsWith("d"))
 		inString = inString.TrimEnd('D');
-		if (intBase == 16)
-		{
-			outDouble = convertHexFloatToDecFloat(inString);
-		}
-		else
-		{
-			outDouble = Convert.ToSingle(inString);
-		}
-        return outDouble;
-    }
+	if (intBase == 16)
+	{
+		outDouble = convertHexFloatToDecFloat(inString);
+	}
+	else
+	{
+		outDouble = Convert.ToSingle(inString);
+	}
+    return outDouble;
+    
 }
 
 double convertHexFloatToDecFloat(string inString)
@@ -437,6 +444,76 @@ double getHexDecimalPart(string inString)
 
     return outDouble;
 }
+
+public bool IsValidIdentifier (string s)
+{
+	if(s == null || s.Length == 0)
+		return false;
+	if(!is_identifier_start_character(s[0]))
+		return false;
+	for(int i=1;i<s.Length; i++)
+		if(!is_identifier_body_character(s[i]))
+				return false;
+	return true;
+}
+
+bool is_identifier_start_character(int c)
+{
+	//Identifier can start with character or underscore
+	if((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || c == '_'||c == '$')
+		return true;
+	if (c < 0x80) 
+		return false;
+	return is_identifier_start_character_unicode_part((char)c);
+}
+
+bool is_identifier_start_character_unicode_part(char c)
+{
+	switch(Char.GetUnicodeCategory(c)){
+		case UnicodeCategory.LetterNumber:
+		case UnicodeCategory.UppercaseLetter:
+		case UnicodeCategory.LowercaseLetter:
+		case UnicodeCategory.TitlecaseLetter:
+		case UnicodeCategory.ModifierLetter:
+		case UnicodeCategory.OtherLetter:
+			return true;
+	}
+	return false;
+}
+
+bool is_identifier_body_character(char c)
+{
+	if(c >= 'a' && c <='z')
+		return true;
+
+	if(c >= 'A' && c <= 'Z')
+		return true;
+
+	if(c == '_'|| c == '$' || (c >= '0' && c <= '9')) // Identifier can not start with number but can include number 
+		return true;
+	if(c < 0x80)
+		return false;
+	return is_identifier_body_character_unicode_part(c);
+}
+
+bool is_identifier_body_character_unicode_part(char c)
+{
+	switch(Char.GetUnicodeCategory(c)){
+		case UnicodeCategory.ConnectorPunctuation:		// Unicode character of class Pc
+		case UnicodeCategory.NonSpacingMark:			// Unicode character of class Mn or Mc
+		case UnicodeCategory.SpacingCombiningMark:
+		case UnicodeCategory.DecimalDigitNumber:		// Decimal digit character - class Nd
+		case UnicodeCategory.LetterNumber:
+		case UnicodeCategory.UppercaseLetter:
+		case UnicodeCategory.LowercaseLetter:
+		case UnicodeCategory.TitlecaseLetter:
+		case UnicodeCategory.ModifierLetter:
+		case UnicodeCategory.OtherLetter:
+			return true;	
+	}
+	return false;
+}
+
 public override void yyerror( string format, params object[] args )
 {
     System.Console.Error.WriteLine("Error: line {0}, {1}", lines,

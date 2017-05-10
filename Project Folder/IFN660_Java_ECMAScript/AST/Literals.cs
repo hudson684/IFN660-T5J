@@ -72,7 +72,10 @@ namespace IFN660_Java_ECMAScript.AST
         }
         public override void TypeCheck()
         {
-            type = new NamedType("FLOAT");
+            // A floating-point literal is of type float if it is suffixed with F or f;
+            // otherwise its type is double
+            // Need more check here
+            type = new NamedType("DOUBLE");
         }
     }
 

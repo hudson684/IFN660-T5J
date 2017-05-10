@@ -1,4 +1,4 @@
-﻿public class HelloWorld
+﻿public class Helloworld
 {
 	public void Main (String[] args)
 	{
@@ -9,6 +9,14 @@
 		boolean z;
 		z = true;
 		float m;
-		m = 0.2;
+		// Should cause error cause it is a double not float
+		//m = 0.2;
+
+		//m = 0.2;
+		int _test;
+		int $test;
+
+		// Should cause error here
+		// int 2test;
 	}
 }
