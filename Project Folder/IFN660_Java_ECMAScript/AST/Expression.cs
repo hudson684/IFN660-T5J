@@ -66,9 +66,7 @@ namespace IFN660_Java_ECMAScript.AST
 			}
 
 			if (declarationRef == null)
-				Debug.WriteLine("Error: Undeclared indentifier", value);
-			else
-				Debug.WriteLine("Found variable in scope", value);
+				Console.WriteLine("Error: Undeclared indentifier", value);
 
 			return declarationRef != null;
 		}

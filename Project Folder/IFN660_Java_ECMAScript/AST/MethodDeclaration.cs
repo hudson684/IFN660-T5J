@@ -36,6 +36,11 @@ namespace IFN660_Java_ECMAScript.AST
 			// Step 2: ResolveNames for each statement
 			bool loopResolve = true;
 
+            foreach (Statement each in args)
+            {
+                loopResolve = each.ResolveNames(newScope);
+            }
+
 			if (statementList != null)
 			{
                 loopResolve = statementList.ResolveNames(newScope);

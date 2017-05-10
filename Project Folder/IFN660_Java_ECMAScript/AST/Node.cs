@@ -81,6 +81,15 @@ namespace IFN660_Java_ECMAScript.AST
 
 		public static LexicalScope getNewScope(LexicalScope oldScope, List<Statement> statementList)
 		{
+            // Step 1: Create scope that includes standard libraries (ie Java.Lang) if oldScope == null.
+            if (oldScope == null)
+            {
+                var JLnode = new JavaLang();
+                oldScope = new LexicalScope();
+                oldScope.Symbol_table = new Dictionary<string, Declaration>();
+                JLnode.AddItemsToSymbolTable(oldScope);
+            }
+
 			// Step 1: set the new scope
 			var newScope = new LexicalScope();
 			newScope.ParentScope = oldScope;

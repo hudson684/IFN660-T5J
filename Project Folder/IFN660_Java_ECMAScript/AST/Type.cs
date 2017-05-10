@@ -8,6 +8,7 @@ namespace IFN660_Java_ECMAScript.AST
 {
 	public abstract class Type : Node
 	{
+        public String[] primitives = { "BOOLEAN", "BYTE", "SHORT", "CHAR", "INT", "LONG", "FLOAT", "DOUBLE" };
         /*
         public static bool operator == (Type t1, Type t2)
 		{
@@ -84,11 +85,29 @@ namespace IFN660_Java_ECMAScript.AST
 
 		public override bool ResolveNames(LexicalScope scope)
 		{
-			return true;
+            bool validType = true;
+
+            // if elementType is not a primitive type
+            if (!primitives.Contains(elementType))
+            {
+                Declaration declarationRef = null;
+                // check for valid declaration...
+                if (scope != null)
+                {
+                    declarationRef = scope.Resolve(elementType);
+                }
+
+                if (declarationRef == null)
+                    Console.WriteLine("Error: Undeclared indentifier", elementType);
+
+                return declarationRef != null;
+            }
+
+            return validType;
 		}
 		public override void TypeCheck()
 		{
-           
+           // do nothing
 		}
 
         public override bool isTheSameAs(Type type)
@@ -114,7 +133,7 @@ namespace IFN660_Java_ECMAScript.AST
         public override bool isCompatibleWith(Type type)
         {
             bool compatible = true;
-            String[] primitives = { "BOOLEAN", "BYTE", "SHORT", "CHAR", "INT", "LONG", "FLOAT", "DOUBLE" };
+            //String[] primitives = { "BOOLEAN", "BYTE", "SHORT", "CHAR", "INT", "LONG", "FLOAT", "DOUBLE" };
 
             NamedType nType = type as NamedType; // try to cast type argument as NamedType
             if (nType != null)
@@ -175,11 +194,11 @@ namespace IFN660_Java_ECMAScript.AST
 
         public override bool ResolveNames(LexicalScope scope)
         {
-            return true;
+            return elementType.ResolveNames(scope);
         }
         public override void TypeCheck()
         {
-
+            // do nothing
         }
 
         public override bool isTheSameAs(Type type)
