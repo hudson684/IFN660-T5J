@@ -3,10 +3,10 @@
 // (see accompanying GPPGcopyright.rtf)
 
 // GPPG version 1.5.2
-// Machine:  VDI-VL17-056
-// DateTime: 9/05/2017 11:24:14 PM
-// UserName: n9648500
-// Input file <parser.y - 9/05/2017 11:16:07 PM>
+// Machine:  DESKTOP-1VMC0S8
+// DateTime: 13/05/2017 12:37:52 PM
+// UserName: hudso
+// Input file <parser.y - 13/05/2017 12:37:24 PM>
 
 // options: conflicts lines gplex conflicts
 
@@ -77,11 +77,11 @@ public class ScanObj {
 [GeneratedCodeAttribute( "Gardens Point Parser Generator", "1.5.2")]
 public class Parser: ShiftReduceParser<ValueType, LexLocation>
 {
-  // Verbatim content from parser.y - 9/05/2017 11:16:07 PM
+  // Verbatim content from parser.y - 13/05/2017 12:37:24 PM
 #line 7 "parser.y"
 public static Statement root;
 #line default
-  // End verbatim content from parser.y - 9/05/2017 11:16:07 PM
+  // End verbatim content from parser.y - 13/05/2017 12:37:24 PM
 
 #pragma warning disable 649
   private static Dictionary<int, string> aliases;
@@ -1215,17 +1215,17 @@ public static Statement root;
         break;
       case 145: // MultiplicativeExpression -> MultiplicativeExpression, '*', UnaryExpression
 #line 545 "parser.y"
-                                                     { CurrentSemanticValue.expr = new MathematicalExpression(ValueStack[ValueStack.Depth-3].expr, "*", ValueStack[ValueStack.Depth-1].expr); }
+                                                     { CurrentSemanticValue.expr = new BinaryExpression(ValueStack[ValueStack.Depth-3].expr, "*", ValueStack[ValueStack.Depth-1].expr); }
 #line default
         break;
       case 146: // MultiplicativeExpression -> MultiplicativeExpression, '/', UnaryExpression
 #line 546 "parser.y"
-                                                     { CurrentSemanticValue.expr = new MathematicalExpression(ValueStack[ValueStack.Depth-3].expr, "/", ValueStack[ValueStack.Depth-1].expr); }
+                                                     { CurrentSemanticValue.expr = new BinaryExpression(ValueStack[ValueStack.Depth-3].expr, "/", ValueStack[ValueStack.Depth-1].expr); }
 #line default
         break;
       case 147: // MultiplicativeExpression -> MultiplicativeExpression, '%', UnaryExpression
 #line 547 "parser.y"
-                                                     { CurrentSemanticValue.expr = new MathematicalExpression(ValueStack[ValueStack.Depth-3].expr, "%", ValueStack[ValueStack.Depth-1].expr); }
+                                                     { CurrentSemanticValue.expr = new BinaryExpression(ValueStack[ValueStack.Depth-3].expr, "%", ValueStack[ValueStack.Depth-1].expr); }
 #line default
         break;
       case 148: // UnaryExpression -> PreIncrementExpression
@@ -1327,7 +1327,8 @@ public static Statement root;
         return CharToString((char)terminal);
   }
 
-#line 613 "parser.y"
+#line 612 "parser.y"
+
 public Parser(Scanner scanner) : base(scanner)
 {
 }

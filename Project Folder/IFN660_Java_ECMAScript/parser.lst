@@ -1,11 +1,11 @@
 
 // ==========================================================================
-//  GPPG error listing for yacc source file <parser.y - 9/05/2017 11:16:07 PM>
+//  GPPG error listing for yacc source file <parser.y - 13/05/2017 12:37:24 PM>
 // ==========================================================================
 //  Version:  1.5.2
-//  Machine:  VDI-VL17-056
-//  DateTime: 9/05/2017 11:24:15 PM
-//  UserName: n9648500
+//  Machine:  DESKTOP-1VMC0S8
+//  DateTime: 13/05/2017 12:37:52 PM
+//  UserName: hudso
 // ==========================================================================
 
 
@@ -555,9 +555,9 @@ AdditiveExpression
 
 MultiplicativeExpression
 		: UnaryExpression
-		| MultiplicativeExpression '*' UnaryExpression					{ $$ = new MathematicalExpression($1, "*", $3); }
-		| MultiplicativeExpression '/' UnaryExpression					{ $$ = new MathematicalExpression($1, "/", $3); }
-		| MultiplicativeExpression '%' UnaryExpression					{ $$ = new MathematicalExpression($1, "%", $3); }
+		| MultiplicativeExpression '*' UnaryExpression					{ $$ = new BinaryExpression($1, "*", $3); }
+		| MultiplicativeExpression '/' UnaryExpression					{ $$ = new BinaryExpression($1, "/", $3); }
+		| MultiplicativeExpression '%' UnaryExpression					{ $$ = new BinaryExpression($1, "%", $3); }
 		;
 		
 UnaryExpression

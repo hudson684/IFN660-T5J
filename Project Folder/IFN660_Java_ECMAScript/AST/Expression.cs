@@ -129,7 +129,87 @@ namespace IFN660_Java_ECMAScript.AST
                         throw new Exception("TypeCheck error");
                     }
                     break;
-               
+
+                case "-":
+                    if (lhs.type.isTheSameAs(rhs.type) && !lhs.type.isTheSameAs(new NamedType("BOOLEAN")))
+                    {
+                        type = lhs.type;
+                    }
+                    else if (lhs.type.isCompatibleWith(rhs.type))
+                    {
+                        type = lhs.type;
+                    }
+                    else if (rhs.type.isCompatibleWith(lhs.type))
+                    {
+                        type = rhs.type;
+                    }
+                    else
+                    {
+                        System.Console.WriteLine("Invalid arguments for less than expression\n");
+                        throw new Exception("TypeCheck error");
+                    }
+                    break;
+
+                case "*":
+                    if (lhs.type.isTheSameAs(rhs.type) && !lhs.type.isTheSameAs(new NamedType("BOOLEAN")))
+                    {
+                        type = lhs.type;
+                    }
+                    else if (lhs.type.isCompatibleWith(rhs.type))
+                    {
+                        type = lhs.type;
+                    }
+                    else if (rhs.type.isCompatibleWith(lhs.type))
+                    {
+                        type = rhs.type;
+                    }
+                    else
+                    {
+                        System.Console.WriteLine("Invalid arguments for less than expression\n");
+                        throw new Exception("TypeCheck error");
+                    }
+                    break;
+
+                case "%":
+                    if (lhs.type.isTheSameAs(rhs.type) && !lhs.type.isTheSameAs(new NamedType("BOOLEAN")))
+                    {
+                        type = lhs.type;
+                    }
+                    else if (lhs.type.isCompatibleWith(rhs.type))
+                    {
+                        type = lhs.type;
+                    }
+                    else if (rhs.type.isCompatibleWith(lhs.type))
+                    {
+                        type = rhs.type;
+                    }
+                    else
+                    {
+                        System.Console.WriteLine("Invalid arguments for less than expression\n");
+                        throw new Exception("TypeCheck error");
+                    }
+                    break;
+
+                case "/":
+                    if (lhs.type.isTheSameAs(rhs.type) && !lhs.type.isTheSameAs(new NamedType("BOOLEAN")))
+                    {
+                        type = lhs.type;
+                    }
+                    else if (lhs.type.isCompatibleWith(rhs.type))
+                    {
+                        type = lhs.type;
+                    }
+                    else if (rhs.type.isCompatibleWith(lhs.type))
+                    {
+                        type = rhs.type;
+                    }
+                    else
+                    {
+                        System.Console.WriteLine("Invalid arguments for less than expression\n");
+                        throw new Exception("TypeCheck error");
+                    }
+                    break;
+
                 default:
                     {
                         System.Console.WriteLine("Unexpected binary operator %c \n", oper);
@@ -154,29 +234,6 @@ namespace IFN660_Java_ECMAScript.AST
             return lhs.ResolveNames(scope);
         }
 
-        public override void TypeCheck()
-        {
-            
-        }
-    }
-
-    // Removed by AN
-    public class MathematicalExpression : Expression
-    {
-        private Expression lhs;
-        private Expression rhs;
-        private string oper;
-        public MathematicalExpression(Expression lhs, string oper, Expression rhs)
-        {
-            this.lhs = lhs;
-            this.rhs = rhs;
-            this.oper = oper;
-        }
-
-        public override bool ResolveNames(LexicalScope scope)
-        {
-            return lhs.ResolveNames(scope) & rhs.ResolveNames(scope);
-        }
         public override void TypeCheck()
         {
             
