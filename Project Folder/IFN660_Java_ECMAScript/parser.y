@@ -612,15 +612,15 @@ ShiftExpression
 
 AdditiveExpression
 		: MultiplicativeExpression										{ $$ = $1; } //Nathan
-		| AdditiveExpression '+' MultiplicativeExpression				{ $$ = new MathematicalExpression($1, "+", $3); }    //  Josh
-		| AdditiveExpression '-' MultiplicativeExpression				{ $$ = new MathematicalExpression($1, "-", $3); }    //  Josh
+		| AdditiveExpression '+' MultiplicativeExpression				{ $$ = new BinaryExpression($1, "+", $3); }    //  Josh
+		| AdditiveExpression '-' MultiplicativeExpression				{ $$ = new BinaryExpression($1, "-", $3); }    //  Josh
 		;
 
 MultiplicativeExpression
 		: UnaryExpression												{ $$ = $1; }
-		| MultiplicativeExpression '*' UnaryExpression					{ $$ = new MathematicalExpression($1, "*", $3); }     //  Josh
-		| MultiplicativeExpression '/' UnaryExpression					{ $$ = new MathematicalExpression($1, "/", $3); }      //  Josh
-		| MultiplicativeExpression '%' UnaryExpression					{ $$ = new MathematicalExpression($1, "%", $3); }       //  Josh
+		| MultiplicativeExpression '*' UnaryExpression					{ $$ = new BinaryExpression($1, "*", $3); }     //  Josh
+		| MultiplicativeExpression '/' UnaryExpression					{ $$ = new BinaryExpression($1, "/", $3); }      //  Josh
+		| MultiplicativeExpression '%' UnaryExpression					{ $$ = new BinaryExpression($1, "%", $3); }       //  Josh
 		;
 		
 UnaryExpression

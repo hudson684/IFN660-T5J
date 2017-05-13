@@ -207,6 +207,25 @@ namespace IFN660_Java_ECMAScript.AST
             
         }
     }
+    public class CastExpression : Expression
+    {
+        private Type type;
+        private Expression expression;
+        public CastExpression(Type type, Expression expression)
+        {
+            this.type = type;
+            this.expression = expression;
+        }
+
+        public override bool ResolveNames(LexicalScope scope)
+        {
+            return expression.ResolveNames(scope);
+        }
+        public override void TypeCheck()
+        {
+
+        }
+    }
 }
 
 	
