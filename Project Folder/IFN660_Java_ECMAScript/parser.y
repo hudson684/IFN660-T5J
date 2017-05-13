@@ -385,6 +385,7 @@ Statement
 		| IfThenStatement										{$$ = $1; } // Adon
 		| IfThenElseStatement									{$$ = $1; } // Adon
 		| WhileStatement										{ $$ = $1; } // Nathan
+		| BreakStatement										{ $$ = $1;} //Vivian
 		;
 		
 StatementNoShortIf
@@ -422,6 +423,13 @@ IfThenElseStatementNoShortIf
 WhileStatement
 		: WHILE '(' Expression ')' Statement					{ $$ = new WhileStatement($3, $5); } // Nathan
 		;
+
+//Add for breakstatement-Vivian
+BreakStatement
+		: BREAK ';'												{ $$ = null; } //Vivian
+		;
+		//assume we have no labelled statement so no "break identifier ;"
+
 
 // End Work by Tristan
 //work by sneha
