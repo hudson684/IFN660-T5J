@@ -9,5 +9,6 @@
 		long n;
 		double o;
 		x=4_2;
+		x = x * 1;
 	}
 }

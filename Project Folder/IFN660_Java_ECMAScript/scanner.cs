@@ -6,9 +6,9 @@
 //
 //  GPLEX Version:  1.2.2
 //  Machine:  AIR
-//  DateTime: 5/2/2017 23:40:00
+//  DateTime: 5/13/2017 13:10:25
 //  UserName: Air
-//  GPLEX input file <scanner.lex - 5/2/2017 23:39:11>
+//  GPLEX input file <scanner.lex - 5/13/2017 12:03:04>
 //  GPLEX frame file <embedded resource>
 //
 //  Option settings: unicode, parser, minimize
@@ -2089,7 +2089,7 @@ return (int)Tokens.FLOAT;
 return (int)Tokens.FOR;
             break;
         case 136:
-return (int)Tokens.BooleanLiteral;
+yylval.boolval = bool.Parse(yytext); return (int)Tokens.BooleanLiteral;
             break;
         case 138:
 return (int)Tokens.DO;

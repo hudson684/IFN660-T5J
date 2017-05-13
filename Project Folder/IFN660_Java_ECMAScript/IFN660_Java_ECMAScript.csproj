@@ -46,9 +46,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AST\Block.cs" />
     <Compile Include="AST\CompilationUnitDeclaration.cs" />
-    <Compile Include="Declaration.cs" />
-    <Compile Include="LexicalScope.cs" />
+    <Compile Include="AST\Declaration.cs" />
+    <Compile Include="AST\LexicalScope.cs" />
+    <Compile Include="AST\Literals.cs" />
     <Compile Include="parser.cs" />
     <Compile Include="AST\ClassDeclaration.cs" />
     <Compile Include="AST\ImportDeclaration.cs" />
@@ -101,6 +103,9 @@
     <Content Include="Tests\auto\test2.java" />
     <Content Include="Tests\auto\test.java" />
     <Content Include="Tests\test1.txt" />
+    <Content Include="Tests\test2.java" />
+    <Content Include="Tests\test_if.java" />
+    <Content Include="Tests\test_while.java" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

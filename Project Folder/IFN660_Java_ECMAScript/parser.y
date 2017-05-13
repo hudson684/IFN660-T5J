@@ -32,19 +32,23 @@ public static Statement root;
 %type <expr> ConditionalExpression, ConditionalOrExpression, ConditionalAndExpression
 %type <expr> InclusiveOrExpression, ExclusiveOrExpression, AndExpression, EqualityExpression
 %type <expr> RelationalExpression, ShiftExpression, AdditiveExpression, MultiplicativeExpression
-%type <expr> UnaryExpression, PostfixExpression, Primary
+%type <expr> UnaryExpression, PostfixExpression, Primary //Josh
+%type <expr> PreIncrementExpression,  PreDecrementExpression, UnaryExpressionNotPlusMinus //Josh
+%type <expr> CastExpression, PostIncrementExpression, PostDecrementExpression //Josh
 
 %type <stmt> Statement, CompilationUnit, TypeDeclaration, ClassDeclaration, NormalClassDeclaration, ClassBodyDeclaration
 %type <stmt> ExpressionStatement, StatementWithoutTrailingSubstatement, LocalVariableDeclaration, LocalVariableDeclarationStatement
 %type <stmt> BlockStatement, Throws_opt, ClassMemberDeclaration, MethodDeclaration, FormalParameter
-%type <stmt> PackageDeclaration_opt
+%type <stmt> PackageDeclaration_opt, Block, MethodBody
+%type <stmt> StatementNoShortIf, WhileStatement
+%type <stmt> IfThenStatement, IfThenElseStatement, IfThenElseStatementNoShortIf
 
-%type <stmts> TypeDeclarations, ClassBody, ClassBodyDeclarations, BlockStatements, BlockStatements_Opt, Block
-%type <stmts> MethodBody, FormalParameters, FormalParameterList, FormalParameterList_Opt 
+%type <stmts> TypeDeclarations, ClassBody, ClassBodyDeclarations, BlockStatements, BlockStatements_Opt
+%type <stmts> FormalParameters, FormalParameterList, FormalParameterList_Opt 
 %type <stmts> ImportDeclarations
 
 %type <type> Result, FloatingPointType, IntegralType, NumericType
-%type <type> UnannType, UnannPrimitiveType, UnannReferenceType, UnannArrayType, UnannTypeVariable
+%type <type> UnannType, UnannPrimitiveType, UnannReferenceType, UnannArrayType, UnannTypeVariable, ReferenceType
 
 %type <modf> ClassModifier, MethodModifier, VariableModifier
 
@@ -274,6 +278,22 @@ UnannPrimitiveType
 		| BOOLEAN												{ $$ = new NamedType("BOOLEAN"); } // Josh
 		;
 
+
+PrimitiveType
+		:  NumericType  //Annotations infront 
+		|  BOOLEAN      //Annotations infront
+		;
+
+ReferenceType
+		: TypeVariable
+        //| ClassOrInterfaceType
+		//| //ArrayType							// Cause reduce/reduce conflict
+		;
+
+TypeVariable
+		:  IDENTIFIER //Annotations
+		;
+
 NumericType
 		: IntegralType											{ $$ = $1; } // Josh
 		| FloatingPointType										{ $$ = $1; } // Josh
@@ -314,12 +334,12 @@ MethodBody
 
 // Removed by Nathan - too hard at the moment
 //Annotations
-//		: Annotations Annotation								{ $$ = new Anotations($2); } // Adon
+//		: Annotations Annotation								{ $$ = new Annotations($2); } // Adon
 //		| /* Empty */											{ $$ = null; } // Adon
 //		;
 
 Block 
-		: '{' BlockStatements_Opt '}'							{ $$ = $2; } // Tristan - done by Khoa
+		: '{' BlockStatements_Opt '}'							{ $$ = new BlockStatement($2); } // Tristan
 		;
 
 BlockStatements_Opt
@@ -361,12 +381,21 @@ VariableDeclaratorId
 		;
 // Nathan
 Statement
-		: StatementWithoutTrailingSubstatement					{$$ = $1; } // Nathan
+		: StatementWithoutTrailingSubstatement					{ $$ = $1; } // Nathan
+		| IfThenStatement										{$$ = $1; } // Adon
+		| IfThenElseStatement									{$$ = $1; } // Adon
+		| WhileStatement										{ $$ = $1; } // Nathan
+		;
+		
+StatementNoShortIf
+		: StatementWithoutTrailingSubstatement					{$$ = $1; } // Adon
+		| IfThenElseStatementNoShortIf							{$$ = $1; } // Adon
 		;
 
 // Tristan
 StatementWithoutTrailingSubstatement
 		: ExpressionStatement 									{ $$ = $1; } // Nathan - done by Khoa
+		| Block													{ $$ = $1; } // Nathan
 		;
 
 ExpressionStatement
@@ -375,6 +404,23 @@ ExpressionStatement
 
 StatementExpression
 		: Assignment											{ $$ = $1; } // Khoa - updated by Nathan
+		;
+
+IfThenStatement
+		: IF '(' Expression ')' Statement						{ $$ = new IfStatement($3, $5,null); } // Adon
+		//: IF '(' Expression ')' BlockStatements						{ $$ = new IfStatement($3, $5,null); } // Adon
+		;
+
+IfThenElseStatement
+		: IF '(' Expression ')' StatementNoShortIf ELSE Statement				{ $$ = new IfStatement($3, $5, $7); } // Adon
+		;
+
+IfThenElseStatementNoShortIf
+		: IF '(' Expression ')' StatementNoShortIf ELSE StatementNoShortIf		{ $$ = new IfStatement($3, $5, $7); } //Adon
+		;
+
+WhileStatement
+		: WHILE '(' Expression ')' Statement					{ $$ = new WhileStatement($3, $5); } // Nathan
 		;
 
 // End Work by Tristan
@@ -414,8 +460,6 @@ Literal
 		| FloatingPointLiteral									{ $$ = new FloatingPointLiteralExpression($1); } // Adon
 		| BooleanLiteral										{ $$ = new BooleanLiteralExpression($1); } // Adon
 		| CharacterLiteral										{ $$ = new CharacterLiteralExpression($1); } // Adon
-		| StringLiteral											{ $$ = new StringLiteralExpression($1); } // Adon - Need more work
-		//| NullLiteral - Need more work
 		;
 // end of sneha Work
 
@@ -455,54 +499,113 @@ ConditionalAndExpression
 
 InclusiveOrExpression
 		: ExclusiveOrExpression											{ $$ = $1; } //Nathan
-		// more here - Nathan
+		| InclusiveOrExpression '|' ExclusiveOrExpression				{ $$ = new BinaryExpression($1, "|", $3); }
 		;
 
 ExclusiveOrExpression
 		: AndExpression													{ $$ = $1; } //Nathan
-		// more here - Nathan
+		| ExclusiveOrExpression '^' AndExpression						{ $$ = new BinaryExpression($1, "^", $3); }
 		;
 
 AndExpression
 		: EqualityExpression											{ $$ = $1; } //Nathan
-		// more here - Nathan
+		| AndExpression '&' EqualityExpression							{ $$ = new BinaryExpression($1, "&", $3); }
 		;
 
 EqualityExpression
 		: RelationalExpression											{ $$ = $1; } //Nathan
-		// more here - Nathan
-		;
+		| EqualityExpression EQUAL RelationalExpression					{ $$ = new BinaryExpression($1, "==", $3); }
+		| EqualityExpression NOT_EQUAL RelationalExpression				{ $$ = new BinaryExpression($1, "!=", $3); }	
+		;		
 
 RelationalExpression
 		: ShiftExpression												{ $$ = $1; } //Nathan
-		// more here - Nathan
+		| RelationalExpression '<' ShiftExpression						{ $$ = new BinaryExpression($1, "<", $3); }
+		| RelationalExpression '>' ShiftExpression						{ $$ = new BinaryExpression($1, ">", $3); }
+		| RelationalExpression LESS_THAN_OR_EQUAL ShiftExpression		{ $$ = new BinaryExpression($1, "<=", $3); }
+		| RelationalExpression GREATER_OR_EQUAL ShiftExpression			{ $$ = new BinaryExpression($1, ">=", $3); }
+		| RelationalExpression INSTANCEOF ReferenceType					{ $$ = new InstanceOfExpression($1, $3); }
 		;
 
 ShiftExpression
 		: AdditiveExpression											{ $$ = $1; } //Nathan
-		// more here - Nathan
+		| ShiftExpression LEFT_SHIFT AdditiveExpression					{ $$ = new BinaryExpression($1, "<<", $3); }
+		| ShiftExpression SIGNED_RIGHT_SHIFT AdditiveExpression			{ $$ = new BinaryExpression($1, ">>", $3); }
+		| ShiftExpression UNSIGNED_RIGHT_SHIFT AdditiveExpression		{ $$ = new BinaryExpression($1, ">>>", $3); }
 		;
 
 AdditiveExpression
 		: MultiplicativeExpression									{ $$ = $1; } //Nathan
 		| AdditiveExpression '+' MultiplicativeExpression			{ $$ = new BinaryExpression($1, "+", $3); } //Nathan
-		| AdditiveExpression '-' MultiplicativeExpression			{ $$ = new BinaryExpression($1, "+", $3); } //Nathan
+		| AdditiveExpression '-' MultiplicativeExpression			{ $$ = new BinaryExpression($1, "-", $3); } //Nathan
 		;
 
 MultiplicativeExpression
-		: UnaryExpression											{ $$ = $1; } //Nathan
-		// more here - Nathan
+		: UnaryExpression
+		| MultiplicativeExpression '*' UnaryExpression					{ $$ = new BinaryExpression($1, "*", $3); }
+		| MultiplicativeExpression '/' UnaryExpression					{ $$ = new BinaryExpression($1, "/", $3); }
+		| MultiplicativeExpression '%' UnaryExpression					{ $$ = new BinaryExpression($1, "%", $3); }
+		;
+		
+UnaryExpression
+		:  PreIncrementExpression									{ $$ = $1; } // Khoa
+		| PreDecrementExpression									{ $$ = $1; } // Khoa
+		| '+' UnaryExpression										{ $$ = new PreUnaryExpression("+", $2); } // Khoa & Josh
+		| '-' UnaryExpression										{ $$ = new PreUnaryExpression("-", $2); } // Khoa & Josh
+		| UnaryExpressionNotPlusMinus								{ $$ = $1; } // Khoa
+		//PostfixExpression											{ $$ = $1; }   // Nathan; fixed by Khoa 
+        // Reduce/reduce conflict here
+        // Since we can access PostfixExpression via UnaryExpressionNotPlusMinus
+        // Then just remove it to solve conflict - AN
+        ;
+
+PreIncrementExpression
+		: INCREMENT UnaryExpression									{ $$ = new PreUnaryExpression("++", $2); }  // Khoa & Josh
 		;
 
-UnaryExpression
-		: PostfixExpression											{ $$ = $1; } //Nathan
-		// more here - Nathan
+PreDecrementExpression
+		: DECREMENT UnaryExpression									{ $$ = new PreUnaryExpression("--", $2); } // Khoa & Josh
+		;
+
+UnaryExpressionNotPlusMinus
+		: PostfixExpression											{ $$ = $1;} // Khoa
+		| '~' UnaryExpression										{ $$ = new PreUnaryExpression("~", $2); } // Khoa & Josh
+		| '!' UnaryExpression										{ $$ = new PreUnaryExpression("!", $2); } // Khoa & Josh
+		| CastExpression											{ $$ = $1;} // Khoa
 		;
 
 PostfixExpression
 		: Primary													{ $$ = $1; } //Nathan
 		| ExpressionName											{ $$ = $1; } //Nathan
-		// more here - Nathan
+		| PostIncrementExpression									{ $$ = $1; } //Josh
+		| PostDecrementExpression									{ $$ = $1; } //Josh
+		;
+
+PostIncrementExpression
+		: PostfixExpression INCREMENT									{ $$ = new PostUnaryExpression($1, "++"); } // Khoa & Josh
+		;
+
+PostDecrementExpression
+		: PostfixExpression DECREMENT									{ $$ = new PostUnaryExpression($1, "--"); } // Khoa & Josh
+		;
+
+CastExpression
+		: '(' PrimitiveType ')' UnaryExpression
+		| '(' ReferenceType AdditionalBounds ')' UnaryExpressionNotPlusMinus
+		| '(' ReferenceType AdditionalBounds ')' LambdaExpression
+		;
+
+AdditionalBounds
+		: AdditionalBounds AdditionalBound
+		|
+		;
+
+AdditionalBound
+		: '&' //InterfaceType
+		;
+
+ConstantExpression
+		: Expression
 		;
 
 %%

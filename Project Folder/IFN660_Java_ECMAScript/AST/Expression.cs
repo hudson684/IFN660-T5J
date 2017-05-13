@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -7,140 +7,208 @@ using System.Threading.Tasks;
 
 namespace IFN660_Java_ECMAScript.AST
 {
-    public abstract class Expression : Node { };
+	public abstract class Expression : Node
+	{
+		public Type type;
+	};
 
-    public class AssignmentExpression : Expression
-    {
-        private Expression lhs, rhs;
+	public class AssignmentExpression : Expression
+	{
+		private Expression lhs, rhs;
 
-        public AssignmentExpression(Expression lhs, Expression rhs)
-        {
-            this.lhs = lhs;
-            this.rhs = rhs;
-        }
+		public AssignmentExpression(Expression lhs, Expression rhs)
+		{
+			this.lhs = lhs;
+			this.rhs = rhs;
+		}
 
-        public override bool ResolveNames(LexicalScope scope)
-        {
-            return lhs.ResolveNames(scope) & rhs.ResolveNames(scope);
-        }
+		public override bool ResolveNames(LexicalScope scope)
+		{
+			return lhs.ResolveNames(scope) & rhs.ResolveNames(scope);
+		}
+		public override void TypeCheck()
+		{
+            lhs.TypeCheck();
+            rhs.TypeCheck();
 
-    }
-
-    public class VariableExpression : Expression
-    {
-        private string value;
-        private Declaration declarationRef;
-
-        public VariableExpression(string value)
-        {
-            this.value = value;
-            this.declarationRef = null;
-        }
-
-        public override bool ResolveNames(LexicalScope scope)
-        {
-            // check for valid declaration...
-            if (scope != null)
+            // check that the types are the same
+            if (!lhs.type.isTheSameAs(rhs.type))
             {
-                declarationRef = scope.Resolve(value);
+                if (!lhs.type.isCompatibleWith(rhs.type))
+                {
+                    System.Console.WriteLine("Type error in AssignmentExpression\n");
+                    throw new Exception("TypeCheck error");
+                }
             }
 
-            if (declarationRef == null)
-                Debug.WriteLine("Error: Undeclared indentifier", value);
-            else
-                Debug.WriteLine("Found variable in scope", value);
+            // set type to the lhs type
+            type = lhs.type;
+		}
+	}
 
-            return declarationRef != null;
-        }
-    }
+	public class VariableExpression : Expression
+	{
+		private string value;
+		private Declaration declarationRef;
 
-    public class IntegerLiteralExpression : Expression
+		public VariableExpression(string value)
+		{
+			this.value = value;
+			this.declarationRef = null;
+		}
+
+		public override bool ResolveNames(LexicalScope scope)
+		{
+			// check for valid declaration...
+			if (scope != null)
+			{
+				declarationRef = scope.Resolve(value);
+			}
+
+			if (declarationRef == null)
+				Debug.WriteLine("Error: Undeclared indentifier", value);
+			else
+				Debug.WriteLine("Found variable in scope", value);
+
+			return declarationRef != null;
+		}
+		public override void TypeCheck()
+		{
+            type = declarationRef.ObtainType();
+			
+		}
+
+	}
+
+	//changed made by Josh so that the assignmentStatement is correct
+	public class BinaryExpression : Expression
+	{
+		private Expression lhs, rhs;
+		private string oper;
+		public BinaryExpression(Expression lhs, string oper, Expression rhs)
+		{
+			this.lhs = lhs;
+			this.rhs = rhs;
+			this.oper = oper;
+		}
+
+		public override bool ResolveNames(LexicalScope scope)
+		{
+			return lhs.ResolveNames(scope) & rhs.ResolveNames(scope);
+		}
+		public override void TypeCheck()
+		{
+            lhs.TypeCheck();
+            rhs.TypeCheck();
+            switch (oper)
+            {
+                case "<":
+                    if (!lhs.type.isTheSameAs(new NamedType("INT")) || !lhs.type.isTheSameAs(new NamedType("INT")))
+                    {
+                        System.Console.WriteLine("Invalid arguments for less than expression\n");
+                        throw new Exception("TypeCheck error");
+                    }
+                    type = new NamedType("BOOLEAN");
+                    break;
+                case "+":
+                case "-":
+                case "*":
+                case "%":
+                case "/":
+                case "==":
+                    if (lhs.type.isTheSameAs(rhs.type) && !lhs.type.isTheSameAs(new NamedType("BOOLEAN")))
+                    {
+                        type = lhs.type;
+                    }
+                    else if (lhs.type.isCompatibleWith(rhs.type))
+                    {
+                        type = lhs.type;
+                    }
+                    else if (rhs.type.isCompatibleWith(lhs.type))
+                    {
+                        type = rhs.type;
+                    }
+                    else
+                    {
+                        System.Console.WriteLine("Invalid arguments for less than expression\n");
+                        throw new Exception("TypeCheck error");
+                    }
+                    break;
+
+                default:
+                    {
+                        System.Console.WriteLine("Unexpected binary operator %c \n", oper);
+                        throw new Exception("TypeCheck error");
+                    }
+            }
+		}
+	}
+
+    public class InstanceOfExpression : Expression
     {
-        private long value;
-        public IntegerLiteralExpression(long value)
+        private Expression lhs;
+        //private Type type;
+        public InstanceOfExpression(Expression lhs, Type type)
         {
-            this.value = value;
+            this.lhs = lhs;
+            this.type = type;
         }
 
         public override bool ResolveNames(LexicalScope scope)
         {
-            return true;
+            return lhs.ResolveNames(scope);
+        }
+
+        public override void TypeCheck()
+        {
+            
         }
     }
 
-    //changed made by Josh so that the assignmentStatement is correct
-    public class BinaryExpression : Expression
+
+    public class PreUnaryExpression : Expression
     {
-        private Expression lhs, rhs;
+        private Expression expression;
         private string oper;
-        public BinaryExpression(Expression lhs, string oper, Expression rhs)
+
+        public PreUnaryExpression(string oper, Expression expression)
         {
-            this.lhs = lhs;
-            this.rhs = rhs;
+            this.expression = expression;
             this.oper = oper;
         }
 
         public override bool ResolveNames(LexicalScope scope)
         {
-            return lhs.ResolveNames(scope) & rhs.ResolveNames(scope);
+            return expression.ResolveNames(scope);
+        }
+        public override void TypeCheck()
+        {
+            
         }
     }
-    public class FloatingPointLiteralExpression : Expression
+
+    public class PostUnaryExpression : Expression
     {
-        private double value;
-        public FloatingPointLiteralExpression(double value)
+        private Expression expression;
+        private string oper;
+
+        public PostUnaryExpression(Expression expression, string oper)
         {
-            this.value = value;
+            this.expression = expression;
+            this.oper = oper;
         }
 
         public override bool ResolveNames(LexicalScope scope)
         {
-            return true;
+            return expression.ResolveNames(scope);
         }
-    }
-
-    public class BooleanLiteralExpression : Expression
-    {
-
-        private bool value;
-        public BooleanLiteralExpression(bool value)
+        public override void TypeCheck()
         {
-            this.value = value;
-        }
-
-        public override bool ResolveNames(LexicalScope scope)
-        {
-            return true;
-        }
-    }
-
-    public class CharacterLiteralExpression : Expression
-    {
-        private char value;
-        public CharacterLiteralExpression(char value)
-        {
-            this.value = value;
-        }
-
-        public override bool ResolveNames(LexicalScope scope)
-        {
-            return true;
-        }
-    }
-
-    public class StringLiteralExpression : Expression
-    {
-        private string value;
-        public StringLiteralExpression(string value)
-        {
-            this.value = value;
-        }
-
-        public override bool ResolveNames(LexicalScope scope)
-        {
-            return true;
+            
         }
     }
 }
+
+	
 
 

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,6 +8,7 @@ namespace IFN660_Java_ECMAScript
 {
     public interface Declaration
     {
-        List<string> GetName();
+		AST.Type ObtainType();
+        void AddItemsToSymbolTable(LexicalScope scope);
     }
 }
