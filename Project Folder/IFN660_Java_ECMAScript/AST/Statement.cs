@@ -130,6 +130,35 @@ namespace IFN660_Java_ECMAScript.AST
         }
 	}
 
+    public class TryStatement : Statement
+    {
+        private Statement tryStatements, catchStatements, finallyStatements;
+
+        public TryStatement(Statement tryStatements, Statement catchStatements, Statement finallyStatements)
+        {
+            this.tryStatements = tryStatements;
+            this.catchStatements = catchStatements;
+            this.finallyStatements = finallyStatements;
+        }
+
+        public override bool ResolveNames(LexicalScope scope)
+        {
+            if (finallyStatements == null)
+                return tryStatements.ResolveNames(scope) & catchStatements.ResolveNames(scope);
+            else
+                return tryStatements.ResolveNames(scope) & catchStatements.ResolveNames(scope) & finallyStatements.ResolveNames(scope);
+        }
+
+        public override void TypeCheck()
+        {
+            tryStatements.TypeCheck();
+            catchStatements.TypeCheck();
+            if (finallyStatements != null)
+                finallyStatements.TypeCheck();
+        }
+
+    }
+
 	public class ExpressionStatement : Statement
 	{
 		private Expression expr;

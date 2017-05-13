@@ -68,6 +68,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="AST\paser_try.y" />
     <None Include="parser.y" />
     <None Include="scanner.lex" />
     <None Include="Tests\auto\test_BooleanLiteral.j" />
@@ -104,6 +105,7 @@
     <Content Include="Tests\auto\test.java" />
     <Content Include="Tests\test1.txt" />
     <Content Include="Tests\test2.java" />
+    <Content Include="Tests\test_try.java" />
     <Content Include="Tests\test_if.java" />
     <Content Include="Tests\test_while.java" />
   </ItemGroup>
