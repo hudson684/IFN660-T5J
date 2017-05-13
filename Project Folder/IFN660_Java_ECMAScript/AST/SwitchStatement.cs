@@ -9,25 +9,20 @@ namespace IFN660_Java_ECMAScript.AST
     public class SwitchStatement : Statement       // KoJo
     {
         private Expression expression;
-        private List<Statement> StmtList;
-        // Something for SwitchBlock
-        public SwitchStatement(Expression expression, List<Statement> StmtList)
+        private BlockStatement BlockStatement; 
+        public SwitchStatement(Expression expression, BlockStatement BlockStatement)  //Khoa, replaced List<Statement> by BlockStatement
         {
             this.expression = expression;
-            this.StmtList = StmtList;
+            this.BlockStatement = BlockStatement; 
         }
 
 
         public override bool ResolveNames(LexicalScope scope)
         {
             bool loopResolve = true;
+            //Khoa, replaced List<Statement> by BlockStatement
+            return expression.ResolveNames(scope) & BlockStatement.ResolveNames(scope) & loopResolve;
 
-            foreach (Statement each in StmtList)
-            {
-                loopResolve = loopResolve & each.ResolveNames(scope);
-            }
-
-            return expression.ResolveNames(scope) & loopResolve;
         }
         public override void TypeCheck()
         {
@@ -41,32 +36,53 @@ namespace IFN660_Java_ECMAScript.AST
             ///     } // do not attempt anything if there is no getSwitchLabelisDefault
             /// } end loop with all nescesary typechecking.
             ///         
-
-
-
-
-
-        
-            
-
         }
     }
 
+    public class SwitchBlockStatementGroup : Statement
+    {
+        private List<SwitchLabelStatement> SwitchLabelStatementList;
+        private List<Statement> StatementList; 
+
+        public SwitchBlockStatementGroup(List<SwitchLabelStatement> SwitchLabelStatementList, List<Statement> StatementList)
+        {
+            this.SwitchLabelStatementList = SwitchLabelStatementList;
+            this.StatementList = StatementList;
+        }
+        public override bool ResolveNames(LexicalScope scope)
+        {
+            bool loopResolve = true;
+
+            foreach (Statement each in StatementList)
+            {
+                loopResolve = loopResolve & each.ResolveNames(scope);
+            }
+
+            foreach (SwitchLabelStatement each in SwitchLabelStatementList)
+            {
+                loopResolve = loopResolve & each.ResolveNames(scope); 
+            }
+            return loopResolve;
+        }
+        public override void TypeCheck()
+        {
+
+        }
+    }
     public class SwitchLabelStatement : Statement
     {
-        private Expression switchValue;
-        private Boolean switchLabelNotDefault; 
-
+        private Expression SwitchValue;
+        private Boolean SwitchLabelNotDefault;
 
         public Boolean getSwitchLabelNotDefault()
         {
-            return switchLabelNotDefault;
+            return SwitchLabelNotDefault;
         }
         //this exists for case with Expression
-        public SwitchLabelStatement(Expression switchValue)
+        public SwitchLabelStatement(Expression SwitchValue)
         {
-            this.switchValue = switchValue;
-            switchLabelNotDefault = true; 
+            this.SwitchValue = SwitchValue;
+            SwitchLabelNotDefault = true;
         }
 
         //this exists for case with Constant Name
@@ -78,7 +94,7 @@ namespace IFN660_Java_ECMAScript.AST
         //this exists for the default case
         public SwitchLabelStatement()
         {
-            switchLabelNotDefault = false; 
+            SwitchLabelNotDefault = false;
         }
 
         public override bool ResolveNames(LexicalScope scope)

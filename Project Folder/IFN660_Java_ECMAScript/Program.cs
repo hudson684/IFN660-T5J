@@ -60,7 +60,18 @@ namespace IFN660_Java_ECMAScript
 
             Parser.root.DumpValue(0);
 #endif
-
+            int x = 10;
+            switch (x)
+            {
+                case 10:
+                case 9:
+                case 8:
+                    Console.WriteLine("");
+                    break;
+                default:
+                    Console.WriteLine("");
+                    break;
+            }
         }
 
         static void SemanticAnalysis(Node root)
@@ -74,7 +85,7 @@ namespace IFN660_Java_ECMAScript
                 System.Console.WriteLine("*** ERROR - Name Resolution Failed ***");
                 throw new Exception("Name Resolution Error");
             }
-            
+
             // type checking
             root.TypeCheck();
         }

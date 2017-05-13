@@ -35,11 +35,13 @@ public static Statement root;
 %type <expr> UnaryExpression, PostfixExpression, Primary //Josh
 %type <expr> PreIncrementExpression,  PreDecrementExpression, UnaryExpressionNotPlusMinus //Josh
 %type <expr> CastExpression, PostIncrementExpression, PostDecrementExpression //Josh
+%type <expr> ConstantExpression //Khoa
 
 %type <stmt> Statement, CompilationUnit, TypeDeclaration, ClassDeclaration, NormalClassDeclaration, ClassBodyDeclaration
 %type <stmt> ExpressionStatement, StatementWithoutTrailingSubstatement, LocalVariableDeclaration, LocalVariableDeclarationStatement
 
 %type <stmt> BlockStatement, Throws_opt, ClassMemberDeclaration, MethodDeclaration, FormalParameter, SwitchStatement, ThrowStatement, SynchronizedStatement
+%type <stmt> SwitchBlockStatementGroups, SwitchBlockStatementGroup, /* SwitchLabel_repeat, */ SwitchLabels, SwitchLabel
 %type <stmt> BreakStatement, ContinueStatement, ReturnStatement
 %type <stmt> PackageDeclaration_opt, Block, MethodBody
 %type <stmt> StatementNoShortIf, WhileStatement
@@ -62,7 +64,7 @@ public static Statement root;
 
 %type <strlst> VariableDeclaratorList
 
-%type <string> EnumConstantName
+//%type <string> EnumConstantName
 
 // Tokens
 %token <num> NUMBER
@@ -410,46 +412,45 @@ SwitchStatement
 		;
 
 SwitchBlock
-		: '{' SwitchBlockStatementGroups SwitchLabel_repeat '}'     { $$ = $2; $$.Add($3);}   // Kojo
+		//: '{' SwitchBlockStatementGroups SwitchLabel_repeat '}'     { $$ = $2; $$.Add($3);}   // Kojo
+		: '{' SwitchBlockStatementGroups '}'						  { $$ = $2;}   // Khoa, testing
 		;
 
 SwitchBlockStatementGroups
-		: SwitchBlockStatementGroups SwitchBlockStatementGroup		{ $$ = $1; $$.Add($2); } // Kojo   
-		|
+		: SwitchBlockStatementGroup									{ $$ = new List<SwitchBlockStatementGroup>(); }  //KoJo
+		| SwitchBlockStatementGroups SwitchBlockStatementGroup		{ $$ = $1; $$.Add($2); }  //KoJo
 		;
 
 SwitchBlockStatementGroup
-		: SwitchLabels BlockStatements								{ $$ = $1; $$.Add($2);}   // Kojo		
-		| ExpressionStatement 									{ $$ = $1; } // Nathan - done by Khoa
-		| Block													{ $$ = $1; } // Nathan
+		: SwitchLabels BlockStatements								{ $$ = new SwitchBlockStatementGroup($1, $2); }   // Kojo		
 		;
 
-SwitchLabel_repeat
-		: SwitchLabel_repeat SwitchLabel							{ $$ = $1; $$.Add($2);}   // Kojo
-		|
-		;
+//SwitchLabel_repeat
+//		: SwitchLabel_repeat SwitchLabel							{ $$ = $1; $$.Add($2);}   // Kojo
+//		|
+//		;
 
 SwitchLabels
-		: SwitchLabel												{ $$ = $1; } //KoJo
+		: SwitchLabel												{ $$ = new List<SwitchLabelStatement>(); } //KoJo
 		| SwitchLabels SwitchLabel									{ $$ = $1; $$.Add($2);}   // KoJo
 		;
 
 SwitchLabel
 		: CASE ConstantExpression ':'							{ $$ = $2; } // KoJo
-		| CASE EnumConstantName ':'								{ $$ = $2; } // KoJo
-		| DEFAULT ':'											{ $$ = $1; } // KoJo
+		// | CASE EnumConstantName ':'								{ $$ = $2; } // KoJo
+		// | DEFAULT ':'											{ $$ = $1; } // KoJo
 		;
 
-EnumConstantName
-  	: IDENTIFIER												{ $$ = $1; } //KoJo
-  	;
+// EnumConstantName
+  	//: IDENTIFIER												{ $$ = $1; } //KoJo
+  	//;
 
 BreakStatement
 		: BREAK Identifier_opt ';'								
 		;
 
 ContinueStatement
-		: CONTINUE Identifier_opt ';'							{}
+		: CONTINUE Identifier_opt ';'							
 		;
 
 Identifier_opt

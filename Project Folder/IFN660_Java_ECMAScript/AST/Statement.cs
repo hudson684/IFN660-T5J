@@ -190,7 +190,7 @@ namespace IFN660_Java_ECMAScript.AST
 		public override void TypeCheck()
 		{
             this.expr.TypeCheck();
-            /*try
+            try
             {
                 if (!expr.type.Equals(new NamedType("BOOLEAN")))
                 {
@@ -200,7 +200,7 @@ namespace IFN660_Java_ECMAScript.AST
             catch (Exception e)
             {
                 throw new Exception("TypeCheck error");
-            }*/
+            }
         }
 
 	}
