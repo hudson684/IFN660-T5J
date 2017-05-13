@@ -41,8 +41,8 @@ public static Statement root;
 %type <stmt> BlockStatement, Throws_opt, ClassMemberDeclaration, MethodDeclaration, FormalParameter
 %type <stmt> PackageDeclaration_opt, Block, MethodBody
 %type <stmt> StatementNoShortIf, WhileStatement
+%type <stmt> DoStatement, BreakStatement
 %type <stmt> IfThenStatement, IfThenElseStatement, IfThenElseStatementNoShortIf
-%type <stmt> LabeledStatement, BreakStatement
 
 %type <stmts> TypeDeclarations, ClassBody, ClassBodyDeclarations, BlockStatements, BlockStatements_Opt
 %type <stmts> FormalParameters, FormalParameterList, FormalParameterList_Opt 
@@ -61,7 +61,6 @@ public static Statement root;
 
 %type <strlst> VariableDeclaratorList
 
-%type <name> Identifier_opt
 // Tokens
 %token <num> NUMBER
 %token <name> IDENTIFIER
@@ -388,7 +387,6 @@ Statement
 		| IfThenElseStatement									{$$ = $1; } // Adon
 		| WhileStatement										{ $$ = $1; } // Nathan
 		| BreakStatement										{ $$ = $1;} //Vivian
-		| LabeledStatement										 { $$ = $1;} //Vivian
 		;
 		
 StatementNoShortIf
@@ -400,8 +398,13 @@ StatementNoShortIf
 StatementWithoutTrailingSubstatement
 		: ExpressionStatement 									{ $$ = $1; } // Nathan - done by Khoa
 		| Block													{ $$ = $1; } // Nathan
+		| DoStatement											{ $$ = $1; } //Tri
 		;
 
+DoStatement
+		: DO Statement WHILE '(' Expression ')'					{ $$ = new DoStatement($2, $5); } // Tri
+		;
+		 
 ExpressionStatement
 		: StatementExpression ';'								{ $$ = new ExpressionStatement($1); } // Khoa
 		;
@@ -427,21 +430,12 @@ WhileStatement
 		: WHILE '(' Expression ')' Statement					{ $$ = new WhileStatement($3, $5); } // Nathan
 		;
 
-//Add Labeledstatement-Vivian
-LabeledStatement
-		: IDENTIFIER ':' Statement								//{ $$ = new LabeledStatement($1,$3);} //Vivian
-		;
-
-//Add breakstatement-Vivian
+//Add for breakstatement-Vivian
 BreakStatement
-		: BREAK Identifier_opt ';'												//{ if($2 == null){$$ = new BreakStatement();} else {$$ = new BreakStatement($2);} } //Vivian
+		: BREAK ';'												{ $$ = new BreakStatement(); } //Vivian - fix by Tri
 		;
+		//assume we have no labelled statement so no "break identifier ;"
 
-//Add for breakstatement-Vivian		
-Identifier_opt
-		: IDENTIFIER															
-		|
-		;
 
 // End Work by Tristan
 //work by sneha
