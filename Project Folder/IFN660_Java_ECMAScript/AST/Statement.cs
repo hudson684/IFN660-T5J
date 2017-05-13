@@ -125,8 +125,56 @@ namespace IFN660_Java_ECMAScript.AST
 
         }
 	}
+    public class ThrowStatement : Statement              //KoJo
+    {
+        // by Nathan - still testing
+        private Statement ThrowInit;
+        private Expression Expr;
 
-	public class ExpressionStatement : Statement
+        public ThrowStatement(Statement ThrowInit, Expression Expr)
+        {
+            this.ThrowInit = ThrowInit;
+            this.Expr = Expr;
+        }
+
+        public override bool ResolveNames(LexicalScope scope)
+        {
+            bool loopResolve = true;
+
+            return ThrowInit.ResolveNames(scope) & Expr.ResolveNames(scope) & loopResolve;
+        }
+        public override void TypeCheck()
+        {
+
+        }
+
+    }
+
+    public class SynchronizedStatement : Statement
+    //KoJo, both this and SwitchStatement have Expression and BlockStatement
+    // Need testing on whether they can be megered into 1 
+    {
+        private Expression Expr;
+        private BlockStatement BlckStmt;
+        public SynchronizedStatement(Expression Expr, BlockStatement BlckStmt)
+        {
+            this.Expr = Expr;
+            this.BlckStmt = BlckStmt;
+        }
+        public override bool ResolveNames(LexicalScope scope)
+        {
+            bool loopResolve = true;
+
+            return Expr.ResolveNames(scope) & BlckStmt.ResolveNames(scope) & loopResolve;
+        }
+
+        public override void TypeCheck()
+        {
+
+        }
+    } 
+
+    public class ExpressionStatement : Statement
 	{
 		private Expression expr;
 
