@@ -38,7 +38,9 @@ public static Statement root;
 
 %type <stmt> Statement, CompilationUnit, TypeDeclaration, ClassDeclaration, NormalClassDeclaration, ClassBodyDeclaration
 %type <stmt> ExpressionStatement, StatementWithoutTrailingSubstatement, LocalVariableDeclaration, LocalVariableDeclarationStatement
-%type <stmt> BlockStatement, Throws_opt, ClassMemberDeclaration, MethodDeclaration, FormalParameter
+
+%type <stmt> BlockStatement, Throws_opt, ClassMemberDeclaration, MethodDeclaration, FormalParameter, SwitchStatement, ThrowStatement, SynchronizedStatement
+%type <stmt> BreakStatement, ContinueStatement, ReturnStatement
 %type <stmt> PackageDeclaration_opt, Block, MethodBody
 %type <stmt> StatementNoShortIf, WhileStatement
 %type <stmt> IfThenStatement, IfThenElseStatement, IfThenElseStatementNoShortIf
@@ -59,6 +61,8 @@ public static Statement root;
 %type <arrlst> MethodHeader, MethodDeclarator
 
 %type <strlst> VariableDeclaratorList
+
+%type <string> EnumConstantName
 
 // Tokens
 %token <num> NUMBER
@@ -394,8 +398,80 @@ StatementNoShortIf
 
 // Tristan
 StatementWithoutTrailingSubstatement
-		: ExpressionStatement 									{ $$ = $1; } // Nathan - done by Khoa
+		: ExpressionStatement 										{ $$ = $1; } // Nathan - done by Khoa
+		| SwitchStatement											{ $$ = $1; } // Kojo
+		| BreakStatement											{ $$ = $1; } // Kojo
+		| ContinueStatement											{ $$ = $1; } // Kojo
+		| ReturnStatement											{ $$ = $1; } // Kojo	
+		;
+
+SwitchStatement
+		: SWITCH '(' Expression ')' SwitchBlock						{ $$ = new SwitchStatement($3, $5); } //Kojo
+		;
+
+SwitchBlock
+		: '{' SwitchBlockStatementGroups SwitchLabel_repeat '}'     { $$ = $2; $$.Add($3);}   // Kojo
+		;
+
+SwitchBlockStatementGroups
+		: SwitchBlockStatementGroups SwitchBlockStatementGroup		{ $$ = $1; $$.Add($2); } // Kojo   
+		|
+		;
+
+SwitchBlockStatementGroup
+		: SwitchLabels BlockStatements								{ $$ = $1; $$.Add($2);}   // Kojo		
+		| ExpressionStatement 									{ $$ = $1; } // Nathan - done by Khoa
 		| Block													{ $$ = $1; } // Nathan
+		;
+
+SwitchLabel_repeat
+		: SwitchLabel_repeat SwitchLabel							{ $$ = $1; $$.Add($2);}   // Kojo
+		|
+		;
+
+SwitchLabels
+		: SwitchLabel												{ $$ = $1; } //KoJo
+		| SwitchLabels SwitchLabel									{ $$ = $1; $$.Add($2);}   // KoJo
+		;
+
+SwitchLabel
+		: CASE ConstantExpression ':'							{ $$ = $2; } // KoJo
+		| CASE EnumConstantName ':'								{ $$ = $2; } // KoJo
+		| DEFAULT ':'											{ $$ = $1; } // KoJo
+		;
+
+EnumConstantName
+  	: IDENTIFIER												{ $$ = $1; } //KoJo
+  	;
+
+BreakStatement
+		: BREAK Identifier_opt ';'								
+		;
+
+ContinueStatement
+		: CONTINUE Identifier_opt ';'							{}
+		;
+
+Identifier_opt
+		: IDENTIFIER 
+		|
+		;
+
+ReturnStatement
+		: RETURN Expression_opt ';'								{}
+		;
+		
+Expression_opt
+		: Expression 
+		|
+		;	
+
+ThrowStatement
+		: THROW Expression ';'									{ $$ = new ThrowStatement($1, $2); } //KoJo
+		;
+
+SynchronizedStatement
+		: SYNCHRONIZED '(' Expression ')' Block					{ $$ = new SynchronizedStatement($3, $5); }  //KoJo
 		;
 
 ExpressionStatement
@@ -499,52 +575,52 @@ ConditionalAndExpression
 
 InclusiveOrExpression
 		: ExclusiveOrExpression											{ $$ = $1; } //Nathan
-		| InclusiveOrExpression '|' ExclusiveOrExpression				{ $$ = new BinaryExpression($1, "|", $3); }
+		| InclusiveOrExpression '|' ExclusiveOrExpression				{ $$ = new BinaryExpression($1, "|", $3); } // Khoa & Josh
 		;
 
 ExclusiveOrExpression
 		: AndExpression													{ $$ = $1; } //Nathan
-		| ExclusiveOrExpression '^' AndExpression						{ $$ = new BinaryExpression($1, "^", $3); }
+		| ExclusiveOrExpression '^' AndExpression						{ $$ = new BinaryExpression($1, "^", $3); } // Khoa & Josh
 		;
 
 AndExpression
 		: EqualityExpression											{ $$ = $1; } //Nathan
-		| AndExpression '&' EqualityExpression							{ $$ = new BinaryExpression($1, "&", $3); }
+		| AndExpression '&' EqualityExpression							{ $$ = new BinaryExpression($1, "&", $3); } // Khoa & Josh
 		;
 
 EqualityExpression
 		: RelationalExpression											{ $$ = $1; } //Nathan
-		| EqualityExpression EQUAL RelationalExpression					{ $$ = new BinaryExpression($1, "==", $3); }
-		| EqualityExpression NOT_EQUAL RelationalExpression				{ $$ = new BinaryExpression($1, "!=", $3); }	
+		| EqualityExpression EQUAL RelationalExpression					{ $$ = new BinaryExpression($1, "==", $3); }  // Khoa & Josh
+		| EqualityExpression NOT_EQUAL RelationalExpression				{ $$ = new BinaryExpression($1, "!=", $3); }	// Khoa & Josh
 		;		
 
 RelationalExpression
 		: ShiftExpression												{ $$ = $1; } //Nathan
-		| RelationalExpression '<' ShiftExpression						{ $$ = new BinaryExpression($1, "<", $3); }
-		| RelationalExpression '>' ShiftExpression						{ $$ = new BinaryExpression($1, ">", $3); }
-		| RelationalExpression LESS_THAN_OR_EQUAL ShiftExpression		{ $$ = new BinaryExpression($1, "<=", $3); }
-		| RelationalExpression GREATER_OR_EQUAL ShiftExpression			{ $$ = new BinaryExpression($1, ">=", $3); }
-		| RelationalExpression INSTANCEOF ReferenceType					{ $$ = new InstanceOfExpression($1, $3); }
+		| RelationalExpression '<' ShiftExpression						{ $$ = new BinaryExpression($1, "<", $3); } // Khoa & Josh
+		| RelationalExpression '>' ShiftExpression						{ $$ = new BinaryExpression($1, ">", $3); } // Khoa & Josh
+		| RelationalExpression LESS_THAN_OR_EQUAL ShiftExpression		{ $$ = new BinaryExpression($1, "<=", $3); } // Khoa & Josh
+		| RelationalExpression GREATER_OR_EQUAL ShiftExpression			{ $$ = new BinaryExpression($1, ">=", $3); } // Khoa & Josh
+		| RelationalExpression INSTANCEOF ReferenceType					{ $$ = new InstanceOfExpression($1, $3); } // Khoa & Josh
 		;
 
 ShiftExpression
 		: AdditiveExpression											{ $$ = $1; } //Nathan
-		| ShiftExpression LEFT_SHIFT AdditiveExpression					{ $$ = new BinaryExpression($1, "<<", $3); }
-		| ShiftExpression SIGNED_RIGHT_SHIFT AdditiveExpression			{ $$ = new BinaryExpression($1, ">>", $3); }
-		| ShiftExpression UNSIGNED_RIGHT_SHIFT AdditiveExpression		{ $$ = new BinaryExpression($1, ">>>", $3); }
+		| ShiftExpression LEFT_SHIFT AdditiveExpression					{ $$ = new BinaryExpression($1, "<<", $3); } // Khoa & Josh
+		| ShiftExpression SIGNED_RIGHT_SHIFT AdditiveExpression			{ $$ = new BinaryExpression($1, ">>", $3); }   // Khoa & Josh
+		| ShiftExpression UNSIGNED_RIGHT_SHIFT AdditiveExpression		{ $$ = new BinaryExpression($1, ">>>", $3); }   // Khoa & Josh
 		;
 
 AdditiveExpression
-		: MultiplicativeExpression									{ $$ = $1; } //Nathan
-		| AdditiveExpression '+' MultiplicativeExpression			{ $$ = new BinaryExpression($1, "+", $3); } //Nathan
-		| AdditiveExpression '-' MultiplicativeExpression			{ $$ = new BinaryExpression($1, "-", $3); } //Nathan
+		: MultiplicativeExpression										{ $$ = $1; } //Nathan
+		| AdditiveExpression '+' MultiplicativeExpression				{ $$ = new MathematicalExpression($1, "+", $3); }    //  Josh
+		| AdditiveExpression '-' MultiplicativeExpression				{ $$ = new MathematicalExpression($1, "-", $3); }    //  Josh
 		;
 
 MultiplicativeExpression
-		: UnaryExpression
-		| MultiplicativeExpression '*' UnaryExpression					{ $$ = new BinaryExpression($1, "*", $3); }
-		| MultiplicativeExpression '/' UnaryExpression					{ $$ = new BinaryExpression($1, "/", $3); }
-		| MultiplicativeExpression '%' UnaryExpression					{ $$ = new BinaryExpression($1, "%", $3); }
+		: UnaryExpression												{ $$ = $1; }
+		| MultiplicativeExpression '*' UnaryExpression					{ $$ = new MathematicalExpression($1, "*", $3); }     //  Josh
+		| MultiplicativeExpression '/' UnaryExpression					{ $$ = new MathematicalExpression($1, "/", $3); }      //  Josh
+		| MultiplicativeExpression '%' UnaryExpression					{ $$ = new MathematicalExpression($1, "%", $3); }       //  Josh
 		;
 		
 UnaryExpression
@@ -590,7 +666,7 @@ PostDecrementExpression
 		;
 
 CastExpression
-		: '(' PrimitiveType ')' UnaryExpression
+		: '(' PrimitiveType ')' UnaryExpression										{ $$ = new CastExpression($2, $4); } // Khoa & Josh 		
 		| '(' ReferenceType AdditionalBounds ')' UnaryExpressionNotPlusMinus
 		| '(' ReferenceType AdditionalBounds ')' LambdaExpression
 		;
@@ -605,7 +681,7 @@ AdditionalBound
 		;
 
 ConstantExpression
-		: Expression
+		: Expression													{ $$ = $1; } //KoJo
 		;
 
 %%
