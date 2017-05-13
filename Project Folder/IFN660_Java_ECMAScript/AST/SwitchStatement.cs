@@ -31,6 +31,23 @@ namespace IFN660_Java_ECMAScript.AST
         }
         public override void TypeCheck()
         {
+            ///for(statement in blockstatement){
+            ///     try(statement.getSwitchLabelisDef){
+            ///         if(statement.getswitchLabelisDef){
+            ///             expression.getType().comparable(statement.typecheck())
+            ///         } else {
+            ///             //type check is true because this is the default value
+            ///         }
+            ///     } // do not attempt anything if there is no getSwitchLabelisDefault
+            /// } end loop with all nescesary typechecking.
+            ///         
+
+
+
+
+
+        
+            
 
         }
     }
@@ -38,12 +55,18 @@ namespace IFN660_Java_ECMAScript.AST
     public class SwitchLabelStatement : Statement
     {
         private Expression switchValue;
-        private Boolean switchLabel; 
+        private Boolean switchLabelNotDefault; 
+
+
+        public Boolean getSwitchLabelNotDefault()
+        {
+            return switchLabelNotDefault;
+        }
         //this exists for case with Expression
         public SwitchLabelStatement(Expression switchValue)
         {
             this.switchValue = switchValue;
-            switchLabel = true; 
+            switchLabelNotDefault = true; 
         }
 
         //this exists for case with Constant Name
@@ -55,7 +78,7 @@ namespace IFN660_Java_ECMAScript.AST
         //this exists for the default case
         public SwitchLabelStatement()
         {
-            switchLabel = false; 
+            switchLabelNotDefault = false; 
         }
 
         public override bool ResolveNames(LexicalScope scope)
