@@ -110,6 +110,11 @@ namespace IFN660_Java_ECMAScript.AST
                     }
                     type = new NamedType("BOOLEAN");
                     break;
+
+                case "-":
+                case "*":
+                case "%":
+                case "/":
                 case "+":
                     if (lhs.type.isTheSameAs(rhs.type) && !lhs.type.isTheSameAs(new NamedType("BOOLEAN")))
                     {
@@ -125,87 +130,7 @@ namespace IFN660_Java_ECMAScript.AST
                     }
                     else
                     {
-                        System.Console.WriteLine("Invalid arguments for less than expression\n");
-                        throw new Exception("TypeCheck error");
-                    }
-                    break;
-
-                case "-":
-                    if (lhs.type.isTheSameAs(rhs.type) && !lhs.type.isTheSameAs(new NamedType("BOOLEAN")))
-                    {
-                        type = lhs.type;
-                    }
-                    else if (lhs.type.isCompatibleWith(rhs.type))
-                    {
-                        type = lhs.type;
-                    }
-                    else if (rhs.type.isCompatibleWith(lhs.type))
-                    {
-                        type = rhs.type;
-                    }
-                    else
-                    {
-                        System.Console.WriteLine("Invalid arguments for less than expression\n");
-                        throw new Exception("TypeCheck error");
-                    }
-                    break;
-
-                case "*":
-                    if (lhs.type.isTheSameAs(rhs.type) && !lhs.type.isTheSameAs(new NamedType("BOOLEAN")))
-                    {
-                        type = lhs.type;
-                    }
-                    else if (lhs.type.isCompatibleWith(rhs.type))
-                    {
-                        type = lhs.type;
-                    }
-                    else if (rhs.type.isCompatibleWith(lhs.type))
-                    {
-                        type = rhs.type;
-                    }
-                    else
-                    {
-                        System.Console.WriteLine("Invalid arguments for less than expression\n");
-                        throw new Exception("TypeCheck error");
-                    }
-                    break;
-
-                case "%":
-                    if (lhs.type.isTheSameAs(rhs.type) && !lhs.type.isTheSameAs(new NamedType("BOOLEAN")))
-                    {
-                        type = lhs.type;
-                    }
-                    else if (lhs.type.isCompatibleWith(rhs.type))
-                    {
-                        type = lhs.type;
-                    }
-                    else if (rhs.type.isCompatibleWith(lhs.type))
-                    {
-                        type = rhs.type;
-                    }
-                    else
-                    {
-                        System.Console.WriteLine("Invalid arguments for less than expression\n");
-                        throw new Exception("TypeCheck error");
-                    }
-                    break;
-
-                case "/":
-                    if (lhs.type.isTheSameAs(rhs.type) && !lhs.type.isTheSameAs(new NamedType("BOOLEAN")))
-                    {
-                        type = lhs.type;
-                    }
-                    else if (lhs.type.isCompatibleWith(rhs.type))
-                    {
-                        type = lhs.type;
-                    }
-                    else if (rhs.type.isCompatibleWith(lhs.type))
-                    {
-                        type = rhs.type;
-                    }
-                    else
-                    {
-                        System.Console.WriteLine("Invalid arguments for less than expression\n");
+                        System.Console.WriteLine("Invalid arguments for binary expression\n");
                         throw new Exception("TypeCheck error");
                     }
                     break;
