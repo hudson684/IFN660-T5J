@@ -143,16 +143,19 @@ namespace IFN660_Java_ECMAScript.AST
 
         public override bool ResolveNames(LexicalScope scope)
         {
-            if (finallyStatements == null)
-                return tryStatements.ResolveNames(scope) & catchStatements.ResolveNames(scope);
-            else
-                return tryStatements.ResolveNames(scope) & catchStatements.ResolveNames(scope) & finallyStatements.ResolveNames(scope);
+            bool loopResolve = tryStatements.ResolveNames(scope);
+            if (catchStatements != null)
+                loopResolve = loopResolve & catchStatements.ResolveNames(scope);
+            if (finallyStatements != null)
+                loopResolve = loopResolve & finallyStatements.ResolveNames(scope);
+            return loopResolve;
         }
 
         public override void TypeCheck()
         {
             tryStatements.TypeCheck();
-            catchStatements.TypeCheck();
+            if (catchStatements != null)
+                catchStatements.TypeCheck();
             if (finallyStatements != null)
                 finallyStatements.TypeCheck();
         }

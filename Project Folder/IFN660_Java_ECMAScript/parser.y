@@ -443,7 +443,7 @@ Catches
 
 CatchClause
 		//: CATCH '(' CatchFromalParameter ')' Block				{ } //Adon - too hard to be implemented right now, use the following simplified version instead
-																		//		see paser_try.y to check the nessary paser rules for a ful try statement
+																		//		see paser_try.y to check the nessary paser rules for a full try statement
 		: CATCH '(' ')' Block										{ $$ = $4; } //Adon
 		;
 

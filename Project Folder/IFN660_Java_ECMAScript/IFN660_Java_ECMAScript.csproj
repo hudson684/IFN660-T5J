@@ -68,7 +68,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-    <None Include="AST\paser_try.y" />
+    <None Include="paser_try.y" />
     <None Include="parser.y" />
     <None Include="scanner.lex" />
     <None Include="Tests\auto\test_BooleanLiteral.j" />
