@@ -41,6 +41,7 @@ public static Statement root;
 %type <stmt> BlockStatement, Throws_opt, ClassMemberDeclaration, MethodDeclaration, FormalParameter
 %type <stmt> PackageDeclaration_opt, Block, MethodBody
 %type <stmt> StatementNoShortIf, WhileStatement
+%type <stmt> DoStatement, BreakStatement
 %type <stmt> IfThenStatement, IfThenElseStatement, IfThenElseStatementNoShortIf
 
 %type <stmts> TypeDeclarations, ClassBody, ClassBodyDeclarations, BlockStatements, BlockStatements_Opt
@@ -397,8 +398,13 @@ StatementNoShortIf
 StatementWithoutTrailingSubstatement
 		: ExpressionStatement 									{ $$ = $1; } // Nathan - done by Khoa
 		| Block													{ $$ = $1; } // Nathan
+		| DoStatement											{ $$ = $1; } //Tri
 		;
 
+DoStatement
+		: DO Statement WHILE '(' Expression ')'					{ $$ = new DoStatement($2, $5); } // Tri
+		;
+		 
 ExpressionStatement
 		: StatementExpression ';'								{ $$ = new ExpressionStatement($1); } // Khoa
 		;
@@ -426,7 +432,7 @@ WhileStatement
 
 //Add for breakstatement-Vivian
 BreakStatement
-		: BREAK ';'												{ $$ = null; } //Vivian
+		: BREAK ';'												{ $$ = new BreakStatement(); } //Vivian - fix by Tri
 		;
 		//assume we have no labelled statement so no "break identifier ;"
 
