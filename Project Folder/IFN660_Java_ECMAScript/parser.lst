@@ -1,11 +1,11 @@
 
 // ==========================================================================
-//  GPPG error listing for yacc source file <parser.y - 13/05/2017 12:46:17 PM>
+//  GPPG error listing for yacc source file <parser.y - 14/05/2017 9:45:03 AM>
 // ==========================================================================
 //  Version:  1.5.2
-//  Machine:  DESKTOP-1VMC0S8
-//  DateTime: 13/05/2017 12:56:33 PM
-//  UserName: hudso
+//  Machine:  VDI-VL17-033
+//  DateTime: 14/05/2017 9:45:52 AM
+//  UserName: n9004548
 // ==========================================================================
 
 
@@ -53,6 +53,7 @@ public static Statement root;
 %type <stmt> PackageDeclaration_opt, Block, MethodBody
 %type <stmt> StatementNoShortIf, WhileStatement
 %type <stmt> IfThenStatement, IfThenElseStatement, IfThenElseStatementNoShortIf
+%type <stmt> LabeledStatement, BreakStatement
 
 %type <stmts> TypeDeclarations, ClassBody, ClassBodyDeclarations, BlockStatements, BlockStatements_Opt
 %type <stmts> FormalParameters, FormalParameterList, FormalParameterList_Opt 
@@ -71,6 +72,7 @@ public static Statement root;
 
 %type <strlst> VariableDeclaratorList
 
+%type <name> Identifier_opt
 // Tokens
 %token <num> NUMBER
 %token <name> IDENTIFIER
@@ -398,6 +400,8 @@ Statement
 		| IfThenStatement										{$$ = $1; } // Adon
 		| IfThenElseStatement									{$$ = $1; } // Adon
 		| WhileStatement										{ $$ = $1; } // Nathan
+		| BreakStatement										{ $$ = $1;} //Vivian
+		| LabeledStatement										 { $$ = $1;} //Vivian
 		;
 		
 StatementNoShortIf
@@ -434,6 +438,22 @@ IfThenElseStatementNoShortIf
 
 WhileStatement
 		: WHILE '(' Expression ')' Statement					{ $$ = new WhileStatement($3, $5); } // Nathan
+		;
+
+//Add Labeledstatement-Vivian
+LabeledStatement
+		: IDENTIFIER ':' Statement								//{ $$ = new LabeledStatement($1,$3);} //Vivian
+		;
+
+//Add breakstatement-Vivian
+BreakStatement
+		: BREAK Identifier_opt ';'												//{ if($2 == null){$$ = new BreakStatement();} else {$$ = new BreakStatement($2);} } //Vivian
+		;
+
+//Add for breakstatement-Vivian		
+Identifier_opt
+		: IDENTIFIER															
+		|
 		;
 
 // End Work by Tristan
