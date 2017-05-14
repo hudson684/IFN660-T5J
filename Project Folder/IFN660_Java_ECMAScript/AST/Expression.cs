@@ -209,21 +209,28 @@ namespace IFN660_Java_ECMAScript.AST
     }
     public class CastExpression : Expression
     {
-        private Type type;
-        private Expression expression;
-        public CastExpression(Type type, Expression expression)
+        private ValueType PrimitiveType;
+        private Expression UnaryExpression;
+        public CastExpression(ValueType PrimitiveType, Expression UnaryExpression)
         {
-            this.type = type;
-            this.expression = expression;
+            this.PrimitiveType = PrimitiveType;
+            this.UnaryExpression = UnaryExpression;
         }
 
         public override bool ResolveNames(LexicalScope scope)
         {
-            return expression.ResolveNames(scope);
+            return UnaryExpression.ResolveNames(scope);
         }
         public override void TypeCheck()
         {
-
+            UnaryExpression.TypeCheck();
+            PrimitiveType.GetType();
+            // check that the types are the same
+            if (!UnaryExpression.type.isTheSameAs(PrimitiveType.type))
+            {
+                System.Console.WriteLine("Type error in AssignmentExpression\n");
+                throw new Exception("TypeCheck error");
+            }
         }
     }
 }
