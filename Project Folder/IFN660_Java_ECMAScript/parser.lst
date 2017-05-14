@@ -1,10 +1,10 @@
 
 // ==========================================================================
-//  GPPG error listing for yacc source file <parser.y - 14/05/2017 10:19:16 AM>
+//  GPPG error listing for yacc source file <parser.y - 14/05/2017 10:27:04 AM>
 // ==========================================================================
 //  Version:  1.5.2
 //  Machine:  VDI-VL17-033
-//  DateTime: 14/05/2017 10:19:24 AM
+//  DateTime: 14/05/2017 10:27:13 AM
 //  UserName: n9004548
 // ==========================================================================
 
@@ -54,7 +54,7 @@ public static Statement root;
 %type <stmt> StatementNoShortIf, WhileStatement
 %type <stmt> DoStatement
 %type <stmt> IfThenStatement, IfThenElseStatement, IfThenElseStatementNoShortIf
-%type <stmt> LabeledStatement, BreakStatement
+%type <stmt> LabeledStatement, BreakStatement, ContinueStatement
 
 %type <stmts> TypeDeclarations, ClassBody, ClassBodyDeclarations, BlockStatements, BlockStatements_Opt
 %type <stmts> FormalParameters, FormalParameterList, FormalParameterList_Opt 
@@ -402,7 +402,6 @@ Statement
 		| IfThenStatement										{$$ = $1; } // Adon
 		| IfThenElseStatement									{$$ = $1; } // Adon
 		| WhileStatement										{ $$ = $1; } // Nathan
-		| BreakStatement										{ $$ = $1;} //Vivian
 		| LabeledStatement										 { $$ = $1;} //Vivian
 		;
 		
@@ -415,7 +414,9 @@ StatementNoShortIf
 StatementWithoutTrailingSubstatement
 		: ExpressionStatement 									{ $$ = $1; } // Nathan - done by Khoa
 		| Block													{ $$ = $1; } // Nathan
+		| BreakStatement										{ $$ = $1;} //Vivian
 		| DoStatement											{ $$ = $1; } //Tri
+		| ContinueStatement										{ $$ = $1;} //Vivian
 		;
 
 DoStatement
@@ -463,6 +464,10 @@ Identifier_opt
 		|
 		;
 
+//Add continuestatement-Vivian
+ContinueStatement
+		: CONTINUE Identifier_opt ';'									{ if($2 == null){$$ = new ContinueStatement();} else {$$ = new ContinueStatement($2);} } //Vivian
+		;
 
 // End Work by Tristan
 //work by sneha

@@ -43,7 +43,7 @@ public static Statement root;
 %type <stmt> StatementNoShortIf, WhileStatement
 %type <stmt> DoStatement
 %type <stmt> IfThenStatement, IfThenElseStatement, IfThenElseStatementNoShortIf
-%type <stmt> LabeledStatement, BreakStatement
+%type <stmt> LabeledStatement, BreakStatement, ContinueStatement
 
 %type <stmts> TypeDeclarations, ClassBody, ClassBodyDeclarations, BlockStatements, BlockStatements_Opt
 %type <stmts> FormalParameters, FormalParameterList, FormalParameterList_Opt 
@@ -389,7 +389,6 @@ Statement
 		| IfThenStatement										{$$ = $1; } // Adon
 		| IfThenElseStatement									{$$ = $1; } // Adon
 		| WhileStatement										{ $$ = $1; } // Nathan
-		| BreakStatement										{ $$ = $1;} //Vivian
 		| LabeledStatement										 { $$ = $1;} //Vivian
 		;
 		
@@ -402,7 +401,9 @@ StatementNoShortIf
 StatementWithoutTrailingSubstatement
 		: ExpressionStatement 									{ $$ = $1; } // Nathan - done by Khoa
 		| Block													{ $$ = $1; } // Nathan
+		| BreakStatement										{ $$ = $1;} //Vivian
 		| DoStatement											{ $$ = $1; } //Tri
+		| ContinueStatement										{ $$ = $1;} //Vivian
 		;
 
 DoStatement
@@ -450,6 +451,10 @@ Identifier_opt
 		|
 		;
 
+//Add continuestatement-Vivian
+ContinueStatement
+		: CONTINUE Identifier_opt ';'									{ if($2 == null){$$ = new ContinueStatement();} else {$$ = new ContinueStatement($2);} } //Vivian
+		;
 
 // End Work by Tristan
 //work by sneha

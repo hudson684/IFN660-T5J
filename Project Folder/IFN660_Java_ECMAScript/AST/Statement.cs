@@ -121,6 +121,27 @@ namespace IFN660_Java_ECMAScript.AST
         }
     }
 
+    public class ContinueStatement : Statement
+    {
+        //by Vivian
+        private string Name;
+
+        public ContinueStatement(String Name)
+        {
+            this.Name = Name;
+        }
+        public ContinueStatement()
+        {
+        }
+        public override bool ResolveNames(LexicalScope scope)
+        {
+            return true;
+        }
+        public override void TypeCheck()
+        {
+        }
+    }
+
     public class DoStatement : Statement
     {
         // by Tri
