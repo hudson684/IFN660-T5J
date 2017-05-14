@@ -395,7 +395,6 @@ Statement
 		| IfThenElseStatement									{$$ = $1; } // Adon
 		| WhileStatement										{ $$ = $1; } // Nathan
 		| LabeledStatement										 { $$ = $1;} //Vivian
-		| DoStatement											{ $$ = $1; } //Tri
 		;
 		
 StatementNoShortIf
