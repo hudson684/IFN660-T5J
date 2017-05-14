@@ -1,10 +1,10 @@
 
 // ==========================================================================
-//  GPPG error listing for yacc source file <parser.y - 14/05/2017 9:01:02 PM>
+//  GPPG error listing for yacc source file <parser.y - 14/05/2017 9:29:14 PM>
 // ==========================================================================
 //  Version:  1.5.2
 //  Machine:  VDI-VL17-045
-//  DateTime: 14/05/2017 9:19:23 PM
+//  DateTime: 14/05/2017 9:29:28 PM
 //  UserName: n9540377
 // ==========================================================================
 
@@ -57,6 +57,7 @@ public static Statement root;
 %type <stmt> PackageDeclaration_opt, Block, MethodBody
 %type <stmt> StatementNoShortIf, WhileStatement
 %type <stmt> DoStatement, ThrowStatement, SynchronizedStatement
+%type <stmt> SwitchStatement
 %type <stmt> IfThenStatement, IfThenElseStatement, IfThenElseStatementNoShortIf
 %type <stmt> LabeledStatement, BreakStatement, ContinueStatement, ReturnStatement
 
@@ -430,6 +431,11 @@ StatementWithoutTrailingSubstatement
 		| ReturnStatement										{ $$ = $1;} //Vivian
 		| ThrowStatement										{ $$ = $1;} // KoJo
 		| SynchronizedStatement									{ $$ = $1;} // KoJo
+		| SwitchStatement										{ $$ = $1;} //Tri
+		;
+
+SwitchStatement
+		: SWITCH '(' Expression ')'								{ $$ = new SwitchStatement($3); } //Tri
 		;
 
 DoStatement
