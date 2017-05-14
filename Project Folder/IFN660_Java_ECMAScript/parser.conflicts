@@ -1,3 +1,275 @@
-// Parser Conflict Information for grammar file "parser.y - 5/13/2017 19:47:54"
+// Parser Conflict Information for grammar file "parser.y - 14/05/2017 9:01:02 PM"
+
+Reduce/Reduce conflict in state 215 on symbol "IDENTIFIER", parser will reduce production 106
+ Reduce 106:	IfThenStatement -> IF, '(', Expression, ')', Statement
+ Reduce 117:	IfThenStatement -> IF, '(', Expression, ')', Statement
+
+Reduce/Reduce conflict in state 215 on symbol "BYTE", parser will reduce production 106
+ Reduce 106:	IfThenStatement -> IF, '(', Expression, ')', Statement
+ Reduce 117:	IfThenStatement -> IF, '(', Expression, ')', Statement
+
+Reduce/Reduce conflict in state 215 on symbol "SHORT", parser will reduce production 106
+ Reduce 106:	IfThenStatement -> IF, '(', Expression, ')', Statement
+ Reduce 117:	IfThenStatement -> IF, '(', Expression, ')', Statement
+
+Reduce/Reduce conflict in state 215 on symbol "INT", parser will reduce production 106
+ Reduce 106:	IfThenStatement -> IF, '(', Expression, ')', Statement
+ Reduce 117:	IfThenStatement -> IF, '(', Expression, ')', Statement
+
+Reduce/Reduce conflict in state 215 on symbol "LONG", parser will reduce production 106
+ Reduce 106:	IfThenStatement -> IF, '(', Expression, ')', Statement
+ Reduce 117:	IfThenStatement -> IF, '(', Expression, ')', Statement
+
+Reduce/Reduce conflict in state 215 on symbol "CHAR", parser will reduce production 106
+ Reduce 106:	IfThenStatement -> IF, '(', Expression, ')', Statement
+ Reduce 117:	IfThenStatement -> IF, '(', Expression, ')', Statement
+
+Reduce/Reduce conflict in state 215 on symbol "FLOAT", parser will reduce production 106
+ Reduce 106:	IfThenStatement -> IF, '(', Expression, ')', Statement
+ Reduce 117:	IfThenStatement -> IF, '(', Expression, ')', Statement
+
+Reduce/Reduce conflict in state 215 on symbol "DOUBLE", parser will reduce production 106
+ Reduce 106:	IfThenStatement -> IF, '(', Expression, ')', Statement
+ Reduce 117:	IfThenStatement -> IF, '(', Expression, ')', Statement
+
+Reduce/Reduce conflict in state 215 on symbol "BOOLEAN", parser will reduce production 106
+ Reduce 106:	IfThenStatement -> IF, '(', Expression, ')', Statement
+ Reduce 117:	IfThenStatement -> IF, '(', Expression, ')', Statement
+
+Reduce/Reduce conflict in state 215 on symbol "'{'", parser will reduce production 106
+ Reduce 106:	IfThenStatement -> IF, '(', Expression, ')', Statement
+ Reduce 117:	IfThenStatement -> IF, '(', Expression, ')', Statement
+
+Reduce/Reduce conflict in state 215 on symbol "BREAK", parser will reduce production 106
+ Reduce 106:	IfThenStatement -> IF, '(', Expression, ')', Statement
+ Reduce 117:	IfThenStatement -> IF, '(', Expression, ')', Statement
+
+Reduce/Reduce conflict in state 215 on symbol "DO", parser will reduce production 106
+ Reduce 106:	IfThenStatement -> IF, '(', Expression, ')', Statement
+ Reduce 117:	IfThenStatement -> IF, '(', Expression, ')', Statement
+
+Reduce/Reduce conflict in state 215 on symbol "CONTINUE", parser will reduce production 106
+ Reduce 106:	IfThenStatement -> IF, '(', Expression, ')', Statement
+ Reduce 117:	IfThenStatement -> IF, '(', Expression, ')', Statement
+
+Reduce/Reduce conflict in state 215 on symbol "RETURN", parser will reduce production 106
+ Reduce 106:	IfThenStatement -> IF, '(', Expression, ')', Statement
+ Reduce 117:	IfThenStatement -> IF, '(', Expression, ')', Statement
+
+Reduce/Reduce conflict in state 215 on symbol "THROW", parser will reduce production 106
+ Reduce 106:	IfThenStatement -> IF, '(', Expression, ')', Statement
+ Reduce 117:	IfThenStatement -> IF, '(', Expression, ')', Statement
+
+Reduce/Reduce conflict in state 215 on symbol "SYNCHRONIZED", parser will reduce production 106
+ Reduce 106:	IfThenStatement -> IF, '(', Expression, ')', Statement
+ Reduce 117:	IfThenStatement -> IF, '(', Expression, ')', Statement
+
+Reduce/Reduce conflict in state 215 on symbol "IF", parser will reduce production 106
+ Reduce 106:	IfThenStatement -> IF, '(', Expression, ')', Statement
+ Reduce 117:	IfThenStatement -> IF, '(', Expression, ')', Statement
+
+Reduce/Reduce conflict in state 215 on symbol "WHILE", parser will reduce production 106
+ Reduce 106:	IfThenStatement -> IF, '(', Expression, ')', Statement
+ Reduce 117:	IfThenStatement -> IF, '(', Expression, ')', Statement
+
+Reduce/Reduce conflict in state 215 on symbol "'}'", parser will reduce production 106
+ Reduce 106:	IfThenStatement -> IF, '(', Expression, ')', Statement
+ Reduce 117:	IfThenStatement -> IF, '(', Expression, ')', Statement
+
+Reduce/Reduce conflict in state 218 on symbol "IDENTIFIER", parser will reduce production 107
+ Reduce 107:	IfThenElseStatement -> IF, '(', Expression, ')', StatementNoShortIf, ELSE, 
+                       Statement
+ Reduce 118:	IfThenElseStatement -> IF, '(', Expression, ')', StatementNoShortIf, ELSE, 
+                       Statement
+
+Reduce/Reduce conflict in state 218 on symbol "BYTE", parser will reduce production 107
+ Reduce 107:	IfThenElseStatement -> IF, '(', Expression, ')', StatementNoShortIf, ELSE, 
+                       Statement
+ Reduce 118:	IfThenElseStatement -> IF, '(', Expression, ')', StatementNoShortIf, ELSE, 
+                       Statement
+
+Reduce/Reduce conflict in state 218 on symbol "SHORT", parser will reduce production 107
+ Reduce 107:	IfThenElseStatement -> IF, '(', Expression, ')', StatementNoShortIf, ELSE, 
+                       Statement
+ Reduce 118:	IfThenElseStatement -> IF, '(', Expression, ')', StatementNoShortIf, ELSE, 
+                       Statement
+
+Reduce/Reduce conflict in state 218 on symbol "INT", parser will reduce production 107
+ Reduce 107:	IfThenElseStatement -> IF, '(', Expression, ')', StatementNoShortIf, ELSE, 
+                       Statement
+ Reduce 118:	IfThenElseStatement -> IF, '(', Expression, ')', StatementNoShortIf, ELSE, 
+                       Statement
+
+Reduce/Reduce conflict in state 218 on symbol "LONG", parser will reduce production 107
+ Reduce 107:	IfThenElseStatement -> IF, '(', Expression, ')', StatementNoShortIf, ELSE, 
+                       Statement
+ Reduce 118:	IfThenElseStatement -> IF, '(', Expression, ')', StatementNoShortIf, ELSE, 
+                       Statement
+
+Reduce/Reduce conflict in state 218 on symbol "CHAR", parser will reduce production 107
+ Reduce 107:	IfThenElseStatement -> IF, '(', Expression, ')', StatementNoShortIf, ELSE, 
+                       Statement
+ Reduce 118:	IfThenElseStatement -> IF, '(', Expression, ')', StatementNoShortIf, ELSE, 
+                       Statement
+
+Reduce/Reduce conflict in state 218 on symbol "FLOAT", parser will reduce production 107
+ Reduce 107:	IfThenElseStatement -> IF, '(', Expression, ')', StatementNoShortIf, ELSE, 
+                       Statement
+ Reduce 118:	IfThenElseStatement -> IF, '(', Expression, ')', StatementNoShortIf, ELSE, 
+                       Statement
+
+Reduce/Reduce conflict in state 218 on symbol "DOUBLE", parser will reduce production 107
+ Reduce 107:	IfThenElseStatement -> IF, '(', Expression, ')', StatementNoShortIf, ELSE, 
+                       Statement
+ Reduce 118:	IfThenElseStatement -> IF, '(', Expression, ')', StatementNoShortIf, ELSE, 
+                       Statement
+
+Reduce/Reduce conflict in state 218 on symbol "BOOLEAN", parser will reduce production 107
+ Reduce 107:	IfThenElseStatement -> IF, '(', Expression, ')', StatementNoShortIf, ELSE, 
+                       Statement
+ Reduce 118:	IfThenElseStatement -> IF, '(', Expression, ')', StatementNoShortIf, ELSE, 
+                       Statement
+
+Reduce/Reduce conflict in state 218 on symbol "'{'", parser will reduce production 107
+ Reduce 107:	IfThenElseStatement -> IF, '(', Expression, ')', StatementNoShortIf, ELSE, 
+                       Statement
+ Reduce 118:	IfThenElseStatement -> IF, '(', Expression, ')', StatementNoShortIf, ELSE, 
+                       Statement
+
+Reduce/Reduce conflict in state 218 on symbol "BREAK", parser will reduce production 107
+ Reduce 107:	IfThenElseStatement -> IF, '(', Expression, ')', StatementNoShortIf, ELSE, 
+                       Statement
+ Reduce 118:	IfThenElseStatement -> IF, '(', Expression, ')', StatementNoShortIf, ELSE, 
+                       Statement
+
+Reduce/Reduce conflict in state 218 on symbol "DO", parser will reduce production 107
+ Reduce 107:	IfThenElseStatement -> IF, '(', Expression, ')', StatementNoShortIf, ELSE, 
+                       Statement
+ Reduce 118:	IfThenElseStatement -> IF, '(', Expression, ')', StatementNoShortIf, ELSE, 
+                       Statement
+
+Reduce/Reduce conflict in state 218 on symbol "CONTINUE", parser will reduce production 107
+ Reduce 107:	IfThenElseStatement -> IF, '(', Expression, ')', StatementNoShortIf, ELSE, 
+                       Statement
+ Reduce 118:	IfThenElseStatement -> IF, '(', Expression, ')', StatementNoShortIf, ELSE, 
+                       Statement
+
+Reduce/Reduce conflict in state 218 on symbol "RETURN", parser will reduce production 107
+ Reduce 107:	IfThenElseStatement -> IF, '(', Expression, ')', StatementNoShortIf, ELSE, 
+                       Statement
+ Reduce 118:	IfThenElseStatement -> IF, '(', Expression, ')', StatementNoShortIf, ELSE, 
+                       Statement
+
+Reduce/Reduce conflict in state 218 on symbol "THROW", parser will reduce production 107
+ Reduce 107:	IfThenElseStatement -> IF, '(', Expression, ')', StatementNoShortIf, ELSE, 
+                       Statement
+ Reduce 118:	IfThenElseStatement -> IF, '(', Expression, ')', StatementNoShortIf, ELSE, 
+                       Statement
+
+Reduce/Reduce conflict in state 218 on symbol "SYNCHRONIZED", parser will reduce production 107
+ Reduce 107:	IfThenElseStatement -> IF, '(', Expression, ')', StatementNoShortIf, ELSE, 
+                       Statement
+ Reduce 118:	IfThenElseStatement -> IF, '(', Expression, ')', StatementNoShortIf, ELSE, 
+                       Statement
+
+Reduce/Reduce conflict in state 218 on symbol "IF", parser will reduce production 107
+ Reduce 107:	IfThenElseStatement -> IF, '(', Expression, ')', StatementNoShortIf, ELSE, 
+                       Statement
+ Reduce 118:	IfThenElseStatement -> IF, '(', Expression, ')', StatementNoShortIf, ELSE, 
+                       Statement
+
+Reduce/Reduce conflict in state 218 on symbol "WHILE", parser will reduce production 107
+ Reduce 107:	IfThenElseStatement -> IF, '(', Expression, ')', StatementNoShortIf, ELSE, 
+                       Statement
+ Reduce 118:	IfThenElseStatement -> IF, '(', Expression, ')', StatementNoShortIf, ELSE, 
+                       Statement
+
+Reduce/Reduce conflict in state 218 on symbol "'}'", parser will reduce production 107
+ Reduce 107:	IfThenElseStatement -> IF, '(', Expression, ')', StatementNoShortIf, ELSE, 
+                       Statement
+ Reduce 118:	IfThenElseStatement -> IF, '(', Expression, ')', StatementNoShortIf, ELSE, 
+                       Statement
+
+Reduce/Reduce conflict in state 225 on symbol "IDENTIFIER", parser will reduce production 109
+ Reduce 109:	WhileStatement -> WHILE, '(', Expression, ')', Statement
+ Reduce 120:	WhileStatement -> WHILE, '(', Expression, ')', Statement
+
+Reduce/Reduce conflict in state 225 on symbol "BYTE", parser will reduce production 109
+ Reduce 109:	WhileStatement -> WHILE, '(', Expression, ')', Statement
+ Reduce 120:	WhileStatement -> WHILE, '(', Expression, ')', Statement
+
+Reduce/Reduce conflict in state 225 on symbol "SHORT", parser will reduce production 109
+ Reduce 109:	WhileStatement -> WHILE, '(', Expression, ')', Statement
+ Reduce 120:	WhileStatement -> WHILE, '(', Expression, ')', Statement
+
+Reduce/Reduce conflict in state 225 on symbol "INT", parser will reduce production 109
+ Reduce 109:	WhileStatement -> WHILE, '(', Expression, ')', Statement
+ Reduce 120:	WhileStatement -> WHILE, '(', Expression, ')', Statement
+
+Reduce/Reduce conflict in state 225 on symbol "LONG", parser will reduce production 109
+ Reduce 109:	WhileStatement -> WHILE, '(', Expression, ')', Statement
+ Reduce 120:	WhileStatement -> WHILE, '(', Expression, ')', Statement
+
+Reduce/Reduce conflict in state 225 on symbol "CHAR", parser will reduce production 109
+ Reduce 109:	WhileStatement -> WHILE, '(', Expression, ')', Statement
+ Reduce 120:	WhileStatement -> WHILE, '(', Expression, ')', Statement
+
+Reduce/Reduce conflict in state 225 on symbol "FLOAT", parser will reduce production 109
+ Reduce 109:	WhileStatement -> WHILE, '(', Expression, ')', Statement
+ Reduce 120:	WhileStatement -> WHILE, '(', Expression, ')', Statement
+
+Reduce/Reduce conflict in state 225 on symbol "DOUBLE", parser will reduce production 109
+ Reduce 109:	WhileStatement -> WHILE, '(', Expression, ')', Statement
+ Reduce 120:	WhileStatement -> WHILE, '(', Expression, ')', Statement
+
+Reduce/Reduce conflict in state 225 on symbol "BOOLEAN", parser will reduce production 109
+ Reduce 109:	WhileStatement -> WHILE, '(', Expression, ')', Statement
+ Reduce 120:	WhileStatement -> WHILE, '(', Expression, ')', Statement
+
+Reduce/Reduce conflict in state 225 on symbol "'{'", parser will reduce production 109
+ Reduce 109:	WhileStatement -> WHILE, '(', Expression, ')', Statement
+ Reduce 120:	WhileStatement -> WHILE, '(', Expression, ')', Statement
+
+Reduce/Reduce conflict in state 225 on symbol "BREAK", parser will reduce production 109
+ Reduce 109:	WhileStatement -> WHILE, '(', Expression, ')', Statement
+ Reduce 120:	WhileStatement -> WHILE, '(', Expression, ')', Statement
+
+Reduce/Reduce conflict in state 225 on symbol "DO", parser will reduce production 109
+ Reduce 109:	WhileStatement -> WHILE, '(', Expression, ')', Statement
+ Reduce 120:	WhileStatement -> WHILE, '(', Expression, ')', Statement
+
+Reduce/Reduce conflict in state 225 on symbol "CONTINUE", parser will reduce production 109
+ Reduce 109:	WhileStatement -> WHILE, '(', Expression, ')', Statement
+ Reduce 120:	WhileStatement -> WHILE, '(', Expression, ')', Statement
+
+Reduce/Reduce conflict in state 225 on symbol "RETURN", parser will reduce production 109
+ Reduce 109:	WhileStatement -> WHILE, '(', Expression, ')', Statement
+ Reduce 120:	WhileStatement -> WHILE, '(', Expression, ')', Statement
+
+Reduce/Reduce conflict in state 225 on symbol "THROW", parser will reduce production 109
+ Reduce 109:	WhileStatement -> WHILE, '(', Expression, ')', Statement
+ Reduce 120:	WhileStatement -> WHILE, '(', Expression, ')', Statement
+
+Reduce/Reduce conflict in state 225 on symbol "SYNCHRONIZED", parser will reduce production 109
+ Reduce 109:	WhileStatement -> WHILE, '(', Expression, ')', Statement
+ Reduce 120:	WhileStatement -> WHILE, '(', Expression, ')', Statement
+
+Reduce/Reduce conflict in state 225 on symbol "IF", parser will reduce production 109
+ Reduce 109:	WhileStatement -> WHILE, '(', Expression, ')', Statement
+ Reduce 120:	WhileStatement -> WHILE, '(', Expression, ')', Statement
+
+Reduce/Reduce conflict in state 225 on symbol "WHILE", parser will reduce production 109
+ Reduce 109:	WhileStatement -> WHILE, '(', Expression, ')', Statement
+ Reduce 120:	WhileStatement -> WHILE, '(', Expression, ')', Statement
+
+Reduce/Reduce conflict in state 225 on symbol "'}'", parser will reduce production 109
+ Reduce 109:	WhileStatement -> WHILE, '(', Expression, ')', Statement
+ Reduce 120:	WhileStatement -> WHILE, '(', Expression, ')', Statement
+
+Reduce/Reduce conflict in state 234 on symbol "ELSE", parser will reduce production 108
+ Reduce 108:	IfThenElseStatementNoShortIf -> IF, '(', Expression, ')', StatementNoShortIf, 
+                                ELSE, StatementNoShortIf
+ Reduce 119:	IfThenElseStatementNoShortIf -> IF, '(', Expression, ')', StatementNoShortIf, 
+                                ELSE, StatementNoShortIf
 
 // End conflict information for parser

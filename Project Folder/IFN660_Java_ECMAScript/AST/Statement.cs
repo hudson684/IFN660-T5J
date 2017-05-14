@@ -281,52 +281,76 @@ namespace IFN660_Java_ECMAScript.AST
         }
 
     }
-    //public class ThrowStatement : Statement              //KoJo
-    //{
-    //    // by Nathan - still testing
-    //    private Statement ThrowInit;
-    //    private Expression Expr;
-
-    //    public ThrowStatement(Statement ThrowInit, Expression Expr)
-    //    {
-    //        this.ThrowInit = ThrowInit;
-    //        this.Expr = Expr;
-    //    }
-
-    //    public override bool ResolveNames(LexicalScope scope)
-    //    {
-    //        bool loopResolve = true;
-
-    //        return ThrowInit.ResolveNames(scope) & Expr.ResolveNames(scope) & loopResolve;
-    //    }
-    //    public override void TypeCheck()
-    //    {
-
-    //    }
-    //}
-
-    public class SynchronizedStatement : Statement
+    public class ThrowStatement : Statement              //KoJo
     {
         private Expression Expr;
-        private BlockStatement BlckStmt;
-        public SynchronizedStatement(Expression Expr, BlockStatement BlckStmt)
+
+        public ThrowStatement(Expression Expr)
         {
             this.Expr = Expr;
-            this.BlckStmt = BlckStmt;
+        }
+
+        public override bool ResolveNames(LexicalScope scope)
+        {
+            bool loopResolve = true;
+
+            return Expr.ResolveNames(scope) & loopResolve;
+        }
+        public override void TypeCheck()
+        {
+            // Khoa
+            // If Expression was entered, try TypeChecking. If not, return error
+            // Need to figure out how to check if Expression is Reference Type
+            try
+            {
+                if (Expr != null)
+                {
+                    Expr.TypeCheck();
+                }
+            }
+            catch (Exception e)
+            {
+                throw new Exception("No Expression was entered");
+            }
+        }
+    }
+
+    public class SynchronizedStatement : Statement    //KoJo
+    {
+        private Expression Expr;
+        private Statement Stmt;
+        public SynchronizedStatement(Expression Expr, Statement Stmt)
+        {
+            this.Expr = Expr;
+            this.Stmt = Stmt;
         }
         public override bool ResolveNames(LexicalScope scope)
         {
             bool loopResolve = true;
 
-            return Expr.ResolveNames(scope) & BlckStmt.ResolveNames(scope) & loopResolve;
+            return Expr.ResolveNames(scope) & Stmt.ResolveNames(scope) & loopResolve;
         }
 
         public override void TypeCheck()
         {
-            Expr.TypeCheck();
-            BlckStmt.TypeCheck(); 
+            // Khoa  
+            //The Expression must always be there, where the Statement doesn't have to
+            // If Expression is null, skip TypeChecking for Statement
+            try
+            {
+                if (Expr != null)
+                {
+                    Expr.TypeCheck();
+                    Stmt.TypeCheck();
+                }
+            }
+            catch (Exception e)
+            {
+                throw new Exception("No Expression was entered");
+            }
         }
     }
+
     public class ExpressionStatement : Statement
 	{
 		private Expression expr;

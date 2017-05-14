@@ -45,7 +45,7 @@ public static Statement root;
 %type <stmt> TryStatement, Catches, Catches_opt, CatchClause, Finally
 %type <stmt> PackageDeclaration_opt, Block, MethodBody
 %type <stmt> StatementNoShortIf, WhileStatement
-%type <stmt> DoStatement
+%type <stmt> DoStatement, ThrowStatement, SynchronizedStatement
 %type <stmt> IfThenStatement, IfThenElseStatement, IfThenElseStatementNoShortIf
 %type <stmt> LabeledStatement, BreakStatement, ContinueStatement, ReturnStatement
 
@@ -410,12 +410,22 @@ StatementWithoutTrailingSubstatement
 		| DoStatement											{ $$ = $1; } //Tri
 		| ContinueStatement										{ $$ = $1;} //Vivian
 		| ReturnStatement										{ $$ = $1;} //Vivian
+		| ThrowStatement										{ $$ = $1;} // KoJo
+		| SynchronizedStatement									{ $$ = $1;} // KoJo
 		;
 
 DoStatement
 		: DO Statement WHILE '(' Expression ')'	';'				{ $$ = new DoStatement($2, $5); } // Tri
 		;
 		 
+ThrowStatement
+		: THROW Expression ';'									{ $$ = new ThrowStatement($2); } //KoJo
+		;
+
+SynchronizedStatement
+		: SYNCHRONIZED '(' Expression ')' Block					{ $$ = new SynchronizedStatement($3, $5); }  //KoJo
+		;
+
 ExpressionStatement
 		: StatementExpression ';'								{ $$ = new ExpressionStatement($1); } // Khoa
 		;
