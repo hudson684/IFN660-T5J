@@ -390,6 +390,7 @@ Statement
 		| IfThenElseStatement									{$$ = $1; } // Adon
 		| WhileStatement										{ $$ = $1; } // Nathan
 		| BreakStatement										{ $$ = $1;} //Vivian
+		| LabeledStatement										 { $$ = $1;} //Vivian
 		;
 		
 StatementNoShortIf
@@ -401,8 +402,6 @@ StatementNoShortIf
 StatementWithoutTrailingSubstatement
 		: ExpressionStatement 									{ $$ = $1; } // Nathan - done by Khoa
 		| Block													{ $$ = $1; } // Nathan
-		| BreakStatement										{ $$ = $1;} //Vivian
-		| LabeledStatement										 { $$ = $1;} //Vivian
 		| DoStatement											{ $$ = $1; } //Tri
 		;
 

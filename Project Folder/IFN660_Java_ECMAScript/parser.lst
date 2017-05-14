@@ -1,10 +1,10 @@
 
 // ==========================================================================
-//  GPPG error listing for yacc source file <parser.y - 14/05/2017 10:10:28 AM>
+//  GPPG error listing for yacc source file <parser.y - 14/05/2017 10:19:16 AM>
 // ==========================================================================
 //  Version:  1.5.2
 //  Machine:  VDI-VL17-033
-//  DateTime: 14/05/2017 10:13:54 AM
+//  DateTime: 14/05/2017 10:19:24 AM
 //  UserName: n9004548
 // ==========================================================================
 
@@ -403,6 +403,7 @@ Statement
 		| IfThenElseStatement									{$$ = $1; } // Adon
 		| WhileStatement										{ $$ = $1; } // Nathan
 		| BreakStatement										{ $$ = $1;} //Vivian
+		| LabeledStatement										 { $$ = $1;} //Vivian
 		;
 		
 StatementNoShortIf
@@ -414,8 +415,6 @@ StatementNoShortIf
 StatementWithoutTrailingSubstatement
 		: ExpressionStatement 									{ $$ = $1; } // Nathan - done by Khoa
 		| Block													{ $$ = $1; } // Nathan
-		| BreakStatement										{ $$ = $1;} //Vivian
-		| LabeledStatement										 { $$ = $1;} //Vivian
 		| DoStatement											{ $$ = $1; } //Tri
 		;
 
