@@ -110,12 +110,12 @@ namespace IFN660_Java_ECMAScript.AST
                     }
                     type = new NamedType("BOOLEAN");
                     break;
-
+                case "+":
                 case "-":
                 case "*":
                 case "%":
                 case "/":
-                case "+":
+                case "==":
                     if (lhs.type.isTheSameAs(rhs.type) && !lhs.type.isTheSameAs(new NamedType("BOOLEAN")))
                     {
                         type = lhs.type;
@@ -130,7 +130,7 @@ namespace IFN660_Java_ECMAScript.AST
                     }
                     else
                     {
-                        System.Console.WriteLine("Invalid arguments for binary expression\n");
+                        System.Console.WriteLine("Invalid arguments for less than expression\n");
                         throw new Exception("TypeCheck error");
                     }
                     break;

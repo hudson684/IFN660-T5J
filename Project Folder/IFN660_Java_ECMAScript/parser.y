@@ -40,6 +40,10 @@ public static Statement root;
 %type <stmt> ExpressionStatement, StatementWithoutTrailingSubstatement, LocalVariableDeclaration, LocalVariableDeclarationStatement
 %type <stmt> BlockStatement, Throws_opt, ClassMemberDeclaration, MethodDeclaration, FormalParameter
 %type <stmt> PackageDeclaration_opt, Block, MethodBody
+%type <stmt> StatementNoShortIf, IfThenElseStatementNoShortIf
+%type <stmt> IfThenStatement, IfThenElseStatement, WhileStatement 
+%type <stmt> TryStatement, Catches, Catches_opt, CatchClause, Finally
+%type <stmt> PackageDeclaration_opt, Block, MethodBody
 %type <stmt> StatementNoShortIf, WhileStatement
 %type <stmt> DoStatement
 %type <stmt> IfThenStatement, IfThenElseStatement, IfThenElseStatementNoShortIf
@@ -419,6 +423,67 @@ ExpressionStatement
 StatementExpression
 		: Assignment											{ $$ = $1; } // Khoa - updated by Nathan
 		;
+
+IfThenStatement
+		: IF '(' Expression ')' Statement						{ $$ = new IfStatement($3, $5,null); } // Adon
+		//: IF '(' Expression ')' BlockStatements						{ $$ = new IfStatement($3, $5,null); } // Adon
+		;
+
+IfThenElseStatement
+		: IF '(' Expression ')' StatementNoShortIf ELSE Statement				{ $$ = new IfStatement($3, $5, $7); } // Adon
+		;
+
+IfThenElseStatementNoShortIf
+		: IF '(' Expression ')' StatementNoShortIf ELSE StatementNoShortIf		{ $$ = new IfStatement($3, $5, $7); } //Adon
+		;
+
+WhileStatement
+		: WHILE '(' Expression ')' Statement					{ $$ = new WhileStatement($3, $5); } // Nathan
+		;
+
+TryStatement
+		: TRY Block Catches										{ $$ = new TryStatement($2, $3, null); } //Adon
+		| TRY Block Catches_opt Finally							{ $$ = new TryStatement($2, $3, $4); } //Adon
+		//| TryWithResourcesStatement
+		;
+
+Catches_opt
+		: Catches												{ $$ =  $1; } //Adon
+		| /* empty */											{ } //Adon
+		;
+
+Catches
+		: CatchClause											{ $$ =  $1; } //Adon
+//		| Catches CatchClause									{ } //Adon
+		;
+
+CatchClause
+		//: CATCH '(' CatchFromalParameter ')' Block				{ } //Adon - too hard to be implemented right now, use the following simplified version instead
+																		//		see paser_try.y to check the nessary paser rules for a full try statement
+		: CATCH '(' ')' Block										{ $$ = $4; } //Adon
+		;
+
+//CatchFromalParameter
+//		: VariableModifiers CatchType VariableDeclaratorId		{ } //Adon
+//		;
+
+//CatchType
+//		: UnannClassType										{ } //Adon
+//		| CatchType '|' CatchType								{ } //Adon
+//		;
+
+//Finally_opt
+//		: Finally												{ $$ = $1; } //Adon
+//		|
+//		;
+
+Finally
+		: FINALLY Block											{ $$ = $2; } //Adon
+		;
+
+//TryWithResourcesStatement
+//		: TRY ResourceSpecification Block Catches_opt Finally_opt
+//		;
 
 IfThenStatement
 		: IF '(' Expression ')' Statement						{ $$ = new IfStatement($3, $5,null); } // Adon

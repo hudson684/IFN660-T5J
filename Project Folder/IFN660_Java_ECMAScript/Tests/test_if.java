@@ -1,4 +1,4 @@
-// tests file for while loops
+﻿// tests file for if statement
 public class HelloWorld
 {
 	public void Main (String[] args)
@@ -6,22 +6,23 @@ public class HelloWorld
 		int i, j;
 		i = 0;
 
+		if (i == 5)
+		    j = 10;
+
 		if (i < 4)
 		{
 			i = i + 1;
 			j = i;
 		}
-		else
+		else if (i == 4)
 		{
 			i = j;
 			j = 3;
 		}
-
-		while (i < 4)
+		else
 		{
-			i = i + 1;
-			float k;
-			k = i;
+			i = j;
+			j = 6;
 		}
 	}
 }
