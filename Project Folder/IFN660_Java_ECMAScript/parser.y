@@ -46,6 +46,7 @@ public static Statement root;
 %type <stmt> PackageDeclaration_opt, Block, MethodBody
 %type <stmt> StatementNoShortIf, WhileStatement
 %type <stmt> DoStatement
+%type <stmt> SwitchStatement
 %type <stmt> IfThenStatement, IfThenElseStatement, IfThenElseStatementNoShortIf
 %type <stmt> LabeledStatement, BreakStatement, ContinueStatement, ReturnStatement
 
@@ -410,6 +411,11 @@ StatementWithoutTrailingSubstatement
 		| DoStatement											{ $$ = $1; } //Tri
 		| ContinueStatement										{ $$ = $1;} //Vivian
 		| ReturnStatement										{ $$ = $1;} //Vivian
+		| SwitchStatement										{ $$ = $1;} //Tri
+		;
+
+SwitchStatement
+		: SWITCH '(' Expression ')'								{ $$ = new SwitchStatement($3); } //Tri
 		;
 
 DoStatement

@@ -80,6 +80,34 @@ namespace IFN660_Java_ECMAScript.AST
 
     }
 
+    public class SwitchStatement : Statement
+    {
+        // by Tri
+        private Expression expression;
+
+        public SwitchStatement(Expression expression)
+        {
+            this.expression = expression;
+        }
+
+        public override bool ResolveNames(LexicalScope scope)
+        {
+            var newScope = getNewScope(scope, null);
+            return expression.ResolveNames(newScope);
+        }
+
+        public override void TypeCheck()
+        {
+            this.expression.TypeCheck();
+
+            if (!expression.type.isTheSameAs(new NamedType("INT")))
+            {
+                System.Console.WriteLine("Type error in SwitchStatement\n");
+                throw new Exception("TypeCheck error");
+            }
+        }
+    }
+
     public class LabeledStatement : Statement
     {
       //by Vivian
