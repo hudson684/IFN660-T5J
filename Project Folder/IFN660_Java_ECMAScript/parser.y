@@ -41,8 +41,9 @@ public static Statement root;
 %type <stmt> BlockStatement, Throws_opt, ClassMemberDeclaration, MethodDeclaration, FormalParameter
 %type <stmt> PackageDeclaration_opt, Block, MethodBody
 %type <stmt> StatementNoShortIf, WhileStatement
-%type <stmt> DoStatement, BreakStatement
+%type <stmt> DoStatement
 %type <stmt> IfThenStatement, IfThenElseStatement, IfThenElseStatementNoShortIf
+%type <stmt> LabeledStatement, BreakStatement
 
 %type <stmts> TypeDeclarations, ClassBody, ClassBodyDeclarations, BlockStatements, BlockStatements_Opt
 %type <stmts> FormalParameters, FormalParameterList, FormalParameterList_Opt 
@@ -60,6 +61,8 @@ public static Statement root;
 %type <arrlst> MethodHeader, MethodDeclarator
 
 %type <strlst> VariableDeclaratorList
+
+%type <name> Identifier_opt
 
 // Tokens
 %token <num> NUMBER
@@ -398,6 +401,8 @@ StatementNoShortIf
 StatementWithoutTrailingSubstatement
 		: ExpressionStatement 									{ $$ = $1; } // Nathan - done by Khoa
 		| Block													{ $$ = $1; } // Nathan
+		| BreakStatement										{ $$ = $1;} //Vivian
+		| LabeledStatement										 { $$ = $1;} //Vivian
 		| DoStatement											{ $$ = $1; } //Tri
 		;
 
@@ -430,11 +435,21 @@ WhileStatement
 		: WHILE '(' Expression ')' Statement					{ $$ = new WhileStatement($3, $5); } // Nathan
 		;
 
-//Add for breakstatement-Vivian
-BreakStatement
-		: BREAK ';'												{ $$ = new BreakStatement(); } //Vivian - fix by Tri
+//Add Labeledstatement-Vivian
+LabeledStatement
+		: IDENTIFIER ':' Statement								{ $$ = new LabeledStatement($1,$3);} //Vivian
 		;
-		//assume we have no labelled statement so no "break identifier ;"
+
+//Add breakstatement-Vivian
+BreakStatement
+		: BREAK Identifier_opt ';'									{ if($2 == null){$$ = new BreakStatement();} else {$$ = new BreakStatement($2);} } //Vivian
+		;
+
+//Add breakstatement-Vivian		
+Identifier_opt
+		: IDENTIFIER															
+		|
+		;
 
 
 // End Work by Tristan

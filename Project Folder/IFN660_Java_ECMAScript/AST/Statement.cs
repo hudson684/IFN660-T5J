@@ -76,22 +76,48 @@ namespace IFN660_Java_ECMAScript.AST
 
     }
 
-    public class BreakStatement : Statement
+    public class LabeledStatement : Statement
     {
-        //by Tri
-        public BreakStatement()
+      //by Vivian
+        private string Name;
+        private Statement Statements;
+
+        public LabeledStatement(string Name, Statement Statements)
         {
+            this.Name = Name;
+            this.Statements = Statements;
         }
 
         public override bool ResolveNames(LexicalScope scope)
         {
-            //no need to resolve anything, just return true
-            return true;
+            return Statements.ResolveNames(scope);
         }
 
         public override void TypeCheck()
         {
-            //no need to check any type here
+            Statements.TypeCheck();
+        }
+    }
+
+
+    public class BreakStatement : Statement
+    {
+        //by Vivian
+        private string Name;
+
+        public BreakStatement(String Name)
+        {
+            this.Name = Name;
+        }
+        public BreakStatement()
+        {
+        }
+        public override bool ResolveNames(LexicalScope scope)
+        {
+            return true;
+        }
+        public override void TypeCheck()
+        {
         }
     }
 
