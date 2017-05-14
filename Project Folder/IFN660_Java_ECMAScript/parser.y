@@ -395,6 +395,7 @@ Statement
 		| IfThenElseStatement									{$$ = $1; } // Adon
 		| WhileStatement										{ $$ = $1; } // Nathan
 		| LabeledStatement										 { $$ = $1;} //Vivian
+		| DoStatement											{ $$ = $1; } //Tri
 		;
 		
 StatementNoShortIf
@@ -413,7 +414,7 @@ StatementWithoutTrailingSubstatement
 		;
 
 DoStatement
-		: DO Statement WHILE '(' Expression ')'					{ $$ = new DoStatement($2, $5); } // Tri
+		: DO Statement WHILE '(' Expression ')'	';'				{ $$ = new DoStatement($2, $5); } // Tri
 		;
 		 
 ExpressionStatement

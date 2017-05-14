@@ -102,6 +102,14 @@ namespace IFN660_Java_ECMAScript.AST
             rhs.TypeCheck();
             switch (oper)
             {
+                case ">":
+                    if (!lhs.type.isTheSameAs(new NamedType("INT")) || !lhs.type.isTheSameAs(new NamedType("INT")))
+                    {
+                        System.Console.WriteLine("Invalid arguments for more than expression\n");
+                        throw new Exception("TypeCheck error");
+                    }
+                    type = new NamedType("BOOLEAN");
+                    break;
                 case "<":
                     if (!lhs.type.isTheSameAs(new NamedType("INT")) || !lhs.type.isTheSameAs(new NamedType("INT")))
                     {
