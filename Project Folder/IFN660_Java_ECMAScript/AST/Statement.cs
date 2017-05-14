@@ -108,6 +108,56 @@ namespace IFN660_Java_ECMAScript.AST
         }
     }
 
+    public class AssertStatement : Statement
+    {
+        // by Tri
+        private Expression expression1;
+        private Expression expression2;
+
+        public AssertStatement(Expression expression1)
+        {
+            this.expression1 = expression1;
+        }
+
+        public AssertStatement(Expression expression1, Expression expression2)
+        {
+            this.expression1 = expression1;
+            this.expression2 = expression2;
+        }
+
+        public override bool ResolveNames(LexicalScope scope)
+        {
+            var newScope = getNewScope(scope, null);
+            bool value = expression1.ResolveNames(newScope);
+            if (expression2 != null)
+            {
+                return value & expression2.ResolveNames(newScope);
+            }
+            return value;
+        }
+
+        public override void TypeCheck()
+        {
+            this.expression1.TypeCheck();
+
+            if (!expression1.type.isTheSameAs(new NamedType("BOOLEAN")))
+            {
+                System.Console.WriteLine("Type error in AssertStatement\n");
+                throw new Exception("TypeCheck error");
+            }
+
+            if (expression2 != null)
+            {
+                this.expression2.TypeCheck();
+                if (expression2.type.isTheSameAs(new NamedType("VOID")))
+                {
+                    System.Console.WriteLine("Type error in AssertStatement\n");
+                    throw new Exception("TypeCheck error");
+                }
+            }
+        }
+    }
+
     public class LabeledStatement : Statement
     {
       //by Vivian

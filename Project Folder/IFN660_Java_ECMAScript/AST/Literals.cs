@@ -94,5 +94,44 @@ namespace IFN660_Java_ECMAScript.AST
         }
     }
 
+    public class StringLiteralExpression : Expression
+    {
+        private string value;
+        public StringLiteralExpression(string value)
+        {
+            this.value = value;
+        }
+
+        public override bool ResolveNames(LexicalScope scope)
+        {
+            return true;
+        }
+
+        public override void TypeCheck()
+        {
+            type = new NamedType("STRING");
+        }
+    }
+
+    public class NullLiteralExpression : Expression
+    {
+        private readonly string value;
+        public NullLiteralExpression()
+        {
+            this.value = "null";
+        }
+
+        public override bool ResolveNames(LexicalScope scope)
+        {
+            return true;
+        }
+
+        public override void TypeCheck()
+        {
+            type = new NamedType("NULL");
+        }
+
+    }
+
     
 }

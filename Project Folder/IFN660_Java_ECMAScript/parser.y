@@ -47,6 +47,7 @@ public static Statement root;
 %type <stmt> StatementNoShortIf, WhileStatement
 %type <stmt> DoStatement, ThrowStatement, SynchronizedStatement
 %type <stmt> SwitchStatement
+%type <stmt> AssertStatement
 %type <stmt> IfThenStatement, IfThenElseStatement, IfThenElseStatementNoShortIf
 %type <stmt> LabeledStatement, BreakStatement, ContinueStatement, ReturnStatement
 
@@ -414,6 +415,12 @@ StatementWithoutTrailingSubstatement
 		| ThrowStatement										{ $$ = $1;} // KoJo
 		| SynchronizedStatement									{ $$ = $1;} // KoJo
 		| SwitchStatement										{ $$ = $1;} //Tri
+		| AssertStatement										{ $$ = $1;} //Tri
+		;
+
+AssertStatement
+		: ASSERT Expression ';'									{ $$ = new AssertStatement($2);} //Tri
+		| ASSERT Expression ':' Expression ';'					{ $$ = new AssertStatement($2, $4);} //Tri
 		;
 
 SwitchStatement
@@ -587,6 +594,8 @@ Literal
 		| FloatingPointLiteral									{ $$ = new FloatingPointLiteralExpression($1); } // Adon
 		| BooleanLiteral										{ $$ = new BooleanLiteralExpression($1); } // Adon
 		| CharacterLiteral										{ $$ = new CharacterLiteralExpression($1); } // Adon
+		| StringLiteral											{ $$ = new StringLiteralExpression($1); } //Tri
+		| NullLiteral											{ $$ = new NullLiteralExpression(); } //Tri
 		;
 // end of sneha Work
 

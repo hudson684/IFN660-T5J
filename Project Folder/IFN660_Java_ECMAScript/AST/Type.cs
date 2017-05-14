@@ -96,7 +96,7 @@ namespace IFN660_Java_ECMAScript.AST
             NamedType nType = type as NamedType; // try to cast type argument as NamedType
             if (nType != null)
             {
-                if (this.elementType == nType.elementType)
+                if (this.elementType == nType.elementType || this.elementType.Equals("NULL") || nType.elementType.Equals("NULL"))
                 {
                     return true;
                 }
