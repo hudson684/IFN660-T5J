@@ -142,6 +142,28 @@ namespace IFN660_Java_ECMAScript.AST
         }
     }
 
+    public class ReturnStatement : Statement
+    {
+        //by Vivian
+        private Expression Expr;
+
+        public ReturnStatement(Expression Expr)
+        {
+            this.Expr = Expr;
+        }
+        public ReturnStatement()
+        {
+        }
+        public override bool ResolveNames(LexicalScope scope)
+        {
+            return Expr.ResolveNames(scope);
+        }
+        public override void TypeCheck()
+        {
+            Expr.TypeCheck();
+        }
+    }
+
     public class DoStatement : Statement
     {
         // by Tri

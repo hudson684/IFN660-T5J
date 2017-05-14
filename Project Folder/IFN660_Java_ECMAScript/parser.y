@@ -43,7 +43,7 @@ public static Statement root;
 %type <stmt> StatementNoShortIf, WhileStatement
 %type <stmt> DoStatement
 %type <stmt> IfThenStatement, IfThenElseStatement, IfThenElseStatementNoShortIf
-%type <stmt> LabeledStatement, BreakStatement, ContinueStatement
+%type <stmt> LabeledStatement, BreakStatement, ContinueStatement, ReturnStatement
 
 %type <stmts> TypeDeclarations, ClassBody, ClassBodyDeclarations, BlockStatements, BlockStatements_Opt
 %type <stmts> FormalParameters, FormalParameterList, FormalParameterList_Opt 
@@ -63,6 +63,7 @@ public static Statement root;
 %type <strlst> VariableDeclaratorList
 
 %type <name> Identifier_opt
+%type <expr> Expression_opt
 
 // Tokens
 %token <num> NUMBER
@@ -404,6 +405,7 @@ StatementWithoutTrailingSubstatement
 		| BreakStatement										{ $$ = $1;} //Vivian
 		| DoStatement											{ $$ = $1; } //Tri
 		| ContinueStatement										{ $$ = $1;} //Vivian
+		| ReturnStatement										{ $$ = $1;} //Vivian
 		;
 
 DoStatement
@@ -445,15 +447,26 @@ BreakStatement
 		: BREAK Identifier_opt ';'									{ if($2 == null){$$ = new BreakStatement();} else {$$ = new BreakStatement($2);} } //Vivian
 		;
 
-//Add breakstatement-Vivian		
+//Add for breakstatement-Vivian		
 Identifier_opt
 		: IDENTIFIER															
-		|
+		| 
 		;
 
 //Add continuestatement-Vivian
 ContinueStatement
 		: CONTINUE Identifier_opt ';'									{ if($2 == null){$$ = new ContinueStatement();} else {$$ = new ContinueStatement($2);} } //Vivian
+		;
+
+//Add returnstatement-Vivian
+ReturnStatement
+		: RETURN Expression_opt ';'									{ if($2 == null){$$ = new ReturnStatement();} else {$$ = new ReturnStatement($2);} } //Vivian
+		;
+
+//Add for returnstatement-Vivian
+Expression_opt
+		: Expression												{ $$ = $1; }// Vivian			
+		| 
 		;
 
 // End Work by Tristan
