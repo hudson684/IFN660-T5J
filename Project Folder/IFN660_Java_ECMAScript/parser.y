@@ -542,9 +542,9 @@ AdditiveExpression
 
 MultiplicativeExpression
 		: UnaryExpression
-		| MultiplicativeExpression '*' UnaryExpression					{ $$ = new MathematicalExpression($1, "*", $3); }
-		| MultiplicativeExpression '/' UnaryExpression					{ $$ = new MathematicalExpression($1, "/", $3); }
-		| MultiplicativeExpression '%' UnaryExpression					{ $$ = new MathematicalExpression($1, "%", $3); }
+		| MultiplicativeExpression '*' UnaryExpression					{ $$ = new BinaryExpression($1, "*", $3); }
+		| MultiplicativeExpression '/' UnaryExpression					{ $$ = new BinaryExpression($1, "/", $3); }
+		| MultiplicativeExpression '%' UnaryExpression					{ $$ = new BinaryExpression($1, "%", $3); }
 		;
 		
 UnaryExpression

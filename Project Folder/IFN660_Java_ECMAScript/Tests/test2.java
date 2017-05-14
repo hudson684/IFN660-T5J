@@ -2,11 +2,13 @@ public class HelloWorld
 {
     public static void main(String[] args) 
 	{
-		int x;
-		int y;
+		float x;
+		float y;
+		boolean z;
+		z = false;
 		y = 13;
 		x = 42;
-		y = x + y;
+		z = x <= y;
 
     }
 }
