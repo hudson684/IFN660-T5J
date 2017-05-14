@@ -4,8 +4,9 @@ public class HelloWorld
 	{
 		int x;
 		int y;
+		y = 13;
 		x = 42;
-		y = x + 1;
+		y = x + y;
 
     }
 }

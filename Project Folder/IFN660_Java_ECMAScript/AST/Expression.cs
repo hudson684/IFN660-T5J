@@ -125,18 +125,79 @@ namespace IFN660_Java_ECMAScript.AST
                     }
                     else
                     {
-                        System.Console.WriteLine("Invalid arguments for less than expression\n");
+                        System.Console.WriteLine("Invalid arguments for addition expression\n");
                         throw new Exception("TypeCheck error");
                     }
                     break;
-               
+
+                case "-":
+                    if (lhs.type.isTheSameAs(rhs.type) && !lhs.type.isTheSameAs(new NamedType("BOOLEAN")))
+                    {
+                        type = lhs.type;
+                    }
+                    else if (lhs.type.isCompatibleWith(rhs.type))
+                    {
+                        type = lhs.type;
+                    }
+                    else if (rhs.type.isCompatibleWith(lhs.type))
+                    {
+                        type = rhs.type;
+                    }
+                    else
+                    {
+                        System.Console.WriteLine("Invalid arguments for subtraction expression\n");
+                        throw new Exception("TypeCheck error");
+                    }
+                    break;
+
+                case "*":
+                    if (lhs.type.isTheSameAs(rhs.type) && !lhs.type.isTheSameAs(new NamedType("BOOLEAN")))
+                    {
+                        type = lhs.type;
+                    }
+                    else if (lhs.type.isCompatibleWith(rhs.type))
+                    {
+                        type = lhs.type;
+                    }
+                    else if (rhs.type.isCompatibleWith(lhs.type))
+                    {
+                        type = rhs.type;
+                    }
+                    else
+                    {
+                        System.Console.WriteLine("Invalid arguments for multiplication expression\n");
+                        throw new Exception("TypeCheck error");
+                    }
+                    break;
+
+                case "^":
+                    if (lhs.type.isTheSameAs(rhs.type) && !lhs.type.isTheSameAs(new NamedType("BOOLEAN")))
+                    {
+                        type = lhs.type;
+                    }
+                    else if (lhs.type.isCompatibleWith(rhs.type))
+                    {
+                        type = lhs.type;
+                    }
+                    else if (rhs.type.isCompatibleWith(lhs.type))
+                    {
+                        type = rhs.type;
+                    }
+                    else
+                    {
+                        System.Console.WriteLine("Invalid arguments for expression\n");
+                        throw new Exception("TypeCheck error");
+                    }
+                    break;
+
+
                 default:
                     {
                         System.Console.WriteLine("Unexpected binary operator %c \n", oper);
                         throw new Exception("TypeCheck error");
                     }
             }
-		}
+		} 
 	}
 
     public class InstanceOfExpression : Expression
