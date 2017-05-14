@@ -286,8 +286,8 @@ UnannPrimitiveType
 
 
 PrimitiveType
-		:  NumericType  //Annotations infront 
-		|  BOOLEAN      //Annotations infront
+		:  NumericType  //Annotations infront					{ $$ = $1; } // Khoa
+		|  BOOLEAN      //Annotations infront					{ $$ = new NamedType("BOOLEAN"); } // Khoa
 		;
 
 ReferenceType
