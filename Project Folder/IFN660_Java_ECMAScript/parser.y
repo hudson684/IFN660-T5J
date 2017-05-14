@@ -43,6 +43,11 @@ public static Statement root;
 %type <stmt> StatementNoShortIf, IfThenElseStatementNoShortIf
 %type <stmt> IfThenStatement, IfThenElseStatement, WhileStatement 
 %type <stmt> TryStatement, Catches, Catches_opt, CatchClause, Finally
+%type <stmt> PackageDeclaration_opt, Block, MethodBody
+%type <stmt> StatementNoShortIf, WhileStatement
+%type <stmt> DoStatement
+%type <stmt> IfThenStatement, IfThenElseStatement, IfThenElseStatementNoShortIf
+%type <stmt> LabeledStatement, BreakStatement, ContinueStatement, ReturnStatement
 
 %type <stmts> TypeDeclarations, ClassBody, ClassBodyDeclarations, BlockStatements, BlockStatements_Opt
 %type <stmts> FormalParameters, FormalParameterList, FormalParameterList_Opt 
@@ -60,6 +65,9 @@ public static Statement root;
 %type <arrlst> MethodHeader, MethodDeclarator
 
 %type <strlst> VariableDeclaratorList
+
+%type <name> Identifier_opt
+%type <expr> Expression_opt
 
 // Tokens
 %token <num> NUMBER
@@ -383,10 +391,10 @@ VariableDeclaratorId
 // Nathan
 Statement
 		: StatementWithoutTrailingSubstatement					{ $$ = $1; } // Nathan
-		| IfThenStatement										{ $$ = $1; } // Adon
-		| IfThenElseStatement									{ $$ = $1; } // Adon
+		| IfThenStatement										{$$ = $1; } // Adon
+		| IfThenElseStatement									{$$ = $1; } // Adon
 		| WhileStatement										{ $$ = $1; } // Nathan
-		| TryStatement											{ $$ = $1; } // Adon
+		| LabeledStatement										 { $$ = $1;} //Vivian
 		;
 		
 StatementNoShortIf
@@ -398,8 +406,16 @@ StatementNoShortIf
 StatementWithoutTrailingSubstatement
 		: ExpressionStatement 									{ $$ = $1; } // Nathan - done by Khoa
 		| Block													{ $$ = $1; } // Nathan
+		| BreakStatement										{ $$ = $1;} //Vivian
+		| DoStatement											{ $$ = $1; } //Tri
+		| ContinueStatement										{ $$ = $1;} //Vivian
+		| ReturnStatement										{ $$ = $1;} //Vivian
 		;
 
+DoStatement
+		: DO Statement WHILE '(' Expression ')'					{ $$ = new DoStatement($2, $5); } // Tri
+		;
+		 
 ExpressionStatement
 		: StatementExpression ';'								{ $$ = new ExpressionStatement($1); } // Khoa
 		;
@@ -468,6 +484,55 @@ Finally
 //TryWithResourcesStatement
 //		: TRY ResourceSpecification Block Catches_opt Finally_opt
 //		;
+
+IfThenStatement
+		: IF '(' Expression ')' Statement						{ $$ = new IfStatement($3, $5,null); } // Adon
+		//: IF '(' Expression ')' BlockStatements						{ $$ = new IfStatement($3, $5,null); } // Adon
+		;
+
+IfThenElseStatement
+		: IF '(' Expression ')' StatementNoShortIf ELSE Statement				{ $$ = new IfStatement($3, $5, $7); } // Adon
+		;
+
+IfThenElseStatementNoShortIf
+		: IF '(' Expression ')' StatementNoShortIf ELSE StatementNoShortIf		{ $$ = new IfStatement($3, $5, $7); } //Adon
+		;
+
+WhileStatement
+		: WHILE '(' Expression ')' Statement					{ $$ = new WhileStatement($3, $5); } // Nathan
+		;
+
+//Add Labeledstatement-Vivian
+LabeledStatement
+		: IDENTIFIER ':' Statement								{ $$ = new LabeledStatement($1,$3);} //Vivian
+		;
+
+//Add breakstatement-Vivian
+BreakStatement
+		: BREAK Identifier_opt ';'									{ if($2 == null){$$ = new BreakStatement();} else {$$ = new BreakStatement($2);} } //Vivian
+		;
+
+//Add for breakstatement-Vivian		
+Identifier_opt
+		: IDENTIFIER															
+		| 
+		;
+
+//Add continuestatement-Vivian
+ContinueStatement
+		: CONTINUE Identifier_opt ';'									{ if($2 == null){$$ = new ContinueStatement();} else {$$ = new ContinueStatement($2);} } //Vivian
+		;
+
+//Add returnstatement-Vivian
+ReturnStatement
+		: RETURN Expression_opt ';'									{ if($2 == null){$$ = new ReturnStatement();} else {$$ = new ReturnStatement($2);} } //Vivian
+		;
+
+//Add for returnstatement-Vivian
+Expression_opt
+		: Expression												{ $$ = $1; }// Vivian			
+		| 
+		;
 
 // End Work by Tristan
 //work by sneha

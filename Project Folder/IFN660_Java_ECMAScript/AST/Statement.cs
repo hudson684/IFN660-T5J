@@ -77,16 +77,136 @@ namespace IFN660_Java_ECMAScript.AST
 
             Statements.TypeCheck();
         }
-    
-	}
 
-	public class ForStatement : Statement
-	{
-		// by Nathan - still testing
-		private Statement ForInit;
-		private Expression TestExpr;
-		private Statement ForUpdate;
-		private List<Statement> StmtList;
+    }
+
+    public class LabeledStatement : Statement
+    {
+      //by Vivian
+        private string Name;
+        private Statement Statements;
+
+        public LabeledStatement(string Name, Statement Statements)
+        {
+            this.Name = Name;
+            this.Statements = Statements;
+        }
+
+        public override bool ResolveNames(LexicalScope scope)
+        {
+            return Statements.ResolveNames(scope);
+        }
+
+        public override void TypeCheck()
+        {
+            Statements.TypeCheck();
+        }
+    }
+
+
+    public class BreakStatement : Statement
+    {
+        //by Vivian
+        private string Name;
+
+        public BreakStatement(String Name)
+        {
+            this.Name = Name;
+        }
+        public BreakStatement()
+        {
+        }
+        public override bool ResolveNames(LexicalScope scope)
+        {
+            return true;
+        }
+        public override void TypeCheck()
+        {
+        }
+    }
+
+    public class ContinueStatement : Statement
+    {
+        //by Vivian
+        private string Name;
+
+        public ContinueStatement(String Name)
+        {
+            this.Name = Name;
+        }
+        public ContinueStatement()
+        {
+        }
+        public override bool ResolveNames(LexicalScope scope)
+        {
+            return true;
+        }
+        public override void TypeCheck()
+        {
+        }
+    }
+
+    public class ReturnStatement : Statement
+    {
+        //by Vivian
+        private Expression Expr;
+
+        public ReturnStatement(Expression Expr)
+        {
+            this.Expr = Expr;
+        }
+        public ReturnStatement()
+        {
+        }
+        public override bool ResolveNames(LexicalScope scope)
+        {
+            return Expr.ResolveNames(scope);
+        }
+        public override void TypeCheck()
+        {
+            Expr.TypeCheck();
+        }
+    }
+
+    public class DoStatement : Statement
+    {
+        // by Tri
+        private Expression expression;
+        private Statement statement;
+
+        public DoStatement(Statement statement, Expression expression)
+        {
+            this.statement = statement;
+            this.expression = expression;
+        }
+
+        public override bool ResolveNames(LexicalScope scope)
+        {
+            var newScope = getNewScope(scope, null);
+            return expression.ResolveNames(newScope) & statement.ResolveNames(newScope);
+        }
+
+        public override void TypeCheck()
+        {
+            this.expression.TypeCheck();
+
+            if (!expression.type.isTheSameAs(new NamedType("BOOLEAN")))
+            {
+                System.Console.WriteLine("Type error in DoStatement\n");
+                throw new Exception("TypeCheck error");
+            }
+
+            statement.TypeCheck();
+        }
+    }
+
+    public class ForStatement : Statement
+    {
+        // by Nathan - still testing
+        private Statement ForInit;
+        private Expression TestExpr;
+        private Statement ForUpdate;
+        private List<Statement> StmtList;
 
 		public ForStatement(Statement ForInit, Expression TestExpr, Statement ForUpdate, List<Statement> StmtList)
 		{

@@ -1,4 +1,4 @@
-﻿// tests file for while loops
+// tests file for while loops
 public class HelloWorld
 {
 	public void Main (String[] args)
