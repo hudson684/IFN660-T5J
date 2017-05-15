@@ -9,8 +9,8 @@ public static Statement root;
 
 %union
 {
-    public long num;
-	public double floatnum;
+    public ILiteral num;
+	public ILiteral floatnum;
 	public bool boolval;
 	public char charval;
     public string name;
@@ -450,8 +450,8 @@ PrimaryNoNewArray
 		;
 
 Literal
-		: IntegerLiteral										{ $$ = new IntegerLiteralExpression($1); } // Nathan
-		| FloatingPointLiteral									{ $$ = new FloatingPointLiteralExpression($1); } // Adon
+		: IntegerLiteral										{ $$ = (Expression) $1;}//new IntegerLiteralExpression($1); } // Nathan
+		| FloatingPointLiteral									{$$ = (Expression)$1;}//{ $$ = new FloatingPointLiteralExpression($1); } // Adon
 		| BooleanLiteral										{ $$ = new BooleanLiteralExpression($1); } // Adon
 		| CharacterLiteral										{ $$ = new CharacterLiteralExpression($1); } // Adon
 		;
@@ -607,3 +607,4 @@ ConstantExpression
 public Parser(Scanner scanner) : base(scanner)
 {
 }
+

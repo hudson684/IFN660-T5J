@@ -1,5 +1,7 @@
 %namespace IFN660_Java_ECMAScript
 
+%using IFN660_Java_ECMAScript.AST;
+
 %{
 int lines = 0;
 %}
@@ -219,12 +221,14 @@ while										{return (int)Tokens.WHILE;}
 {DecimalFloatingPointLiteral}                   {
                                                     // yylval.name = yytext;
                                                     yylval.floatnum = parseFloat(yytext, 10);
+													//yylval.floatnum = yytext;
                                                     return (int)Tokens.FloatingPointLiteral;
                                                 }
 
 {HexadecimalFloatingPointLiteral}               {
                                                     //yylval.name = yytext;
                                                     yylval.floatnum = parseFloat(yytext, 16);
+													//yylval.floatnum = yytext;
                                                     return (int)Tokens.FloatingPointLiteral;
                                                 }
 
@@ -298,7 +302,7 @@ while										{return (int)Tokens.WHILE;}
 										
 %%
 
-long parseInteger (string inString, int intBase)
+ILiteral parseInteger (string inString, int intBase)
 {	
     int outInt;
     long outLong;
@@ -325,16 +329,16 @@ long parseInteger (string inString, int intBase)
         // This is a bit OTT at the moment. Leave it until we work out exactly what to do with longs
         inString = inString.TrimEnd('L','l');
         outLong = Convert.ToInt64(inString, intBase);
-        return outLong; 
+        return new LongLiteralExpression(outLong); 
     }
     else
     {
         outInt = Convert.ToInt32(inString, intBase);
-        return outInt;
+        return new IntegerLiteralExpression(outInt);
     }
 }
 
-double parseFloat (string inString, int intBase)
+ILiteral parseFloat (string inString, int intBase)
 {	
     float outFloat;
     double outDouble;
@@ -355,7 +359,7 @@ double parseFloat (string inString, int intBase)
 		{
 			outFloat = float.Parse(inString);
 		}
-        return outFloat; 
+        return new FloatingLiteralExpression(outFloat); 
     }
 	// double indicator may not be there but try to remove anyway
 	if(inString.EndsWith("D") || inString.EndsWith("d"))
@@ -368,7 +372,7 @@ double parseFloat (string inString, int intBase)
 	{
 		outDouble = Convert.ToSingle(inString);
 	}
-    return outDouble;
+    return new DoubleLiteralExpression(outDouble);
     
 }
 
@@ -444,7 +448,6 @@ double getHexDecimalPart(string inString)
 
     return outDouble;
 }
-
 public bool IsValidIdentifier (string s)
 {
 	if(s == null || s.Length == 0)

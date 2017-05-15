@@ -10,9 +10,11 @@
 		z = true;
 		float m;
 		// Should cause error cause it is a double not float
-		//m = 0.2;
+		m = 0.2f;
 
-		//m = 0.2;
+		double n;
+		n = 0.2;
+		n= m + 1;
 		int _test;
 		int $test;
 

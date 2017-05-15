@@ -6,10 +6,11 @@ using System.Threading.Tasks;
 
 namespace IFN660_Java_ECMAScript.AST
 {
-    public class IntegerLiteralExpression : Expression
+    public interface ILiteral { }
+    public class IntegerLiteralExpression : Expression, ILiteral
     {
-        private long value;
-        public IntegerLiteralExpression(long value)
+        private int value;
+        public IntegerLiteralExpression(int value)
         {
             this.value = value;
         }
@@ -21,6 +22,23 @@ namespace IFN660_Java_ECMAScript.AST
         public override void TypeCheck()
         {
             type = new NamedType("INT");
+        }
+    }
+    public class LongLiteralExpression : Expression, ILiteral
+    {
+        private long value;
+        public LongLiteralExpression(long value)
+        {
+            this.value = value;
+        }
+
+        public override bool ResolveNames(LexicalScope scope)
+        {
+            return true;
+        }
+        public override void TypeCheck()
+        {
+            type = new NamedType("LONG");
         }
 
     }
@@ -58,10 +76,31 @@ namespace IFN660_Java_ECMAScript.AST
         }
     }
 
-    public class FloatingPointLiteralExpression : Expression
+    public class FloatingLiteralExpression : Expression, ILiteral
+    {
+        private readonly float value;
+        public FloatingLiteralExpression(float value)
+        {
+            this.value = value;
+        }
+
+        public override bool ResolveNames(LexicalScope scope)
+        {
+            return true;
+        }
+        public override void TypeCheck()
+        {
+            // A floating-point literal is of type float if it is suffixed with F or f;
+            // otherwise its type is double
+            // Need more check here
+            type = new NamedType("FLOAT");
+        }
+    }
+
+    public class DoubleLiteralExpression : Expression, ILiteral
     {
         private readonly double value;
-        public FloatingPointLiteralExpression(double value)
+        public DoubleLiteralExpression(double value)
         {
             this.value = value;
         }
