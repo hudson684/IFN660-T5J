@@ -1,10 +1,10 @@
 
 // ==========================================================================
-//  GPPG error listing for yacc source file <parser.y - 14/05/2017 9:29:14 PM>
+//  GPPG error listing for yacc source file <parser.y - 16/05/2017 1:32:44 AM>
 // ==========================================================================
 //  Version:  1.5.2
-//  Machine:  VDI-VL17-045
-//  DateTime: 14/05/2017 9:29:28 PM
+//  Machine:  VDI-VL17-047
+//  DateTime: 16/05/2017 1:32:55 AM
 //  UserName: n9540377
 // ==========================================================================
 
@@ -58,6 +58,7 @@ public static Statement root;
 %type <stmt> StatementNoShortIf, WhileStatement
 %type <stmt> DoStatement, ThrowStatement, SynchronizedStatement
 %type <stmt> SwitchStatement
+%type <stmt> AssertStatement
 %type <stmt> IfThenStatement, IfThenElseStatement, IfThenElseStatementNoShortIf
 %type <stmt> LabeledStatement, BreakStatement, ContinueStatement, ReturnStatement
 
@@ -66,7 +67,7 @@ public static Statement root;
 %type <stmts> ImportDeclarations
 
 %type <type> Result, FloatingPointType, IntegralType, NumericType
-%type <type> UnannType, UnannPrimitiveType, UnannReferenceType, UnannArrayType, UnannTypeVariable, ReferenceType
+%type <type> UnannType, UnannPrimitiveType, UnannReferenceType, UnannArrayType, UnannTypeVariable, ReferenceType, PrimitiveType
 
 %type <modf> ClassModifier, MethodModifier, VariableModifier
 
@@ -126,11 +127,13 @@ public static Statement root;
 %left '+'
 
 %%
-// Warning: NonTerminal symbol "CatchClause" is unreachable
+// Warning: NonTerminal symbol "AdditionalBounds" is unreachable
 // Warning: NonTerminal symbol "Finally" is unreachable
 // Warning: NonTerminal symbol "ConstantExpression" is unreachable
-// Warning: NonTerminal symbol "TryStatement" is unreachable
+// Warning: NonTerminal symbol "AdditionalBound" is unreachable
 // Warning: NonTerminal symbol "Catches" is unreachable
+// Warning: NonTerminal symbol "TryStatement" is unreachable
+// Warning: NonTerminal symbol "CatchClause" is unreachable
 // Warning: NonTerminal symbol "Catches_opt" is unreachable
 // ---------------------------------------------------------------
 
@@ -432,6 +435,12 @@ StatementWithoutTrailingSubstatement
 		| ThrowStatement										{ $$ = $1;} // KoJo
 		| SynchronizedStatement									{ $$ = $1;} // KoJo
 		| SwitchStatement										{ $$ = $1;} //Tri
+		| AssertStatement										{ $$ = $1;} //Tri
+		;
+
+AssertStatement
+		: ASSERT Expression ';'									{ $$ = new AssertStatement($2);} //Tri
+		| ASSERT Expression ':' Expression ';'					{ $$ = new AssertStatement($2, $4);} //Tri
 		;
 
 SwitchStatement
@@ -605,6 +614,8 @@ Literal
 		| FloatingPointLiteral									{ $$ = new FloatingPointLiteralExpression($1); } // Adon
 		| BooleanLiteral										{ $$ = new BooleanLiteralExpression($1); } // Adon
 		| CharacterLiteral										{ $$ = new CharacterLiteralExpression($1); } // Adon
+		| StringLiteral											{ $$ = new StringLiteralExpression($1); } //Tri
+		| NullLiteral											{ $$ = new NullLiteralExpression(); } //Tri
 		;
 // end of sneha Work
 
@@ -686,7 +697,7 @@ AdditiveExpression
 		;
 
 MultiplicativeExpression
-		: UnaryExpression
+		: UnaryExpression												{ $$ = $1; } //Khoa
 		| MultiplicativeExpression '*' UnaryExpression					{ $$ = new BinaryExpression($1, "*", $3); }
 		| MultiplicativeExpression '/' UnaryExpression					{ $$ = new BinaryExpression($1, "/", $3); }
 		| MultiplicativeExpression '%' UnaryExpression					{ $$ = new BinaryExpression($1, "%", $3); }
@@ -735,9 +746,9 @@ PostDecrementExpression
 		;
 
 CastExpression
-		: '(' PrimitiveType ')' UnaryExpression
-		| '(' ReferenceType AdditionalBounds ')' UnaryExpressionNotPlusMinus
-		| '(' ReferenceType AdditionalBounds ')' LambdaExpression
+		: '(' PrimitiveType ')' UnaryExpression										{ $$ = new CastExpression($2, $4); } //Khoa
+		//| '(' ReferenceType AdditionalBounds ')' UnaryExpressionNotPlusMinus
+		//| '(' ReferenceType AdditionalBounds ')' LambdaExpression
 		;
 
 AdditionalBounds

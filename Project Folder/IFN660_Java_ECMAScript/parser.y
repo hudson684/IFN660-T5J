@@ -56,7 +56,7 @@ public static Statement root;
 %type <stmts> ImportDeclarations
 
 %type <type> Result, FloatingPointType, IntegralType, NumericType
-%type <type> UnannType, UnannPrimitiveType, UnannReferenceType, UnannArrayType, UnannTypeVariable, ReferenceType
+%type <type> UnannType, UnannPrimitiveType, UnannReferenceType, UnannArrayType, UnannTypeVariable, ReferenceType, PrimitiveType
 
 %type <modf> ClassModifier, MethodModifier, VariableModifier
 
@@ -677,7 +677,7 @@ AdditiveExpression
 		;
 
 MultiplicativeExpression
-		: UnaryExpression
+		: UnaryExpression												{ $$ = $1; } //Khoa
 		| MultiplicativeExpression '*' UnaryExpression					{ $$ = new BinaryExpression($1, "*", $3); }
 		| MultiplicativeExpression '/' UnaryExpression					{ $$ = new BinaryExpression($1, "/", $3); }
 		| MultiplicativeExpression '%' UnaryExpression					{ $$ = new BinaryExpression($1, "%", $3); }
@@ -726,9 +726,9 @@ PostDecrementExpression
 		;
 
 CastExpression
-		: '(' PrimitiveType ')' UnaryExpression
-		| '(' ReferenceType AdditionalBounds ')' UnaryExpressionNotPlusMinus
-		| '(' ReferenceType AdditionalBounds ')' LambdaExpression
+		: '(' PrimitiveType ')' UnaryExpression										{ $$ = new CastExpression($2, $4); } //Khoa
+		//| '(' ReferenceType AdditionalBounds ')' UnaryExpressionNotPlusMinus
+		//| '(' ReferenceType AdditionalBounds ')' LambdaExpression
 		;
 
 AdditionalBounds

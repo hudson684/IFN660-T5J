@@ -215,6 +215,48 @@ namespace IFN660_Java_ECMAScript.AST
             
         }
     }
+    public class CastExpression : Expression
+    {
+        private Type PrimitiveType;
+        private Expression UnaryExpression;
+        public CastExpression(Type PrimitiveType, Expression UnaryExpression)
+        {
+            this.PrimitiveType = PrimitiveType;
+            this.UnaryExpression = UnaryExpression;
+        }
+
+        public override bool ResolveNames(LexicalScope scope)
+        {
+            return UnaryExpression.ResolveNames(scope);
+        }
+        public override void TypeCheck()
+        {
+            try
+            {
+                if (PrimitiveType != null & UnaryExpression != null)
+                {
+                    PrimitiveType.TypeCheck();
+                    UnaryExpression.TypeCheck();
+                    // Set type to Primitivetype
+                    // We're assuming everything is Int in this compiler
+                    // Therefore there's no need to check if an Expression is FP-strict or not at this point
+                    // If both are not null. Set type to PrimitiveType
+                    type = PrimitiveType;
+                }
+            }
+            catch
+            {
+                if (PrimitiveType == null)
+                {
+                    throw new Exception("Missing PrimitiveType!");
+                }
+                else
+                {
+                    throw new Exception("Missing Expression!");
+                }
+            }
+        }
+    }
 }
 
 	

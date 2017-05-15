@@ -424,7 +424,7 @@ namespace IFN660_Java_ECMAScript.AST
             }
             catch (Exception e)
             {
-                throw new Exception("No Expression was entered");
+                throw new NullReferenceException("No Expression was entered");
             }
         }
     }
