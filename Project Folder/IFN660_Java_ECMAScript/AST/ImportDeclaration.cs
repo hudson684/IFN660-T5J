@@ -21,4 +21,27 @@ namespace IFN660_Java_ECMAScript.AST
 		}
 
 	}
+
+    public class SingleTypeImportDeclaration : ImportDeclaration
+    {
+        //by Vivian
+        private string TypeName;
+
+        public SingleTypeImportDeclaration(string TypeName)
+        {
+            this.TypeName = TypeName;
+        }
+
+        public override bool ResolveNames(LexicalScope scope)
+        {
+            return true;
+        }
+
+        public override void TypeCheck()
+        {
+
+        }
+    }
+
+
 }

@@ -8,7 +8,8 @@ namespace IFN660_Java_ECMAScript
 {
     public interface Declaration
     {
-		AST.Type ObtainType();
+	    AST.Type ObtainType();
         void AddItemsToSymbolTable(LexicalScope scope);
     }
+
 }
