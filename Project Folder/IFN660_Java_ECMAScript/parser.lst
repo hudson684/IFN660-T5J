@@ -1,10 +1,10 @@
 
 // ==========================================================================
-//  GPPG error listing for yacc source file <parser.y - 16/05/2017 6:32:15 PM>
+//  GPPG error listing for yacc source file <parser.y - 16/05/2017 6:53:00 PM>
 // ==========================================================================
 //  Version:  1.5.2
 //  Machine:  VDI-VL17-059
-//  DateTime: 16/05/2017 6:32:24 PM
+//  DateTime: 16/05/2017 6:54:25 PM
 //  UserName: n9004548
 // ==========================================================================
 
@@ -61,7 +61,7 @@ public static Statement root;
 %type <stmt> AssertStatement
 %type <stmt> IfThenStatement, IfThenElseStatement, IfThenElseStatementNoShortIf
 %type <stmt> LabeledStatement, BreakStatement, ContinueStatement, ReturnStatement
-%type <stmt> ImportDeclaration, SingleTypeImportDeclaration
+%type <stmt> ImportDeclaration, SingleTypeImportDeclaration, TypeImportOnDemandDeclaration
 
 %type <stmts> TypeDeclarations, ClassBody, ClassBodyDeclarations, BlockStatements, BlockStatements_Opt
 %type <stmts> FormalParameters, FormalParameterList, FormalParameterList_Opt 
@@ -164,10 +164,15 @@ ImportDeclarations
 
 ImportDeclaration
 		: SingleTypeImportDeclaration									{ $$ = $1;} //Vivian
+		| TypeImportOnDemandDeclaration									{ $$ = $1;} //Vivian
 		;
 
 SingleTypeImportDeclaration
 		: IMPORT TypeName ';'											{ $$ = new SingleTypeImportDeclaration($2); } //Vivian
+		;
+
+TypeImportOnDemandDeclaration
+		: IMPORT PackageOrTypeName '.' '*' ';'   						{ $$ = new TypeImportOnDemandDeclaration($2); } //Vivian
 		;
 
 TypeName

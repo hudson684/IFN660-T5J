@@ -43,5 +43,25 @@ namespace IFN660_Java_ECMAScript.AST
         }
     }
 
+    public class TypeImportOnDemandDeclaration : ImportDeclaration
+    {
+        //by Vivian
+        private string Name;
+
+        public TypeImportOnDemandDeclaration(string Name)
+        {
+            this.Name = Name;
+        }
+
+        public override bool ResolveNames(LexicalScope scope)
+        {
+            return true;
+        }
+
+        public override void TypeCheck()
+        {
+
+        }
+    }
 
 }
