@@ -105,36 +105,10 @@ namespace IFN660_Java_ECMAScript.AST
 
                 //relational expressions
                 case "<":
-                    if (!lhs.type.isTheSameAs(rhs.type) && !lhs.type.isTheSameAs(new NamedType("BOOLEAN")))
-                    {
-                        System.Console.WriteLine("Invalid arguments for less than expression\n");
-                        return;
-                        //throw new Exception("TypeCheck error");
-                    }
-                    type = new NamedType("BOOLEAN");
-                    break;
                 case ">":
-                    if (!lhs.type.isTheSameAs(rhs.type) && !lhs.type.isTheSameAs(new NamedType("BOOLEAN")))
-                    {
-                        System.Console.WriteLine("Invalid arguments for less than expression\n");
-                        return;
-                        //throw new Exception("TypeCheck error");
-                    }
-                    type = new NamedType("BOOLEAN");
-                    break;
-
                 case "<=":
-                    if (!lhs.type.isTheSameAs(rhs.type) && !lhs.type.isTheSameAs(new NamedType("BOOLEAN")))
-                    {
-                        System.Console.WriteLine("Invalid arguments for less than expression\n");
-                        return;
-                        //throw new Exception("TypeCheck error");
-                    }
-                    type = new NamedType("BOOLEAN");
-                    break;
-
                 case ">=":
-                    if (!lhs.type.isTheSameAs(new NamedType("INT")) && !lhs.type.isTheSameAs(new NamedType("BOOLEAN")))
+                    if (!lhs.type.isTheSameAs(rhs.type) && !lhs.type.isTheSameAs(new NamedType("BOOLEAN")))
                     {
                         System.Console.WriteLine("Invalid arguments for less than expression\n");
                         return;
@@ -146,106 +120,15 @@ namespace IFN660_Java_ECMAScript.AST
             //Mathematical expressions
 
                 case "+":
-                    if (lhs.type.isTheSameAs(rhs.type) && !lhs.type.isTheSameAs(new NamedType("BOOLEAN")))
-                    {
-                        type = lhs.type;
-                    }
-                    else if (lhs.type.isCompatibleWith(rhs.type))
-                    {
-                        type = lhs.type;
-                    }
-                    else if (rhs.type.isCompatibleWith(lhs.type))
-                    {
-                        type = rhs.type;
-                    }
-                    else
-                    {
-                        System.Console.WriteLine("Invalid arguments for addition expression\n");
-                        throw new Exception("TypeCheck error");
-                    }
-                    break;
 
                 case "-":
-                    if (lhs.type.isTheSameAs(rhs.type) && !lhs.type.isTheSameAs(new NamedType("BOOLEAN")))
-                    {
-                        type = lhs.type;
-                    }
-                    else if (lhs.type.isCompatibleWith(rhs.type))
-                    {
-                        type = lhs.type;
-                    }
-                    else if (rhs.type.isCompatibleWith(lhs.type))
-                    {
-                        type = rhs.type;
-                    }
-                    else
-                    {
-                        System.Console.WriteLine("Invalid arguments for subtraction expression\n");
-                        throw new Exception("TypeCheck error");
-                    }
-                    break;
 
                 case "*":
-                    if (lhs.type.isTheSameAs(rhs.type) && !lhs.type.isTheSameAs(new NamedType("BOOLEAN")))
-                    {
-                        type = lhs.type;
-                    }
-                    else if (lhs.type.isCompatibleWith(rhs.type))
-                    {
-                        type = lhs.type;
-                    }
-                    else if (rhs.type.isCompatibleWith(lhs.type))
-                    {
-                        type = rhs.type;
-                    }
-                    else
-                    {
-                        System.Console.WriteLine("Invalid arguments for multiplication expression\n");
-                        throw new Exception("TypeCheck error");
-                    }
-                    break;
 
                 case "/":
-                    if (lhs.type.isTheSameAs(rhs.type) && !lhs.type.isTheSameAs(new NamedType("BOOLEAN")))
-                    {
-                        type = lhs.type;
-                    }
-                    else if (lhs.type.isCompatibleWith(rhs.type))
-                    {
-                        type = lhs.type;
-                    }
-                    else if (rhs.type.isCompatibleWith(lhs.type))
-                    {
-                        type = rhs.type;
-                    }
-                    else
-                    {
-                        System.Console.WriteLine("Invalid arguments for multiplication expression\n");
-                        throw new Exception("TypeCheck error");
-                    }
-                    break;
 
                 case "%":
-                    if (lhs.type.isTheSameAs(rhs.type) && !lhs.type.isTheSameAs(new NamedType("BOOLEAN")))
-                    {
-                        type = lhs.type;
-                    }
-                    else if (lhs.type.isCompatibleWith(rhs.type))
-                    {
-                        type = lhs.type;
-                    }
-                    else if (rhs.type.isCompatibleWith(lhs.type))
-                    {
-                        type = rhs.type;
-                    }
-                    else
-                    {
-                        System.Console.WriteLine("Invalid arguments for expression\n");
-                        throw new Exception("TypeCheck error");
-                    }
-                    break;
                 
-
                 case "^":
                     if (lhs.type.isTheSameAs(rhs.type) && !lhs.type.isTheSameAs(new NamedType("BOOLEAN")))
                     {
@@ -293,6 +176,7 @@ namespace IFN660_Java_ECMAScript.AST
 
         public override void TypeCheck()
         {
+
             
         }
     }
@@ -341,7 +225,6 @@ namespace IFN660_Java_ECMAScript.AST
         }
         public override void TypeCheck()
         {
-
             
         }
     }

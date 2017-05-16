@@ -3,12 +3,12 @@ public class HelloWorld
     public static void main(String[] args) 
 	{
 		float x;
-		float y;
-		boolean z;
-		z = false;
+		int y;
+		double z;
+		//z = false;
 		y = 13;
-		x = 42;
-		z = x <= y;
+	x = 42.023;
+		z = x + y;
 
     }
 }
