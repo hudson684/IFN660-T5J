@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,6 +11,12 @@ namespace IFN660_Java_ECMAScript.AST
 	public abstract class Expression : Node
 	{
 		public Type type;
+        //public virtual void GenCode(StreamWriter sb) { }
+        public virtual void GenStoreCode(StringBuilder sb, string ex)
+        {
+            throw new Exception ( "Invalid " + ex );
+        }
+
 	};
 
 	public class AssignmentExpression : Expression
@@ -44,7 +51,14 @@ namespace IFN660_Java_ECMAScript.AST
             // set type to the lhs type
             type = lhs.type;
 		}
-	}
+
+        public override void GenCode(StringBuilder sb)
+        {
+            rhs.GenCode(sb);
+            lhs.GenStoreCode(sb,"assignment");
+            lhs.GenCode(sb);
+        }
+    }
 
 	public class VariableExpression : Expression
 	{
@@ -78,7 +92,11 @@ namespace IFN660_Java_ECMAScript.AST
 			
 		}
 
-	}
+        public override void GenCode(StringBuilder sb)
+        {
+            emit(sb, "ldloc {0}", declarationRef.GetNumber());
+        }
+    }
 
 	//changed made by Josh so that the assignmentStatement is correct
 	public class BinaryExpression : Expression
@@ -150,7 +168,26 @@ namespace IFN660_Java_ECMAScript.AST
                     }
             }
 		}
-	}
+
+        public override void GenCode(StringBuilder sb)
+        {
+            lhs.GenCode(sb);
+            rhs.GenCode(sb);
+            switch (oper)
+            {
+                case "<":
+                    emit(sb, "clt");
+                    break;
+
+                case "+":
+                    emit(sb, "add");
+                    break;
+                default:
+                    Console.WriteLine("Unexpected binary operator {0}\n", oper);
+                    break;
+            }
+        }
+    }
 
     public class InstanceOfExpression : Expression
     {
@@ -170,6 +207,10 @@ namespace IFN660_Java_ECMAScript.AST
         public override void TypeCheck()
         {
             
+        }
+        public override void GenCode(StringBuilder sb)
+        {
+
         }
     }
 
@@ -193,6 +234,10 @@ namespace IFN660_Java_ECMAScript.AST
         {
             
         }
+        public override void GenCode(StringBuilder sb)
+        {
+
+        }
     }
 
     public class PostUnaryExpression : Expression
@@ -213,6 +258,10 @@ namespace IFN660_Java_ECMAScript.AST
         public override void TypeCheck()
         {
             
+        }
+        public override void GenCode(StringBuilder sb)
+        {
+
         }
     }
     public class CastExpression : Expression
@@ -255,6 +304,10 @@ namespace IFN660_Java_ECMAScript.AST
                     throw new Exception("Missing Expression!");
                 }
             }
+        }
+        public override void GenCode(StringBuilder sb)
+        {
+
         }
     }
 }

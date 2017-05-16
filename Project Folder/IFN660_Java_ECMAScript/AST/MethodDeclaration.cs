@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Text;
 
 namespace IFN660_Java_ECMAScript.AST
 {
@@ -44,6 +46,10 @@ namespace IFN660_Java_ECMAScript.AST
 			return loopResolve;
 		}
 
+        public int GetNumber()
+        {
+            return 0;
+        }
 		public override void TypeCheck()
 		{
             returnType.TypeCheck();
@@ -56,5 +62,18 @@ namespace IFN660_Java_ECMAScript.AST
             return returnType;
         }
 
-	}
+        public override void GenCode(StringBuilder sb)
+        {
+            emit(sb, ".method ");
+            foreach (var modif in methodModifiers)
+                emit(sb, "{0} ", modif);
+            returnType.GenCode(sb);
+            emit(sb, "{0}", methodIdentifier);
+            emit(sb, "( ");
+            statementList.GenCode(sb);
+            emit(sb, "{{");
+            emit(sb, "}} {0}",Environment.NewLine);
+        }
+
+    }
 }

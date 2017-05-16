@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -40,7 +41,7 @@ namespace IFN660_Java_ECMAScript.AST
 
         public abstract bool isTheSameAs(Type type);
         public abstract bool isCompatibleWith(Type type);
-
+        public abstract string GetILName();
         
 
         /*
@@ -90,7 +91,6 @@ namespace IFN660_Java_ECMAScript.AST
 		{
            
 		}
-
         public override bool isTheSameAs(Type type)
         {
             NamedType nType = type as NamedType; // try to cast type argument as NamedType
@@ -162,6 +162,16 @@ namespace IFN660_Java_ECMAScript.AST
             return compatible;
         }
 
+        public override string GetILName()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override void GenCode(StringBuilder sb)
+        {
+            emit(sb, "{0} ", elementType);
+        }
+
     }
 
     public class ArrayType : Type
@@ -200,25 +210,53 @@ namespace IFN660_Java_ECMAScript.AST
         {
             return true;
         }
+
+        public override string GetILName()
+        {
+            throw new NotImplementedException();
+        }
+        public override void GenCode(StringBuilder sb)
+        {
+
+        }
     }
 
-        /*
-     * public class IntType : Type
+       
+    public class IntType : Type
 	{
         public override bool ResolveNames(LexicalScope scope)
 		{
-            
-
 			return true;
 		}
-		public override void TypeCheck()
+
+        public override bool isTheSameAs(Type type)
+        {
+            return true;
+
+        }
+
+        public override bool isCompatibleWith(Type type)
+        {
+            return true;
+        }
+
+        public override void TypeCheck()
 		{
 			
 		}
 
-	}
+        public override string GetILName()
+        {
+            return "int32";
+        }
 
-	public class BoolType : Type
+        public override void GenCode(StringBuilder sb)
+        {
+
+        }
+    }
+
+	/*public class BoolType : Type
 	{
 
 		public override bool ResolveNames(LexicalScope scope)

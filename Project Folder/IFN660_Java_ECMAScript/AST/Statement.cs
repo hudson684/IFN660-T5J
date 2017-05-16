@@ -1,12 +1,17 @@
 using System.Collections.Generic;
 using System;
+using System.Text;
+using System.IO;
 
 namespace IFN660_Java_ECMAScript.AST
 {
 
 	public abstract class Statement : Node
 	{
-	};
+        public static int LastLabel;
+        public static int LastLocal;
+        //public virtual void GenCode(StreamWriter sb) { }
+    };
 
 	public class IfStatement : Statement
 	{
@@ -43,6 +48,15 @@ namespace IFN660_Java_ECMAScript.AST
             if (Else != null)
                 Else.TypeCheck();
 		}
+
+        public override void GenCode(StringBuilder sb)
+        {
+            int elseLabel = LastLabel++;
+            emit(sb, "brfalse L{0}", elseLabel);
+            Then.GenCode(sb);
+            emit(sb, "L{0}", elseLabel);
+            Else.GenCode(sb);
+        }
 	}
 
 	public class WhileStatement : Statement
@@ -77,6 +91,10 @@ namespace IFN660_Java_ECMAScript.AST
 
             Statements.TypeCheck();
         }
+        public override void GenCode(StringBuilder sb)
+        {
+           
+        }
 
     }
 
@@ -105,6 +123,10 @@ namespace IFN660_Java_ECMAScript.AST
                 System.Console.WriteLine("Type error in SwitchStatement\n");
                 throw new Exception("TypeCheck error");
             }
+        }
+        public override void GenCode(StringBuilder sb)
+        {
+
         }
     }
 
@@ -156,6 +178,10 @@ namespace IFN660_Java_ECMAScript.AST
                 }
             }
         }
+        public override void GenCode(StringBuilder sb)
+        {
+
+        }
     }
 
     public class LabeledStatement : Statement
@@ -179,6 +205,10 @@ namespace IFN660_Java_ECMAScript.AST
         {
             Statements.TypeCheck();
         }
+        public override void GenCode(StringBuilder sb)
+        {
+
+        }
     }
 
 
@@ -201,6 +231,10 @@ namespace IFN660_Java_ECMAScript.AST
         public override void TypeCheck()
         {
         }
+        public override void GenCode(StringBuilder sb)
+        {
+
+        }
     }
 
     public class ContinueStatement : Statement
@@ -221,6 +255,10 @@ namespace IFN660_Java_ECMAScript.AST
         }
         public override void TypeCheck()
         {
+        }
+        public override void GenCode(StringBuilder sb)
+        {
+
         }
     }
 
@@ -243,6 +281,10 @@ namespace IFN660_Java_ECMAScript.AST
         public override void TypeCheck()
         {
             Expr.TypeCheck();
+        }
+        public override void GenCode(StringBuilder sb)
+        {
+
         }
     }
 
@@ -276,6 +318,10 @@ namespace IFN660_Java_ECMAScript.AST
 
             statement.TypeCheck();
         }
+        public override void GenCode(StringBuilder sb)
+        {
+
+        }
     }
 
     public class ForStatement : Statement
@@ -293,8 +339,12 @@ namespace IFN660_Java_ECMAScript.AST
 			this.ForUpdate = ForUpdate;
 			this.StmtList = StmtList;
 		}
+        public override void GenCode(StringBuilder sb)
+        {
 
-		public override bool ResolveNames(LexicalScope scope)
+        }
+
+        public override bool ResolveNames(LexicalScope scope)
 		{
 			bool loopResolve = true;
 
@@ -357,6 +407,10 @@ namespace IFN660_Java_ECMAScript.AST
             if (finallyStatements != null)
                 finallyStatements.TypeCheck();
         }
+        public override void GenCode(StringBuilder sb)
+        {
+
+        }
 
     }
     public class ThrowStatement : Statement              //KoJo
@@ -390,6 +444,10 @@ namespace IFN660_Java_ECMAScript.AST
             {
                 throw new Exception("No Expression was entered");
             }
+        }
+        public override void GenCode(StringBuilder sb)
+        {
+
         }
     }
 
@@ -427,6 +485,10 @@ namespace IFN660_Java_ECMAScript.AST
                 throw new NullReferenceException("No Expression was entered");
             }
         }
+        public override void GenCode(StringBuilder sb)
+        {
+
+        }
     }
 
     public class ExpressionStatement : Statement
@@ -458,19 +520,30 @@ namespace IFN660_Java_ECMAScript.AST
             }*/
         }
 
-	}
+        public override void GenCode(StringBuilder sb)
+        {
+            expr.GenCode(sb);
+            emit(sb, "pop");
+        }
+
+    }
 
 
 	public class VariableDeclaration : Statement, Declaration
 	{
 		private Type type;
 		private string name;
+        int num;
 		public VariableDeclaration(Type type, string name)
 		{
 			this.type = type;
 			this.name = name;
-		}
+            num = LastLocal++;
+        }
 
+        
+        string GetName(){ return name; }
+        public int GetNumber() { return num; }
         public void AddItemsToSymbolTable(LexicalScope scope)
         {
             scope.Symbol_table.Add(name, this);
@@ -489,7 +562,13 @@ namespace IFN660_Java_ECMAScript.AST
         {
             return type;
         }
-	}
+
+        public override void GenCode(StringBuilder sb)
+        {
+            Console.WriteLine("Inside here");
+            emit(sb, ".local init ([{0}] {1} {2})", num, type.GetILName(), name.ToString());
+        }
+    }
 
 	public class VariableDeclarationList : Statement, Declaration
 	{
@@ -502,7 +581,10 @@ namespace IFN660_Java_ECMAScript.AST
 			this.names = names;
 		}
 
-
+        //
+        public int GetNumber() {
+            return 0;
+        }
         public void AddItemsToSymbolTable(LexicalScope scope)
         {
             foreach (string each in names)
@@ -516,12 +598,15 @@ namespace IFN660_Java_ECMAScript.AST
 
 		public override void TypeCheck()
 		{
-			
 		}
 
         public Type ObtainType()
         {
             return type;
         }
-	}
+        public override void GenCode(StringBuilder sb)
+        {
+
+        }
+    }
 }

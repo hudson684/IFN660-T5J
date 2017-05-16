@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -21,6 +22,11 @@ namespace IFN660_Java_ECMAScript.AST
         public override void TypeCheck()
         {
             type = new NamedType("INT");
+        }
+
+        public override void GenCode(StringBuilder sb)
+        {
+
         }
 
     }
@@ -56,6 +62,11 @@ namespace IFN660_Java_ECMAScript.AST
         {
             return value ? 1 : 0;
         }
+
+        public override void GenCode(StringBuilder sb)
+        {
+
+        }
     }
 
     public class FloatingPointLiteralExpression : Expression
@@ -73,6 +84,11 @@ namespace IFN660_Java_ECMAScript.AST
         public override void TypeCheck()
         {
             type = new NamedType("FLOAT");
+        }
+
+        public override void GenCode(StringBuilder sb)
+        {
+
         }
     }
 
@@ -92,6 +108,11 @@ namespace IFN660_Java_ECMAScript.AST
         {
             type = new NamedType("CHAR");
         }
+
+        public override void GenCode(StringBuilder sb)
+        {
+
+        }
     }
 
     public class StringLiteralExpression : Expression
@@ -110,6 +131,10 @@ namespace IFN660_Java_ECMAScript.AST
         public override void TypeCheck()
         {
             type = new NamedType("STRING");
+        }
+        public override void GenCode(StringBuilder sb)
+        {
+
         }
     }
 
@@ -131,6 +156,10 @@ namespace IFN660_Java_ECMAScript.AST
             type = new NamedType("NULL");
         }
 
+        public override void GenCode(StringBuilder sb)
+        {
+
+        }
     }
 
     

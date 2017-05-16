@@ -6,9 +6,5 @@
 		int y;
 		x = 42;
 		y = x + 1;
-		boolean z;
-		z = true;
-		float m;
-		m = 0.2;
 	}
 }
