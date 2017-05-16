@@ -229,7 +229,11 @@ while										{return (int)Tokens.WHILE;}
                                                 }
 
 /* 3.10.3 Boolean Literal - Vivan*/
+<<<<<<< HEAD
 {BooleanLiteral}							{return (int)Tokens.BooleanLiteral;}
+=======
+{BooleanLiteral}							{yylval.boolval = bool.Parse(yytext); return (int)Tokens.BooleanLiteral;}
+>>>>>>> master
 
 /* 3.10.4 Character Literal - Tri*/
 {CharacterLiteral}							{yylval.name = yytext; return (int)Tokens.CharacterLiteral;}

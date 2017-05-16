@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace IFN660_Java_ECMAScript.AST
+<<<<<<< HEAD
 {
     public class  PackageDeclarationStatement : Statement
     {
@@ -13,4 +14,19 @@ namespace IFN660_Java_ECMAScript.AST
             return true;
         }
     }
+=======
+{
+	public class PackageDeclarationStatement : Statement
+	{
+		public override bool ResolveNames(LexicalScope scope)
+		{
+			return true;
+		}
+		public override void TypeCheck()
+		{
+			
+		}
+
+	}
+>>>>>>> master
 }

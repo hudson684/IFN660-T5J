@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace IFN660_Java_ECMAScript.AST
 {
+<<<<<<< HEAD
     public class ImportDeclaration : Statement
     {
         public ImportDeclaration()
@@ -16,4 +17,21 @@ namespace IFN660_Java_ECMAScript.AST
             return true;
         }
     }
+=======
+	public class ImportDeclaration : Statement
+	{
+		public ImportDeclaration()
+		{ }
+
+		public override bool ResolveNames(LexicalScope scope)
+		{
+			return true;
+		}
+		public override void TypeCheck()
+		{
+			
+		}
+
+	}
+>>>>>>> master
 }

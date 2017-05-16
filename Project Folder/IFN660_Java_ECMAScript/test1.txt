@@ -1,8 +1,36 @@
+<<<<<<< HEAD
 ﻿public class HelloWorld
+=======
+public class HelloWorld
+>>>>>>> master
 {
 	public void Main (String[] args)
 	{
 		int x;
+<<<<<<< HEAD
 		x=42;
+=======
+		float y;
+		boolean z;
+		char m;
+		long n;
+		double o;
+		x=4_2;
+		x = x * 1;
+
+		if ( x == 1) x = 2;
+
+		if ( x == 1)
+		    x = 2;
+		else
+			x = 3;
+
+		if ( x == 1)
+		    x = 2;
+		else if ( x == 2)
+			x = 3;
+		else if (x == 3)
+		    x = x - 2;
+>>>>>>> master
 	}
 }
