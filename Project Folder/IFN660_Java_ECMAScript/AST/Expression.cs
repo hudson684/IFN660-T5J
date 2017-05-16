@@ -108,6 +108,8 @@ namespace IFN660_Java_ECMAScript.AST
                 case ">":
                 case "<=":
                 case ">=":
+                case "==":
+                case "!=":
                     if (!lhs.type.isTheSameAs(rhs.type) && !lhs.type.isTheSameAs(new NamedType("BOOLEAN")))
                     {
                         System.Console.WriteLine("Invalid arguments for less than expression\n");
@@ -225,6 +227,31 @@ namespace IFN660_Java_ECMAScript.AST
         }
         public override void TypeCheck()
         {
+            expression.TypeCheck();
+            switch (oper)
+            {
+                case "++":
+                case "--":
+                case "~":
+                case "!":
+                case "+":
+                case "-":
+                    if(!expression.type.isTheSameAs(new NamedType("BOOLEAN")))
+                    {
+                        type = expression.type;
+                    }
+                    else
+                    {
+                        System.Console.WriteLine("Invalid arguments for expression\n");
+                        throw new Exception("TypeCheck error");
+                    }
+                    break;
+                default:
+                    {
+                        System.Console.WriteLine("Unexpected uniary operator %c \n", oper);
+                        throw new Exception("TypeCheck error");
+                    }
+            }
             
         }
     }

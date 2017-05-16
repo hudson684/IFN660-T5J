@@ -541,7 +541,7 @@ AdditiveExpression
 		;
 
 MultiplicativeExpression
-		: UnaryExpression
+		: UnaryExpression												{$$ = $1;}
 		| MultiplicativeExpression '*' UnaryExpression					{ $$ = new BinaryExpression($1, "*", $3); }
 		| MultiplicativeExpression '/' UnaryExpression					{ $$ = new BinaryExpression($1, "/", $3); }
 		| MultiplicativeExpression '%' UnaryExpression					{ $$ = new BinaryExpression($1, "%", $3); }
