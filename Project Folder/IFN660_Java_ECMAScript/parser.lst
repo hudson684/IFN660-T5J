@@ -1,11 +1,11 @@
 
 // ==========================================================================
-//  GPPG error listing for yacc source file <parser.y - 16/05/2017 1:32:44 AM>
+//  GPPG error listing for yacc source file <parser.y - 5/16/2017 18:18:41>
 // ==========================================================================
 //  Version:  1.5.2
-//  Machine:  VDI-VL17-047
-//  DateTime: 16/05/2017 1:32:55 AM
-//  UserName: n9540377
+//  Machine:  AIR
+//  DateTime: 5/16/2017 18:33:20
+//  UserName: Air
 // ==========================================================================
 
 
@@ -127,14 +127,9 @@ public static Statement root;
 %left '+'
 
 %%
-// Warning: NonTerminal symbol "AdditionalBounds" is unreachable
-// Warning: NonTerminal symbol "Finally" is unreachable
 // Warning: NonTerminal symbol "ConstantExpression" is unreachable
 // Warning: NonTerminal symbol "AdditionalBound" is unreachable
-// Warning: NonTerminal symbol "Catches" is unreachable
-// Warning: NonTerminal symbol "TryStatement" is unreachable
-// Warning: NonTerminal symbol "CatchClause" is unreachable
-// Warning: NonTerminal symbol "Catches_opt" is unreachable
+// Warning: NonTerminal symbol "AdditionalBounds" is unreachable
 // ---------------------------------------------------------------
 
 Program : CompilationUnit										{root = $1;}
@@ -436,6 +431,7 @@ StatementWithoutTrailingSubstatement
 		| SynchronizedStatement									{ $$ = $1;} // KoJo
 		| SwitchStatement										{ $$ = $1;} //Tri
 		| AssertStatement										{ $$ = $1;} //Tri
+		| TryStatement											{ $$ = $1;} //Adon
 		;
 
 AssertStatement
