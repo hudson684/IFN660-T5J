@@ -50,7 +50,7 @@ public static Statement root;
 %type <stmt> AssertStatement
 %type <stmt> IfThenStatement, IfThenElseStatement, IfThenElseStatementNoShortIf
 %type <stmt> LabeledStatement, BreakStatement, ContinueStatement, ReturnStatement
-%type <stmt> ImportDeclaration, SingleTypeImportDeclaration, TypeImportOnDemandDeclaration
+%type <stmt> ImportDeclaration, SingleTypeImportDeclaration, TypeImportOnDemandDeclaration, SingleStaticImportDeclaration, StaticImportOnDemandDeclaration
 
 %type <stmts> TypeDeclarations, ClassBody, ClassBodyDeclarations, BlockStatements, BlockStatements_Opt
 %type <stmts> FormalParameters, FormalParameterList, FormalParameterList_Opt 
@@ -145,6 +145,8 @@ ImportDeclarations
 ImportDeclaration
 		: SingleTypeImportDeclaration									{ $$ = $1;} //Vivian
 		| TypeImportOnDemandDeclaration									{ $$ = $1;} //Vivian
+		| SingleStaticImportDeclaration									{ $$ = $1;} //Vivian
+		| StaticImportOnDemandDeclaration                               { $$ = $1;} //Vivian
 		;
 
 SingleTypeImportDeclaration
@@ -153,6 +155,14 @@ SingleTypeImportDeclaration
 
 TypeImportOnDemandDeclaration
 		: IMPORT PackageOrTypeName '.' '*' ';'   						{ $$ = new TypeImportOnDemandDeclaration($2); } //Vivian
+		;
+
+SingleStaticImportDeclaration
+		: IMPORT STATIC TypeName '.' IDENTIFIER ';'						 { $$ = new SingleStaticImportDeclaration($3,$5); } //Vivian
+		;
+
+StaticImportOnDemandDeclaration
+		: IMPORT STATIC TypeName '.' '*' ';'   							{ $$ = new StaticImportOnDemandDeclaration($3); } //Vivian
 		;
 
 TypeName
