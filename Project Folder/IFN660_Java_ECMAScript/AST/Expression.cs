@@ -7,27 +7,27 @@ using System.Threading.Tasks;
 
 namespace IFN660_Java_ECMAScript.AST
 {
-	public abstract class Expression : Node
-	{
-		public Type type;
-	};
+    public abstract class Expression : Node
+    {
+        public Type type;
+    };
 
-	public class AssignmentExpression : Expression
-	{
-		private Expression lhs, rhs;
+    public class AssignmentExpression : Expression
+    {
+        private Expression lhs, rhs;
 
-		public AssignmentExpression(Expression lhs, Expression rhs)
-		{
-			this.lhs = lhs;
-			this.rhs = rhs;
-		}
+        public AssignmentExpression(Expression lhs, Expression rhs)
+        {
+            this.lhs = lhs;
+            this.rhs = rhs;
+        }
 
-		public override bool ResolveNames(LexicalScope scope)
-		{
-			return lhs.ResolveNames(scope) & rhs.ResolveNames(scope);
-		}
-		public override void TypeCheck()
-		{
+        public override bool ResolveNames(LexicalScope scope)
+        {
+            return lhs.ResolveNames(scope) & rhs.ResolveNames(scope);
+        }
+        public override void TypeCheck()
+        {
             lhs.TypeCheck();
             rhs.TypeCheck();
 
@@ -43,87 +43,88 @@ namespace IFN660_Java_ECMAScript.AST
 
             // set type to the lhs type
             type = lhs.type;
-		}
-	}
+        }
+    }
 
-	public class VariableExpression : Expression
-	{
-		private string value;
-		private Declaration declarationRef;
+    public class VariableExpression : Expression
+    {
+        private string value;
+        private Declaration declarationRef;
 
-		public VariableExpression(string value)
-		{
-			this.value = value;
-			this.declarationRef = null;
-		}
+        public VariableExpression(string value)
+        {
+            this.value = value;
+            this.declarationRef = null;
+        }
 
-		public override bool ResolveNames(LexicalScope scope)
-		{
-			// check for valid declaration...
-			if (scope != null)
-			{
-				declarationRef = scope.Resolve(value);
-			}
+        public override bool ResolveNames(LexicalScope scope)
+        {
+            // check for valid declaration...
+            if (scope != null)
+            {
+                declarationRef = scope.Resolve(value);
+            }
 
-			if (declarationRef == null)
-				Debug.WriteLine("Error: Undeclared indentifier", value);
-			else
-				Debug.WriteLine("Found variable in scope", value);
+            if (declarationRef == null)
+                Debug.WriteLine("Error: Undeclared indentifier", value);
+            else
+                Debug.WriteLine("Found variable in scope", value);
 
-			return declarationRef != null;
-		}
-		public override void TypeCheck()
-		{
+            return declarationRef != null;
+        }
+        public override void TypeCheck()
+        {
             type = declarationRef.ObtainType();
-			
-		}
 
-	}
+        }
 
-	//changed made by Josh so that the assignmentStatement is correct
-	public class BinaryExpression : Expression
-	{
-		private Expression lhs, rhs;
-		private string oper;
-		public BinaryExpression(Expression lhs, string oper, Expression rhs)
-		{
-			this.lhs = lhs;
-			this.rhs = rhs;
-			this.oper = oper;
-		}
+    }
 
-		public override bool ResolveNames(LexicalScope scope)
-		{
-			return lhs.ResolveNames(scope) & rhs.ResolveNames(scope);
-		}
-		public override void TypeCheck()
-		{
+    //changed made by Josh so that the assignmentStatement is correct
+    public class BinaryExpression : Expression
+    {
+        private Expression lhs, rhs;
+        private string oper;
+        public BinaryExpression(Expression lhs, string oper, Expression rhs)
+        {
+            this.lhs = lhs;
+            this.rhs = rhs;
+            this.oper = oper;
+        }
+
+        public override bool ResolveNames(LexicalScope scope)
+        {
+            return lhs.ResolveNames(scope) & rhs.ResolveNames(scope);
+        }
+        public override void TypeCheck()
+        {
             lhs.TypeCheck();
             rhs.TypeCheck();
             switch (oper)
             {
-                case ">":
-                    if (!lhs.type.isTheSameAs(new NamedType("INT")) || !lhs.type.isTheSameAs(new NamedType("INT")))
-                    {
-                        System.Console.WriteLine("Invalid arguments for more than expression\n");
-                        throw new Exception("TypeCheck error");
-                    }
-                    type = new NamedType("BOOLEAN");
-                    break;
                 case "<":
-                    if (!lhs.type.isTheSameAs(new NamedType("INT")) || !lhs.type.isTheSameAs(new NamedType("INT")))
+                case ">":
+                case "<=":
+                case ">=":
+                case "==":
+                case "!=":
+                    if (!lhs.type.isTheSameAs(rhs.type) && !lhs.type.isTheSameAs(new NamedType("BOOLEAN")))
                     {
                         System.Console.WriteLine("Invalid arguments for less than expression\n");
-                        throw new Exception("TypeCheck error");
+                        return;
+                        //throw new Exception("TypeCheck error");
                     }
                     type = new NamedType("BOOLEAN");
                     break;
+
+                //Mathematical expressions
+
                 case "+":
                 case "-":
                 case "*":
                 case "%":
                 case "/":
-                case "==":
+                case "^":
                     if (lhs.type.isTheSameAs(rhs.type) && !lhs.type.isTheSameAs(new NamedType("BOOLEAN")))
                     {
                         type = lhs.type;
@@ -138,7 +139,7 @@ namespace IFN660_Java_ECMAScript.AST
                     }
                     else
                     {
-                        System.Console.WriteLine("Invalid arguments for less than expression\n");
+                        System.Console.WriteLine("Invalid arguments for expression\n");
                         throw new Exception("TypeCheck error");
                     }
                     break;
@@ -149,8 +150,8 @@ namespace IFN660_Java_ECMAScript.AST
                         throw new Exception("TypeCheck error");
                     }
             }
-		}
-	}
+        }
+    }
 
     public class InstanceOfExpression : Expression
     {
@@ -169,10 +170,10 @@ namespace IFN660_Java_ECMAScript.AST
 
         public override void TypeCheck()
         {
-            
+
+
         }
     }
-
 
     public class PreUnaryExpression : Expression
     {
@@ -191,7 +192,32 @@ namespace IFN660_Java_ECMAScript.AST
         }
         public override void TypeCheck()
         {
-            
+            expression.TypeCheck();
+            switch (oper)
+            {
+                case "++":
+                case "--":
+                case "~":
+                case "!":
+                case "+":
+                case "-":
+                    if (!expression.type.isTheSameAs(new NamedType("BOOLEAN")))
+                    {
+                        type = expression.type;
+                    }
+                    else
+                    {
+                        System.Console.WriteLine("Invalid arguments for expression\n");
+                        throw new Exception("TypeCheck error");
+                    }
+                    break;
+                default:
+                    {
+                        System.Console.WriteLine("Unexpected uniary operator %c \n", oper);
+                        throw new Exception("TypeCheck error");
+                    }
+            }
+
         }
     }
 
@@ -212,9 +238,12 @@ namespace IFN660_Java_ECMAScript.AST
         }
         public override void TypeCheck()
         {
-            
+
         }
     }
+
+
+
     public class CastExpression : Expression
     {
         private Type PrimitiveType;
@@ -258,6 +287,7 @@ namespace IFN660_Java_ECMAScript.AST
         }
     }
 }
+
 
 	
 
