@@ -118,7 +118,6 @@ namespace IFN660_Java_ECMAScript.AST
                     break;
 
                 //Mathematical expressions
-
                 case "+":
                 case "-":
                 case "*":
