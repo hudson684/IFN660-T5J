@@ -35,7 +35,7 @@ namespace IFN660_Java_ECMAScript.AST
             // needs something here - nathan
         }
 
-        public Type ObtainType()
+        public override Type ObtainType()
         {
             return varType;
         }
@@ -92,7 +92,7 @@ namespace IFN660_Java_ECMAScript.AST
 
         }
 
-        public Type ObtainType()
+        public override Type ObtainType()
         {
             return variableDecs[0].ObtainType();
         }

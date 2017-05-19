@@ -11,15 +11,15 @@ namespace IFN660_Java_ECMAScript.AST
 	public abstract class Expression : Node
 	{
 		public Type type;
-		public abstract Type ObtainType();
+        public abstract Type ObtainType();
+    
         public static int LastLocal;
         //public virtual void GenCode(StreamWriter sb) { }
         public virtual void GenStoreCode(StringBuilder sb, string ex)
         {
             throw new Exception ( "Invalid " + ex );
         }
-
-	};
+	}
 
 	public class AssignmentExpression : Expression
 	{
@@ -54,10 +54,10 @@ namespace IFN660_Java_ECMAScript.AST
             type = lhs.type;
 		}
 
-		public override Type ObtainType()
-		{
-			return type;
-		}
+        public override Type ObtainType()
+        {
+            return type;
+        }
 
         public override void GenCode(StringBuilder sb)
         {
@@ -97,7 +97,7 @@ namespace IFN660_Java_ECMAScript.AST
 			
 		}
 
-		public override Type ObtainType()
+        public override Type ObtainType()
         {
             return type;
         }
@@ -111,6 +111,7 @@ namespace IFN660_Java_ECMAScript.AST
         {
             emit(sb, "\tstloc.{0}\n", declarationRef.GetNumber());
         }
+
     }
 
 	//changed made by Josh so that the assignmentStatement is correct
@@ -175,7 +176,7 @@ namespace IFN660_Java_ECMAScript.AST
                         throw new Exception("TypeCheck error");
                     }
                     break;
-
+               
                 default:
                     {
                         System.Console.WriteLine("Unexpected binary operator %c \n", oper);
@@ -183,11 +184,11 @@ namespace IFN660_Java_ECMAScript.AST
                     }
             }
 		}
+
         public override Type ObtainType()
         {
             return type;
         }
-    }
 
         public override void GenCode(StringBuilder sb)
         {
@@ -198,7 +199,6 @@ namespace IFN660_Java_ECMAScript.AST
                 case "<":
                     emit(sb, "\tclt\n");
                     break;
-
                 case "+":
                     emit(sb, "\tadd\n");
                     break;
@@ -233,39 +233,13 @@ namespace IFN660_Java_ECMAScript.AST
         {
             return type;
         }
-    }
-
-    // Removed by AN
-    public class MathematicalExpression : Expression
-    {
-        private Expression lhs;
-        private Expression rhs;
-        private string oper;
-        public MathematicalExpression(Expression lhs, string oper, Expression rhs)
-        {
-            this.lhs = lhs;
-            this.rhs = rhs;
-            this.oper = oper;
-        }
-
-        public override bool ResolveNames(LexicalScope scope)
-        {
-            return lhs.ResolveNames(scope) & rhs.ResolveNames(scope);
-        }
-        public override void TypeCheck()
-        {
-            
-        }
-
-        public override Type ObtainType()
-        {
-            return type;
-        }
 
         public override void GenCode(StringBuilder sb)
         {
 
-        }
+		}
+
+
     }
 
 
@@ -288,7 +262,6 @@ namespace IFN660_Java_ECMAScript.AST
         {
             
         }
-
         public override Type ObtainType()
         {
             return type;
@@ -296,8 +269,9 @@ namespace IFN660_Java_ECMAScript.AST
 
         public override void GenCode(StringBuilder sb)
         {
+		
+		}
 
-        }
     }
 
     public class PostUnaryExpression : Expression
@@ -319,10 +293,17 @@ namespace IFN660_Java_ECMAScript.AST
         {
             
         }
+
+        public override Type ObtainType()
+        {
+            return type;
+        }
+
         public override void GenCode(StringBuilder sb)
         {
+		
+		}
 
-        }
     }
     public class CastExpression : Expression
     {
@@ -365,10 +346,17 @@ namespace IFN660_Java_ECMAScript.AST
                 }
             }
         }
+
+        public override Type ObtainType()
+        {
+            return type;
+        }
+
         public override void GenCode(StringBuilder sb)
         {
 
-        }
+		}
+
     }
 }
 

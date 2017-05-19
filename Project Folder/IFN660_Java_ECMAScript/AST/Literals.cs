@@ -182,6 +182,11 @@ namespace IFN660_Java_ECMAScript.AST
             type = new NamedType("NULL");
         }
 
+        public override Type ObtainType()
+        {
+            return type;
+        }
+
         public override void GenCode(StringBuilder sb)
         {
 

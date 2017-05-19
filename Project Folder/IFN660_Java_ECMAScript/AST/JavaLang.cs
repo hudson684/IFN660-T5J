@@ -30,18 +30,18 @@ namespace IFN660_Java_ECMAScript.AST
             return new NamedType("class");
         }
 
-        public class Println: MethodDec
+        public int GetNumber()
         {
-            private string argument;
+            return -1;
+        }
+
+        public class Println: Node, MethodDec
+        {
+            private Expression arg;
 
             public Println()
             {
-                argument = null;
-            }
-
-            public void setArgument(string argument)
-            {
-                this.argument = argument;
+                this.arg = null;
             }
 
             public bool checkArgTypes(List<Expression> args)
@@ -55,14 +55,42 @@ namespace IFN660_Java_ECMAScript.AST
                     return true;
             }
 
+            public void setArguments(List<Expression> args)
+            {
+                arg = args[0];
+            }
+
             public Type ObtainType()
             {
                 return new NamedType("VOID");
             }
 
+            public int GetNumber()
+            {
+                return -1;
+            }
+
             public void AddItemsToSymbolTable(LexicalScope scope)
             {
                 // nothing to add
+            }
+
+            public override bool ResolveNames(LexicalScope scope)
+            {
+                return true; // nothing to do
+            }
+
+            public override void TypeCheck()
+            {
+                // nothing to do
+            }
+            public override void GenCode(StringBuilder sb)
+            {
+
+                string varType = arg.ObtainType().GetILName();
+                arg.GenCode(sb);
+                emit(sb, "\tcall\tvoid [mscorlib]System.Console::WriteLine({0})\n", varType);
+                emit(sb, "\tldc.i4 0\n");
             }
         }
     }

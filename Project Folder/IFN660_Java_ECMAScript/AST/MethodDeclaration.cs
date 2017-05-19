@@ -8,6 +8,7 @@ namespace IFN660_Java_ECMAScript.AST
     public interface MethodDec : Declaration
     {
         bool checkArgTypes(List<Expression> args);
+        void setArguments(List<Expression> args);
     }
 
     public class MethodDeclaration : Statement, MethodDec
@@ -60,7 +61,8 @@ namespace IFN660_Java_ECMAScript.AST
         {
             return 0;
         }
-		public override void TypeCheck()
+
+        public override void TypeCheck()
 		{
             returnType.TypeCheck();
             statementList.TypeCheck();
@@ -83,6 +85,11 @@ namespace IFN660_Java_ECMAScript.AST
             }
 
             return rval;
+        }
+
+        public void setArguments(List<Expression> args)
+        {
+            // do nothing
         }
 
         public override void GenCode(StringBuilder sb)
@@ -115,15 +122,12 @@ namespace IFN660_Java_ECMAScript.AST
             // manually put in entry point
             emit(sb, "\t.entrypoint\n");
 
-            // locals - do this properly - nathan
-            //emit(sb, "\t.locals init (int32 x, int32 y)\n");
-
             statementList.GenCode(sb);
 
             // manually add WriteLine of variable 1
             // this will be done properly with System.out.println is implemented - nathan
-            emit(sb, "\tldloc.1\n");
-            emit(sb, "\tcall\tvoid [mscorlib]System.Console::WriteLine(int32)\n");
+            //emit(sb, "\tldloc.1\n");
+            //emit(sb, "\tcall\tvoid [mscorlib]System.Console::WriteLine(int32)\n");
 
             emit(sb, "\tret\n");
             emit(sb, "}} {0}",Environment.NewLine);
@@ -162,7 +166,7 @@ namespace IFN660_Java_ECMAScript.AST
             }
 
             if (declarationRef == null)
-                Console.WriteLine("Error: Undeclared indentifier", name);
+                Console.WriteLine("Error: Undeclared method indentifier", name);
 
             return (declarationRef != null) & loopResolve;
         }
@@ -194,6 +198,22 @@ namespace IFN660_Java_ECMAScript.AST
         public override Type ObtainType()
         {
             return type;
+        }
+
+        public override void GenCode(StringBuilder sb)
+        {
+            MethodDec methodD = declarationRef as MethodDec;
+            if (methodD != null)
+            {
+                // set argurments
+                methodD.setArguments(args);
+                Node methodN = methodD as Node;
+                if (methodN != null)
+                {
+                    methodN.GenCode(sb);
+                }
+            }
+
         }
     }
 }
