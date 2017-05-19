@@ -164,12 +164,36 @@ namespace IFN660_Java_ECMAScript.AST
 
         public override string GetILName()
         {
-            throw new NotImplementedException();
+            switch (elementType)
+            {
+                case ("BOOLEAN"):
+                    return "bool";
+                case ("BYTE"):
+                    return "uint8";
+                case ("SHORT"):
+                    return "int16";
+                case ("INT"):
+                    return "int32";
+                case ("LONG"):
+                    return "int64";
+                case ("CHAR"):
+                    return "char";
+                case ("FLOAT"):
+                    return "float32";
+                case ("DOUBLE"):
+                    return "float64";
+                case ("String"):
+                    return "string";
+                default:
+                    return "";
+            }
+            
+
         }
 
         public override void GenCode(StringBuilder sb)
         {
-            emit(sb, "{0} ", elementType);
+            emit(sb, "{0} ", elementType.ToLower());
         }
 
     }
@@ -213,7 +237,7 @@ namespace IFN660_Java_ECMAScript.AST
 
         public override string GetILName()
         {
-            throw new NotImplementedException();
+            return elementType.GetILName() + "[]";
         }
         public override void GenCode(StringBuilder sb)
         {

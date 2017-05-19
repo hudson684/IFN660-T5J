@@ -11,6 +11,7 @@ namespace IFN660_Java_ECMAScript.AST
 	public abstract class Expression : Node
 	{
 		public Type type;
+        public static int LastLocal;
         //public virtual void GenCode(StreamWriter sb) { }
         public virtual void GenStoreCode(StringBuilder sb, string ex)
         {
@@ -94,7 +95,12 @@ namespace IFN660_Java_ECMAScript.AST
 
         public override void GenCode(StringBuilder sb)
         {
-            emit(sb, "ldloc {0}", declarationRef.GetNumber());
+            emit(sb, "\tldloc.{0}\n", declarationRef.GetNumber());
+        }
+
+        public override void GenStoreCode(StringBuilder sb, string ex)
+        {
+            emit(sb, "\tstloc.{0}\n", declarationRef.GetNumber());
         }
     }
 
@@ -176,11 +182,11 @@ namespace IFN660_Java_ECMAScript.AST
             switch (oper)
             {
                 case "<":
-                    emit(sb, "clt");
+                    emit(sb, "\tclt\n");
                     break;
 
                 case "+":
-                    emit(sb, "add");
+                    emit(sb, "\tadd\n");
                     break;
                 default:
                     Console.WriteLine("Unexpected binary operator {0}\n", oper);

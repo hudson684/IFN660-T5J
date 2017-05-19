@@ -50,7 +50,10 @@ namespace IFN660_Java_ECMAScript.AST
 
         public override void GenCode(StringBuilder sb)
         {
-
+            foreach (Statement each in statements)
+            {
+                each.GenCode(sb);
+            }
         }
 
     }

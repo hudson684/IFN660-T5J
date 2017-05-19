@@ -22,10 +22,11 @@ public static Statement root;
 	public List<Modifier> modfs;
 	public ArrayList arrlst;
 	public List<string> strlst;
+	public List<Expression> exprlst;
 }
 
 // Types
-%type <expr> Literal, StatementExpression, Assignment, LeftHandSide, ExpressionName
+%type <expr> Literal, StatementExpression, Assignment, LeftHandSide, ExpressionName, LocalVariableDeclaration
 %type <expr> TypeParameters_opt, Superclass_opt, Superinterfaces_opt
 %type <expr> AssignmentExpression, PrimaryNoNewArray
 %type <expr> Expression, LambdaExpression, LambdaExpression, LambdaBody
@@ -37,9 +38,9 @@ public static Statement root;
 %type <expr> CastExpression, PostIncrementExpression, PostDecrementExpression //Josh
 
 %type <stmt> Statement, CompilationUnit, TypeDeclaration, ClassDeclaration, NormalClassDeclaration, ClassBodyDeclaration
-%type <stmt> ExpressionStatement, StatementWithoutTrailingSubstatement, LocalVariableDeclaration, LocalVariableDeclarationStatement
-%type <stmt> BlockStatement, Throws_opt, ClassMemberDeclaration, MethodDeclaration, FormalParameter
-%type <stmt> PackageDeclaration_opt, Block, MethodBody
+%type <stmt> ExpressionStatement, StatementWithoutTrailingSubstatement, LocalVariableDeclarationStatement
+%type <stmt> BlockStatement, Throws_opt, ClassMemberDeclaration, MethodDeclaration
+%type <stmt> PackageDeclaration_opt, Block, MethodBody, FormalParameter
 %type <stmt> StatementNoShortIf, IfThenElseStatementNoShortIf
 %type <stmt> IfThenStatement, IfThenElseStatement, WhileStatement 
 %type <stmt> TryStatement, Catches, Catches_opt, CatchClause, Finally
@@ -52,8 +53,8 @@ public static Statement root;
 %type <stmt> LabeledStatement, BreakStatement, ContinueStatement, ReturnStatement
 
 %type <stmts> TypeDeclarations, ClassBody, ClassBodyDeclarations, BlockStatements, BlockStatements_Opt
-%type <stmts> FormalParameters, FormalParameterList, FormalParameterList_Opt 
 %type <stmts> ImportDeclarations
+%type <stmts> FormalParameters, FormalParameterList, FormalParameterList_Opt 
 
 %type <type> Result, FloatingPointType, IntegralType, NumericType
 %type <type> UnannType, UnannPrimitiveType, UnannReferenceType, UnannArrayType, UnannTypeVariable, ReferenceType, PrimitiveType
@@ -256,7 +257,7 @@ FormalParameters
 		;
 
 FormalParameter 
-		:  VariableModifiers UnannType VariableDeclaratorId		{ $$ = new VariableDeclaration($2, $3); } // Nathan - doesn't allow VariableModifiers at the moment
+		:  VariableModifiers UnannType VariableDeclaratorId		{ $$ = new FormalParam($2, $3); } // Nathan - doesn't allow VariableModifiers at the moment
 		;
 VariableModifiers 
 		: VariableModifiers VariableModifier					{ $$ = $1; $$.Add($2); } // Nathan
@@ -369,7 +370,7 @@ BlockStatement
 		;
 
 LocalVariableDeclarationStatement
-		: LocalVariableDeclaration ';'							{ $$ = $1; } // Vivian - updated by Nathan
+		: LocalVariableDeclaration ';'							{ $$ = new VariableDeclarationStatement($1); } // Vivian - updated by Nathan
 		;
 
 LocalVariableDeclaration

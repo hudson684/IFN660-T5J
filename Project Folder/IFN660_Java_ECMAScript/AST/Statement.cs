@@ -9,7 +9,6 @@ namespace IFN660_Java_ECMAScript.AST
 	public abstract class Statement : Node
 	{
         public static int LastLabel;
-        public static int LastLocal;
         //public virtual void GenCode(StreamWriter sb) { }
     };
 
@@ -523,90 +522,43 @@ namespace IFN660_Java_ECMAScript.AST
         public override void GenCode(StringBuilder sb)
         {
             expr.GenCode(sb);
-            emit(sb, "pop");
+            emit(sb, "\tpop\n");
         }
 
     }
 
+    public class VariableDeclarationStatement : Statement
+    {
+        private Expression varDec;
 
-	public class VariableDeclaration : Statement, Declaration
-	{
-		private Type type;
-		private string name;
-        int num;
-		public VariableDeclaration(Type type, string name)
-		{
-			this.type = type;
-			this.name = name;
-            num = LastLocal++;
-        }
-
-        
-        string GetName(){ return name; }
-        public int GetNumber() { return num; }
-        public void AddItemsToSymbolTable(LexicalScope scope)
+        public VariableDeclarationStatement(Expression varDec)
         {
-            scope.Symbol_table.Add(name, this);
+            this.varDec = varDec;
         }
 
         public override bool ResolveNames(LexicalScope scope)
-		{
-			return type.ResolveNames(scope);
-		}
-		public override void TypeCheck()
-		{
-			
-		}
-
-        public Type ObtainType()
         {
-            return type;
+            return varDec.ResolveNames(scope);
+        }
+        public override void TypeCheck()
+        {
+            this.varDec.TypeCheck();
+            /*try
+            {
+                if (!expr.type.Equals(new NamedType("BOOLEAN")))
+                {
+                    Console.WriteLine("Invalid type for if statement condition\n");
+                }
+            }
+            catch (Exception e)
+            {
+                throw new Exception("TypeCheck error");
+            }*/
         }
 
         public override void GenCode(StringBuilder sb)
         {
-            Console.WriteLine("Inside here");
-            emit(sb, ".local init ([{0}] {1} {2})", num, type.GetILName(), name.ToString());
-        }
-    }
-
-	public class VariableDeclarationList : Statement, Declaration
-	{
-		private Type type;
-		private List<string> names;
-
-		public VariableDeclarationList(Type type, List<string> names)
-		{
-			this.type = type;
-			this.names = names;
-		}
-
-        //
-        public int GetNumber() {
-            return 0;
-        }
-        public void AddItemsToSymbolTable(LexicalScope scope)
-        {
-            foreach (string each in names)
-                scope.Symbol_table.Add(each, this);
-        }
-
-        public override bool ResolveNames(LexicalScope scope)
-		{
-			return type.ResolveNames(scope);
-		}
-
-		public override void TypeCheck()
-		{
-		}
-
-        public Type ObtainType()
-        {
-            return type;
-        }
-        public override void GenCode(StringBuilder sb)
-        {
-
+            varDec.GenCode(sb);
         }
     }
 }

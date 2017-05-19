@@ -58,12 +58,16 @@ namespace IFN660_Java_ECMAScript.AST
 
         public override void GenCode(StringBuilder sb)
         {
-            emit(sb, ".class ", classIdentifier);
+            emit(sb, ".class {0} {{\n", classIdentifier);
+
+            /* not required
             foreach (var modif in classModifiers)
                 emit(sb, "{0} ", modif);
             emit(sb, "{0} {{ {1}", classIdentifier, Environment.NewLine);
+            */
             foreach (var bd in classBody)
                 bd.GenCode(sb);
+
             emit(sb, "}}");
         }
 

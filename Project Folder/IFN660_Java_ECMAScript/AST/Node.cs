@@ -38,7 +38,7 @@ namespace IFN660_Java_ECMAScript.AST
                 if (value is Node)
                 {
 
-                    if ((value is Declaration))
+                    if (!(value is VariableDeclarationList) && (value is Declaration)) 
                     {
                         Console.WriteLine("{0}: {1:X8}", field.Name, value.GetHashCode());
                         //Indent(indent + 2);
