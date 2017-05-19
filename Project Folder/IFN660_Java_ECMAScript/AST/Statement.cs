@@ -92,7 +92,17 @@ namespace IFN660_Java_ECMAScript.AST
         }
         public override void GenCode(StringBuilder sb)
         {
-           
+            int codeLabel, testLabel;
+
+            codeLabel = LastLabel++;
+            testLabel = LastLabel++;
+
+            emit(sb, "\tbr.s\tL{0}\n", testLabel);
+            emit(sb, "L{0}:\n", codeLabel);
+            Statements.GenCode(sb);
+            emit(sb, "L{0}:\n", testLabel);
+            Cond.GenCode(sb);
+            emit(sb, "\tbrtrue.s\tL{0}\n", codeLabel);
         }
 
     }
