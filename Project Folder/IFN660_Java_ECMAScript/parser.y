@@ -26,7 +26,7 @@ public static Statement root;
 }
 
 // Types
-%type <expr> Literal, StatementExpression, Assignment, LeftHandSide, ExpressionName
+%type <expr> Literal, StatementExpression, Assignment, LeftHandSide, ExpressionName, LocalVariableDeclaration
 %type <expr> TypeParameters_opt, Superclass_opt, Superinterfaces_opt
 %type <expr> AssignmentExpression, PrimaryNoNewArray
 %type <expr> Expression, LambdaExpression, LambdaExpression, LambdaBody
@@ -41,18 +41,26 @@ public static Statement root;
 %type <exprlst> ArgumentList, ArgumentList_opt
 
 %type <stmt> Statement, CompilationUnit, TypeDeclaration, ClassDeclaration, NormalClassDeclaration, ClassBodyDeclaration
-%type <stmt> ExpressionStatement, StatementWithoutTrailingSubstatement, LocalVariableDeclaration, LocalVariableDeclarationStatement
-%type <stmt> BlockStatement, Throws_opt, ClassMemberDeclaration, MethodDeclaration, FormalParameter
+%type <stmt> ExpressionStatement, StatementWithoutTrailingSubstatement, LocalVariableDeclarationStatement
+%type <stmt> BlockStatement, Throws_opt, ClassMemberDeclaration, MethodDeclaration
+%type <stmt> PackageDeclaration_opt, Block, MethodBody, FormalParameter
+%type <stmt> StatementNoShortIf, IfThenElseStatementNoShortIf
+%type <stmt> IfThenStatement, IfThenElseStatement, WhileStatement 
+%type <stmt> TryStatement, Catches, Catches_opt, CatchClause, Finally
 %type <stmt> PackageDeclaration_opt, Block, MethodBody
 %type <stmt> StatementNoShortIf, WhileStatement
+%type <stmt> DoStatement, ThrowStatement, SynchronizedStatement
+%type <stmt> SwitchStatement
+%type <stmt> AssertStatement
 %type <stmt> IfThenStatement, IfThenElseStatement, IfThenElseStatementNoShortIf
+%type <stmt> LabeledStatement, BreakStatement, ContinueStatement, ReturnStatement
 
 %type <stmts> TypeDeclarations, ClassBody, ClassBodyDeclarations, BlockStatements, BlockStatements_Opt
-%type <stmts> FormalParameters, FormalParameterList, FormalParameterList_Opt 
 %type <stmts> ImportDeclarations
+%type <stmts> FormalParameters, FormalParameterList, FormalParameterList_Opt 
 
 %type <type> Result, FloatingPointType, IntegralType, NumericType
-%type <type> UnannType, UnannPrimitiveType, UnannReferenceType, UnannArrayType, UnannTypeVariable, ReferenceType
+%type <type> UnannType, UnannPrimitiveType, UnannReferenceType, UnannArrayType, UnannTypeVariable, ReferenceType, PrimitiveType
 
 %type <modf> ClassModifier, MethodModifier, VariableModifier
 
@@ -63,6 +71,9 @@ public static Statement root;
 %type <arrlst> MethodHeader, MethodDeclarator
 
 %type <strlst> VariableDeclaratorList
+
+%type <name> Identifier_opt
+%type <expr> Expression_opt
 
 // Tokens
 %token <num> NUMBER
@@ -249,7 +260,7 @@ FormalParameters
 		;
 
 FormalParameter 
-		:  VariableModifiers UnannType VariableDeclaratorId		{ $$ = new VariableDeclaration($2, $3); } // Nathan - doesn't allow VariableModifiers at the moment
+		:  VariableModifiers UnannType VariableDeclaratorId		{ $$ = new FormalParam($2, $3); } // Nathan - doesn't allow VariableModifiers at the moment
 		;
 VariableModifiers 
 		: VariableModifiers VariableModifier					{ $$ = $1; $$.Add($2); } // Nathan
@@ -363,7 +374,7 @@ BlockStatement
 		;
 
 LocalVariableDeclarationStatement
-		: LocalVariableDeclaration ';'							{ $$ = $1; } // Vivian - updated by Nathan
+		: LocalVariableDeclaration ';'							{ $$ = new VariableDeclarationStatement($1); } // Vivian - updated by Nathan
 		;
 
 LocalVariableDeclaration
@@ -390,6 +401,7 @@ Statement
 		| IfThenStatement										{$$ = $1; } // Adon
 		| IfThenElseStatement									{$$ = $1; } // Adon
 		| WhileStatement										{ $$ = $1; } // Nathan
+		| LabeledStatement										 { $$ = $1;} //Vivian
 		;
 		
 StatementNoShortIf
@@ -401,6 +413,35 @@ StatementNoShortIf
 StatementWithoutTrailingSubstatement
 		: ExpressionStatement 									{ $$ = $1; } // Nathan - done by Khoa
 		| Block													{ $$ = $1; } // Nathan
+		| BreakStatement										{ $$ = $1;} //Vivian
+		| DoStatement											{ $$ = $1; } //Tri
+		| ContinueStatement										{ $$ = $1;} //Vivian
+		| ReturnStatement										{ $$ = $1;} //Vivian
+		| ThrowStatement										{ $$ = $1;} // KoJo
+		| SynchronizedStatement									{ $$ = $1;} // KoJo
+		| SwitchStatement										{ $$ = $1;} //Tri
+		| AssertStatement										{ $$ = $1;} //Tri
+		;
+
+AssertStatement
+		: ASSERT Expression ';'									{ $$ = new AssertStatement($2);} //Tri
+		| ASSERT Expression ':' Expression ';'					{ $$ = new AssertStatement($2, $4);} //Tri
+		;
+
+SwitchStatement
+		: SWITCH '(' Expression ')'								{ $$ = new SwitchStatement($3); } //Tri
+		;
+
+DoStatement
+		: DO Statement WHILE '(' Expression ')'	';'				{ $$ = new DoStatement($2, $5); } // Tri
+		;
+		 
+ThrowStatement
+		: THROW Expression ';'									{ $$ = new ThrowStatement($2); } //KoJo
+		;
+
+SynchronizedStatement
+		: SYNCHRONIZED '(' Expression ')' Block					{ $$ = new SynchronizedStatement($3, $5); }  //KoJo
 		;
 
 ExpressionStatement
@@ -455,6 +496,99 @@ WhileStatement
 		: WHILE '(' Expression ')' Statement					{ $$ = new WhileStatement($3, $5); } // Nathan
 		;
 
+TryStatement
+		: TRY Block Catches										{ $$ = new TryStatement($2, $3, null); } //Adon
+		| TRY Block Catches_opt Finally							{ $$ = new TryStatement($2, $3, $4); } //Adon
+		//| TryWithResourcesStatement
+		;
+
+Catches_opt
+		: Catches												{ $$ =  $1; } //Adon
+		| /* empty */											{ } //Adon
+		;
+
+Catches
+		: CatchClause											{ $$ =  $1; } //Adon
+//		| Catches CatchClause									{ } //Adon
+		;
+
+CatchClause
+		//: CATCH '(' CatchFromalParameter ')' Block				{ } //Adon - too hard to be implemented right now, use the following simplified version instead
+																		//		see paser_try.y to check the nessary paser rules for a full try statement
+		: CATCH '(' ')' Block										{ $$ = $4; } //Adon
+		;
+
+//CatchFromalParameter
+//		: VariableModifiers CatchType VariableDeclaratorId		{ } //Adon
+//		;
+
+//CatchType
+//		: UnannClassType										{ } //Adon
+//		| CatchType '|' CatchType								{ } //Adon
+//		;
+
+//Finally_opt
+//		: Finally												{ $$ = $1; } //Adon
+//		|
+//		;
+
+Finally
+		: FINALLY Block											{ $$ = $2; } //Adon
+		;
+
+//TryWithResourcesStatement
+//		: TRY ResourceSpecification Block Catches_opt Finally_opt
+//		;
+
+IfThenStatement
+		: IF '(' Expression ')' Statement						{ $$ = new IfStatement($3, $5,null); } // Adon
+		//: IF '(' Expression ')' BlockStatements						{ $$ = new IfStatement($3, $5,null); } // Adon
+		;
+
+IfThenElseStatement
+		: IF '(' Expression ')' StatementNoShortIf ELSE Statement				{ $$ = new IfStatement($3, $5, $7); } // Adon
+		;
+
+IfThenElseStatementNoShortIf
+		: IF '(' Expression ')' StatementNoShortIf ELSE StatementNoShortIf		{ $$ = new IfStatement($3, $5, $7); } //Adon
+		;
+
+WhileStatement
+		: WHILE '(' Expression ')' Statement					{ $$ = new WhileStatement($3, $5); } // Nathan
+		;
+
+//Add Labeledstatement-Vivian
+LabeledStatement
+		: IDENTIFIER ':' Statement								{ $$ = new LabeledStatement($1,$3);} //Vivian
+		;
+
+//Add breakstatement-Vivian
+BreakStatement
+		: BREAK Identifier_opt ';'									{ if($2 == null){$$ = new BreakStatement();} else {$$ = new BreakStatement($2);} } //Vivian
+		;
+
+//Add for breakstatement-Vivian		
+Identifier_opt
+		: IDENTIFIER															
+		| 
+		;
+
+//Add continuestatement-Vivian
+ContinueStatement
+		: CONTINUE Identifier_opt ';'									{ if($2 == null){$$ = new ContinueStatement();} else {$$ = new ContinueStatement($2);} } //Vivian
+		;
+
+//Add returnstatement-Vivian
+ReturnStatement
+		: RETURN Expression_opt ';'									{ if($2 == null){$$ = new ReturnStatement();} else {$$ = new ReturnStatement($2);} } //Vivian
+		;
+
+//Add for returnstatement-Vivian
+Expression_opt
+		: Expression												{ $$ = $1; }// Vivian			
+		| 
+		;
+
 // End Work by Tristan
 //work by sneha
 
@@ -492,7 +626,8 @@ Literal
 		| FloatingPointLiteral									{ $$ = new FloatingPointLiteralExpression($1); } // Adon
 		| BooleanLiteral										{ $$ = new BooleanLiteralExpression($1); } // Adon
 		| CharacterLiteral										{ $$ = new CharacterLiteralExpression($1); } // Adon
-		| StringLiteral											{ $$ = new StringLiteralExpression($1); } // Nathan
+		| StringLiteral											{ $$ = new StringLiteralExpression($1); } //Tri
+		| NullLiteral											{ $$ = new NullLiteralExpression(); } //Tri
 		;
 // end of sneha Work
 
@@ -574,10 +709,10 @@ AdditiveExpression
 		;
 
 MultiplicativeExpression
-		: UnaryExpression
-		| MultiplicativeExpression '*' UnaryExpression					{ $$ = new MathematicalExpression($1, "*", $3); }
-		| MultiplicativeExpression '/' UnaryExpression					{ $$ = new MathematicalExpression($1, "/", $3); }
-		| MultiplicativeExpression '%' UnaryExpression					{ $$ = new MathematicalExpression($1, "%", $3); }
+		: UnaryExpression												{ $$ = $1; } //Khoa
+		| MultiplicativeExpression '*' UnaryExpression					{ $$ = new BinaryExpression($1, "*", $3); }
+		| MultiplicativeExpression '/' UnaryExpression					{ $$ = new BinaryExpression($1, "/", $3); }
+		| MultiplicativeExpression '%' UnaryExpression					{ $$ = new BinaryExpression($1, "%", $3); }
 		;
 		
 UnaryExpression
@@ -623,9 +758,9 @@ PostDecrementExpression
 		;
 
 CastExpression
-		: '(' PrimitiveType ')' UnaryExpression
-		| '(' ReferenceType AdditionalBounds ')' UnaryExpressionNotPlusMinus
-		| '(' ReferenceType AdditionalBounds ')' LambdaExpression
+		: '(' PrimitiveType ')' UnaryExpression										{ $$ = new CastExpression($2, $4); } //Khoa
+		//| '(' ReferenceType AdditionalBounds ')' UnaryExpressionNotPlusMinus
+		//| '(' ReferenceType AdditionalBounds ')' LambdaExpression
 		;
 
 AdditionalBounds

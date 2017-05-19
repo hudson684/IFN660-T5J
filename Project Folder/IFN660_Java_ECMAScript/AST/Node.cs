@@ -1,6 +1,8 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
+using System.Text;
 
 namespace IFN660_Java_ECMAScript.AST
 {
@@ -36,7 +38,7 @@ namespace IFN660_Java_ECMAScript.AST
                 if (value is Node)
                 {
 
-                    if ((value is Declaration))
+                    if (!(value is VariableDeclarationList) && (value is Declaration)) 
                     {
                         Console.WriteLine("{0}: {1:X8}", field.Name, value.GetHashCode());
                         //Indent(indent + 2);
@@ -103,6 +105,25 @@ namespace IFN660_Java_ECMAScript.AST
 
 			return newScope;
 		}
+
+        /// <summary>
+        /// Use Stringbuider to append all the text rather then invoke I/O read/write
+        /// </summary>
+        /// <param name="sb"> Current StringBuidler object</param>
+        /// <param name="fmt">String with format i.e "X = {0}",x</param>
+        /// <param name="args">
+        /// params allow use to have variable number of parameter
+        /// We use object[] so we dont need to think about type
+        /// https://msdn.microsoft.com/en-us/library/ms229008(v=vs.100).aspx
+        /// </param>
+        internal void emit(StringBuilder sb, string fmt, params object[] args)
+        {
+            sb.AppendFormat(fmt, args);
+            //sb.Write(Environment.NewLine);
+        }
+
+        public abstract void GenCode(StringBuilder sb);
+
 
         // Helper function to do List typecheck
         //public static void ListTypeCheck<T>(List<T> list) where T : Node

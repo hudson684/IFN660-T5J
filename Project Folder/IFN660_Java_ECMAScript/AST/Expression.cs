@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,8 +11,15 @@ namespace IFN660_Java_ECMAScript.AST
 	public abstract class Expression : Node
 	{
 		public Type type;
-        public abstract Type ObtainType();
-    };
+		public abstract Type ObtainType();
+        public static int LastLocal;
+        //public virtual void GenCode(StreamWriter sb) { }
+        public virtual void GenStoreCode(StringBuilder sb, string ex)
+        {
+            throw new Exception ( "Invalid " + ex );
+        }
+
+	};
 
 	public class AssignmentExpression : Expression
 	{
@@ -46,9 +54,16 @@ namespace IFN660_Java_ECMAScript.AST
             type = lhs.type;
 		}
 
-        public override Type ObtainType()
+		public override Type ObtainType()
+		{
+			return type;
+		}
+
+        public override void GenCode(StringBuilder sb)
         {
-            return type;
+            rhs.GenCode(sb);
+            lhs.GenStoreCode(sb,"assignment");
+            lhs.GenCode(sb);
         }
     }
 
@@ -82,11 +97,20 @@ namespace IFN660_Java_ECMAScript.AST
 			
 		}
 
-        public override Type ObtainType()
+		public override Type ObtainType()
         {
             return type;
         }
 
+        public override void GenCode(StringBuilder sb)
+        {
+            emit(sb, "\tldloc.{0}\n", declarationRef.GetNumber());
+        }
+
+        public override void GenStoreCode(StringBuilder sb, string ex)
+        {
+            emit(sb, "\tstloc.{0}\n", declarationRef.GetNumber());
+        }
     }
 
 	//changed made by Josh so that the assignmentStatement is correct
@@ -111,6 +135,14 @@ namespace IFN660_Java_ECMAScript.AST
             rhs.TypeCheck();
             switch (oper)
             {
+                case ">":
+                    if (!lhs.type.isTheSameAs(new NamedType("INT")) || !lhs.type.isTheSameAs(new NamedType("INT")))
+                    {
+                        System.Console.WriteLine("Invalid arguments for more than expression\n");
+                        throw new Exception("TypeCheck error");
+                    }
+                    type = new NamedType("BOOLEAN");
+                    break;
                 case "<":
                     if (!lhs.type.isTheSameAs(new NamedType("INT")) || !lhs.type.isTheSameAs(new NamedType("INT")))
                     {
@@ -120,6 +152,11 @@ namespace IFN660_Java_ECMAScript.AST
                     type = new NamedType("BOOLEAN");
                     break;
                 case "+":
+                case "-":
+                case "*":
+                case "%":
+                case "/":
+                case "==":
                     if (lhs.type.isTheSameAs(rhs.type) && !lhs.type.isTheSameAs(new NamedType("BOOLEAN")))
                     {
                         type = lhs.type;
@@ -138,7 +175,7 @@ namespace IFN660_Java_ECMAScript.AST
                         throw new Exception("TypeCheck error");
                     }
                     break;
-               
+
                 default:
                     {
                         System.Console.WriteLine("Unexpected binary operator %c \n", oper);
@@ -149,6 +186,26 @@ namespace IFN660_Java_ECMAScript.AST
         public override Type ObtainType()
         {
             return type;
+        }
+    }
+
+        public override void GenCode(StringBuilder sb)
+        {
+            lhs.GenCode(sb);
+            rhs.GenCode(sb);
+            switch (oper)
+            {
+                case "<":
+                    emit(sb, "\tclt\n");
+                    break;
+
+                case "+":
+                    emit(sb, "\tadd\n");
+                    break;
+                default:
+                    Console.WriteLine("Unexpected binary operator {0}\n", oper);
+                    break;
+            }
         }
     }
 
@@ -204,6 +261,11 @@ namespace IFN660_Java_ECMAScript.AST
         {
             return type;
         }
+
+        public override void GenCode(StringBuilder sb)
+        {
+
+        }
     }
 
 
@@ -231,6 +293,11 @@ namespace IFN660_Java_ECMAScript.AST
         {
             return type;
         }
+
+        public override void GenCode(StringBuilder sb)
+        {
+
+        }
     }
 
     public class PostUnaryExpression : Expression
@@ -252,10 +319,55 @@ namespace IFN660_Java_ECMAScript.AST
         {
             
         }
-
-        public override Type ObtainType()
+        public override void GenCode(StringBuilder sb)
         {
-            return type;
+
+        }
+    }
+    public class CastExpression : Expression
+    {
+        private Type PrimitiveType;
+        private Expression UnaryExpression;
+        public CastExpression(Type PrimitiveType, Expression UnaryExpression)
+        {
+            this.PrimitiveType = PrimitiveType;
+            this.UnaryExpression = UnaryExpression;
+        }
+
+        public override bool ResolveNames(LexicalScope scope)
+        {
+            return UnaryExpression.ResolveNames(scope);
+        }
+        public override void TypeCheck()
+        {
+            try
+            {
+                if (PrimitiveType != null & UnaryExpression != null)
+                {
+                    PrimitiveType.TypeCheck();
+                    UnaryExpression.TypeCheck();
+                    // Set type to Primitivetype
+                    // We're assuming everything is Int in this compiler
+                    // Therefore there's no need to check if an Expression is FP-strict or not at this point
+                    // If both are not null. Set type to PrimitiveType
+                    type = PrimitiveType;
+                }
+            }
+            catch
+            {
+                if (PrimitiveType == null)
+                {
+                    throw new Exception("Missing PrimitiveType!");
+                }
+                else
+                {
+                    throw new Exception("Missing Expression!");
+                }
+            }
+        }
+        public override void GenCode(StringBuilder sb)
+        {
+
         }
     }
 }
