@@ -23,6 +23,11 @@ namespace IFN660_Java_ECMAScript.AST
             type = new NamedType("INT");
         }
 
+        public override Type ObtainType()
+        {
+            return type;
+        }
+
     }
 
     public class BooleanLiteralExpression : Expression
@@ -56,6 +61,11 @@ namespace IFN660_Java_ECMAScript.AST
         {
             return value ? 1 : 0;
         }
+
+        public override Type ObtainType()
+        {
+            return type;
+        }
     }
 
     public class FloatingPointLiteralExpression : Expression
@@ -73,6 +83,10 @@ namespace IFN660_Java_ECMAScript.AST
         public override void TypeCheck()
         {
             type = new NamedType("FLOAT");
+        }
+        public override Type ObtainType()
+        {
+            return type;
         }
     }
 
@@ -92,7 +106,36 @@ namespace IFN660_Java_ECMAScript.AST
         {
             type = new NamedType("CHAR");
         }
+
+        public override Type ObtainType()
+        {
+            return type;
+        }
     }
 
-    
+    public class StringLiteralExpression : Expression
+    {
+        private string value;
+        public StringLiteralExpression(string value)
+        {
+            this.value = value;
+        }
+
+        public override bool ResolveNames(LexicalScope scope)
+        {
+            return true;
+        }
+        public override void TypeCheck()
+        {
+            type = new NamedType("String");
+        }
+
+        public override Type ObtainType()
+        {
+            return type;
+        }
+    }
+
+
+
 }

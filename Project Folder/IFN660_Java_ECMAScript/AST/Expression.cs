@@ -10,7 +10,8 @@ namespace IFN660_Java_ECMAScript.AST
 	public abstract class Expression : Node
 	{
 		public Type type;
-	};
+        public abstract Type ObtainType();
+    };
 
 	public class AssignmentExpression : Expression
 	{
@@ -44,7 +45,12 @@ namespace IFN660_Java_ECMAScript.AST
             // set type to the lhs type
             type = lhs.type;
 		}
-	}
+
+        public override Type ObtainType()
+        {
+            return type;
+        }
+    }
 
 	public class VariableExpression : Expression
 	{
@@ -76,7 +82,12 @@ namespace IFN660_Java_ECMAScript.AST
 			
 		}
 
-	}
+        public override Type ObtainType()
+        {
+            return type;
+        }
+
+    }
 
 	//changed made by Josh so that the assignmentStatement is correct
 	public class BinaryExpression : Expression
@@ -135,7 +146,11 @@ namespace IFN660_Java_ECMAScript.AST
                     }
             }
 		}
-	}
+        public override Type ObtainType()
+        {
+            return type;
+        }
+    }
 
     public class InstanceOfExpression : Expression
     {
@@ -155,6 +170,11 @@ namespace IFN660_Java_ECMAScript.AST
         public override void TypeCheck()
         {
             
+        }
+
+        public override Type ObtainType()
+        {
+            return type;
         }
     }
 
@@ -179,6 +199,11 @@ namespace IFN660_Java_ECMAScript.AST
         {
             
         }
+
+        public override Type ObtainType()
+        {
+            return type;
+        }
     }
 
 
@@ -201,6 +226,11 @@ namespace IFN660_Java_ECMAScript.AST
         {
             
         }
+
+        public override Type ObtainType()
+        {
+            return type;
+        }
     }
 
     public class PostUnaryExpression : Expression
@@ -221,6 +251,11 @@ namespace IFN660_Java_ECMAScript.AST
         public override void TypeCheck()
         {
             
+        }
+
+        public override Type ObtainType()
+        {
+            return type;
         }
     }
 }

@@ -22,6 +22,7 @@ public static Statement root;
 	public List<Modifier> modfs;
 	public ArrayList arrlst;
 	public List<string> strlst;
+	public List<Expression> exprlst;
 }
 
 // Types
@@ -35,6 +36,9 @@ public static Statement root;
 %type <expr> UnaryExpression, PostfixExpression, Primary //Josh
 %type <expr> PreIncrementExpression,  PreDecrementExpression, UnaryExpressionNotPlusMinus //Josh
 %type <expr> CastExpression, PostIncrementExpression, PostDecrementExpression //Josh
+%type <expr> MethodInvocation
+
+%type <exprlst> ArgumentList, ArgumentList_opt
 
 %type <stmt> Statement, CompilationUnit, TypeDeclaration, ClassDeclaration, NormalClassDeclaration, ClassBodyDeclaration
 %type <stmt> ExpressionStatement, StatementWithoutTrailingSubstatement, LocalVariableDeclaration, LocalVariableDeclarationStatement
@@ -54,7 +58,7 @@ public static Statement root;
 
 %type <modfs> ClassModifiers, MethodModifiers, VariableModifiers
 
-%type <name> VariableDeclaratorId, VariableDeclarator
+%type <name> VariableDeclaratorId, VariableDeclarator, PackageOrTypeName, MethodName
 
 %type <arrlst> MethodHeader, MethodDeclarator
 
@@ -314,6 +318,7 @@ FloatingPointType
 
 UnannReferenceType
 		: UnannArrayType										{ $$ = $1; } // Vivian
+		| UnannTypeVariable										{ $$ = $1; } // Nathan
 		;
 
 // Vivian's work end
@@ -404,7 +409,34 @@ ExpressionStatement
 
 StatementExpression
 		: Assignment											{ $$ = $1; } // Khoa - updated by Nathan
+		| MethodInvocation										{ $$ = $1; } // Nathan
 		;
+
+// Start method handling - Nathan
+MethodInvocation
+		: MethodName '(' ArgumentList_opt ')'					{ $$ = new MethodInvocation($1, $3); } // Nathan
+		| PackageOrTypeName '.' IDENTIFIER '(' ArgumentList_opt ')'		{ $$ = new MethodInvocation( $1 + '.' + $3, $5); } // Nathan
+		;
+
+PackageOrTypeName
+		: IDENTIFIER											{ $$ = $1; } // Nathan
+		| PackageOrTypeName '.' IDENTIFIER						{ $$ = $1 + '.' + $3; } // Nathan
+		;
+
+MethodName
+		: IDENTIFIER											{ $$ = $1; } // Nathan
+		;
+
+ArgumentList_opt
+		: ArgumentList											{ $$ = $1; } // Nathan
+		| /* empty */											{ } // Nathan
+		;
+
+ArgumentList
+		: ArgumentList ',' Expression							{ $$ = $1; $$.Add($3); } // Nathan
+		| Expression											{ $$ = new List<Expression> {$1}; } // Nathan
+		;
+// end method handling
 
 IfThenStatement
 		: IF '(' Expression ')' Statement						{ $$ = new IfStatement($3, $5,null); } // Adon
@@ -460,6 +492,7 @@ Literal
 		| FloatingPointLiteral									{ $$ = new FloatingPointLiteralExpression($1); } // Adon
 		| BooleanLiteral										{ $$ = new BooleanLiteralExpression($1); } // Adon
 		| CharacterLiteral										{ $$ = new CharacterLiteralExpression($1); } // Adon
+		| StringLiteral											{ $$ = new StringLiteralExpression($1); } // Nathan
 		;
 // end of sneha Work
 
