@@ -10,11 +10,14 @@ namespace IFN660_Java_ECMAScript.AST
     {
         private Type varType;
         private string name;
+        private Expression initVal;
+
         int num;
-        public VariableDeclaration(Type type, string name)
+        public VariableDeclaration(Type type, string name, Expression initVal = null)
         {
             this.varType = type;
             this.name = name;
+            this.initVal = initVal;
             num = LastLocal++;
         }
 
@@ -27,7 +30,10 @@ namespace IFN660_Java_ECMAScript.AST
 
         public override bool ResolveNames(LexicalScope scope)
         {
+            // Step 1: Add variables to symboltable
             AddItemsToSymbolTable(scope);
+
+            // Step 2: ResolveName on variable type
             return varType.ResolveNames(scope);
         }
         public override void TypeCheck()
@@ -43,6 +49,13 @@ namespace IFN660_Java_ECMAScript.AST
         public override void GenCode(StringBuilder sb)
         {
             emit(sb, "\t.locals init ([{0}] {1} {2})\n", num, varType.GetILName(), name.ToString());
+
+            // if initialiser is not null, evaluate the initialiser expression and store in variable
+            if (initVal != null)
+            {
+                initVal.GenCode(sb);
+                emit(sb, "\tstloc.{0}\n", num);
+            }
         }
     }
 
@@ -51,15 +64,15 @@ namespace IFN660_Java_ECMAScript.AST
         // this class just builds a list of VariableDeclarations based on the input type and var names. Nathan
         private List<VariableDeclaration> variableDecs;
 
-        public VariableDeclarationList(Type type, List<string> names)
+        public VariableDeclarationList(Type type, List<VariableDeclarator> names)
         {
             variableDecs = new List<VariableDeclaration>();
 
             if (names != null)
             {
-                foreach (string name in names)
+                foreach (VariableDeclarator name in names)
                 {
-                    variableDecs.Add(new VariableDeclaration(type, name));
+                    variableDecs.Add(new VariableDeclaration(type, name.getName(), name.getInitVal() ) );
                 }
             }
         }
@@ -90,6 +103,28 @@ namespace IFN660_Java_ECMAScript.AST
             {
                 each.GenCode(sb);
             }
+        }
+    }
+
+    public class VariableDeclarator
+    {
+        // this class is needed to bridge between the way the Java grammar is written and the structure of the AST
+        private string name;
+        private Expression initVal;
+
+        public VariableDeclarator(string name, Expression initVal)
+        {
+            this.name = name;
+            this.initVal = initVal;
+        }
+
+        public string getName()
+        { 
+            return name;
+        }
+        public Expression getInitVal()
+        {
+            return initVal;
         }
     }
 

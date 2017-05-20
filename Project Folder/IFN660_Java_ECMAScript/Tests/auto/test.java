@@ -2,10 +2,9 @@ public class HelloWorld
 {
 	public void Main (String[] args)
 	{
-		int x;
-		int y;
+		int x = 1, y = 7;
 		x = 42;
-		y = 0;
+		//y = 0;
 		while (x < 46)
 		{
 			x = x + 1;

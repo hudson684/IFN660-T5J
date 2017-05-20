@@ -23,6 +23,8 @@ public static Statement root;
 	public ArrayList arrlst;
 	public List<string> strlst;
 	public List<Expression> exprlst;
+	public VariableDeclarator vardec;
+	public List<VariableDeclarator> vardeclst;
 }
 
 // Types
@@ -36,7 +38,7 @@ public static Statement root;
 %type <expr> UnaryExpression, PostfixExpression, Primary //Josh
 %type <expr> PreIncrementExpression,  PreDecrementExpression, UnaryExpressionNotPlusMinus //Josh
 %type <expr> CastExpression, PostIncrementExpression, PostDecrementExpression //Josh
-%type <expr> MethodInvocation, FormalParameter
+%type <expr> MethodInvocation, FormalParameter, VariableInitialiser
 
 %type <exprlst> ArgumentList, ArgumentList_opt
 %type <exprlst> FormalParameters, FormalParameterList, FormalParameterList_Opt 
@@ -65,11 +67,12 @@ public static Statement root;
 
 %type <modfs> ClassModifiers, MethodModifiers, VariableModifiers
 
-%type <name> VariableDeclaratorId, VariableDeclarator, PackageOrTypeName, MethodName
+%type <name> VariableDeclaratorId, PackageOrTypeName, MethodName
 
 %type <arrlst> MethodHeader, MethodDeclarator
 
-%type <strlst> VariableDeclaratorList
+%type <vardec> VariableDeclarator
+%type <vardeclst> VariableDeclaratorList
 
 %type <name> Identifier_opt
 %type <expr> Expression_opt
@@ -383,16 +386,21 @@ LocalVariableDeclaration
 
 // Too hard at the moment - Nathan
 VariableDeclaratorList
-		: VariableDeclarator									{ $$ = new List<string> { $1 }; } // Nathan
+		: VariableDeclarator									{ $$ = new List<VariableDeclarator> { $1 }; } // Nathan
 		| VariableDeclaratorList ',' VariableDeclarator			{ $$ = $1; $$.Add($3); } // Nathan
 		;
 
 VariableDeclarator
-		: VariableDeclaratorId									{ $$ = $1; } // Nathan
+		: VariableDeclaratorId									{ $$ = new VariableDeclarator($1, null); } // Nathan
+		| VariableDeclaratorId '=' VariableInitialiser			{ $$ = new VariableDeclarator($1, $3); } // Nathan
+		;
+
+VariableInitialiser
+		: Expression											{ $$ = $1; } // Nathan
 		;
 
 VariableDeclaratorId
-		: IDENTIFIER Dims_Opt									{ $$ = $1; } // Nathan
+		: IDENTIFIER Dims_Opt									{ $$ = $1; } // Nathan - array types not yet supported
 		;
 // Nathan
 Statement

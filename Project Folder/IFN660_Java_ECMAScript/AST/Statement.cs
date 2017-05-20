@@ -41,7 +41,7 @@ namespace IFN660_Java_ECMAScript.AST
 			}
 			catch (Exception e)
 			{
-				throw new Exception("TypeCheck error");
+				throw new Exception("TypeCheck error: {0}", e);
 			}
             Then.TypeCheck();
             if (Else != null)
@@ -381,7 +381,7 @@ namespace IFN660_Java_ECMAScript.AST
             }
             catch (Exception e)
             {
-                throw new Exception("TypeCheck error");
+                throw new Exception("TypeCheck error: {0}", e);
             }
 
         }
@@ -451,7 +451,7 @@ namespace IFN660_Java_ECMAScript.AST
             }
             catch (Exception e)
             {
-                throw new Exception("No Expression was entered");
+                throw new Exception("No Expression was entered: {0}", e);
             }
         }
         public override void GenCode(StringBuilder sb)
@@ -491,7 +491,7 @@ namespace IFN660_Java_ECMAScript.AST
             }
             catch (Exception e)
             {
-                throw new NullReferenceException("No Expression was entered");
+                throw new NullReferenceException("No Expression was entered: {0}", e);
             }
         }
         public override void GenCode(StringBuilder sb)
