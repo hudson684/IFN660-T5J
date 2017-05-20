@@ -49,11 +49,10 @@ public static Statement root;
 %type <stmt> IfThenStatement, IfThenElseStatement, WhileStatement 
 %type <stmt> TryStatement, Catches, Catches_opt, CatchClause, Finally
 %type <stmt> PackageDeclaration_opt, Block, MethodBody
-%type <stmt> StatementNoShortIf, WhileStatement
+%type <stmt> StatementNoShortIf
 %type <stmt> DoStatement, ThrowStatement, SynchronizedStatement
 %type <stmt> SwitchStatement
 %type <stmt> AssertStatement
-%type <stmt> IfThenStatement, IfThenElseStatement, IfThenElseStatementNoShortIf
 %type <stmt> LabeledStatement, BreakStatement, ContinueStatement, ReturnStatement
 
 %type <stmts> TypeDeclarations, ClassBody, ClassBodyDeclarations, BlockStatements, BlockStatements_Opt
@@ -539,23 +538,6 @@ Finally
 //TryWithResourcesStatement
 //		: TRY ResourceSpecification Block Catches_opt Finally_opt
 //		;
-
-IfThenStatement
-		: IF '(' Expression ')' Statement						{ $$ = new IfStatement($3, $5,null); } // Adon
-		//: IF '(' Expression ')' BlockStatements						{ $$ = new IfStatement($3, $5,null); } // Adon
-		;
-
-IfThenElseStatement
-		: IF '(' Expression ')' StatementNoShortIf ELSE Statement				{ $$ = new IfStatement($3, $5, $7); } // Adon
-		;
-
-IfThenElseStatementNoShortIf
-		: IF '(' Expression ')' StatementNoShortIf ELSE StatementNoShortIf		{ $$ = new IfStatement($3, $5, $7); } //Adon
-		;
-
-WhileStatement
-		: WHILE '(' Expression ')' Statement					{ $$ = new WhileStatement($3, $5); } // Nathan
-		;
 
 //Add Labeledstatement-Vivian
 LabeledStatement
