@@ -105,10 +105,10 @@ namespace IFN660_Java_ECMAScript.AST
         }
     }
 
-    public class FloatingPointLiteralExpression : Expression, ILiteral
+    public class FloatingLiteralExpression : Expression, ILiteral
     {
         private readonly float value;
-        public FloatingPointLiteralExpression(double value)
+        public FloatingLiteralExpression(float value)
         {
             this.value = value;
         }
