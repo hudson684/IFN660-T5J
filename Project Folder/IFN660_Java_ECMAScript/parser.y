@@ -428,6 +428,7 @@ StatementWithoutTrailingSubstatement
 		| SynchronizedStatement									{ $$ = $1;} // KoJo
 		| SwitchStatement										{ $$ = $1;} //Tri
 		| AssertStatement										{ $$ = $1;} //Tri
+		| TryStatement											{ $$ = $1;} //Adon
 		;
 
 AssertStatement

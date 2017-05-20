@@ -137,17 +137,11 @@ namespace IFN660_Java_ECMAScript.AST
             switch (oper)
             {
                 case ">":
-                    if (!lhs.type.isTheSameAs(new NamedType("INT")) || !lhs.type.isTheSameAs(new NamedType("INT")))
-                    {
-                        System.Console.WriteLine("Invalid arguments for more than expression\n");
-                        throw new Exception("TypeCheck error");
-                    }
-                    type = new NamedType("BOOLEAN");
-                    break;
                 case "<":
-                    if (!lhs.type.isTheSameAs(new NamedType("INT")) || !lhs.type.isTheSameAs(new NamedType("INT")))
+                case "==":
+                    if (!lhs.type.isTheSameAs(new NamedType("INT")) || !rhs.type.isTheSameAs(new NamedType("INT")))
                     {
-                        System.Console.WriteLine("Invalid arguments for less than expression\n");
+                        System.Console.WriteLine("Invalid arguments for \"{0}\" expression\n", oper);
                         throw new Exception("TypeCheck error");
                     }
                     type = new NamedType("BOOLEAN");
@@ -157,7 +151,6 @@ namespace IFN660_Java_ECMAScript.AST
                 case "*":
                 case "%":
                 case "/":
-                case "==":
                     if (lhs.type.isTheSameAs(rhs.type) && !lhs.type.isTheSameAs(new NamedType("BOOLEAN")))
                     {
                         type = lhs.type;

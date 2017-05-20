@@ -137,10 +137,7 @@ public static Statement root;
 // Warning: NonTerminal symbol "Finally" is unreachable
 // Warning: NonTerminal symbol "ConstantExpression" is unreachable
 // Warning: NonTerminal symbol "AdditionalBound" is unreachable
-// Warning: NonTerminal symbol "Catches" is unreachable
-// Warning: NonTerminal symbol "TryStatement" is unreachable
-// Warning: NonTerminal symbol "CatchClause" is unreachable
-// Warning: NonTerminal symbol "Catches_opt" is unreachable
+// Warning: NonTerminal symbol "AdditionalBounds" is unreachable
 // ---------------------------------------------------------------
 
 Program : CompilationUnit										{root = $1;}
