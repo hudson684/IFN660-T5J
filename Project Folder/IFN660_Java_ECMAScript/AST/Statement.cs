@@ -532,7 +532,8 @@ namespace IFN660_Java_ECMAScript.AST
         public override void GenCode(StringBuilder sb)
         {
             expr.GenCode(sb);
-            emit(sb, "\tpop\n");
+            if (!expr.ObtainType().isTheSameAs(new NamedType("VOID")))
+                emit(sb, "\tpop\n");
         }
 
     }

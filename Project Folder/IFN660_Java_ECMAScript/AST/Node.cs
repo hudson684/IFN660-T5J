@@ -74,7 +74,7 @@ namespace IFN660_Java_ECMAScript.AST
 			Console.WriteLine("}");
 		}
 
-		public static LexicalScope getNewScope(LexicalScope oldScope, List<Statement> statementList)
+		public static LexicalScope getNewScope(LexicalScope oldScope, List<Expression> variableList)
 		{
             // Step 1: Create scope that includes standard libraries (ie Java.Lang) if oldScope == null.
             if (oldScope == null)
@@ -91,9 +91,9 @@ namespace IFN660_Java_ECMAScript.AST
 			newScope.Symbol_table = new Dictionary<string, Declaration>();
 
 			// Step 2: Check for declarations in the new scope and add to symbol_table of old scope
-			if (statementList != null)
+			if (variableList != null)
 			{
-				foreach (Statement each in statementList)
+				foreach (Expression each in variableList)
 				{
 					Declaration decl = each as Declaration; // try to cast statement as a declaration
 					if (decl != null)

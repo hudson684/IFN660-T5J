@@ -20,9 +20,9 @@ namespace IFN660_Java_ECMAScript.AST
 		//private MethodDeclaration methodDeclaration;
 		private Type returnType;
 		private Statement statementList;
-		private List<Statement> args;
+		private List<Expression> args;
 
-		public MethodDeclaration(String methodIdentifier, List<Modifier> methodModifiers, Statement statementList, Type returnType, List<Statement> args)
+		public MethodDeclaration(String methodIdentifier, List<Modifier> methodModifiers, Statement statementList, Type returnType, List<Expression> args)
 		{
 			this.methodIdentifier = methodIdentifier;
 			this.methodModifiers = methodModifiers;
@@ -38,13 +38,16 @@ namespace IFN660_Java_ECMAScript.AST
 
 		public override Boolean ResolveNames(LexicalScope scope)
 		{
-			// Step 1: Create new scope and populate the symbol table
+            // Step 1: Add method name to current scope
+            AddItemsToSymbolTable(scope);
+
+			// Step 2: Create new scope and populate the symbol table
 			var newScope = getNewScope(scope, args);
 
-			// Step 2: ResolveNames for each statement
+			// Step 3: ResolveNames for each statement
 			bool loopResolve = true;
 
-            foreach (Statement each in args)
+            foreach (Expression each in args)
             {
                 loopResolve = each.ResolveNames(newScope);
             }
@@ -103,7 +106,7 @@ namespace IFN660_Java_ECMAScript.AST
 
             // args do this properly - nathan
             string fp_list = "";
-            foreach (Statement each in args)
+            foreach (Expression each in args)
             {
                 FormalParam fp = each as FormalParam;
                 if (fp != null)
@@ -111,26 +114,19 @@ namespace IFN660_Java_ECMAScript.AST
                     fp_list = fp_list + fp.ObtainType().GetILName() + ' ' + fp.GetName() + ',';
                 }
             }
-            fp_list = fp_list.TrimEnd(',');
-
-
-            //emit(sb, "string[] args");
-
+            fp_list = fp_list.TrimEnd(',');// remove last ','
             emit(sb, fp_list + ")");
 
-            emit(sb, "{{\n");
-            // manually put in entry point
-            emit(sb, "\t.entrypoint\n");
+            emit(sb, "{{\n"); // start of method body
+            // If the method is called "main" set it as the program entrypoing
+            if (methodIdentifier.ToLower() == "main")
+                emit(sb, "\t.entrypoint\n");
 
+            // generate code for the method body statements
             statementList.GenCode(sb);
 
-            // manually add WriteLine of variable 1
-            // this will be done properly with System.out.println is implemented - nathan
-            //emit(sb, "\tldloc.1\n");
-            //emit(sb, "\tcall\tvoid [mscorlib]System.Console::WriteLine(int32)\n");
-
             emit(sb, "\tret\n");
-            emit(sb, "}} {0}",Environment.NewLine);
+            emit(sb, "}} {0}",Environment.NewLine); // end of method body
         }
 
     }

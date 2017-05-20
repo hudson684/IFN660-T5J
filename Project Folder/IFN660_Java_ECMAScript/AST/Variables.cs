@@ -46,7 +46,7 @@ namespace IFN660_Java_ECMAScript.AST
         }
     }
 
-    public class VariableDeclarationList : Expression, Declaration
+    public class VariableDeclarationList : Expression
     {
         // this class just builds a list of VariableDeclarations based on the input type and var names. Nathan
         private List<VariableDeclaration> variableDecs;
@@ -62,18 +62,6 @@ namespace IFN660_Java_ECMAScript.AST
                     variableDecs.Add(new VariableDeclaration(type, name));
                 }
             }
-        }
-
-        //
-        public int GetNumber()
-        {
-            // this should never actually be called
-            return 0;
-        }
-        public void AddItemsToSymbolTable(LexicalScope scope)
-        {
-            foreach (VariableDeclaration each in variableDecs)
-                each.AddItemsToSymbolTable(scope);
         }
 
         public override bool ResolveNames(LexicalScope scope)
@@ -105,7 +93,7 @@ namespace IFN660_Java_ECMAScript.AST
         }
     }
 
-    public class FormalParam : Statement, Declaration
+    public class FormalParam : Expression, Declaration
     {
         private Type varType;
         private string name;
@@ -132,7 +120,7 @@ namespace IFN660_Java_ECMAScript.AST
             // needs something here - Nathan
         }
 
-        public Type ObtainType()
+        public override Type ObtainType()
         {
             return varType;
         }

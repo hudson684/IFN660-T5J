@@ -90,7 +90,6 @@ namespace IFN660_Java_ECMAScript.AST
                 string varType = arg.ObtainType().GetILName();
                 arg.GenCode(sb);
                 emit(sb, "\tcall\tvoid [mscorlib]System.Console::WriteLine({0})\n", varType);
-                emit(sb, "\tldc.i4 0\n");
             }
         }
     }
