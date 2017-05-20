@@ -12,5 +12,24 @@ public class HelloWorld
 		}
 		y = y + x;
 		System.out.println(y);
+		
+		// Boolean Test
+		boolean z;
+		z = true;
+
+		// Float and double test
+		float m;
+		m = 0.2f;
+
+		// Should cause error cause it is a double not float
+		//m = 0.2;
+
+		double n;
+		n = 0.2;
+		n= m + 1;
+
+		// Variable name test
+		int _test;
+		int $test;
 	}
 }
