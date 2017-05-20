@@ -22,10 +22,13 @@ public static Statement root;
 	public List<Modifier> modfs;
 	public ArrayList arrlst;
 	public List<string> strlst;
+	public List<Expression> exprlst;
+	public VariableDeclarator vardec;
+	public List<VariableDeclarator> vardeclst;
 }
 
 // Types
-%type <expr> Literal, StatementExpression, Assignment, LeftHandSide, ExpressionName
+%type <expr> Literal, StatementExpression, Assignment, LeftHandSide, ExpressionName, LocalVariableDeclaration
 %type <expr> TypeParameters_opt, Superclass_opt, Superinterfaces_opt
 %type <expr> AssignmentExpression, PrimaryNoNewArray
 %type <expr> Expression, LambdaExpression, LambdaExpression, LambdaBody
@@ -35,24 +38,26 @@ public static Statement root;
 %type <expr> UnaryExpression, PostfixExpression, Primary //Josh
 %type <expr> PreIncrementExpression,  PreDecrementExpression, UnaryExpressionNotPlusMinus //Josh
 %type <expr> CastExpression, PostIncrementExpression, PostDecrementExpression //Josh
+%type <expr> MethodInvocation, FormalParameter, VariableInitialiser
+
+%type <exprlst> ArgumentList, ArgumentList_opt
+%type <exprlst> FormalParameters, FormalParameterList, FormalParameterList_Opt 
 
 %type <stmt> Statement, CompilationUnit, TypeDeclaration, ClassDeclaration, NormalClassDeclaration, ClassBodyDeclaration
-%type <stmt> ExpressionStatement, StatementWithoutTrailingSubstatement, LocalVariableDeclaration, LocalVariableDeclarationStatement
-%type <stmt> BlockStatement, Throws_opt, ClassMemberDeclaration, MethodDeclaration, FormalParameter
+%type <stmt> ExpressionStatement, StatementWithoutTrailingSubstatement, LocalVariableDeclarationStatement
+%type <stmt> BlockStatement, Throws_opt, ClassMemberDeclaration, MethodDeclaration
 %type <stmt> PackageDeclaration_opt, Block, MethodBody
 %type <stmt> StatementNoShortIf, IfThenElseStatementNoShortIf
 %type <stmt> IfThenStatement, IfThenElseStatement, WhileStatement 
 %type <stmt> TryStatement, Catches, Catches_opt, CatchClause, Finally
 %type <stmt> PackageDeclaration_opt, Block, MethodBody
-%type <stmt> StatementNoShortIf, WhileStatement
+%type <stmt> StatementNoShortIf
 %type <stmt> DoStatement, ThrowStatement, SynchronizedStatement
 %type <stmt> SwitchStatement
 %type <stmt> AssertStatement
-%type <stmt> IfThenStatement, IfThenElseStatement, IfThenElseStatementNoShortIf
 %type <stmt> LabeledStatement, BreakStatement, ContinueStatement, ReturnStatement
 
 %type <stmts> TypeDeclarations, ClassBody, ClassBodyDeclarations, BlockStatements, BlockStatements_Opt
-%type <stmts> FormalParameters, FormalParameterList, FormalParameterList_Opt 
 %type <stmts> ImportDeclarations
 
 %type <type> Result, FloatingPointType, IntegralType, NumericType
@@ -62,11 +67,12 @@ public static Statement root;
 
 %type <modfs> ClassModifiers, MethodModifiers, VariableModifiers
 
-%type <name> VariableDeclaratorId, VariableDeclarator
+%type <name> VariableDeclaratorId, PackageOrTypeName, MethodName
 
 %type <arrlst> MethodHeader, MethodDeclarator
 
-%type <strlst> VariableDeclaratorList
+%type <vardec> VariableDeclarator
+%type <vardeclst> VariableDeclaratorList
 
 %type <name> Identifier_opt
 %type <expr> Expression_opt
@@ -202,7 +208,7 @@ ClassMemberDeclaration
 
 // Change ClassMemberDeclaration to MethodDeclaration -An	
 MethodDeclaration
-		: MethodModifiers MethodHeader MethodBody				{ $$ = new MethodDeclaration( (string)((ArrayList)$2[1])[0], $1, $3, (AST.Type)$2[0], (List<Statement>)((ArrayList)$2[1])[1]); } // Vivian - updated by Nathan
+		: MethodModifiers MethodHeader MethodBody				{ $$ = new MethodDeclaration( (string)((ArrayList)$2[1])[0], $1, $3, (AST.Type)$2[0], (List<Expression>)((ArrayList)$2[1])[1]); } // Vivian - updated by Nathan
         ;
 
 MethodModifiers
@@ -251,12 +257,12 @@ FormalParameterList
 		;
 
 FormalParameters 
-		: FormalParameter 										{ $$ = new List<Statement> { $1 }; } // Nathan 
+		: FormalParameter 										{ $$ = new List<Expression> { $1 }; } // Nathan 
 		| FormalParameters ',' FormalParameter					{ $$ = $1; $$.Add($3); } // Nathan
 		;
 
 FormalParameter 
-		:  VariableModifiers UnannType VariableDeclaratorId		{ $$ = new VariableDeclaration($2, $3); } // Nathan - doesn't allow VariableModifiers at the moment
+		:  VariableModifiers UnannType VariableDeclaratorId		{ $$ = new FormalParam($2, $3); } // Nathan - doesn't allow VariableModifiers at the moment
 		;
 VariableModifiers 
 		: VariableModifiers VariableModifier					{ $$ = $1; $$.Add($2); } // Nathan
@@ -325,6 +331,7 @@ FloatingPointType
 
 UnannReferenceType
 		: UnannArrayType										{ $$ = $1; } // Vivian
+		| UnannTypeVariable										{ $$ = $1; } // Nathan
 		;
 
 // Vivian's work end
@@ -369,7 +376,7 @@ BlockStatement
 		;
 
 LocalVariableDeclarationStatement
-		: LocalVariableDeclaration ';'							{ $$ = $1; } // Vivian - updated by Nathan
+		: LocalVariableDeclaration ';'							{ $$ = new VariableDeclarationStatement($1); } // Vivian - updated by Nathan
 		;
 
 LocalVariableDeclaration
@@ -379,16 +386,21 @@ LocalVariableDeclaration
 
 // Too hard at the moment - Nathan
 VariableDeclaratorList
-		: VariableDeclarator									{ $$ = new List<string> { $1 }; } // Nathan
+		: VariableDeclarator									{ $$ = new List<VariableDeclarator> { $1 }; } // Nathan
 		| VariableDeclaratorList ',' VariableDeclarator			{ $$ = $1; $$.Add($3); } // Nathan
 		;
 
 VariableDeclarator
-		: VariableDeclaratorId									{ $$ = $1; } // Nathan
+		: VariableDeclaratorId									{ $$ = new VariableDeclarator($1, null); } // Nathan
+		| VariableDeclaratorId '=' VariableInitialiser			{ $$ = new VariableDeclarator($1, $3); } // Nathan
+		;
+
+VariableInitialiser
+		: Expression											{ $$ = $1; } // Nathan
 		;
 
 VariableDeclaratorId
-		: IDENTIFIER Dims_Opt									{ $$ = $1; } // Nathan
+		: IDENTIFIER Dims_Opt									{ $$ = $1; } // Nathan - array types not yet supported
 		;
 // Nathan
 Statement
@@ -446,7 +458,34 @@ ExpressionStatement
 
 StatementExpression
 		: Assignment											{ $$ = $1; } // Khoa - updated by Nathan
+		| MethodInvocation										{ $$ = $1; } // Nathan
 		;
+
+// Start method handling - Nathan
+MethodInvocation
+		: MethodName '(' ArgumentList_opt ')'					{ $$ = new MethodInvocation($1, $3); } // Nathan
+		| PackageOrTypeName '.' IDENTIFIER '(' ArgumentList_opt ')'		{ $$ = new MethodInvocation( $1 + '.' + $3, $5); } // Nathan
+		;
+
+PackageOrTypeName
+		: IDENTIFIER											{ $$ = $1; } // Nathan
+		| PackageOrTypeName '.' IDENTIFIER						{ $$ = $1 + '.' + $3; } // Nathan
+		;
+
+MethodName
+		: IDENTIFIER											{ $$ = $1; } // Nathan
+		;
+
+ArgumentList_opt
+		: ArgumentList											{ $$ = $1; } // Nathan
+		| /* empty */											{ } // Nathan
+		;
+
+ArgumentList
+		: ArgumentList ',' Expression							{ $$ = $1; $$.Add($3); } // Nathan
+		| Expression											{ $$ = new List<Expression> {$1}; } // Nathan
+		;
+// end method handling
 
 IfThenStatement
 		: IF '(' Expression ')' Statement						{ $$ = new IfStatement($3, $5,null); } // Adon
@@ -508,23 +547,6 @@ Finally
 //TryWithResourcesStatement
 //		: TRY ResourceSpecification Block Catches_opt Finally_opt
 //		;
-
-IfThenStatement
-		: IF '(' Expression ')' Statement						{ $$ = new IfStatement($3, $5,null); } // Adon
-		//: IF '(' Expression ')' BlockStatements						{ $$ = new IfStatement($3, $5,null); } // Adon
-		;
-
-IfThenElseStatement
-		: IF '(' Expression ')' StatementNoShortIf ELSE Statement				{ $$ = new IfStatement($3, $5, $7); } // Adon
-		;
-
-IfThenElseStatementNoShortIf
-		: IF '(' Expression ')' StatementNoShortIf ELSE StatementNoShortIf		{ $$ = new IfStatement($3, $5, $7); } //Adon
-		;
-
-WhileStatement
-		: WHILE '(' Expression ')' Statement					{ $$ = new WhileStatement($3, $5); } // Nathan
-		;
 
 //Add Labeledstatement-Vivian
 LabeledStatement

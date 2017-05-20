@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Text;
 
 namespace IFN660_Java_ECMAScript.AST
 {
@@ -44,6 +46,14 @@ namespace IFN660_Java_ECMAScript.AST
         public override void TypeCheck()
         {
             statements.ForEach(x => x.TypeCheck());
+        }
+
+        public override void GenCode(StringBuilder sb)
+        {
+            foreach (Statement each in statements)
+            {
+                each.GenCode(sb);
+            }
         }
 
     }

@@ -1,51 +1,63 @@
 using System.Collections.Generic;
 using System;
+using System.Text;
+using System.IO;
 
 namespace IFN660_Java_ECMAScript.AST
 {
 
 	public abstract class Statement : Node
 	{
-	};
+        public static int LastLabel;
+        //public virtual void GenCode(StreamWriter sb) { }
+    };
 
-	public class IfStatement : Statement
-	{
-		private Expression CondExpr;
-		private Statement ThenStmts, ElseStmts;
-		public IfStatement(Expression CondExpr, Statement ThenStmts, Statement ElseStmts)
-		{
-			this.CondExpr = CondExpr; this.ThenStmts = ThenStmts; this.ElseStmts = ElseStmts;
-		}
-
-		public override bool ResolveNames(LexicalScope scope)
+    public class IfStatement : Statement
+    {
+        private Expression CondExpr;
+        private Statement ThenStmts, ElseStmts;
+        public IfStatement(Expression CondExpr, Statement ThenStmts, Statement ElseStmts)
         {
-            if(ElseStmts == null)
+            this.CondExpr = CondExpr; this.ThenStmts = ThenStmts; this.ElseStmts = ElseStmts;
+        }
+
+        public override bool ResolveNames(LexicalScope scope)
+        {
+            if (ElseStmts == null)
                 return CondExpr.ResolveNames(scope) & ThenStmts.ResolveNames(scope);
             else
                 return CondExpr.ResolveNames(scope) & ThenStmts.ResolveNames(scope) & ElseStmts.ResolveNames(scope);
         }
 
-		public override void TypeCheck()
-		{
-			this.CondExpr.TypeCheck();
-			try
-			{
-				if (!CondExpr.type.Equals(new NamedType("BOOLEAN")))
-				{
-					Console.WriteLine("Invalid type for if statement condition\n");
-				}
-			}
-			catch (Exception)
-			{
-				throw new Exception("TypeCheck error");
-			}
+        public override void TypeCheck()
+        {
+            CondExpr.TypeCheck();
+
+            if (!CondExpr.type.isTheSameAs(new NamedType("BOOLEAN")))
+            {
+                Console.WriteLine("Invalid type for if statement condition\n");
+                throw new Exception("TypeCheck error");
+            }
             ThenStmts.TypeCheck();
             if (ElseStmts != null)
                 ElseStmts.TypeCheck();
-		}
-	}
+        }
 
-	public class WhileStatement : Statement
+        public override void GenCode(StringBuilder sb)
+        {
+            CondExpr.GenCode(sb);
+            int elseLabel = LastLabel++;
+            emit(sb, "\tbrfalse L{0}\n", elseLabel);
+            ThenStmts.GenCode(sb);
+            emit(sb, "L{0}:", elseLabel);
+            if (ElseStmts != null)
+            {
+                ElseStmts.GenCode(sb);
+            }
+        }
+    }
+
+    public class WhileStatement : Statement
 	{
 		// by Nathan
 		private Expression Cond;
@@ -77,6 +89,20 @@ namespace IFN660_Java_ECMAScript.AST
 
             Statements.TypeCheck();
         }
+        public override void GenCode(StringBuilder sb)
+        {
+            int codeLabel, testLabel;
+
+            codeLabel = LastLabel++;
+            testLabel = LastLabel++;
+
+            emit(sb, "\tbr.s\tL{0}\n", testLabel);
+            emit(sb, "L{0}:", codeLabel);    //removed \n since we don't need it - by Adon
+            Statements.GenCode(sb);
+            emit(sb, "L{0}:", testLabel);    //removed \n since we don't need it - by Adon
+            Cond.GenCode(sb);
+            emit(sb, "\tbrtrue.s\tL{0}\n", codeLabel);
+        }
 
     }
 
@@ -105,6 +131,10 @@ namespace IFN660_Java_ECMAScript.AST
                 System.Console.WriteLine("Type error in SwitchStatement\n");
                 throw new Exception("TypeCheck error");
             }
+        }
+        public override void GenCode(StringBuilder sb)
+        {
+
         }
     }
 
@@ -156,6 +186,10 @@ namespace IFN660_Java_ECMAScript.AST
                 }
             }
         }
+        public override void GenCode(StringBuilder sb)
+        {
+
+        }
     }
 
     public class LabeledStatement : Statement
@@ -179,6 +213,10 @@ namespace IFN660_Java_ECMAScript.AST
         {
             Statements.TypeCheck();
         }
+        public override void GenCode(StringBuilder sb)
+        {
+
+        }
     }
 
 
@@ -201,6 +239,10 @@ namespace IFN660_Java_ECMAScript.AST
         public override void TypeCheck()
         {
         }
+        public override void GenCode(StringBuilder sb)
+        {
+
+        }
     }
 
     public class ContinueStatement : Statement
@@ -221,6 +263,10 @@ namespace IFN660_Java_ECMAScript.AST
         }
         public override void TypeCheck()
         {
+        }
+        public override void GenCode(StringBuilder sb)
+        {
+
         }
     }
 
@@ -243,6 +289,10 @@ namespace IFN660_Java_ECMAScript.AST
         public override void TypeCheck()
         {
             Expr.TypeCheck();
+        }
+        public override void GenCode(StringBuilder sb)
+        {
+
         }
     }
 
@@ -276,6 +326,10 @@ namespace IFN660_Java_ECMAScript.AST
 
             statement.TypeCheck();
         }
+        public override void GenCode(StringBuilder sb)
+        {
+
+        }
     }
 
     public class ForStatement : Statement
@@ -293,8 +347,12 @@ namespace IFN660_Java_ECMAScript.AST
 			this.ForUpdate = ForUpdate;
 			this.StmtList = StmtList;
 		}
+        public override void GenCode(StringBuilder sb)
+        {
 
-		public override bool ResolveNames(LexicalScope scope)
+        }
+
+        public override bool ResolveNames(LexicalScope scope)
 		{
 			bool loopResolve = true;
 
@@ -320,21 +378,24 @@ namespace IFN660_Java_ECMAScript.AST
                     Console.WriteLine("Invalid type for if statement condition\n");
                 }
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                throw new Exception("TypeCheck error");
+                throw new Exception("TypeCheck error: {0}", e);
             }
 
         }
 	}
 
+    /*
+     * This TryStatement is not fully functional, be aware for using it - Adon
+    */
     public class TryStatement : Statement
     {
         private Statement TryStmts, CatchStmts, FinallyStmts;
 
-        public TryStatement(Statement TryStmts, Statement CatchStmts, Statement FinallyStmts)
+        public TryStatement(Statement tryStatements, Statement CatchStmts, Statement FinallyStmts)
         {
-            this.TryStmts = TryStmts;
+            this.TryStmts = tryStatements;
             this.CatchStmts = CatchStmts;
             this.FinallyStmts = FinallyStmts;
         }
@@ -357,9 +418,16 @@ namespace IFN660_Java_ECMAScript.AST
             if (FinallyStmts != null)
                 FinallyStmts.TypeCheck();
         }
+        public override void GenCode(StringBuilder sb)
+        {
+            TryStmts.GenCode(sb);
+            if (FinallyStmts != null)
+                FinallyStmts.GenCode(sb);
+            if (FinallyStmts != null)
+                FinallyStmts.GenCode(sb);
+        }
 
     }
-
     public class ThrowStatement : Statement              //KoJo
     {
         private Expression Expr;
@@ -387,10 +455,14 @@ namespace IFN660_Java_ECMAScript.AST
                     Expr.TypeCheck();
                 }
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                throw new Exception("No Expression was entered");
+                throw new Exception("No Expression was entered: {0}", e);
             }
+        }
+        public override void GenCode(StringBuilder sb)
+        {
+
         }
     }
 
@@ -423,10 +495,14 @@ namespace IFN660_Java_ECMAScript.AST
                     Stmt.TypeCheck();
                 }
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                throw new NullReferenceException("No Expression was entered");
+                throw new NullReferenceException("No Expression was entered: {0}", e);
             }
+        }
+        public override void GenCode(StringBuilder sb)
+        {
+
         }
     }
 
@@ -459,70 +535,47 @@ namespace IFN660_Java_ECMAScript.AST
             }*/
         }
 
-	}
-
-
-	public class VariableDeclaration : Statement, Declaration
-	{
-		private Type type;
-		private string name;
-		public VariableDeclaration(Type type, string name)
-		{
-			this.type = type;
-			this.name = name;
-		}
-
-        public void AddItemsToSymbolTable(LexicalScope scope)
+        public override void GenCode(StringBuilder sb)
         {
-            scope.Symbol_table.Add(name, this);
+            expr.GenCode(sb);
+            if (!expr.ObtainType().isTheSameAs(new NamedType("VOID")))
+                emit(sb, "\tpop\n");
+        }
+
+    }
+
+    public class VariableDeclarationStatement : Statement
+    {
+        private Expression varDec;
+
+        public VariableDeclarationStatement(Expression varDec)
+        {
+            this.varDec = varDec;
         }
 
         public override bool ResolveNames(LexicalScope scope)
-		{
-			return type.ResolveNames(scope);
-		}
-		public override void TypeCheck()
-		{
-			
-		}
-
-        public Type ObtainType()
         {
-            return type;
+            return varDec.ResolveNames(scope);
         }
-	}
-
-	public class VariableDeclarationList : Statement, Declaration
-	{
-		private Type type;
-		private List<string> names;
-
-		public VariableDeclarationList(Type type, List<string> names)
-		{
-			this.type = type;
-			this.names = names;
-		}
-
-
-        public void AddItemsToSymbolTable(LexicalScope scope)
+        public override void TypeCheck()
         {
-            foreach (string each in names)
-                scope.Symbol_table.Add(each, this);
+            this.varDec.TypeCheck();
+            /*try
+            {
+                if (!expr.type.Equals(new NamedType("BOOLEAN")))
+                {
+                    Console.WriteLine("Invalid type for if statement condition\n");
+                }
+            }
+            catch (Exception e)
+            {
+                throw new Exception("TypeCheck error");
+            }*/
         }
 
-        public override bool ResolveNames(LexicalScope scope)
-		{
-			return type.ResolveNames(scope);
-		}
-
-		public override void TypeCheck()
-		{
-			
-		}
-
-        public Type ObtainType()
+        public override void GenCode(StringBuilder sb)
         {
-            return type;
+            varDec.GenCode(sb);
         }
-	}
+    }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -20,5 +21,10 @@ namespace IFN660_Java_ECMAScript.AST
 			
 		}
 
-	}
+        public override void GenCode(StringBuilder sb)
+        {
+
+        }
+
+    }
 }

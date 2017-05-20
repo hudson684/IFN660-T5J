@@ -10,5 +10,6 @@ namespace IFN660_Java_ECMAScript
     {
 		AST.Type ObtainType();
         void AddItemsToSymbolTable(LexicalScope scope);
+        int GetNumber();
     }
 }

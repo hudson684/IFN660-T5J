@@ -1,5 +1,6 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -21,6 +22,16 @@ namespace IFN660_Java_ECMAScript.AST
         public override void TypeCheck()
         {
             type = new NamedType("INT");
+        }
+
+        public override Type ObtainType()
+        {
+            return type;
+        }
+
+        public override void GenCode(StringBuilder sb)
+        {
+            emit(sb, "\tldc.i4\t{0}\n", value.ToString());
         }
 
     }
@@ -56,6 +67,16 @@ namespace IFN660_Java_ECMAScript.AST
         {
             return value ? 1 : 0;
         }
+
+        public override Type ObtainType()
+        {
+            return type;
+        }
+
+        public override void GenCode(StringBuilder sb)
+        {
+
+        }
     }
 
     public class FloatingPointLiteralExpression : Expression
@@ -73,6 +94,15 @@ namespace IFN660_Java_ECMAScript.AST
         public override void TypeCheck()
         {
             type = new NamedType("FLOAT");
+        }
+        public override Type ObtainType()
+        {
+            return type;
+        }
+
+        public override void GenCode(StringBuilder sb)
+        {
+
         }
     }
 
@@ -92,6 +122,17 @@ namespace IFN660_Java_ECMAScript.AST
         {
             type = new NamedType("CHAR");
         }
+
+        public override Type ObtainType()
+        {
+            return type;
+        }
+
+
+        public override void GenCode(StringBuilder sb)
+        {
+
+        }
     }
 
     public class StringLiteralExpression : Expression
@@ -109,7 +150,17 @@ namespace IFN660_Java_ECMAScript.AST
 
         public override void TypeCheck()
         {
-            type = new NamedType("STRING");
+            type = new NamedType("String");
+        }
+
+        public override Type ObtainType()
+        {
+            return type;
+        }
+
+        public override void GenCode(StringBuilder sb)
+        {
+
         }
     }
 
@@ -131,6 +182,15 @@ namespace IFN660_Java_ECMAScript.AST
             type = new NamedType("NULL");
         }
 
+        public override Type ObtainType()
+        {
+            return type;
+        }
+
+        public override void GenCode(StringBuilder sb)
+        {
+
+        }
     }
 
     
