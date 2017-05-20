@@ -11,8 +11,8 @@ namespace IFN660_Java_ECMAScript.AST
         private Type varType;
         private string name;
         private Expression initVal;
-
         int num;
+
         public VariableDeclaration(Type type, string name, Expression initVal = null)
         {
             this.varType = type;
@@ -48,13 +48,14 @@ namespace IFN660_Java_ECMAScript.AST
 
         public override void GenCode(StringBuilder sb)
         {
-            emit(sb, "\t.locals init ([{0}] {1} {2})\n", num, varType.GetILName(), name.ToString());
+            cg.emit(sb, "\t.locals init ([{0}] {1} {2})\n", num, varType.GetILName(), name.ToString());
 
             // if initialiser is not null, evaluate the initialiser expression and store in variable
             if (initVal != null)
             {
+                
                 initVal.GenCode(sb);
-                emit(sb, "\tstloc.{0}\n", num);
+                cg.emit(sb, "\tstloc.{0}\n", num);
             }
         }
     }

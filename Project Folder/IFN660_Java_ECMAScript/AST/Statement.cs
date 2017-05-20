@@ -47,9 +47,9 @@ namespace IFN660_Java_ECMAScript.AST
         {
             CondExpr.GenCode(sb);
             int elseLabel = LastLabel++;
-            emit(sb, "\tbrfalse L{0}\n", elseLabel);
+            cg.emit(sb, "\tbrfalse L{0}\n", elseLabel);
             ThenStmts.GenCode(sb);
-            emit(sb, "L{0}:", elseLabel);
+            cg.emit(sb, "L{0}:", elseLabel);
             if (ElseStmts != null)
             {
                 ElseStmts.GenCode(sb);
@@ -96,12 +96,12 @@ namespace IFN660_Java_ECMAScript.AST
             codeLabel = LastLabel++;
             testLabel = LastLabel++;
 
-            emit(sb, "\tbr.s\tL{0}\n", testLabel);
-            emit(sb, "L{0}:", codeLabel);    //removed \n since we don't need it - by Adon
+            cg.emit(sb, "\tbr.s\tL{0}\n", testLabel);
+            cg.emit(sb, "L{0}:", codeLabel);    //removed \n since we don't need it - by Adon
             Statements.GenCode(sb);
-            emit(sb, "L{0}:", testLabel);    //removed \n since we don't need it - by Adon
+            cg.emit(sb, "L{0}:", testLabel);    //removed \n since we don't need it - by Adon
             Cond.GenCode(sb);
-            emit(sb, "\tbrtrue.s\tL{0}\n", codeLabel);
+            cg.emit(sb, "\tbrtrue.s\tL{0}\n", codeLabel);
         }
 
     }
@@ -539,7 +539,7 @@ namespace IFN660_Java_ECMAScript.AST
         {
             expr.GenCode(sb);
             if (!expr.ObtainType().isTheSameAs(new NamedType("VOID")))
-                emit(sb, "\tpop\n");
+                cg.emit(sb, "\tpop\n");
         }
 
     }

@@ -97,12 +97,12 @@ namespace IFN660_Java_ECMAScript.AST
 
         public override void GenCode(StringBuilder sb)
         {
-            emit(sb, ".method static ");
+            cg.emit(sb, ".method static ");
             foreach (var modif in methodModifiers)
-                emit(sb, "{0} ", modif.ToString().ToLower());
+                cg.emit(sb, "{0} ", modif.ToString().ToLower());
             returnType.GenCode(sb);
-            emit(sb, "{0}", methodIdentifier);
-            emit(sb, "(");
+            cg.emit(sb, "{0}", methodIdentifier);
+            cg.emit(sb, "(");
 
             // args do this properly - nathan
             string fp_list = "";
@@ -115,18 +115,18 @@ namespace IFN660_Java_ECMAScript.AST
                 }
             }
             fp_list = fp_list.TrimEnd(',');// remove last ','
-            emit(sb, fp_list + ")");
+            cg.emit(sb, fp_list + ")");
 
-            emit(sb, "{{\n"); // start of method body
+            cg.emit(sb, "{{\n"); // start of method body
             // If the method is called "main" set it as the program entrypoing
             if (methodIdentifier.ToLower() == "main")
-                emit(sb, "\t.entrypoint\n");
+                cg.emit(sb, "\t.entrypoint\n");
 
             // generate code for the method body statements
             statementList.GenCode(sb);
 
-            emit(sb, "\tret\n");
-            emit(sb, "}} {0}",Environment.NewLine); // end of method body
+            cg.emit(sb, "\tret\n");
+            cg.emit(sb, "}} {0}",Environment.NewLine); // end of method body
         }
 
     }

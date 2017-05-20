@@ -104,12 +104,12 @@ namespace IFN660_Java_ECMAScript.AST
 
         public override void GenCode(StringBuilder sb)
         {
-            emit(sb, "\tldloc.{0}\n", declarationRef.GetNumber());
+            cg.emit(sb, "\tldloc.{0}\n", declarationRef.GetNumber());
         }
 
         public override void GenStoreCode(StringBuilder sb, string ex)
         {
-            emit(sb, "\tstloc.{0}\n", declarationRef.GetNumber());
+            cg.emit(sb, "\tstloc.{0}\n", declarationRef.GetNumber());
         }
 
     }
@@ -190,10 +190,10 @@ namespace IFN660_Java_ECMAScript.AST
             switch (oper)
             {
                 case "<":
-                    emit(sb, "\tclt\n");
+                    cg.emit(sb, "\tclt\n");
                     break;
                 case "+":
-                    emit(sb, "\tadd\n");
+                    cg.emit(sb, "\tadd\n");
                     break;
                 default:
                     Console.WriteLine("Unexpected binary operator {0}\n", oper);

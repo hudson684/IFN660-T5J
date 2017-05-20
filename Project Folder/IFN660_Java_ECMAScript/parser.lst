@@ -1,11 +1,11 @@
 
 // ==========================================================================
-//  GPPG error listing for yacc source file <parser.y - 20/05/2017 2:41:29 PM>
+//  GPPG error listing for yacc source file <parser.y - 5/20/2017 11:14:22 PM>
 // ==========================================================================
 //  Version:  1.5.2
-//  Machine:  VDI-VL17-019
-//  DateTime: 20/05/2017 3:10:14 PM
-//  UserName: n9648500
+//  Machine:  DESKTOP-I68NCGT
+//  DateTime: 5/21/2017 1:36:59 AM
+//  UserName: An
 // ==========================================================================
 
 
@@ -133,8 +133,6 @@ public static Statement root;
 %left '+'
 
 %%
-// Warning: NonTerminal symbol "AdditionalBounds" is unreachable
-// Warning: NonTerminal symbol "Finally" is unreachable
 // Warning: NonTerminal symbol "ConstantExpression" is unreachable
 // Warning: NonTerminal symbol "AdditionalBound" is unreachable
 // Warning: NonTerminal symbol "AdditionalBounds" is unreachable
@@ -445,6 +443,7 @@ StatementWithoutTrailingSubstatement
 		| SynchronizedStatement									{ $$ = $1;} // KoJo
 		| SwitchStatement										{ $$ = $1;} //Tri
 		| AssertStatement										{ $$ = $1;} //Tri
+		| TryStatement											{ $$ = $1;} //Adon
 		;
 
 AssertStatement

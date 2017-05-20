@@ -61,7 +61,7 @@ namespace IFN660_Java_ECMAScript.AST
 
         public override void GenCode(StringBuilder sb)
         {
-            emit(sb, ".class {0} {{\n", classIdentifier);
+            cg.emit(sb, ".class {0} {{\n", classIdentifier);
 
             /* not required
             foreach (var modif in classModifiers)
@@ -71,7 +71,7 @@ namespace IFN660_Java_ECMAScript.AST
             foreach (var bd in classBody)
                 bd.GenCode(sb);
 
-            emit(sb, "}}");
+            cg.emit(sb, "}}");
         }
 
     }

@@ -31,7 +31,7 @@ namespace IFN660_Java_ECMAScript.AST
 
         public override void GenCode(StringBuilder sb)
         {
-            emit(sb, "\tldc.i4\t{0}\n", value.ToString());
+            cg.EmitLong(sb,value);
         }
 
     }

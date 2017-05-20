@@ -212,7 +212,7 @@ namespace IFN660_Java_ECMAScript.AST
 
         public override void GenCode(StringBuilder sb)
         {
-            emit(sb, "{0} ", elementType.ToLower());
+            cg.emit(sb, "{0} ", elementType.ToLower());
         }
 
     }
