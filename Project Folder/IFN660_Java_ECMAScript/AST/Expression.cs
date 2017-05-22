@@ -192,8 +192,26 @@ namespace IFN660_Java_ECMAScript.AST
                 case "<":
                     cg.emit(sb, "\tclt\n");
                     break;
+                case ">":
+                    cg.emit(sb, "\tcgt\n");  
+                    break;
+                case "==":
+                    cg.emit(sb, "\tceq\n");  
+                    break;
                 case "+":
                     cg.emit(sb, "\tadd\n");
+                    break;
+                case "-":
+                    cg.emit(sb, "\tsub\n");
+                    break;
+                case "%":
+                    cg.emit(sb, "\trem\n"); 
+                    break;
+                case "*":
+                    cg.emit(sb, "\tmul\n");  
+                    break;
+                case "/":
+                    cg.emit(sb, "\tdiv\n");  
                     break;
                 default:
                     Console.WriteLine("Unexpected binary operator {0}\n", oper);
