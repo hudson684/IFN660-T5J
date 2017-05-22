@@ -3,10 +3,10 @@
 // (see accompanying GPPGcopyright.rtf)
 
 // GPPG version 1.5.2
-// Machine:  DESKTOP-I68NCGT
-// DateTime: 5/21/2017 1:36:59 AM
-// UserName: An
-// Input file <parser.y - 5/20/2017 11:14:22 PM>
+// Machine:  VDI-VL17-009
+// DateTime: 23/05/2017 3:29:58 AM
+// UserName: n9540377
+// Input file <parser.y - 22/05/2017 9:23:53 PM>
 
 // options: conflicts lines gplex conflicts
 
@@ -40,8 +40,8 @@ public enum Tokens {error=128,EOF=129,NUMBER=130,IDENTIFIER=131,ABSTRACT=132,
 public struct ValueType
 #line 11 "parser.y"
 {
-    public long num;
-	public double floatnum;
+    public ILiteral num;
+	public ILiteral floatnum;
 	public bool boolval;
 	public char charval;
     public string name;
@@ -80,11 +80,11 @@ public class ScanObj {
 [GeneratedCodeAttribute( "Gardens Point Parser Generator", "1.5.2")]
 public class Parser: ShiftReduceParser<ValueType, LexLocation>
 {
-  // Verbatim content from parser.y - 5/20/2017 11:14:22 PM
+  // Verbatim content from parser.y - 22/05/2017 9:23:53 PM
 #line 7 "parser.y"
 public static Statement root;
 #line default
-  // End verbatim content from parser.y - 5/20/2017 11:14:22 PM
+  // End verbatim content from parser.y - 22/05/2017 9:23:53 PM
 
 #pragma warning disable 649
   private static Dictionary<int, string> aliases;
@@ -1365,12 +1365,12 @@ public static Statement root;
         break;
       case 152: // Literal -> IntegerLiteral
 #line 616 "parser.y"
-                            { CurrentSemanticValue.expr = new IntegerLiteralExpression(ValueStack[ValueStack.Depth-1].num); }
+                            { CurrentSemanticValue.expr = (Expression) ValueStack[ValueStack.Depth-1].num;}
 #line default
         break;
       case 153: // Literal -> FloatingPointLiteral
 #line 617 "parser.y"
-                                 { CurrentSemanticValue.expr = new FloatingPointLiteralExpression(ValueStack[ValueStack.Depth-1].floatnum); }
+                                 {CurrentSemanticValue.expr = (Expression)ValueStack[ValueStack.Depth-1].floatnum;}
 #line default
         break;
       case 154: // Literal -> BooleanLiteral
@@ -1685,6 +1685,7 @@ public static Statement root;
 public Parser(Scanner scanner) : base(scanner)
 {
 }
+
 #line default
 }
 }

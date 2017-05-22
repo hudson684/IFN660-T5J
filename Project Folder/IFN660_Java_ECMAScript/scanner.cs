@@ -5,10 +5,10 @@
 //  See accompanying file GPLEXcopyright.rtf.
 //
 //  GPLEX Version:  1.2.2
-//  Machine:  DESKTOP-I68NCGT
-//  DateTime: 5/21/2017 1:36:59 AM
-//  UserName: An
-//  GPLEX input file <scanner.lex - 5/20/2017 11:13:00 PM>
+//  Machine:  VDI-VL17-009
+//  DateTime: 23/05/2017 3:29:57 AM
+//  UserName: n9540377
+//  GPLEX input file <scanner.lex - 22/05/2017 9:23:53 PM>
 //  GPLEX frame file <embedded resource>
 //
 //  Option settings: unicode, parser, minimize
@@ -32,6 +32,7 @@ using System.Collections.Generic;
 using System.Runtime.Serialization;
 using System.Diagnostics.CodeAnalysis;
 
+using IFN660_Java_ECMAScript.AST;
 
 namespace IFN660_Java_ECMAScript
 {   
@@ -1926,7 +1927,14 @@ throw new Exception(
         case 309:
         case 310:
         case 311:
-yylval.name = yytext; return (int)Tokens.IDENTIFIER;
+if(IsValidIdentifier(yytext))
+												{
+													yylval.name = yytext; return (int)Tokens.IDENTIFIER;
+												}else{
+													throw new Exception(
+														String.Format(
+															"unexpected character '{0}'", yytext));
+												}
             break;
         case 4:
         case 316:
@@ -2027,6 +2035,7 @@ yylval.name = yytext; return (int)Tokens.CharacterLiteral;
         case 71:
         case 75:
 yylval.floatnum = parseFloat(yytext, 10);
+													//yylval.floatnum = yytext;
                                                     return (int)Tokens.FloatingPointLiteral;
             break;
         case 69:
@@ -2047,6 +2056,7 @@ yylval.num = parseInteger(yytext, 16);
         case 79:
         case 80:
 yylval.floatnum = parseFloat(yytext, 16);
+													//yylval.floatnum = yytext;
                                                     return (int)Tokens.FloatingPointLiteral;
             break;
         case 82:
@@ -2292,7 +2302,7 @@ return (int)Tokens.BITWISE_XOR_ASSIGNMENT;
         
 #region UserCodeSection
 
-long parseInteger (string inString, int intBase)
+ILiteral parseInteger (string inString, int intBase)
 {	
     int outInt;
     long outLong;
@@ -2319,16 +2329,16 @@ long parseInteger (string inString, int intBase)
         // This is a bit OTT at the moment. Leave it until we work out exactly what to do with longs
         inString = inString.TrimEnd('L','l');
         outLong = Convert.ToInt64(inString, intBase);
-        return outLong; 
+        return new LongLiteralExpression(outLong); 
     }
     else
     {
         outInt = Convert.ToInt32(inString, intBase);
-        return outInt;
+        return new IntegerLiteralExpression(outInt);
     }
 }
 
-double parseFloat (string inString, int intBase)
+ILiteral parseFloat (string inString, int intBase)
 {	
     float outFloat;
     double outDouble;
@@ -2337,7 +2347,7 @@ double parseFloat (string inString, int intBase)
     inString = inString.ToUpper().Replace("_","");
 
     // Check if integer is float or double
-    if (inString.EndsWith("F"))
+    if (inString.EndsWith("F")|| inString.EndsWith("f"))
     {
         // This is a bit OTT at the moment. Leave it until we work out exactly what to do with longs
         inString = inString.TrimEnd('F');
@@ -2349,22 +2359,21 @@ double parseFloat (string inString, int intBase)
 		{
 			outFloat = float.Parse(inString);
 		}
-        return outFloat; 
+        return new FloatingLiteralExpression(outFloat); 
     }
-    else
-    {
-		// double indicator may not be there but try to remove anyway
+	// double indicator may not be there but try to remove anyway
+	if(inString.EndsWith("D") || inString.EndsWith("d"))
 		inString = inString.TrimEnd('D');
-		if (intBase == 16)
-		{
-			outDouble = convertHexFloatToDecFloat(inString);
-		}
-		else
-		{
-			outDouble = Convert.ToSingle(inString);
-		}
-        return outDouble;
-    }
+	if (intBase == 16)
+	{
+		outDouble = convertHexFloatToDecFloat(inString);
+	}
+	else
+	{
+		outDouble = Convert.ToSingle(inString);
+	}
+    return new DoubleLiteralExpression(outDouble);
+    
 }
 
 double convertHexFloatToDecFloat(string inString)
@@ -2439,6 +2448,75 @@ double getHexDecimalPart(string inString)
 
     return outDouble;
 }
+public bool IsValidIdentifier (string s)
+{
+	if(s == null || s.Length == 0)
+		return false;
+	if(!is_identifier_start_character(s[0]))
+		return false;
+	for(int i=1;i<s.Length; i++)
+		if(!is_identifier_body_character(s[i]))
+				return false;
+	return true;
+}
+
+bool is_identifier_start_character(int c)
+{
+	//Identifier can start with character or underscore
+	if((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || c == '_'||c == '$')
+		return true;
+	if (c < 0x80) 
+		return false;
+	return is_identifier_start_character_unicode_part((char)c);
+}
+
+bool is_identifier_start_character_unicode_part(char c)
+{
+	switch(Char.GetUnicodeCategory(c)){
+		case UnicodeCategory.LetterNumber:
+		case UnicodeCategory.UppercaseLetter:
+		case UnicodeCategory.LowercaseLetter:
+		case UnicodeCategory.TitlecaseLetter:
+		case UnicodeCategory.ModifierLetter:
+		case UnicodeCategory.OtherLetter:
+			return true;
+	}
+	return false;
+}
+
+bool is_identifier_body_character(char c)
+{
+	if(c >= 'a' && c <='z')
+		return true;
+
+	if(c >= 'A' && c <= 'Z')
+		return true;
+
+	if(c == '_'|| c == '$' || (c >= '0' && c <= '9')) // Identifier can not start with number but can include number 
+		return true;
+	if(c < 0x80)
+		return false;
+	return is_identifier_body_character_unicode_part(c);
+}
+
+bool is_identifier_body_character_unicode_part(char c)
+{
+	switch(Char.GetUnicodeCategory(c)){
+		case UnicodeCategory.ConnectorPunctuation:		// Unicode character of class Pc
+		case UnicodeCategory.NonSpacingMark:			// Unicode character of class Mn or Mc
+		case UnicodeCategory.SpacingCombiningMark:
+		case UnicodeCategory.DecimalDigitNumber:		// Decimal digit character - class Nd
+		case UnicodeCategory.LetterNumber:
+		case UnicodeCategory.UppercaseLetter:
+		case UnicodeCategory.LowercaseLetter:
+		case UnicodeCategory.TitlecaseLetter:
+		case UnicodeCategory.ModifierLetter:
+		case UnicodeCategory.OtherLetter:
+			return true;	
+	}
+	return false;
+}
+
 public override void yyerror( string format, params object[] args )
 {
     System.Console.Error.WriteLine("Error: line {0}, {1}", lines,

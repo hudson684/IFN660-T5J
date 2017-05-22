@@ -229,10 +229,8 @@ namespace IFN660_Java_ECMAScript.AST
 
         public override void GenCode(StringBuilder sb)
         {
-
+            lhs.GenCode(sb);
 		}
-
-
     }
 
 
@@ -262,9 +260,20 @@ namespace IFN660_Java_ECMAScript.AST
 
         public override void GenCode(StringBuilder sb)
         {
-		
-		}
-
+            expression.GenCode(sb);
+            switch (oper)
+            {
+                case "++":
+                    cg.emit(sb, "\tadd\n");  
+                    break;
+                case "--":
+                    cg.emit(sb, "\tsub\n");  
+                    break;
+                default:
+                    Console.WriteLine("Unexpected preunary operator {0}\n", oper);
+                    break;
+            }
+        }
     }
 
     public class PostUnaryExpression : Expression
@@ -294,8 +303,20 @@ namespace IFN660_Java_ECMAScript.AST
 
         public override void GenCode(StringBuilder sb)
         {
-		
-		}
+            expression.GenCode(sb);
+            switch (oper)
+            {
+                case "++":
+                    cg.emit(sb, "\tadd\n"); 
+                    break;
+                case "--":
+                    cg.emit(sb, "\tsub\n");  
+                    break;
+                default:
+                    Console.WriteLine("Unexpected postunary operator {0}\n", oper);
+                    break;
+            }
+        }
 
     }
     public class CastExpression : Expression
@@ -347,8 +368,8 @@ namespace IFN660_Java_ECMAScript.AST
 
         public override void GenCode(StringBuilder sb)
         {
-
-		}
+            UnaryExpression.GenCode(sb);
+        }
 
     }
 }

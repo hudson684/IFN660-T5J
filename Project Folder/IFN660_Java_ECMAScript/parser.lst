@@ -1,11 +1,11 @@
 
 // ==========================================================================
-//  GPPG error listing for yacc source file <parser.y - 5/20/2017 11:14:22 PM>
+//  GPPG error listing for yacc source file <parser.y - 22/05/2017 9:23:53 PM>
 // ==========================================================================
 //  Version:  1.5.2
-//  Machine:  DESKTOP-I68NCGT
-//  DateTime: 5/21/2017 1:36:59 AM
-//  UserName: An
+//  Machine:  VDI-VL17-009
+//  DateTime: 23/05/2017 3:30:05 AM
+//  UserName: n9540377
 // ==========================================================================
 
 
@@ -20,8 +20,8 @@ public static Statement root;
 
 %union
 {
-    public long num;
-	public double floatnum;
+    public ILiteral num;
+	public ILiteral floatnum;
 	public bool boolval;
 	public char charval;
     public string name;
@@ -628,8 +628,8 @@ PrimaryNoNewArray
 		;
 
 Literal
-		: IntegerLiteral										{ $$ = new IntegerLiteralExpression($1); } // Nathan
-		| FloatingPointLiteral									{ $$ = new FloatingPointLiteralExpression($1); } // Adon
+		: IntegerLiteral										{ $$ = (Expression) $1;}//new IntegerLiteralExpression($1); } // Nathan
+		| FloatingPointLiteral									{$$ = (Expression)$1;}//{ $$ = new FloatingPointLiteralExpression($1); } // Adon
 		| BooleanLiteral										{ $$ = new BooleanLiteralExpression($1); } // Adon
 		| CharacterLiteral										{ $$ = new CharacterLiteralExpression($1); } // Adon
 		| StringLiteral											{ $$ = new StringLiteralExpression($1); } //Tri
@@ -786,5 +786,7 @@ ConstantExpression
 
 public Parser(Scanner scanner) : base(scanner)
 {
-}// ==========================================================================
+}
+
+// ==========================================================================
 
