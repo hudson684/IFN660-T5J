@@ -404,6 +404,10 @@ ExpressionStatement
 
 StatementExpression
 		: Assignment											{ $$ = $1; } // Khoa - updated by Nathan
+		| PreIncrementExpression								{ $$ = $1; }
+		| PreDecrementExpression								{ $$ = $1; }
+		| PostIncrementExpression								{ $$ = $1; }	
+		| PostDecrementExpression								{ $$ = $1; }
 		;
 
 IfThenStatement

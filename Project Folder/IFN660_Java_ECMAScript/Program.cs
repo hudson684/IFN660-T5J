@@ -55,10 +55,13 @@ namespace IFN660_Java_ECMAScript
                new FileStream(args[0], FileMode.Open));
             Parser parser = new Parser(scanner);
             parser.Parse();
+            if (Parser.root != null)
+            {
 
-            SemanticAnalysis(Parser.root);
+                SemanticAnalysis(Parser.root);
 
-            Parser.root.DumpValue(0);
+                Parser.root.DumpValue(0);
+            }
 #endif
 
         }
