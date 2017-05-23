@@ -58,7 +58,7 @@ namespace IFN660_Java_ECMAScript
             if (Parser.root != null)
             {
                 SemanticAnalysis(Parser.root);
-                //CodeGeneration(args[0], Parser.root);
+                CodeGeneration(args[0], Parser.root);
             }
             
             Parser.root.DumpValue(0);

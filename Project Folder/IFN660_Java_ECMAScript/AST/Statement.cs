@@ -482,11 +482,50 @@ namespace IFN660_Java_ECMAScript.AST
         }
         public override void GenCode(StringBuilder sb)
         {
-            TryStmts.GenCode(sb);
+            cg.emit(sb, "\t.try\n");
+            cg.emit(sb, "\t{{\n");
+            int tryLabel = LastLabel++;
+            if (CatchStmts != null && FinallyStmts != null)
+            {
+                int tryLabel2 = LastLabel++;
+                cg.emit(sb, "\t.try\n");
+                cg.emit(sb, "\t{{\n");
+                TryStmts.GenCode(sb);
+                cg.emit(sb, "\tleave.s\tL{0}\n", tryLabel2);
+                cg.emit(sb, "\t}}\n");
+                cg.emit(sb, "\tcatch [mscorlib]System.Object \n");
+                cg.emit(sb, "\t{{\n");
+                cg.emit(sb, "\tpop\n");
+                CatchStmts.GenCode(sb);
+                cg.emit(sb, "\tleave.s\tL{0}\n", tryLabel2);
+                cg.emit(sb, "\t}}\n");
+                cg.emit(sb, "L{0}:\n", tryLabel2);
+            }
+            else
+            {
+                TryStmts.GenCode(sb);
+            }
+            cg.emit(sb, "\tleave.s\tL{0}\n", tryLabel);
+            cg.emit(sb, "\t}}\n");
+
             if (FinallyStmts != null)
+            {
+                cg.emit(sb, "\tfinally\n");
+                cg.emit(sb, "\t{{\n");
                 FinallyStmts.GenCode(sb);
-            if (FinallyStmts != null)
-                FinallyStmts.GenCode(sb);
+                cg.emit(sb, "\tendfinally\n");
+                cg.emit(sb, "\t}}\n");
+            }
+            else
+            {
+                cg.emit(sb, "\tcatch [mscorlib]System.Object \n");
+                cg.emit(sb, "\t{{\n");
+                cg.emit(sb, "\tpop\n");
+                CatchStmts.GenCode(sb);
+                cg.emit(sb, "\tleave.s\tL{0}\n", tryLabel);
+                cg.emit(sb, "\t}}\n");
+            }
+            cg.emit(sb, "L{0}:\n", tryLabel);
         }
 
     }
