@@ -6,9 +6,9 @@
 //
 //  GPLEX Version:  1.2.2
 //  Machine:  DESKTOP-1VMC0S8
-//  DateTime: 23/05/2017 5:14:45 PM
+//  DateTime: 23/05/2017 5:28:43 PM
 //  UserName: hudso
-//  GPLEX input file <scanner.lex - 23/05/2017 3:52:44 PM>
+//  GPLEX input file <scanner.lex - 23/05/2017 5:28:22 PM>
 //  GPLEX frame file <embedded resource>
 //
 //  Option settings: unicode, parser, minimize
@@ -1939,16 +1939,16 @@ if(IsValidIdentifier(yytext))
         case 4:
         case 316:
 /*{yylval.name = yytext;return (int)Tokens.UnicodeInputCharacter;}*/
-/* 3.4 Line Terminators */
+/* 3.4 Line Terminators Joshua*/
             break;
         case 5:
         case 6:
 /* Line Terminator */
-/* 3.6 WhiteSpace */
+/* 3.6 WhiteSpace Joshua */
             break;
         case 7:
 /* White space */
-/* 3.7 Comment */
+/* 3.7 Comment Joshua */
             break;
         case 26:
         case 27:
