@@ -3,16 +3,16 @@
 	public void Main (String[] args)
 	{
 		int x;
-		x = 0 ;
-		x= method(x);
+		
+		method();
 
 		
 	}
 
-	public int Method (int x)
+	public void Method ()
 	{
-		x = x+1;
-		return x;
+		
+		return;
 
 	}
 }
