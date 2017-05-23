@@ -7,11 +7,10 @@ public class HelloWorld
 	{
 		int x;
 		x = 2;
-		int y;
 		switch(x){
-			case 3:
-			case 2: y = 3;
-			case 4: y = 3;
+			case 3: int y; y = 2;
+			case 2: y = 2; break;
+			case 4: break;
 			default: break;
 		}
     }

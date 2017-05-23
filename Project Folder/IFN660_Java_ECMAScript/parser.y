@@ -56,8 +56,9 @@ public static Statement root;
 %type <stmt> SwitchStatement, SwitchBlock, SwitchBlockStatementGroup, SwitchBlockStatementGroups, SwitchLabel,  SwitchLabels
 %type <stmt> AssertStatement
 %type <stmt> LabeledStatement, BreakStatement, ContinueStatement, ReturnStatement
+%type <stmt> BlockStatements, BlockStatements_Opt
 
-%type <stmts> TypeDeclarations, ClassBody, ClassBodyDeclarations, BlockStatements, BlockStatements_Opt
+%type <stmts> TypeDeclarations, ClassBody, ClassBodyDeclarations
 %type <stmts> ImportDeclarations
 
 %type <type> Result, FloatingPointType, IntegralType, NumericType
@@ -357,7 +358,7 @@ MethodBody
 //		;
 
 Block 
-		: '{' BlockStatements_Opt '}'							{ $$ = new BlockStatement($2); } // Tristan
+		: '{' BlockStatements_Opt '}'							{ $$ = $2; } // Tristan
 		;
 
 BlockStatements_Opt
@@ -366,8 +367,8 @@ BlockStatements_Opt
 		;
 
 BlockStatements
-		: BlockStatement										{ $$ = new List<Statement> { $1 }; } // Tristan - done by Khoa
-		| BlockStatements BlockStatement						{ $$ = $1; $$.Add($2); } // Tristan - done by Khoa
+		: BlockStatement										{ $$ = $1;} // Joshua
+		| BlockStatements BlockStatement						{ $$ = new BlockStatement( new List<Statement>(){$1, $2}); } // Joshua
 		;
 
 BlockStatement
@@ -450,7 +451,7 @@ SwitchBlockStatementGroups
 		;
 
 SwitchBlockStatementGroup
-		: SwitchLabels BlockStatement							{ $$ = new BlockStatement(new List<Statement>(){$1,$2}); } //Kojo
+		: SwitchLabels BlockStatements							{ $$ = new BlockStatement(new List<Statement>(){$1,$2}); } //Kojo
 		;
 
 SwitchLabels
