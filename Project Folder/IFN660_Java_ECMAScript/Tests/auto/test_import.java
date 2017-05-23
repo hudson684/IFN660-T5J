@@ -1,4 +1,4 @@
-﻿import java;
+﻿import static java.uti.*;
 
 public class HelloWorld
 {
