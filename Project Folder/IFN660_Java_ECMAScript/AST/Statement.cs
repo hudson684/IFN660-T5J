@@ -91,16 +91,18 @@ namespace IFN660_Java_ECMAScript.AST
         }
         public override void GenCode(StringBuilder sb)
         {
-            int codeLabel, testLabel;
+            int codeLabel, testLabel, finalLabel;
 
             codeLabel = LastLabel++;
             testLabel = LastLabel++;
+            finalLabel = LastLabel++;
 
             cg.emit(sb, "\tbr.s\tL{0}\n", testLabel);
             cg.emit(sb, "L{0}:", codeLabel);    //removed \n since we don't need it - by Adon
             Statements.GenCode(sb);
             cg.emit(sb, "L{0}:", testLabel);    //removed \n since we don't need it - by Adon
             Cond.GenCode(sb);
+            cg.emit(sb, "L{0}:", finalLabel);
             cg.emit(sb, "\tbrtrue.s\tL{0}\n", codeLabel);
         }
 
@@ -223,7 +225,7 @@ namespace IFN660_Java_ECMAScript.AST
     public class BreakStatement : Statement
     {
         //by Vivian
-        private string Name;
+        private String Name;
 
         public BreakStatement(String Name)
         {
@@ -238,9 +240,12 @@ namespace IFN660_Java_ECMAScript.AST
         }
         public override void TypeCheck()
         {
+            //doesnt matter
         }
         public override void GenCode(StringBuilder sb)
         {
+
+            cg.emit(sb, "\tbr.s\tL{0}\n", LastLabel-1);    //test
 
         }
     }
@@ -292,6 +297,8 @@ namespace IFN660_Java_ECMAScript.AST
         }
         public override void GenCode(StringBuilder sb)
         {
+
+            Expr.GenCode(sb);
 
         }
     }
