@@ -213,7 +213,6 @@ namespace IFN660_Java_ECMAScript.AST
                 case "/":
                     cg.emit(sb, "\tdiv\n");  
                     break;
-                default:
                     Console.WriteLine("Unexpected binary operator {0}\n", oper);
                     break;
             }

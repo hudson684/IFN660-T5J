@@ -101,7 +101,10 @@ namespace IFN660_Java_ECMAScript.AST
 
         public override void GenCode(StringBuilder sb)
         {
-
+            if (value)
+                cg.emit(sb, "\tldc.i4.1\n");
+            else
+                cg.emit(sb, "\tldc.i4.0\n");
         }
     }
 

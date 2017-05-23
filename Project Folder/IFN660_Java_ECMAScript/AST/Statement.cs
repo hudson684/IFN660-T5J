@@ -249,7 +249,14 @@ namespace IFN660_Java_ECMAScript.AST
         }
         public override void GenCode(StringBuilder sb)
         {
+           // if (Name != NULL)
+            //{
+            //    cg.emit(sb, "\break.{0}\n", Name);
+            //}
+            //else
+            //{
 
+            //}
         }
     }
 
@@ -470,7 +477,8 @@ namespace IFN660_Java_ECMAScript.AST
         }
         public override void GenCode(StringBuilder sb)
         {
-
+            cg.emit(sb, "\throw ");
+           Expr.GenCode(sb);
         }
     }
 
