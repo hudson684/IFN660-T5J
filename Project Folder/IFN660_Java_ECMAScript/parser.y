@@ -32,7 +32,6 @@ public static Statement root;
 %type <expr> ConditionalExpression, ConditionalOrExpression, ConditionalAndExpression
 %type <expr> InclusiveOrExpression, ExclusiveOrExpression, AndExpression, EqualityExpression
 %type <expr> RelationalExpression, ShiftExpression, AdditiveExpression, MultiplicativeExpression
-
 %type <expr> UnaryExpression, PostfixExpression, Primary //Josh
 %type <expr> PreIncrementExpression,  PreDecrementExpression, UnaryExpressionNotPlusMinus //Josh
 %type <expr> CastExpression, PostIncrementExpression, PostDecrementExpression //Josh
@@ -40,7 +39,7 @@ public static Statement root;
 %type <stmt> Statement, CompilationUnit, TypeDeclaration, ClassDeclaration, NormalClassDeclaration, ClassBodyDeclaration
 %type <stmt> ExpressionStatement, StatementWithoutTrailingSubstatement, LocalVariableDeclaration, LocalVariableDeclarationStatement
 %type <stmt> BlockStatement, Throws_opt, ClassMemberDeclaration, MethodDeclaration, FormalParameter
-%type <stmt> PackageDeclaration_opt, Block, MethodBody, ForStatement
+%type <stmt> PackageDeclaration_opt, Block, MethodBody
 %type <stmt> StatementNoShortIf, IfThenElseStatementNoShortIf
 %type <stmt> IfThenStatement, IfThenElseStatement, WhileStatement 
 %type <stmt> TryStatement, Catches, Catches_opt, CatchClause, Finally
@@ -59,7 +58,6 @@ public static Statement root;
 %type <type> Result, FloatingPointType, IntegralType, NumericType
 %type <type> UnannType, UnannPrimitiveType, UnannReferenceType, UnannArrayType, UnannTypeVariable, ReferenceType, PrimitiveType
 
-
 %type <modf> ClassModifier, MethodModifier, VariableModifier
 
 %type <modfs> ClassModifiers, MethodModifiers, VariableModifiers
@@ -69,6 +67,9 @@ public static Statement root;
 %type <arrlst> MethodHeader, MethodDeclarator
 
 %type <strlst> VariableDeclaratorList
+
+%type <name> Identifier_opt
+%type <expr> Expression_opt
 
 // Tokens
 %token <num> NUMBER
@@ -288,6 +289,7 @@ UnannPrimitiveType
 		| BOOLEAN												{ $$ = new NamedType("BOOLEAN"); } // Josh
 		;
 
+
 PrimitiveType
 		:  NumericType  //Annotations infront 
 		|  BOOLEAN      //Annotations infront
@@ -302,7 +304,6 @@ ReferenceType
 TypeVariable
 		:  IDENTIFIER //Annotations
 		;
-
 
 NumericType
 		: IntegralType											{ $$ = $1; } // Josh
@@ -345,7 +346,6 @@ MethodBody
 // Removed by Nathan - too hard at the moment
 //Annotations
 //		: Annotations Annotation								{ $$ = new Annotations($2); } // Adon
-
 //		| /* Empty */											{ $$ = null; } // Adon
 //		;
 
@@ -597,7 +597,6 @@ Literal
 		| CharacterLiteral										{ $$ = new CharacterLiteralExpression($1); } // Adon
 		| StringLiteral											{ $$ = new StringLiteralExpression($1); } //Tri
 		| NullLiteral											{ $$ = new NullLiteralExpression(); } //Tri
-
 		;
 // end of sneha Work
 
@@ -643,7 +642,6 @@ InclusiveOrExpression
 ExclusiveOrExpression
 		: AndExpression													{ $$ = $1; } //Nathan
 		| ExclusiveOrExpression '^' AndExpression						{ $$ = new BinaryExpression($1, "^", $3); }
-
 		;
 
 AndExpression
@@ -716,7 +714,6 @@ UnaryExpressionNotPlusMinus
 PostfixExpression
 		: Primary													{ $$ = $1; } //Nathan
 		| ExpressionName											{ $$ = $1; } //Nathan
-
 		| PostIncrementExpression									{ $$ = $1; } //Josh
 		| PostDecrementExpression									{ $$ = $1; } //Josh
 		;

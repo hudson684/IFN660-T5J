@@ -74,27 +74,13 @@ namespace IFN660_Java_ECMAScript.AST
 
             return declarationRef != null;
         }
-    }
-
-    public class IntegerLiteralExpression : Expression
-    {
-
-        private long value;
-        public IntegerLiteralExpression(long value)
-        {
-            this.value = value;
-        }
-
-        public override bool ResolveNames(LexicalScope scope)
-        {
-            return true;
-        }
         public override void TypeCheck()
         {
             type = declarationRef.ObtainType();
 
         }
     }
+
 
     //changed made by Josh so that the assignmentStatement is correct
     public class BinaryExpression : Expression

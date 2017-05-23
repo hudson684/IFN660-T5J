@@ -24,7 +24,6 @@ namespace IFN660_Java_ECMAScript.AST
         }
 
     }
-
     public class BooleanLiteralExpression : Expression
     {
         private readonly bool value;
