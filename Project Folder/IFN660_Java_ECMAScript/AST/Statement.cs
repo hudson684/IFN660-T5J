@@ -23,10 +23,12 @@ namespace IFN660_Java_ECMAScript.AST
 
         public override bool ResolveNames(LexicalScope scope)
         {
+            var newScope = getNewScope(scope, null);
+
             if (ElseStmts == null)
-                return CondExpr.ResolveNames(scope) & ThenStmts.ResolveNames(scope);
+                return CondExpr.ResolveNames(newScope) & ThenStmts.ResolveNames(newScope);
             else
-                return CondExpr.ResolveNames(scope) & ThenStmts.ResolveNames(scope) & ElseStmts.ResolveNames(scope);
+                return CondExpr.ResolveNames(newScope) & ThenStmts.ResolveNames(newScope) & ElseStmts.ResolveNames(newScope);
         }
 
         public override void TypeCheck()
@@ -464,11 +466,12 @@ namespace IFN660_Java_ECMAScript.AST
 
         public override bool ResolveNames(LexicalScope scope)
         {
-            bool loopResolve = TryStmts.ResolveNames(scope);
+            var newScope = getNewScope(scope, null);
+            bool loopResolve = TryStmts.ResolveNames(newScope);
             if (CatchStmts != null)
-                loopResolve = loopResolve & CatchStmts.ResolveNames(scope);
+                loopResolve = loopResolve & CatchStmts.ResolveNames(newScope);
             if (FinallyStmts != null)
-                loopResolve = loopResolve & FinallyStmts.ResolveNames(scope);
+                loopResolve = loopResolve & FinallyStmts.ResolveNames(newScope);
             return loopResolve;
         }
 
@@ -495,7 +498,6 @@ namespace IFN660_Java_ECMAScript.AST
                 cg.emit(sb, "\t}}\n");
                 cg.emit(sb, "\tcatch [mscorlib]System.Object \n");
                 cg.emit(sb, "\t{{\n");
-                cg.emit(sb, "\tpop\n");
                 CatchStmts.GenCode(sb);
                 cg.emit(sb, "\tleave.s\tL{0}\n", tryLabel2);
                 cg.emit(sb, "\t}}\n");
@@ -520,7 +522,6 @@ namespace IFN660_Java_ECMAScript.AST
             {
                 cg.emit(sb, "\tcatch [mscorlib]System.Object \n");
                 cg.emit(sb, "\t{{\n");
-                cg.emit(sb, "\tpop\n");
                 CatchStmts.GenCode(sb);
                 cg.emit(sb, "\tleave.s\tL{0}\n", tryLabel);
                 cg.emit(sb, "\t}}\n");
@@ -563,7 +564,9 @@ namespace IFN660_Java_ECMAScript.AST
         }
         public override void GenCode(StringBuilder sb)
         {
-
+            // Put a simplest throw here, at least it throws... - Adon
+            cg.emit(sb, "\tnewobj instance void [mscorlib]System.Exception::.ctor()\n");
+            cg.emit(sb, "\tthrow\n");
         }
     }
 
