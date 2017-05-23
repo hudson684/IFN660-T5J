@@ -3,15 +3,9 @@
 //  GPLEX error listing for lex source file <scanner.lex>
 // ==========================================================================
 //  Version:  1.2.2
-<<<<<<< HEAD
 //  Machine:  VDI-VL17-008
 //  DateTime: 19/04/2017 10:50:55 PM
 //  UserName: n9648500
-=======
-//  Machine:  VDI-VL17-061
-//  DateTime: 9/05/2017 4:37:12 PM
-//  UserName: n9768653
->>>>>>> master
 // ==========================================================================
 
 
@@ -87,18 +81,8 @@ OctalDigitOrUnderscore						{OctalDigit}|\_
 OctalDigitsAndUnderscores					{OctalDigitOrUnderscore}+
 OctalDigits									{OctalDigit}|{OctalDigit}{OctalDigitsAndUnderscores}?{OctalDigit}
 OctalNumeral								0{OctalDigits}|{Underscores}{OctalDigits}
-<<<<<<< HEAD
 
 /* BinaryNumeral */
-=======
-x
-// Error: Expected space here
-// --------------------------
-/* BinaryNumeral */
-//-^^^^^^^^^^^^^^^^
-// Error: Expected end-of-line here
-// --------------------------------
->>>>>>> master
 BinaryDigitOrUnderscore						{BinaryDigit}|\_
 BinaryDigitsAndUnderscores					{BinaryDigitOrUnderscore}+
 BinaryDigits								{BinaryDigit}|({BinaryDigit}{BinaryDigitsAndUnderscores}{BinaryDigit})
@@ -256,11 +240,7 @@ while										{return (int)Tokens.WHILE;}
                                                 }
 
 /* 3.10.3 Boolean Literal - Vivan*/
-<<<<<<< HEAD
 {BooleanLiteral}							{return (int)Tokens.BooleanLiteral;}
-=======
-{BooleanLiteral}							{yylval.boolval = yytext; return (int)Tokens.BooleanLiteral;}
->>>>>>> master
 
 /* 3.10.4 Character Literal - Tri*/
 {CharacterLiteral}							{yylval.name = yytext; return (int)Tokens.CharacterLiteral;}
@@ -280,15 +260,11 @@ while										{return (int)Tokens.WHILE;}
 "::"										{return (int)Tokens.DOUBLE_COLON;}	
 										
 
-<<<<<<< HEAD
 										/* 3.12 OPERATOR  - An */
 //--------^^^^^^^^^^^^^^^^^^^^^^^^^
 // Warning: Code between rules, ignored
 // ------------------------------------
 
-=======
-/* 3.12 OPERATOR  - An */
->>>>>>> master
 {Operators}									{return yytext[0];}
 "=="										{return (int)Tokens.EQUAL;}
 ">="										{return (int)Tokens.GREATER_OR_EQUAL;}

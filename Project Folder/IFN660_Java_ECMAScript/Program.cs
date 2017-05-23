@@ -1,17 +1,9 @@
 //#define AST_MANUAL // comment out this line to use parser&scanner
 
-<<<<<<< HEAD
-=======
-using System;
->>>>>>> master
 using System.IO;
 using IFN660_Java_ECMAScript.AST;
 using System.Collections.Generic;
 
-<<<<<<< HEAD
-=======
-
->>>>>>> master
 namespace IFN660_Java_ECMAScript
 {
     class Program
@@ -37,39 +29,21 @@ namespace IFN660_Java_ECMAScript
             //var assignExpr2 = new AssignmentExpression(lhs, new VariableExpression("Main"));
             //var assignStmt2 = new ExpressionStatement(assignExpr2);
             //var statementList = new List<Statement> { assignVar, assignStmt, assignStmt2 };
-<<<<<<< HEAD
             var statementList = new List<Statement> { assignVar, assignStmt };
 
             var method = new MethodDeclaration("Main", mods, statementList, new NamedType("VOID"), argList);
-=======
-
-            //IfthenStatement test
-            var binaryExpression = new BinaryExpression(lhs, "==", rhs);
-            var ifThenStatement = new IfThenStatement(binaryExpression, assignStmt);
-            var statementList = new List<Statement> { assignVar, assignStmt, ifThenStatement };
-
-            var method = new MethodDeclaration("Main", mods, new BlockStatement(statementList), new NamedType("VOID"), argList);
->>>>>>> master
             var classDec = new ClassDeclaration("HelloWorld", classMods, new List<Statement> { method });
 
             var classes = new List<Statement>  { classDec };
 
             var pro = new CompilationUnitDeclaration(null, null, classes);
 
-<<<<<<< HEAD
-=======
-            
->>>>>>> master
             // Semantic Analysis
             SemanticAnalysis(pro);
 
             pro.DumpValue(0);
-<<<<<<< HEAD
 
 
-=======
-            
->>>>>>> master
 #else
             Scanner scanner = new Scanner(
                new FileStream(args[0], FileMode.Open));
@@ -83,7 +57,6 @@ namespace IFN660_Java_ECMAScript
 
         }
 
-<<<<<<< HEAD
         static bool SemanticAnalysis(Node root)
         {
             bool nameResolutionSuccess;
@@ -93,22 +66,6 @@ namespace IFN660_Java_ECMAScript
                 System.Console.WriteLine("*** ERROR - Name Resolution Failed ***");
 
             return nameResolutionSuccess;
-=======
-        static void SemanticAnalysis(Node root)
-        {
-            bool nameResolutionSuccess;
-
-            // name resolution
-            nameResolutionSuccess = root.ResolveNames(null);
-            if (!nameResolutionSuccess)
-            {
-                System.Console.WriteLine("*** ERROR - Name Resolution Failed ***");
-                throw new Exception("Name Resolution Error");
-            }
-            
-            // type checking
-            root.TypeCheck();
->>>>>>> master
         }
     }
 }

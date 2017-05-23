@@ -1,8 +1,4 @@
-<<<<<<< HEAD
 ﻿<?xml version="1.0" encoding="utf-8"?>
-=======
-<?xml version="1.0" encoding="utf-8"?>
->>>>>>> master
 <Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -50,17 +46,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-<<<<<<< HEAD
     <Compile Include="AST\CompilationUnitDeclaration.cs" />
     <Compile Include="Declaration.cs" />
     <Compile Include="LexicalScope.cs" />
-=======
-    <Compile Include="AST\Block.cs" />
-    <Compile Include="AST\CompilationUnitDeclaration.cs" />
-    <Compile Include="AST\Declaration.cs" />
-    <Compile Include="AST\LexicalScope.cs" />
-    <Compile Include="AST\Literals.cs" />
->>>>>>> master
     <Compile Include="parser.cs" />
     <Compile Include="AST\ClassDeclaration.cs" />
     <Compile Include="AST\ImportDeclaration.cs" />
@@ -78,10 +66,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-<<<<<<< HEAD
-=======
-    <None Include="paser_try.y" />
->>>>>>> master
     <None Include="parser.y" />
     <None Include="scanner.lex" />
     <None Include="Tests\auto\test_BooleanLiteral.j" />
@@ -111,24 +95,14 @@
     <None Include="Tests\auto\test_StringLiteral.j.expected" />
     <None Include="Tests\auto\test_Unicode_Escape.j" />
     <None Include="Tests\auto\test_Unicode_Escape.j.expected" />
-<<<<<<< HEAD
     <None Include="Tests\test1.j" />
     <None Include="Tests\test3.j" />
-=======
->>>>>>> master
   </ItemGroup>
   <ItemGroup>
     <Content Include="test1.txt" />
     <Content Include="Tests\auto\test2.java" />
     <Content Include="Tests\auto\test.java" />
     <Content Include="Tests\test1.txt" />
-<<<<<<< HEAD
-=======
-    <Content Include="Tests\test2.java" />
-    <Content Include="Tests\test_try.java" />
-    <Content Include="Tests\test_if.java" />
-    <Content Include="Tests\test_while.java" />
->>>>>>> master
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
