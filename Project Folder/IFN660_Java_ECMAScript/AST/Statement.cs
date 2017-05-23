@@ -46,13 +46,21 @@ namespace IFN660_Java_ECMAScript.AST
         public override void GenCode(StringBuilder sb)
         {
             CondExpr.GenCode(sb);
+            
             int elseLabel = LastLabel++;
+            int endLabel = 0;
             cg.emit(sb, "\tbrfalse L{0}\n", elseLabel);
             ThenStmts.GenCode(sb);
-            cg.emit(sb, "L{0}:", elseLabel);
+            if (ElseStmts != null)
+            {
+                endLabel = LastLabel++;
+                cg.emit(sb, "\tbr L{0}\n", endLabel);
+            }
+            cg.emit(sb, "L{0}:\n", elseLabel);
             if (ElseStmts != null)
             {
                 ElseStmts.GenCode(sb);
+                cg.emit(sb, "L{0}:\n", endLabel);
             }
         }
     }
@@ -98,9 +106,9 @@ namespace IFN660_Java_ECMAScript.AST
             finalLabel = LastLabel++;
 
             cg.emit(sb, "\tbr.s\tL{0}\n", testLabel);
-            cg.emit(sb, "L{0}:", codeLabel);    //removed \n since we don't need it - by Adon
+            cg.emit(sb, "L{0}:\n", codeLabel);
             Statements.GenCode(sb);
-            cg.emit(sb, "L{0}:", testLabel);    //removed \n since we don't need it - by Adon
+            cg.emit(sb, "L{0}:\n", testLabel);
             Cond.GenCode(sb);
             cg.emit(sb, "L{0}:", finalLabel);
             cg.emit(sb, "\tbrtrue.s\tL{0}\n", codeLabel);
