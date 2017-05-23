@@ -142,6 +142,49 @@ namespace IFN660_Java_ECMAScript.AST
         }
     }
 
+    public class SwitchLabelStatement : Statement
+    {
+        private Expression SwitchValue;
+        private Boolean SwitchLabelNotDefault;
+
+        public Boolean getSwitchLabelNotDefault()
+        {
+            return SwitchLabelNotDefault;
+        }
+        //this exists for case with Expression
+        public SwitchLabelStatement(Expression SwitchValue)
+        {
+            this.SwitchValue = SwitchValue;
+            SwitchLabelNotDefault = true;
+        }
+
+        //this exists for case with Constant Name
+        public SwitchLabelStatement(String switchValueName)
+        {
+            // Ignore this rabbit hole for now
+        }
+
+        //this exists for the default case
+        public SwitchLabelStatement()
+        {
+            SwitchLabelNotDefault = false;
+        }
+
+        public override bool ResolveNames(LexicalScope scope)
+        {
+            return true;
+        }
+        public override void TypeCheck()
+        {
+
+        }
+        public override void GenCode(StringBuilder sb)
+        {
+               
+        }
+    }
+
+
     public class AssertStatement : Statement
     {
         // by Tri

@@ -6,21 +6,14 @@ public class HelloWorld
     public static void main(String[] args) 
 	{
 		int x;
-		 x = 0;
-
-		while(x < 10)
-		{
-			x = 10;
-			x = 2;
-			int y;
-			y = 2;
-			break;
-			x = 10;
+		x = 2;
+		int y;
+		switch(x){
+			case 3:
+			case 2: y = 3;
+			case 4: y = 3;
+			default: break;
 		}
-
-
-		int z;
-		z = 2;
     }
 
 }
