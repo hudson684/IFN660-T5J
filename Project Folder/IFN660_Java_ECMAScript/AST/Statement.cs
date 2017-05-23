@@ -112,10 +112,12 @@ namespace IFN660_Java_ECMAScript.AST
     {
         // by Tri
         private Expression expression;
+        private Statement block;
 
-        public SwitchStatement(Expression expression)
+        public SwitchStatement(Expression expression, Statement block)
         {
             this.expression = expression;
+            this.block = block;
         }
 
         public override bool ResolveNames(LexicalScope scope)

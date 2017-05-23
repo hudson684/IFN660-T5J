@@ -53,7 +53,7 @@ public static Statement root;
 %type <stmt> PackageDeclaration_opt, Block, MethodBody
 %type <stmt> StatementNoShortIf
 %type <stmt> DoStatement, ThrowStatement, SynchronizedStatement
-%type <stmt> SwitchStatement
+%type <stmt> SwitchStatement, SwitchBlock, SwitchBlockStatementGroup, SwitchLabel
 %type <stmt> AssertStatement
 %type <stmt> LabeledStatement, BreakStatement, ContinueStatement, ReturnStatement
 
@@ -437,8 +437,22 @@ AssertStatement
 		;
 
 SwitchStatement
-		: SWITCH '(' Expression ')'								{ $$ = new SwitchStatement($3); } //Tri
+		: SWITCH '(' Expression ')'	SwitchBlock					{ $$ = new SwitchStatement($3, $5); } //Kojo
 		;
+
+SwitchBlock
+		: '{' SwitchBlockStatementGroup '}'						{ $$ = new BlockStatement(new List<Statement>(){$2}); } //Kojo
+		;
+
+SwitchBlockStatementGroup
+		: SwitchLabel BlockStatement							{ $$ = new BlockStatement(new List<Statement>(){$1,$2}); } //Kojo
+		;
+
+SwitchLabel
+		: CASE ConstantExpression ':'							{ $$ = new SwitchLabelStatement($2) ;} // KoJo
+		| DEFAULT ':'											{ $$ = new SwitchLabelStatement(); } // KoJo
+		;
+
 
 DoStatement
 		: DO Statement WHILE '(' Expression ')'	';'				{ $$ = new DoStatement($2, $5); } // Tri
