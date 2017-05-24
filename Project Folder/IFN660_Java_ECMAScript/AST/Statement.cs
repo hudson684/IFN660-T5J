@@ -122,9 +122,9 @@ namespace IFN660_Java_ECMAScript.AST
     {
         // by Tri
         private Expression expression;
-        private Statement block;
+        private List<Statement> block;
 
-        public SwitchStatement(Expression expression, Statement block)
+        public SwitchStatement(Expression expression, List<Statement> block)
         {
             this.expression = expression;
             this.block = block;
@@ -133,7 +133,23 @@ namespace IFN660_Java_ECMAScript.AST
         public override bool ResolveNames(LexicalScope scope)
         {
             var newScope = getNewScope(scope, null);
-            return expression.ResolveNames(newScope);
+
+            bool loopResolve = true;
+
+            if (block != null)
+            {
+                foreach (Statement each in block)
+                {
+                    Declaration decl = each as Declaration; // try to cast statement as a declaration
+                    if (decl != null)
+                    {
+                        decl.AddItemsToSymbolTable(scope);
+                    }
+                    loopResolve = loopResolve & each.ResolveNames(scope);
+                }
+            }
+
+            return loopResolve && expression.ResolveNames(newScope);
         }
 
         public override void TypeCheck()
@@ -152,6 +168,50 @@ namespace IFN660_Java_ECMAScript.AST
         }
     }
 
+    public class SwitchBlockGroup: Statement
+    {
+        private List<Statement> labels;
+        private List<Statement> statements;
+
+        public SwitchBlockGroup(List<Statement> labels, List<Statement> statements)
+        {
+            this.labels = labels;
+            this.statements = statements;
+        }
+
+        public override bool ResolveNames(LexicalScope scope)
+        {
+            // Step 2: ResolveNames for each part of the complilation unit
+            bool loopResolve = true;
+
+            if (statements != null)
+            {
+                foreach (Statement each in statements)
+                {
+                    Declaration decl = each as Declaration; // try to cast statement as a declaration
+                    if (decl != null)
+                    {
+                        decl.AddItemsToSymbolTable(scope);
+                    }
+                    loopResolve = loopResolve & each.ResolveNames(scope);
+                }
+            }
+
+            return loopResolve;
+        }
+
+        public override void TypeCheck()
+        {
+            foreach (Statement stmt in statements)
+            {
+                stmt.TypeCheck();
+            }
+        }
+        public override void GenCode(StringBuilder sb)
+        {
+
+        }
+    }
 
 
     public class SwitchLabelStatement : Statement
