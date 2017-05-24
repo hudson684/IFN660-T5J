@@ -484,6 +484,10 @@ ExpressionStatement
 StatementExpression
 		: Assignment											{ $$ = $1; } // Khoa - updated by Nathan
 		| MethodInvocation										{ $$ = $1; } // Nathan
+		| PreIncrementExpression								{ $$ = $1; }  //sneha
+		| PreDecrementExpression								{ $$ = $1; }  //sneha
+		| PostIncrementExpression								{ $$ = $1; }	
+		| PostDecrementExpression								{ $$ = $1; }
 		;
 
 // Start method handling - Nathan

@@ -138,6 +138,8 @@ namespace IFN660_Java_ECMAScript.AST
             {
                 case ">":
                 case "<":
+                case ">=":
+                case "<=":
                 case "==":
                     if (!lhs.type.isTheSameAs(new NamedType("INT")) || !rhs.type.isTheSameAs(new NamedType("INT")))
                     {
@@ -269,8 +271,33 @@ namespace IFN660_Java_ECMAScript.AST
         }
         public override void TypeCheck()
         {
-            
-        }
+            expression.TypeCheck();
+            switch (oper)
+            {
+                case "++":
+                case "--":
+                case "~":
+                case "!":
+                case "+":
+                case "-":
+                    if (expression.type.isTheSameAs(new NamedType("INT")) || expression.type.isTheSameAs(new NamedType("DOUBLE")) || expression.type.isTheSameAs(new NamedType("FLOAT")) || expression.type.isTheSameAs(new NamedType("DOUBLE")))
+                    {
+                        type = expression.type;
+                    }
+                    else
+                    {
+                        System.Console.WriteLine("Invalid arguments for expression\n");
+                        throw new Exception("TypeCheck error");
+                    }
+                    break;
+                default:
+                    {
+                        System.Console.WriteLine("Unexpected uniary operator %c \n", oper);
+                        throw new Exception("TypeCheck error");
+                    }
+            }
+
+            }
         public override Type ObtainType()
         {
             return type;
@@ -311,8 +338,33 @@ namespace IFN660_Java_ECMAScript.AST
         }
         public override void TypeCheck()
         {
-            
-        }
+            expression.TypeCheck();
+            switch (oper)
+            {
+                case "++":
+                case "--":
+                case "~":
+                case "!":
+                case "+":
+                case "-":
+                    if (expression.type.isTheSameAs(new NamedType("INT")) || expression.type.isTheSameAs(new NamedType("DOUBLE")) || expression.type.isTheSameAs(new NamedType("FLOAT")) || expression.type.isTheSameAs(new NamedType("DOUBLE")))
+                    {
+                        type = expression.type;
+                    }
+                    else
+                    {
+                        System.Console.WriteLine("Invalid arguments for expression\n");
+                        throw new Exception("TypeCheck error");
+                    }
+                    break;
+                default:
+                    {
+                        System.Console.WriteLine("Unexpected uniary operator %c \n", oper);
+                        throw new Exception("TypeCheck error");
+                    }
+            }
+
+            }
 
         public override Type ObtainType()
         {
