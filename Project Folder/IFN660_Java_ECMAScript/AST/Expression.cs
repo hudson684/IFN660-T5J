@@ -236,8 +236,7 @@ namespace IFN660_Java_ECMAScript.AST
                 case "!":
                 case "+":
                 case "-":
-                    if(!expression.type.isTheSameAs(new NamedType("INT")) || !expression.type.isTheSameAs(new NamedType("FLOAT"))
-                        || !expression.type.isTheSameAs(new NamedType("DOUBLE")))
+                    if(expression.type.isTheSameAs(new NamedType("INT")) || expression.type.isTheSameAs(new NamedType("DOUBLE")) || expression.type.isTheSameAs(new NamedType("FLOAT")) || expression.type.isTheSameAs(new NamedType("DOUBLE")))
                     {
                         type = expression.type;
                     }
@@ -283,7 +282,7 @@ namespace IFN660_Java_ECMAScript.AST
                 case "!":
                 case "+":
                 case "-":
-                    if (!expression.type.isTheSameAs(new NamedType("BOOLEAN")))
+                    if (expression.type.isTheSameAs(new NamedType("INT")) || expression.type.isTheSameAs(new NamedType("DOUBLE")) || expression.type.isTheSameAs(new NamedType("FLOAT")) || expression.type.isTheSameAs(new NamedType("DOUBLE")))
                     {
                         type = expression.type;
                     }

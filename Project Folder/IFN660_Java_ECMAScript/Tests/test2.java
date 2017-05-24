@@ -2,10 +2,10 @@ public class HelloWorld
 {
     public static void main(String[] args) 
 	{
-		int y;
+		double y;
 		int x;
 		y = 30;
-		--y;
+		y--;
 
     }
 }
