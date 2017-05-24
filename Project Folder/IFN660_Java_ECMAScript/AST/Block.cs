@@ -22,7 +22,7 @@ namespace IFN660_Java_ECMAScript.AST
             // Step 1: Create new scope and populate the symbol table
             // Special case with blocks - add to symbol table line by line as the names are resolved.
             // This is the catch the situation where the declaration is after the use of the variable.
-            var newScope = getNewScope(scope, null); 
+            //var newScope = getNewScope(scope, null); 
 
             // Step 2: ResolveNames for each part of the complilation unit
             bool loopResolve = true;
@@ -34,9 +34,9 @@ namespace IFN660_Java_ECMAScript.AST
                     Declaration decl = each as Declaration; // try to cast statement as a declaration
                     if (decl != null)
                     {
-                        decl.AddItemsToSymbolTable(newScope);
+                        decl.AddItemsToSymbolTable(scope);
                     }
-                    loopResolve = loopResolve & each.ResolveNames(newScope);
+                    loopResolve = loopResolve & each.ResolveNames(scope);
                 }
             }
 

@@ -132,7 +132,7 @@ namespace IFN660_Java_ECMAScript.AST
 
         public override bool ResolveNames(LexicalScope scope)
         {
-            var newScope = getNewScope(scope, null);
+            //var newScope = getNewScope(scope, null);
 
             bool loopResolve = true;
 
@@ -149,7 +149,7 @@ namespace IFN660_Java_ECMAScript.AST
                 }
             }
 
-            return loopResolve && expression.ResolveNames(newScope);
+            return loopResolve && expression.ResolveNames(scope);
         }
 
         public override void TypeCheck()
