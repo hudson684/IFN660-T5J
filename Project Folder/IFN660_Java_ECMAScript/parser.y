@@ -639,6 +639,7 @@ Primary
 
 PrimaryNoNewArray
 		: Literal												{ $$ = $1; } // Nathan
+		| MethodInvocation										{ $$ = $1; } // Nathan
 		;
 
 Literal

@@ -166,7 +166,10 @@ namespace IFN660_Java_ECMAScript.AST
             }
 
             if (declarationRef == null)
+            {
                 Console.WriteLine("Error: Undeclared method indentifier", name);
+                throw new Exception("Name Resolution Error - can not resolve method name");
+            }
 
             return (declarationRef != null) & loopResolve;
         }

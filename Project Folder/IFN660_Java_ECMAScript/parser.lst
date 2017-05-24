@@ -1,10 +1,10 @@
 
 // ==========================================================================
-//  GPPG error listing for yacc source file <parser.y - 24/05/2017 10:30:07 PM>
+//  GPPG error listing for yacc source file <parser.y - 24/05/2017 11:05:00 PM>
 // ==========================================================================
 //  Version:  1.5.2
 //  Machine:  VDI-VL17-017
-//  DateTime: 24/05/2017 10:45:32 PM
+//  DateTime: 24/05/2017 11:58:29 PM
 //  UserName: n9648500
 // ==========================================================================
 
@@ -653,6 +653,7 @@ Primary
 
 PrimaryNoNewArray
 		: Literal												{ $$ = $1; } // Nathan
+		| MethodInvocation										{ $$ = $1; } // Nathan
 		;
 
 Literal
