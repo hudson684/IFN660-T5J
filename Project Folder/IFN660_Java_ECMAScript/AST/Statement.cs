@@ -284,33 +284,30 @@ namespace IFN660_Java_ECMAScript.AST
         private Statement ForInit;
         private Expression TestExpr;
         private Statement ForUpdate;
-        private List<Statement> StmtList;
+        private Statement Stmt;
 
-		public ForStatement(Statement ForInit, Expression TestExpr, Statement ForUpdate, List<Statement> StmtList)
+		public ForStatement(Statement ForInit, Expression TestExpr, Statement ForUpdate, Statement Stmt)
 		{
 			this.ForInit = ForInit;
 			this.TestExpr = TestExpr;
 			this.ForUpdate = ForUpdate;
-			this.StmtList = StmtList;
+			this.Stmt = Stmt;
 		}
 
 		public override bool ResolveNames(LexicalScope scope)
 		{
-			bool loopResolve = true;
-
-			foreach (Statement each in StmtList)
-			{
-				loopResolve = loopResolve & each.ResolveNames(scope);
-			}
-
-			return ForInit.ResolveNames(scope) & TestExpr.ResolveNames(scope) & ForUpdate.ResolveNames(scope) & loopResolve;
+            // 1. create new scope
+            var newScope = getNewScope(scope, null);
+            bool loopResolve = true;
+            //Stmt.ResolveNames(scope);
+			return  ForInit.ResolveNames(newScope) & TestExpr.ResolveNames(newScope) & ForUpdate.ResolveNames(newScope) & loopResolve & Stmt.ResolveNames(newScope);
 		}
 
 		public override void TypeCheck()
 		{
             ForInit.TypeCheck();
             ForUpdate.TypeCheck();
-            StmtList.ForEach(x => x.TypeCheck());
+            Stmt.TypeCheck();
 
             this.TestExpr.TypeCheck();
             try
@@ -327,6 +324,54 @@ namespace IFN660_Java_ECMAScript.AST
 
         }
 	}
+
+    public class EnhancedForStatement : Statement
+    {
+        // by Nathan - still testing
+        private List<Modifier> mod;
+        private Type type;
+        private string id;
+        private Expression expr;
+        private Statement Stmt;
+
+        public EnhancedForStatement(List<Modifier> mod, Type type, string id,Expression expr, Statement Stmt)
+        {
+            this.mod = mod;
+            this.type = type;
+            this.id = id;
+            this.expr = expr;
+            this.Stmt = Stmt;
+        }
+
+        public override bool ResolveNames(LexicalScope scope)
+        {
+            // 1. create new scope
+            var newScope = getNewScope(scope, null);
+            bool loopResolve = true;
+            //Stmt.ResolveNames(scope);
+            return  type.ResolveNames(newScope) & expr.ResolveNames(newScope) & loopResolve & Stmt.ResolveNames(newScope);
+        }
+
+        public override void TypeCheck()
+        {
+            type.TypeCheck();
+            Stmt.TypeCheck();
+
+            this.expr.TypeCheck();
+            try
+            {
+                if (!expr.type.Equals(new NamedType("BOOLEAN")))
+                {
+                    Console.WriteLine("Invalid type for if statement condition\n");
+                }
+            }
+            catch (Exception)
+            {
+                throw new Exception("TypeCheck error");
+            }
+
+        }
+    }
 
     public class TryStatement : Statement
     {
@@ -461,8 +506,39 @@ namespace IFN660_Java_ECMAScript.AST
 
 	}
 
+    public class ExpressionStatementList : Statement
+    {
+        private List<Expression> exprs;
+        public List<Expression> Exprs
+        { get; }
+        public ExpressionStatementList(List<Expression> expr)
+        {
+            this.exprs = expr;
+        }
 
-	public class VariableDeclaration : Statement, Declaration
+        public override bool ResolveNames(LexicalScope scope)
+        {
+            bool loopResolve = true;
+
+            if (exprs != null)
+            {
+                foreach (Expression each in exprs)
+                {
+                    loopResolve = loopResolve & each.ResolveNames(scope);
+                }
+            }
+
+            return loopResolve;
+        }
+        public override void TypeCheck()
+        {
+            foreach(Expression expr in exprs)
+                 expr.TypeCheck();
+        }
+
+    }
+
+    public class VariableDeclaration : Statement, Declaration
 	{
 		private Type type;
 		private string name;

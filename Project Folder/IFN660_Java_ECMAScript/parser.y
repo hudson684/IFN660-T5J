@@ -22,12 +22,13 @@ public static Statement root;
 	public List<Modifier> modfs;
 	public ArrayList arrlst;
 	public List<string> strlst;
+	public List<Expression> exprs;
 }
 
 // Types
-%type <expr> Literal, StatementExpression, Assignment, LeftHandSide, ExpressionName
+%type <expr> Literal, Assignment, LeftHandSide, ExpressionName
 %type <expr> TypeParameters_opt, Superclass_opt, Superinterfaces_opt
-%type <expr> AssignmentExpression, PrimaryNoNewArray
+%type <expr> AssignmentExpression, PrimaryNoNewArray , StatementExpression
 %type <expr> Expression, LambdaExpression, LambdaExpression, LambdaBody
 %type <expr> ConditionalExpression, ConditionalOrExpression, ConditionalAndExpression
 %type <expr> InclusiveOrExpression, ExclusiveOrExpression, AndExpression, EqualityExpression
@@ -35,6 +36,10 @@ public static Statement root;
 %type <expr> UnaryExpression, PostfixExpression, Primary //Josh
 %type <expr> PreIncrementExpression,  PreDecrementExpression, UnaryExpressionNotPlusMinus //Josh
 %type <expr> CastExpression, PostIncrementExpression, PostDecrementExpression //Josh
+
+%type <stmts> StatementExpressionList
+
+
 
 %type <stmt> Statement, CompilationUnit, TypeDeclaration, ClassDeclaration, NormalClassDeclaration, ClassBodyDeclaration
 %type <stmt> ExpressionStatement, StatementWithoutTrailingSubstatement, LocalVariableDeclaration, LocalVariableDeclarationStatement
@@ -50,7 +55,9 @@ public static Statement root;
 %type <stmt> AssertStatement
 %type <stmt> IfThenStatement, IfThenElseStatement, IfThenElseStatementNoShortIf
 %type <stmt> LabeledStatement, BreakStatement, ContinueStatement, ReturnStatement
-
+%type <stmt> ForUpdate, BasicForStatement, BasicForStatementNoShortIf, ForStatement, ForStatementNoShortIf
+%type <stmt> EnhancedForStatementNoShortIf, EnhancedForStatement, ForInit
+ 
 %type <stmts> TypeDeclarations, ClassBody, ClassBodyDeclarations, BlockStatements, BlockStatements_Opt
 %type <stmts> FormalParameters, FormalParameterList, FormalParameterList_Opt 
 %type <stmts> ImportDeclarations
@@ -384,7 +391,17 @@ VariableDeclaratorList
 		;
 
 VariableDeclarator
-		: VariableDeclaratorId									{ $$ = $1; } // Nathan
+		: VariableDeclaratorId	VariableDeclarator_opt									{ $$ = $1; } // Nathan
+		;
+
+VariableDeclarator_opt
+		: '=' VariableInitializer								{$$ = $1;}
+		|
+		;
+
+VariableInitializer
+		: Expression
+		//| ArrayInitializer
 		;
 
 VariableDeclaratorId
@@ -397,11 +414,13 @@ Statement
 		| IfThenElseStatement									{$$ = $1; } // Adon
 		| WhileStatement										{ $$ = $1; } // Nathan
 		| LabeledStatement										 { $$ = $1;} //Vivian
+		| ForStatement											{$$ = $1;}
 		;
 		
 StatementNoShortIf
 		: StatementWithoutTrailingSubstatement					{$$ = $1; } // Adon
 		| IfThenElseStatementNoShortIf							{$$ = $1; } // Adon
+		| ForStatementNoShortIf									{$$ = $1;}
 		;
 
 // Tristan
@@ -431,7 +450,48 @@ SwitchStatement
 DoStatement
 		: DO Statement WHILE '(' Expression ')'	';'				{ $$ = new DoStatement($2, $5); } // Tri
 		;
-		 
+	
+ForStatement
+		: BasicForStatement										{$$ = $1;}
+		| EnhancedForStatement									{$$ = $1;}
+		;
+
+ForStatementNoShortIf
+		: BasicForStatementNoShortIf							{$$ = $1;}
+		| EnhancedForStatementNoShortIf							{$$ = $1;}
+		;
+
+BasicForStatement
+		: FOR '(' ForInit ';' Expression ';' ForUpdate ')' Statement							{$$ = new ForStatement($3,$5,$7,$9);}
+		;
+
+BasicForStatementNoShortIf
+		: FOR '(' ForInit ';' Expression ';' ForUpdate ')' StatementNoShortIf					{$$ = new ForStatement($3,$5,$7,$9);}
+		;
+
+ForInit
+		: 
+		//| StatementExpressionList											{$$ = $1;}					
+		| LocalVariableDeclaration											{$$ = $1;}			
+		;
+
+ForUpdate
+		: 
+		| StatementExpressionList
+		;
+
+StatementExpressionList
+		: StatementExpression												{$$ = new List<Statement>(){new ExpressionStatement($1)};}
+		| StatementExpressionList ',' StatementExpression					{$$ = $1; $$.Add(new ExpressionStatement($3));}
+		;
+
+EnhancedForStatement
+		: FOR '(' VariableModifiers UnannType VariableDeclaratorId ':' Expression ')' Statement   {$$= new EnhancedForStatement($3,$4,$5,$7,$9);}
+		;
+
+EnhancedForStatementNoShortIf
+		: FOR '(' VariableModifiers UnannType VariableDeclaratorId ':' Expression ')' StatementNoShortIf
+		;		 
 ThrowStatement
 		: THROW Expression ';'									{ $$ = new ThrowStatement($2); } //KoJo
 		;
@@ -446,6 +506,10 @@ ExpressionStatement
 
 StatementExpression
 		: Assignment											{ $$ = $1; } // Khoa - updated by Nathan
+		| PreIncrementExpression								{ $$ = $1; }
+ 		| PreDecrementExpression								{ $$ = $1; }
+ 		| PostIncrementExpression								{ $$ = $1; }	
+ 		| PostDecrementExpression								{ $$ = $1; }
 		;
 
 IfThenStatement
