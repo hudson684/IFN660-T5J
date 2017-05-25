@@ -14,7 +14,12 @@ namespace IFN660_Java_ECMAScript.AST
 
         public CodeGen cg = new CodeGen();
 
-		void Indent(int n)
+        public static int LastLocal;
+        public static int LastArgument;
+        public static int MethodOffsetLocal;
+        public static int MethodOffsetArgument;
+
+        void Indent(int n)
 		{
 			for (int i = 0; i < n; i++)
 				Console.Write("    ");

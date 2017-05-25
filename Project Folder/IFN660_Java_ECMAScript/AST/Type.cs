@@ -185,6 +185,8 @@ namespace IFN660_Java_ECMAScript.AST
         {
             switch (elementType)
             {
+                case ("VOID"):
+                    return "void";
                 case ("BOOLEAN"):
                     return "bool";
                 case ("BYTE"):
