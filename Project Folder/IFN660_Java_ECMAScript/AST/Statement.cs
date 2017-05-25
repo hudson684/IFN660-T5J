@@ -10,38 +10,38 @@ namespace IFN660_Java_ECMAScript.AST
 
 	public class IfStatement : Statement
 	{
-		private Expression Cond;
-		private Statement Then, Else;
-		public IfStatement(Expression Cond, Statement Then, Statement Else)
+		private Expression CondExpr;
+		private Statement ThenStmts, ElseStmts;
+		public IfStatement(Expression CondExpr, Statement ThenStmts, Statement ElseStmts)
 		{
-			this.Cond = Cond; this.Then = Then; this.Else = Else;
+			this.CondExpr = CondExpr; this.ThenStmts = ThenStmts; this.ElseStmts = ElseStmts;
 		}
 
 		public override bool ResolveNames(LexicalScope scope)
         {
-            if(Else == null)
-                return Cond.ResolveNames(scope) & Then.ResolveNames(scope);
+            if(ElseStmts == null)
+                return CondExpr.ResolveNames(scope) & ThenStmts.ResolveNames(scope);
             else
-                return Cond.ResolveNames(scope) & Then.ResolveNames(scope) & Else.ResolveNames(scope);
+                return CondExpr.ResolveNames(scope) & ThenStmts.ResolveNames(scope) & ElseStmts.ResolveNames(scope);
         }
 
 		public override void TypeCheck()
 		{
-			this.Cond.TypeCheck();
+			this.CondExpr.TypeCheck();
 			try
 			{
-				if (!Cond.type.Equals(new NamedType("BOOLEAN")))
+				if (!CondExpr.type.Equals(new NamedType("BOOLEAN")))
 				{
 					Console.WriteLine("Invalid type for if statement condition\n");
 				}
 			}
-			catch (Exception e)
+			catch (Exception)
 			{
 				throw new Exception("TypeCheck error");
 			}
-            Then.TypeCheck();
-            if (Else != null)
-                Else.TypeCheck();
+            ThenStmts.TypeCheck();
+            if (ElseStmts != null)
+                ElseStmts.TypeCheck();
 		}
 	}
 
@@ -320,7 +320,7 @@ namespace IFN660_Java_ECMAScript.AST
                     Console.WriteLine("Invalid type for if statement condition\n");
                 }
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 throw new Exception("TypeCheck error");
             }
@@ -330,35 +330,36 @@ namespace IFN660_Java_ECMAScript.AST
 
     public class TryStatement : Statement
     {
-        private Statement tryStatements, catchStatements, finallyStatements;
+        private Statement TryStmts, CatchStmts, FinallyStmts;
 
-        public TryStatement(Statement tryStatements, Statement catchStatements, Statement finallyStatements)
+        public TryStatement(Statement TryStmts, Statement CatchStmts, Statement FinallyStmts)
         {
-            this.tryStatements = tryStatements;
-            this.catchStatements = catchStatements;
-            this.finallyStatements = finallyStatements;
+            this.TryStmts = TryStmts;
+            this.CatchStmts = CatchStmts;
+            this.FinallyStmts = FinallyStmts;
         }
 
         public override bool ResolveNames(LexicalScope scope)
         {
-            bool loopResolve = tryStatements.ResolveNames(scope);
-            if (catchStatements != null)
-                loopResolve = loopResolve & catchStatements.ResolveNames(scope);
-            if (finallyStatements != null)
-                loopResolve = loopResolve & finallyStatements.ResolveNames(scope);
+            bool loopResolve = TryStmts.ResolveNames(scope);
+            if (CatchStmts != null)
+                loopResolve = loopResolve & CatchStmts.ResolveNames(scope);
+            if (FinallyStmts != null)
+                loopResolve = loopResolve & FinallyStmts.ResolveNames(scope);
             return loopResolve;
         }
 
         public override void TypeCheck()
         {
-            tryStatements.TypeCheck();
-            if (catchStatements != null)
-                catchStatements.TypeCheck();
-            if (finallyStatements != null)
-                finallyStatements.TypeCheck();
+            TryStmts.TypeCheck();
+            if (CatchStmts != null)
+                CatchStmts.TypeCheck();
+            if (FinallyStmts != null)
+                FinallyStmts.TypeCheck();
         }
 
     }
+
     public class ThrowStatement : Statement              //KoJo
     {
         private Expression Expr;
@@ -386,7 +387,7 @@ namespace IFN660_Java_ECMAScript.AST
                     Expr.TypeCheck();
                 }
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 throw new Exception("No Expression was entered");
             }
@@ -422,7 +423,7 @@ namespace IFN660_Java_ECMAScript.AST
                     Stmt.TypeCheck();
                 }
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 throw new NullReferenceException("No Expression was entered");
             }
