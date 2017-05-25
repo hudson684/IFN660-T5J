@@ -5,10 +5,21 @@
 //  See accompanying file GPLEXcopyright.rtf.
 //
 //  GPLEX Version:  1.2.2
+<<<<<<< HEAD
+//  Machine:  VDI-VL17-004
+//  DateTime: 23/05/2017 12:16:19 PM
+//  UserName: n9004548
+//  GPLEX input file <scanner.lex - 14/05/2017 9:26:49 AM>
+=======
 //  Machine:  AIR
-//  DateTime: 5/23/2017 11:35:02
+//  DateTime: 5/24/2017 0:44:52
 //  UserName: Air
-//  GPLEX input file <scanner.lex - 5/23/2017 11:07:03>
+<<<<<<< HEAD
+//  GPLEX input file <scanner.lex - 5/13/2017 12:03:04>
+>>>>>>> master
+=======
+//  GPLEX input file <scanner.lex - 5/23/2017 18:22:26>
+>>>>>>> codeGen
 //  GPLEX frame file <embedded resource>
 //
 //  Option settings: unicode, parser, minimize
@@ -1939,16 +1950,16 @@ if(IsValidIdentifier(yytext))
         case 4:
         case 316:
 /*{yylval.name = yytext;return (int)Tokens.UnicodeInputCharacter;}*/
-/* 3.4 Line Terminators */
+/* 3.4 Line Terminators Joshua*/
             break;
         case 5:
         case 6:
 /* Line Terminator */
-/* 3.6 WhiteSpace */
+/* 3.6 WhiteSpace Joshua */
             break;
         case 7:
 /* White space */
-/* 3.7 Comment */
+/* 3.7 Comment Joshua */
             break;
         case 26:
         case 27:

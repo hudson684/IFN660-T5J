@@ -36,7 +36,7 @@ public static Statement root;
 %type <expr> InclusiveOrExpression, ExclusiveOrExpression, AndExpression, EqualityExpression
 %type <expr> RelationalExpression, ShiftExpression, AdditiveExpression, MultiplicativeExpression
 %type <expr> UnaryExpression, PostfixExpression, Primary //Josh
-%type <expr> PreIncrementExpression,  PreDecrementExpression, UnaryExpressionNotPlusMinus //Josh
+%type <expr> PreIncrementExpression,  PreDecrementExpression, UnaryExpressionNotPlusMinus, ConstantExpression //Josh
 %type <expr> CastExpression, PostIncrementExpression, PostDecrementExpression //Josh
 %type <expr> MethodInvocation, FormalParameter, VariableInitialiser
 
@@ -53,11 +53,16 @@ public static Statement root;
 %type <stmt> PackageDeclaration_opt, Block, MethodBody
 %type <stmt> StatementNoShortIf
 %type <stmt> DoStatement, ThrowStatement, SynchronizedStatement
-%type <stmt> SwitchStatement
+%type <stmt> SwitchStatement, SwitchBlock, SwitchBlockStatementGroup, SwitchBlockStatementGroups, SwitchLabel,  SwitchLabels
 %type <stmt> AssertStatement
 %type <stmt> LabeledStatement, BreakStatement, ContinueStatement, ReturnStatement
 
-%type <stmts> TypeDeclarations, ClassBody, ClassBodyDeclarations, BlockStatements, BlockStatements_Opt
+%type <stmt> ImportDeclaration
+
+%type <stmt> BlockStatements, BlockStatements_Opt
+
+
+%type <stmts> TypeDeclarations, ClassBody, ClassBodyDeclarations
 %type <stmts> ImportDeclarations
 
 %type <type> Result, FloatingPointType, IntegralType, NumericType
@@ -76,6 +81,7 @@ public static Statement root;
 
 %type <name> Identifier_opt
 %type <expr> Expression_opt
+%type <name> TypeName
 
 // Tokens
 %token <num> NUMBER
@@ -138,9 +144,24 @@ PackageDeclaration_opt
 		: /* empty */											
 		;
 		
+//add import declaration-Vivian
 ImportDeclarations
-		: /*empty*/												
+		: ImportDeclaration												{ $$ = new List<Statement> {$1};} //Vivian	
+		| ImportDeclarations ImportDeclaration						    { $$ = $1; $$.Add($2);} //Vivian
+		|						
 		;
+
+ImportDeclaration
+		: IMPORT TypeName ';'											{  $$ = new ImportDeclaration($2); } //Vivian
+		| IMPORT TypeName '.' '*' ';' 									{  $$ = new ImportDeclaration($2); } //Vivian
+		| IMPORT STATIC TypeName '.' IDENTIFIER ';'						{  $$ = new ImportDeclaration($3,$5); } //Vivian
+		| IMPORT STATIC TypeName '.' '*' ';'                            {  $$ = new ImportDeclaration($3); } //Vivian
+		;
+
+TypeName
+		:IDENTIFIER
+		|TypeName '.' IDENTIFIER
+		;								
 
 TypeDeclarations 
 		: TypeDeclarations TypeDeclaration						{ $$ = $1; $$.Add($2); } // needs work - Josh
@@ -357,7 +378,7 @@ MethodBody
 //		;
 
 Block 
-		: '{' BlockStatements_Opt '}'							{ $$ = new BlockStatement($2); } // Tristan
+		: '{' BlockStatements_Opt '}'							{ $$ = $2; } // Tristan
 		;
 
 BlockStatements_Opt
@@ -366,8 +387,8 @@ BlockStatements_Opt
 		;
 
 BlockStatements
-		: BlockStatement										{ $$ = new List<Statement> { $1 }; } // Tristan - done by Khoa
-		| BlockStatements BlockStatement						{ $$ = $1; $$.Add($2); } // Tristan - done by Khoa
+		: BlockStatement										{ $$ = $1;} // Joshua
+		| BlockStatements BlockStatement						{ $$ = new BlockStatement( new List<Statement>(){$1, $2}); } // Joshua
 		;
 
 BlockStatement
@@ -437,8 +458,32 @@ AssertStatement
 		;
 
 SwitchStatement
-		: SWITCH '(' Expression ')'								{ $$ = new SwitchStatement($3); } //Tri
+		: SWITCH '(' Expression ')'	SwitchBlock					{ $$ = new SwitchStatement($3, $5); } //Kojo
 		;
+
+SwitchBlock
+		: '{' SwitchBlockStatementGroups '}'						{ $$ = new BlockStatement(new List<Statement>(){$2}); } //Kojo
+		;
+
+SwitchBlockStatementGroups
+		: SwitchBlockStatementGroup									{ $$ = new BlockStatement(new List<Statement>(){$1}); }  //KoJo
+		| SwitchBlockStatementGroups SwitchBlockStatementGroup		{ $$ = new BlockStatement(new List<Statement>(){$1, $2}); }  //KoJo
+		;
+
+SwitchBlockStatementGroup
+		: SwitchLabels BlockStatements							{ $$ = new BlockStatement(new List<Statement>(){$1,$2}); } //Kojo
+		;
+
+SwitchLabels
+		: SwitchLabel												{ $$ = new BlockStatement(new List<Statement>(){$1});} //KoJo
+		| SwitchLabels SwitchLabel									{ $$ = new BlockStatement(new List<Statement>(){$1, $2});}   // KoJo
+		;
+
+SwitchLabel
+		: CASE ConstantExpression ':'							{ $$ = new SwitchLabelStatement($2) ;} // KoJo
+		| DEFAULT ':'											{ $$ = new SwitchLabelStatement(); } // KoJo
+		;
+
 
 DoStatement
 		: DO Statement WHILE '(' Expression ')'	';'				{ $$ = new DoStatement($2, $5); } // Tri
@@ -459,6 +504,10 @@ ExpressionStatement
 StatementExpression
 		: Assignment											{ $$ = $1; } // Khoa - updated by Nathan
 		| MethodInvocation										{ $$ = $1; } // Nathan
+		| PreIncrementExpression								{ $$ = $1; }  //sneha
+		| PreDecrementExpression								{ $$ = $1; }  //sneha
+		| PostIncrementExpression								{ $$ = $1; }	
+		| PostDecrementExpression								{ $$ = $1; }
 		;
 
 // Start method handling - Nathan
@@ -764,7 +813,7 @@ AdditionalBound
 		;
 
 ConstantExpression
-		: Expression
+		: Expression {$$ = $1;} // Josh
 		;
 
 %%

@@ -23,10 +23,12 @@ namespace IFN660_Java_ECMAScript.AST
 
         public override bool ResolveNames(LexicalScope scope)
         {
+            var newScope = getNewScope(scope, null);
+
             if (ElseStmts == null)
-                return CondExpr.ResolveNames(scope) & ThenStmts.ResolveNames(scope);
+                return CondExpr.ResolveNames(newScope) & ThenStmts.ResolveNames(newScope);
             else
-                return CondExpr.ResolveNames(scope) & ThenStmts.ResolveNames(scope) & ElseStmts.ResolveNames(scope);
+                return CondExpr.ResolveNames(newScope) & ThenStmts.ResolveNames(newScope) & ElseStmts.ResolveNames(newScope);
         }
 
         public override void TypeCheck()
@@ -99,16 +101,18 @@ namespace IFN660_Java_ECMAScript.AST
         }
         public override void GenCode(StringBuilder sb)
         {
-            int codeLabel, testLabel;
+            int codeLabel, testLabel, finalLabel;
 
             codeLabel = LastLabel++;
             testLabel = LastLabel++;
+            finalLabel = LastLabel++;
 
             cg.emit(sb, "\tbr.s\tL{0}\n", testLabel);
             cg.emit(sb, "L{0}:\n", codeLabel);
             Statements.GenCode(sb);
             cg.emit(sb, "L{0}:\n", testLabel);
             Cond.GenCode(sb);
+            cg.emit(sb, "L{0}:", finalLabel);
             cg.emit(sb, "\tbrtrue.s\tL{0}\n", codeLabel);
         }
 
@@ -118,10 +122,12 @@ namespace IFN660_Java_ECMAScript.AST
     {
         // by Tri
         private Expression expression;
+        private Statement block;
 
-        public SwitchStatement(Expression expression)
+        public SwitchStatement(Expression expression, Statement block)
         {
             this.expression = expression;
+            this.block = block;
         }
 
         public override bool ResolveNames(LexicalScope scope)
@@ -145,6 +151,51 @@ namespace IFN660_Java_ECMAScript.AST
 
         }
     }
+
+
+
+    public class SwitchLabelStatement : Statement
+    {
+        private Expression SwitchValue;
+        private Boolean SwitchLabelNotDefault;
+
+        public Boolean getSwitchLabelNotDefault()
+        {
+            return SwitchLabelNotDefault;
+        }
+        //this exists for case with Expression
+        public SwitchLabelStatement(Expression SwitchValue)
+        {
+            this.SwitchValue = SwitchValue;
+            SwitchLabelNotDefault = true;
+        }
+
+        //this exists for case with Constant Name
+        public SwitchLabelStatement(String switchValueName)
+        {
+            // Ignore this rabbit hole for now
+        }
+
+        //this exists for the default case
+        public SwitchLabelStatement()
+        {
+            SwitchLabelNotDefault = false;
+        }
+
+        public override bool ResolveNames(LexicalScope scope)
+        {
+            return true;
+        }
+        public override void TypeCheck()
+        {
+
+        }
+        public override void GenCode(StringBuilder sb)
+        {
+               
+        }
+    }
+
 
     public class AssertStatement : Statement
     {
@@ -231,7 +282,7 @@ namespace IFN660_Java_ECMAScript.AST
     public class BreakStatement : Statement
     {
         //by Vivian
-        private string Name;
+        private String Name;
 
         public BreakStatement(String Name)
         {
@@ -246,17 +297,13 @@ namespace IFN660_Java_ECMAScript.AST
         }
         public override void TypeCheck()
         {
+            //doesnt matter
         }
         public override void GenCode(StringBuilder sb)
         {
-           // if (Name != NULL)
-            //{
-            //    cg.emit(sb, "\break.{0}\n", Name);
-            //}
-            //else
-            //{
 
-            //}
+            cg.emit(sb, "\tbr.s\tL{0}\n", LastLabel-1);    //test
+
         }
     }
 
@@ -307,6 +354,8 @@ namespace IFN660_Java_ECMAScript.AST
         }
         public override void GenCode(StringBuilder sb)
         {
+
+            Expr.GenCode(sb);
 
         }
     }
@@ -417,11 +466,12 @@ namespace IFN660_Java_ECMAScript.AST
 
         public override bool ResolveNames(LexicalScope scope)
         {
-            bool loopResolve = TryStmts.ResolveNames(scope);
+            var newScope = getNewScope(scope, null);
+            bool loopResolve = TryStmts.ResolveNames(newScope);
             if (CatchStmts != null)
-                loopResolve = loopResolve & CatchStmts.ResolveNames(scope);
+                loopResolve = loopResolve & CatchStmts.ResolveNames(newScope);
             if (FinallyStmts != null)
-                loopResolve = loopResolve & FinallyStmts.ResolveNames(scope);
+                loopResolve = loopResolve & FinallyStmts.ResolveNames(newScope);
             return loopResolve;
         }
 
@@ -435,11 +485,48 @@ namespace IFN660_Java_ECMAScript.AST
         }
         public override void GenCode(StringBuilder sb)
         {
-            TryStmts.GenCode(sb);
+            cg.emit(sb, "\t.try\n");
+            cg.emit(sb, "\t{{\n");
+            int tryLabel = LastLabel++;
+            if (CatchStmts != null && FinallyStmts != null)
+            {
+                int tryLabel2 = LastLabel++;
+                cg.emit(sb, "\t.try\n");
+                cg.emit(sb, "\t{{\n");
+                TryStmts.GenCode(sb);
+                cg.emit(sb, "\tleave.s\tL{0}\n", tryLabel2);
+                cg.emit(sb, "\t}}\n");
+                cg.emit(sb, "\tcatch [mscorlib]System.Object \n");
+                cg.emit(sb, "\t{{\n");
+                CatchStmts.GenCode(sb);
+                cg.emit(sb, "\tleave.s\tL{0}\n", tryLabel2);
+                cg.emit(sb, "\t}}\n");
+                cg.emit(sb, "L{0}:\n", tryLabel2);
+            }
+            else
+            {
+                TryStmts.GenCode(sb);
+            }
+            cg.emit(sb, "\tleave.s\tL{0}\n", tryLabel);
+            cg.emit(sb, "\t}}\n");
+
             if (FinallyStmts != null)
+            {
+                cg.emit(sb, "\tfinally\n");
+                cg.emit(sb, "\t{{\n");
                 FinallyStmts.GenCode(sb);
-            if (FinallyStmts != null)
-                FinallyStmts.GenCode(sb);
+                cg.emit(sb, "\tendfinally\n");
+                cg.emit(sb, "\t}}\n");
+            }
+            else
+            {
+                cg.emit(sb, "\tcatch [mscorlib]System.Object \n");
+                cg.emit(sb, "\t{{\n");
+                CatchStmts.GenCode(sb);
+                cg.emit(sb, "\tleave.s\tL{0}\n", tryLabel);
+                cg.emit(sb, "\t}}\n");
+            }
+            cg.emit(sb, "L{0}:\n", tryLabel);
         }
 
     }
@@ -477,8 +564,9 @@ namespace IFN660_Java_ECMAScript.AST
         }
         public override void GenCode(StringBuilder sb)
         {
-            cg.emit(sb, "\throw ");
-           Expr.GenCode(sb);
+            // Put a simplest throw here, at least it throws... - Adon
+            cg.emit(sb, "\tnewobj instance void [mscorlib]System.Exception::.ctor()\n");
+            cg.emit(sb, "\tthrow\n");
         }
     }
 

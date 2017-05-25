@@ -106,6 +106,9 @@
     <Content Include="test1.txt" />
     <Content Include="Tests\auto\test2.java" />
     <Content Include="Tests\auto\test.java" />
+    <Content Include="Tests\auto\test_continue.java" />
+    <Content Include="Tests\auto\test_import.java" />
+    <Content Include="Tests\auto\test_return.java" />
     <Content Include="Tests\test1.txt" />
     <Content Include="Tests\test2.java" />
     <Content Include="Tests\test_try.java" />

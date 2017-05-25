@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 
 namespace IFN660_Java_ECMAScript.AST
 {
+
 	public abstract class Expression : Node
 	{
 		public Type type;
@@ -37,6 +38,7 @@ namespace IFN660_Java_ECMAScript.AST
 		}
 		public override void TypeCheck()
 		{
+
             lhs.TypeCheck();
             rhs.TypeCheck();
 
@@ -52,6 +54,7 @@ namespace IFN660_Java_ECMAScript.AST
 
             // set type to the lhs type
             type = lhs.type;
+
 		}
 
         public override Type ObtainType()
@@ -132,25 +135,34 @@ namespace IFN660_Java_ECMAScript.AST
 		}
 		public override void TypeCheck()
 		{
+
             lhs.TypeCheck();
             rhs.TypeCheck();
             switch (oper)
             {
+
                 case ">":
                 case "<":
+                case ">=":
+                case "<=":
                 case "==":
                     if (!lhs.type.isTheSameAs(new NamedType("INT")) || !rhs.type.isTheSameAs(new NamedType("INT")))
                     {
                         System.Console.WriteLine("Invalid arguments for \"{0}\" expression\n", oper);
                         throw new Exception("TypeCheck error");
+
                     }
                     type = new NamedType("BOOLEAN");
                     break;
+
+                //Mathematical expressions
                 case "+":
                 case "-":
                 case "*":
                 case "%":
                 case "/":
+
+
                     if (lhs.type.isTheSameAs(rhs.type) && !lhs.type.isTheSameAs(new NamedType("BOOLEAN")))
                     {
                         type = lhs.type;
@@ -165,7 +177,7 @@ namespace IFN660_Java_ECMAScript.AST
                     }
                     else
                     {
-                        System.Console.WriteLine("Invalid arguments for less than expression\n");
+                        System.Console.WriteLine("Invalid arguments for expression\n");
                         throw new Exception("TypeCheck error");
                     }
                     break;
@@ -176,6 +188,7 @@ namespace IFN660_Java_ECMAScript.AST
                         throw new Exception("TypeCheck error");
                     }
             }
+
 		}
 
         public override Type ObtainType()
@@ -216,6 +229,7 @@ namespace IFN660_Java_ECMAScript.AST
                     Console.WriteLine("Unexpected binary operator {0}\n", oper);
                     break;
             }
+
         }
     }
 
@@ -236,7 +250,8 @@ namespace IFN660_Java_ECMAScript.AST
 
         public override void TypeCheck()
         {
-            
+
+
         }
 
         public override Type ObtainType()
@@ -249,7 +264,6 @@ namespace IFN660_Java_ECMAScript.AST
             lhs.GenCode(sb);
 		}
     }
-
 
     public class PreUnaryExpression : Expression
     {
@@ -268,8 +282,35 @@ namespace IFN660_Java_ECMAScript.AST
         }
         public override void TypeCheck()
         {
-            
-        }
+            expression.TypeCheck();
+            switch (oper)
+            {
+                case "++":
+                case "--":
+                case "~":
+                case "!":
+                case "+":
+
+                    if (expression.type.isTheSameAs(new NamedType("INT")) || expression.type.isTheSameAs(new NamedType("DOUBLE")) || expression.type.isTheSameAs(new NamedType("FLOAT")) || expression.type.isTheSameAs(new NamedType("DOUBLE")))
+
+                    {
+                        type = expression.type;
+                    }
+                    else
+                    {
+                        System.Console.WriteLine("Invalid arguments for expression\n");
+                        throw new Exception("TypeCheck error");
+                    }
+                    break;
+                default:
+                    {
+                        System.Console.WriteLine("Unexpected uniary operator %c \n", oper);
+                        throw new Exception("TypeCheck error");
+                    }
+            }
+
+
+            }
         public override Type ObtainType()
         {
             return type;
@@ -290,6 +331,7 @@ namespace IFN660_Java_ECMAScript.AST
                     Console.WriteLine("Unexpected preunary operator {0}\n", oper);
                     break;
             }
+
         }
     }
 
@@ -310,12 +352,39 @@ namespace IFN660_Java_ECMAScript.AST
         }
         public override void TypeCheck()
         {
-            
-        }
+
+            expression.TypeCheck();
+            switch (oper)
+            {
+                case "++":
+                case "--":
+                case "~":
+                case "!":
+                case "+":
+                case "-":
+                    if (expression.type.isTheSameAs(new NamedType("INT")) || expression.type.isTheSameAs(new NamedType("DOUBLE")) || expression.type.isTheSameAs(new NamedType("FLOAT")) || expression.type.isTheSameAs(new NamedType("DOUBLE")))
+                    {
+                        type = expression.type;
+                    }
+                    else
+                    {
+                        System.Console.WriteLine("Invalid arguments for expression\n");
+                        throw new Exception("TypeCheck error");
+                    }
+                    break;
+                default:
+                    {
+                        System.Console.WriteLine("Unexpected uniary operator %c \n", oper);
+                        throw new Exception("TypeCheck error");
+                    }
+            }
+
+            }
 
         public override Type ObtainType()
         {
             return type;
+
         }
 
         public override void GenCode(StringBuilder sb)
@@ -336,6 +405,9 @@ namespace IFN660_Java_ECMAScript.AST
         }
 
     }
+
+
+
     public class CastExpression : Expression
     {
         private Type PrimitiveType;
@@ -390,6 +462,7 @@ namespace IFN660_Java_ECMAScript.AST
 
     }
 }
+
 
 	
 

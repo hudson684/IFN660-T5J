@@ -31,6 +31,10 @@ namespace IFN660_Java_ECMAScript.AST
 			this.args = args;
 		}
 
+        public MethodDeclaration()
+        {
+        }
+
         public void AddItemsToSymbolTable(LexicalScope scope)
         {
             scope.Symbol_table.Add(methodIdentifier, this);

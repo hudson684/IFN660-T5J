@@ -131,13 +131,13 @@ Separators									[\(\)\{\}\[\]\;\,\.\@]
 Operators									[\=\>\<\!\~\?\:\+\-\*\/\&\|\^\%]
 %%
 
-/* 3.3 Unicode Escapes */
+/* 3.3 Unicode Escapes Joshua*/ 
 {UnicodeInputCharacter}						/*{yylval.name = yytext;return (int)Tokens.UnicodeInputCharacter;}*/
-/* 3.4 Line Terminators */
+/* 3.4 Line Terminators Joshua*/
 {LineTerminator}							/* Line Terminator */
-/* 3.6 WhiteSpace */
+/* 3.6 WhiteSpace Joshua */
 {WhiteSpace}								/* White space */
-/* 3.7 Comment */
+/* 3.7 Comment Joshua */
 {Comment}									/* Comment */
 
 /* 3.9 KEYWORDS An */
