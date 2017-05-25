@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -103,6 +103,9 @@
     <Content Include="test1.txt" />
     <Content Include="Tests\auto\test2.java" />
     <Content Include="Tests\auto\test.java" />
+    <Content Include="Tests\auto\test_continue.java" />
+    <Content Include="Tests\auto\test_import.java" />
+    <Content Include="Tests\auto\test_return.java" />
     <Content Include="Tests\test1.txt" />
     <Content Include="Tests\test2.java" />
     <Content Include="Tests\test_try.java" />

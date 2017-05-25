@@ -50,6 +50,7 @@ public static Statement root;
 %type <stmt> AssertStatement
 %type <stmt> IfThenStatement, IfThenElseStatement, IfThenElseStatementNoShortIf
 %type <stmt> LabeledStatement, BreakStatement, ContinueStatement, ReturnStatement
+%type <stmt> ImportDeclaration
 
 %type <stmts> TypeDeclarations, ClassBody, ClassBodyDeclarations, BlockStatements, BlockStatements_Opt
 %type <stmts> FormalParameters, FormalParameterList, FormalParameterList_Opt 
@@ -70,6 +71,7 @@ public static Statement root;
 
 %type <name> Identifier_opt
 %type <expr> Expression_opt
+%type <name> TypeName
 
 // Tokens
 %token <num> NUMBER
@@ -132,9 +134,24 @@ PackageDeclaration_opt
 		: /* empty */											
 		;
 		
+//add import declaration-Vivian
 ImportDeclarations
-		: /*empty*/												
+		: ImportDeclaration												{ $$ = new List<Statement> {$1};} //Vivian	
+		| ImportDeclarations ImportDeclaration						    { $$ = $1; $$.Add($2);} //Vivian
+		|						
 		;
+
+ImportDeclaration
+		: IMPORT TypeName ';'											{  $$ = new ImportDeclaration($2); } //Vivian
+		| IMPORT TypeName '.' '*' ';' 									{  $$ = new ImportDeclaration($2); } //Vivian
+		| IMPORT STATIC TypeName '.' IDENTIFIER ';'						{  $$ = new ImportDeclaration($3,$5); } //Vivian
+		| IMPORT STATIC TypeName '.' '*' ';'                            {  $$ = new ImportDeclaration($3); } //Vivian
+		;
+
+TypeName
+		:IDENTIFIER
+		|TypeName '.' IDENTIFIER
+		;								
 
 TypeDeclarations 
 		: TypeDeclarations TypeDeclaration						{ $$ = $1; $$.Add($2); } // needs work - Josh
