@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 // Parser Conflict Information for grammar file "parser.y - 23/05/2017 11:47:49 AM"
 
 Shift/Reduce conflict on symbol "IMPORT", parser will shift
@@ -628,5 +629,8 @@ Reduce/Reduce conflict in state 254 on symbol "ELSE", parser will reduce product
  Reduce 125:	IfThenElseStatementNoShortIf -> IF, '(', Expression, ')', StatementNoShortIf, 
 >>>>>>> master
                                 ELSE, StatementNoShortIf
+=======
+// Parser Conflict Information for grammar file "parser.y - 5/23/2017 18:22:26"
+>>>>>>> codeGen
 
 // End conflict information for parser

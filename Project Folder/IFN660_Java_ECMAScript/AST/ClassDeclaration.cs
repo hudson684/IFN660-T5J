@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Text;
 
 namespace IFN660_Java_ECMAScript.AST
 {
@@ -22,12 +24,18 @@ namespace IFN660_Java_ECMAScript.AST
             scope.Symbol_table.Add(classIdentifier, this);
         }
 
+        public int GetNumber() {
+            return 0;
+        }
         public override Boolean ResolveNames(LexicalScope scope)
         {
-            // Step 1: Create new scope and populate the symbol table
-            var newScope = getNewScope(scope, classBody);
+            // Step 1: Add class name to current scope
+            AddItemsToSymbolTable(scope);
 
-            // Step 2: ResolveNames for each method
+            // Step 2: Create new scope
+            var newScope = getNewScope(scope, null);
+
+            // Step 3: ResolveNames for each statement in the class
             bool loopResolve = true;
 
             if (classBody != null)
@@ -49,6 +57,21 @@ namespace IFN660_Java_ECMAScript.AST
         public Type ObtainType()
         {
             return new NamedType("CLASS");
+        }
+
+        public override void GenCode(StringBuilder sb)
+        {
+            cg.emit(sb, ".class {0} {{\n", classIdentifier);
+
+            /* not required
+            foreach (var modif in classModifiers)
+                emit(sb, "{0} ", modif);
+            emit(sb, "{0} {{ {1}", classIdentifier, Environment.NewLine);
+            */
+            foreach (var bd in classBody)
+                bd.GenCode(sb);
+
+            cg.emit(sb, "}}");
         }
 
     }

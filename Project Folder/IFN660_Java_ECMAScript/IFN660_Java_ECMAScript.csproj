@@ -47,6 +47,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AST\Block.cs" />
+    <Compile Include="AST\CodeGen.cs" />
+    <Compile Include="AST\JavaLang.cs" />
+    <Compile Include="AST\Variables.cs" />
     <Compile Include="AST\CompilationUnitDeclaration.cs" />
     <Compile Include="AST\Declaration.cs" />
     <Compile Include="AST\LexicalScope.cs" />

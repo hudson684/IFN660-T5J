@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Text;
 
 namespace IFN660_Java_ECMAScript.AST
 {
@@ -20,7 +22,7 @@ namespace IFN660_Java_ECMAScript.AST
         public override bool ResolveNames(LexicalScope scope)
         {
             // Step 1: Create new scope and populate the symbol table
-            var newScope = getNewScope(scope, ClassDeclarations);
+            var newScope = getNewScope(scope, null);
             
             // Step 2: ResolveNames for each part of the complilation unit
             bool loopResolve = true;
@@ -45,6 +47,12 @@ namespace IFN660_Java_ECMAScript.AST
             // 2 lines belwo will give errors cause we did not implemented anything within 2 classesl.
             //this.PackageDeclaration.TypeCheck();
             //ImportDeclarations.ForEach(x => x.TypeCheck());
+        }
+
+        public override void GenCode(StringBuilder sb)
+        {
+            foreach (var type in ClassDeclarations)
+                type.GenCode(sb);
         }
     }
 
