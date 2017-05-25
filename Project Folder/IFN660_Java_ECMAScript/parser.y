@@ -53,17 +53,14 @@ public static Statement root;
 %type <stmt> PackageDeclaration_opt, Block, MethodBody
 %type <stmt> StatementNoShortIf
 %type <stmt> DoStatement, ThrowStatement, SynchronizedStatement
-%type <stmt> SwitchStatement, SwitchBlock, SwitchBlockStatementGroup, SwitchBlockStatementGroups, SwitchLabel,  SwitchLabels
+%type <stmt> SwitchStatement, SwitchBlockStatementGroup, SwitchLabel
 %type <stmt> AssertStatement
 %type <stmt> LabeledStatement, BreakStatement, ContinueStatement, ReturnStatement
-
 %type <stmt> ImportDeclaration
 
-%type <stmt> BlockStatements, BlockStatements_Opt
 
-
-%type <stmts> TypeDeclarations, ClassBody, ClassBodyDeclarations
-%type <stmts> ImportDeclarations
+%type <stmts> TypeDeclarations, ClassBody, ClassBodyDeclarations, BlockStatements, BlockStatements_Opt
+%type <stmts> ImportDeclarations, SwitchLabels, SwitchBlockStatementGroups, SwitchBlock
 
 %type <type> Result, FloatingPointType, IntegralType, NumericType
 %type <type> UnannType, UnannPrimitiveType, UnannReferenceType, UnannArrayType, UnannTypeVariable, ReferenceType, PrimitiveType
@@ -378,7 +375,7 @@ MethodBody
 //		;
 
 Block 
-		: '{' BlockStatements_Opt '}'							{ $$ = $2; } // Tristan
+		: '{' BlockStatements_Opt '}'							{ $$ = new BlockStatement($2); } // Tristan
 		;
 
 BlockStatements_Opt
@@ -387,8 +384,8 @@ BlockStatements_Opt
 		;
 
 BlockStatements
-		: BlockStatement										{ $$ = $1;} // Joshua
-		| BlockStatements BlockStatement						{ $$ = new BlockStatement( new List<Statement>(){$1, $2}); } // Joshua
+		: BlockStatement										{ $$ = new List<Statement> { $1 };} // Joshua
+		| BlockStatements BlockStatement						{ $$ = $1; $$.Add($2); } // Joshua
 		;
 
 BlockStatement
@@ -462,21 +459,21 @@ SwitchStatement
 		;
 
 SwitchBlock
-		: '{' SwitchBlockStatementGroups '}'						{ $$ = new BlockStatement(new List<Statement>(){$2}); } //Kojo
+		: '{' SwitchBlockStatementGroups '}'						{ $$ = $2; } //Kojo
 		;
 
 SwitchBlockStatementGroups
-		: SwitchBlockStatementGroup									{ $$ = new BlockStatement(new List<Statement>(){$1}); }  //KoJo
-		| SwitchBlockStatementGroups SwitchBlockStatementGroup		{ $$ = new BlockStatement(new List<Statement>(){$1, $2}); }  //KoJo
+		: SwitchBlockStatementGroup									{ $$ = new List<Statement> {$1}; }  //KoJo
+		| SwitchBlockStatementGroups SwitchBlockStatementGroup		{ $$ = $1; $$.Add($2); }  //KoJo
 		;
 
 SwitchBlockStatementGroup
-		: SwitchLabels BlockStatements							{ $$ = new BlockStatement(new List<Statement>(){$1,$2}); } //Kojo
+		: SwitchLabels BlockStatements							{ $$ = new SwitchBlockGroup($1, $2); } //Kojo
 		;
 
 SwitchLabels
-		: SwitchLabel												{ $$ = new BlockStatement(new List<Statement>(){$1});} //KoJo
-		| SwitchLabels SwitchLabel									{ $$ = new BlockStatement(new List<Statement>(){$1, $2});}   // KoJo
+		: SwitchLabel												{ $$ = new List<Statement> {$1};} //KoJo
+		| SwitchLabels SwitchLabel									{ $$ = $1; $$.Add($2); }   // KoJo
 		;
 
 SwitchLabel
@@ -659,6 +656,7 @@ Primary
 
 PrimaryNoNewArray
 		: Literal												{ $$ = $1; } // Nathan
+		| MethodInvocation										{ $$ = $1; } // Nathan
 		;
 
 Literal

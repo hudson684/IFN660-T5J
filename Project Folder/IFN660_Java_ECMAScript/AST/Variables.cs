@@ -18,7 +18,7 @@ namespace IFN660_Java_ECMAScript.AST
             this.varType = type;
             this.name = name;
             this.initVal = initVal;
-            num = LastLocal++;
+            num = LastLocal++ - MethodOffsetLocal;
         }
 
         public string GetName() { return name; }
@@ -133,15 +133,17 @@ namespace IFN660_Java_ECMAScript.AST
     {
         private Type varType;
         private string name;
+        int num;
 
         public FormalParam(Type type, string name)
         {
             this.varType = type;
             this.name = name;
+            num = LastArgument++ - MethodOffsetArgument;
         }
 
         public string GetName() { return name; }
-        public int GetNumber() { return -1; }
+        public int GetNumber() { return num; }
         public void AddItemsToSymbolTable(LexicalScope scope)
         {
             scope.Symbol_table.Add(name, this);

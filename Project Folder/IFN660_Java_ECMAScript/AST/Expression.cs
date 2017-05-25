@@ -13,8 +13,7 @@ namespace IFN660_Java_ECMAScript.AST
 	{
 		public Type type;
         public abstract Type ObtainType();
-    
-        public static int LastLocal;
+           
         //public virtual void GenCode(StreamWriter sb) { }
         public virtual void GenStoreCode(StringBuilder sb, string ex)
         {
@@ -107,7 +106,17 @@ namespace IFN660_Java_ECMAScript.AST
 
         public override void GenCode(StringBuilder sb)
         {
-            cg.emit(sb, "\tldloc.{0}\n", declarationRef.GetNumber());
+            // if the variable is an argument as opposed to a variable
+            // use the ldarg instruction rather than the ldloc instruction
+            FormalParam fp = declarationRef as FormalParam;
+            if (fp != null)
+            {
+                cg.emit(sb, "\tldarg.{0}\n", fp.GetNumber());
+            }
+            else
+            {
+                cg.emit(sb, "\tldloc.{0}\n", declarationRef.GetNumber());
+            }
         }
 
         public override void GenStoreCode(StringBuilder sb, string ex)

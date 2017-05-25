@@ -9,27 +9,18 @@ public class HelloWorld
 		{
 			x = x + 1;
 			y = y + 4;
+			System.out.println(x);
+			System.out.println(y);
 		}
-		y = y + x;
+		y = Add(y, x);
 		System.out.println(y);
-		
-		// Boolean Test
-		boolean z;
-		z = true;
 
-		// Float and double test
-		float m;
-		m = 0.2f;
+	}
 
-		// Should cause error cause it is a double not float
-		//m = 0.2;
-
-		double n;
-		n = 0.2;
-		n= m + 1;
-
-		// Variable name test
-		int _test;
-		int $test;
+	public int Add(int a, int b)
+	{
+		int c = 3;
+		c = a + b + 2;
+		return c;
 	}
 }

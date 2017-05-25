@@ -8,7 +8,8 @@ namespace IFN660_Java_ECMAScript.AST
     public interface MethodDec : Declaration
     {
         bool checkArgTypes(List<Expression> args);
-        void setArguments(List<Expression> args);
+        //void setArguments(List<Expression> args);
+        void GenCallCode(StringBuilder sb);
     }
 
     public class MethodDeclaration : Statement, MethodDec
@@ -22,13 +23,17 @@ namespace IFN660_Java_ECMAScript.AST
 		private Statement statementList;
 		private List<Expression> args;
 
-		public MethodDeclaration(String methodIdentifier, List<Modifier> methodModifiers, Statement statementList, Type returnType, List<Expression> args)
+        public MethodDeclaration(String methodIdentifier, List<Modifier> methodModifiers, Statement statementList, Type returnType, List<Expression> args)
 		{
 			this.methodIdentifier = methodIdentifier;
 			this.methodModifiers = methodModifiers;
 			this.statementList = statementList;
 			this.returnType = returnType;
 			this.args = args;
+
+            // set methodOffset for locals and arguments
+            MethodOffsetLocal = LastLocal;
+            MethodOffsetArgument = LastArgument;
 		}
 
         public MethodDeclaration()
@@ -81,22 +86,36 @@ namespace IFN660_Java_ECMAScript.AST
             return returnType;
         }
 
-        public bool checkArgTypes(List<Expression> args)
+        public bool checkArgTypes(List<Expression> input)
         {
             bool rval = true;
 
+            if (args.Count != input.Count)
+            {
+                Console.WriteLine("Number of input arguments does not match method declaration!");
+                throw new Exception("Type Check Error - can not compile.");
+            }
+
             for (int i = 0; i < args.Count; i++)
             {
-                // issue with 
-                //if (args[i].ObtainType().isTheSameAs(this.args[i].))
+                // for each argument check that the type input into the method invocation
+                // matches the declared type.
+                // This is very limited but will have to do for now - Nathan
+                Declaration decArg = args[i] as Declaration;
+                Declaration inArg = input[i] as Declaration;
+                if ((decArg != null) && (inArg != null))
+                {
+                    rval = rval && decArg.ObtainType().isTheSameAs(inArg.ObtainType());
+                }
             }
 
             return rval;
         }
 
-        public void setArguments(List<Expression> args)
+        public void GenCallCode(StringBuilder sb)
         {
-            // do nothing
+            // generate code for method invocation
+            cg.emit(sb, "\tcall\t{0} {1}::{2}(", returnType.GetILName(), "HelloWorld", methodIdentifier);
         }
 
         public override void GenCode(StringBuilder sb)
@@ -104,7 +123,8 @@ namespace IFN660_Java_ECMAScript.AST
             cg.emit(sb, ".method static ");
             foreach (var modif in methodModifiers)
                 cg.emit(sb, "{0} ", modif.ToString().ToLower());
-            returnType.GenCode(sb);
+            //returnType.GenCode(sb);
+            cg.emit(sb, "{0} ", returnType.GetILName());
             cg.emit(sb, "{0}", methodIdentifier);
             cg.emit(sb, "(");
 
@@ -166,7 +186,10 @@ namespace IFN660_Java_ECMAScript.AST
             }
 
             if (declarationRef == null)
+            {
                 Console.WriteLine("Error: Undeclared method indentifier", name);
+                throw new Exception("Name Resolution Error - can not resolve method name");
+            }
 
             return (declarationRef != null) & loopResolve;
         }
@@ -205,13 +228,22 @@ namespace IFN660_Java_ECMAScript.AST
             MethodDec methodD = declarationRef as MethodDec;
             if (methodD != null)
             {
-                // set argurments
-                methodD.setArguments(args);
-                Node methodN = methodD as Node;
-                if (methodN != null)
-                {
-                    methodN.GenCode(sb);
-                }
+                // get argurments and load on stack
+                // !!!! THIS WON'T WORK IF THE ARGS ARE MORE THAN A SIMPLE LITERAL OR VARIABLE !!!!
+                foreach (Expression arg in args)
+                    arg.GenCode(sb);
+
+                // emit method call
+                methodD.GenCallCode(sb);
+
+                // emit variable types
+                string argList = "";
+                foreach (Expression arg in args)
+                    argList = argList + arg.ObtainType().GetILName() + ',';
+            
+                argList = argList.TrimEnd(',');// remove last ','
+                cg.emit(sb, argList + ")\n");
+
             }
 
         }

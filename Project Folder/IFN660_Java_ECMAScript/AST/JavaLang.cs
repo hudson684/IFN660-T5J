@@ -37,11 +37,9 @@ namespace IFN660_Java_ECMAScript.AST
 
         public class Println: Node, MethodDec
         {
-            private Expression arg;
 
             public Println()
             {
-                this.arg = null;
             }
 
             public bool checkArgTypes(List<Expression> args)
@@ -53,11 +51,6 @@ namespace IFN660_Java_ECMAScript.AST
                 else
                     // assuming the argument has a valid 'ToString()' method return true
                     return true;
-            }
-
-            public void setArguments(List<Expression> args)
-            {
-                arg = args[0];
             }
 
             public Type ObtainType()
@@ -84,12 +77,17 @@ namespace IFN660_Java_ECMAScript.AST
             {
                 // nothing to do
             }
-            public override void GenCode(StringBuilder sb)
+            public void GenCallCode(StringBuilder sb)
             {
 
-                string varType = arg.ObtainType().GetILName();
-                arg.GenCode(sb);
-                cg.emit(sb, "\tcall\tvoid [mscorlib]System.Console::WriteLine({0})\n", varType);
+                //string varType = arg.ObtainType().GetILName();
+                //arg.GenCode(sb);
+                cg.emit(sb, "\tcall\tvoid [mscorlib]System.Console::WriteLine(");
+            }
+
+            public override void GenCode(StringBuilder sb)
+            {
+                throw new NotImplementedException();
             }
         }
     }

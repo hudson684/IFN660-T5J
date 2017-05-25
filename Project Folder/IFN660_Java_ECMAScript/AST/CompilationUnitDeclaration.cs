@@ -21,8 +21,17 @@ namespace IFN660_Java_ECMAScript.AST
 
         public override bool ResolveNames(LexicalScope scope)
         {
+            
             // Step 1: Create new scope and populate the symbol table
             var newScope = getNewScope(scope, null);
+
+            // Step 1a: add all class declarations to the current scope
+            foreach (Statement each in ClassDeclarations)
+            {
+                Declaration classDec = each as Declaration;
+                if (classDec != null)
+                    classDec.AddItemsToSymbolTable(newScope);
+            }
             
             // Step 2: ResolveNames for each part of the complilation unit
             bool loopResolve = true;
