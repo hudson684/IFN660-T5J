@@ -3,28 +3,31 @@ public class HelloWorld
 {
 	public void Main (String[] args)
 	{
-		int i;
+		int i, j;
 		i = 0;
 
-		//try statement without finally
-		try {
-		    i = 1;
-			// Throw something
-			throw i = 2; // This throw statement is illegal right now 
-		} catch () {  // For catch, we keep () here which is diff to the original java
-			i = 3;
-		}
-		System.out.println(i);
-
-		//try statement with finally
+		//try statement withou finally
 		try {
 		    i = 1;
 		} catch () {
-			i = 3;
-		} finally {
-			i = 4;
+			i = 2;
 		}
-		System.out.println(i);
+		
+		//try statement withou catch
+		try {
+		    i = 1;
+		} finally {
+			i = 3;
+		}
+		
+		//try statement
+		try {
+		    i = 1;
+		} catch () {
+			i = 2;
+		} finally {
+			i = 3;
+		}
 
 	}
 }

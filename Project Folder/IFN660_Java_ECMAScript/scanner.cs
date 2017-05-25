@@ -5,28 +5,10 @@
 //  See accompanying file GPLEXcopyright.rtf.
 //
 //  GPLEX Version:  1.2.2
-<<<<<<< HEAD
 //  Machine:  VDI-VL17-032
 //  DateTime: 23/05/2017 2:29:02 PM
 //  UserName: n9768653
 //  GPLEX input file <scanner.lex - 23/05/2017 2:07:38 PM>
-=======
-<<<<<<< HEAD
-//  Machine:  VDI-VL17-004
-//  DateTime: 23/05/2017 12:16:19 PM
-//  UserName: n9004548
-//  GPLEX input file <scanner.lex - 14/05/2017 9:26:49 AM>
-=======
-//  Machine:  AIR
-//  DateTime: 5/24/2017 0:44:52
-//  UserName: Air
-<<<<<<< HEAD
-//  GPLEX input file <scanner.lex - 5/13/2017 12:03:04>
->>>>>>> master
-=======
-//  GPLEX input file <scanner.lex - 5/23/2017 18:22:26>
->>>>>>> codeGen
->>>>>>> master
 //  GPLEX frame file <embedded resource>
 //
 //  Option settings: unicode, parser, minimize
@@ -50,7 +32,6 @@ using System.Collections.Generic;
 using System.Runtime.Serialization;
 using System.Diagnostics.CodeAnalysis;
 
-using IFN660_Java_ECMAScript.AST;
 
 namespace IFN660_Java_ECMAScript
 {   
@@ -1945,28 +1926,21 @@ throw new Exception(
         case 309:
         case 310:
         case 311:
-if(IsValidIdentifier(yytext))
-												{
-													yylval.name = yytext; return (int)Tokens.IDENTIFIER;
-												}else{
-													throw new Exception(
-														String.Format(
-															"unexpected character '{0}'", yytext));
-												}
+yylval.name = yytext; return (int)Tokens.IDENTIFIER;
             break;
         case 4:
         case 316:
 /*{yylval.name = yytext;return (int)Tokens.UnicodeInputCharacter;}*/
-/* 3.4 Line Terminators Joshua*/
+/* 3.4 Line Terminators */
             break;
         case 5:
         case 6:
 /* Line Terminator */
-/* 3.6 WhiteSpace Joshua */
+/* 3.6 WhiteSpace */
             break;
         case 7:
 /* White space */
-/* 3.7 Comment Joshua */
+/* 3.7 Comment */
             break;
         case 26:
         case 27:
@@ -2053,7 +2027,6 @@ yylval.name = yytext; return (int)Tokens.CharacterLiteral;
         case 71:
         case 75:
 yylval.floatnum = parseFloat(yytext, 10);
-													//yylval.floatnum = yytext;
                                                     return (int)Tokens.FloatingPointLiteral;
             break;
         case 69:
@@ -2074,7 +2047,6 @@ yylval.num = parseInteger(yytext, 16);
         case 79:
         case 80:
 yylval.floatnum = parseFloat(yytext, 16);
-													//yylval.floatnum = yytext;
                                                     return (int)Tokens.FloatingPointLiteral;
             break;
         case 82:
@@ -2320,7 +2292,7 @@ return (int)Tokens.BITWISE_XOR_ASSIGNMENT;
         
 #region UserCodeSection
 
-ILiteral parseInteger (string inString, int intBase)
+long parseInteger (string inString, int intBase)
 {	
     int outInt;
     long outLong;
@@ -2347,16 +2319,16 @@ ILiteral parseInteger (string inString, int intBase)
         // This is a bit OTT at the moment. Leave it until we work out exactly what to do with longs
         inString = inString.TrimEnd('L','l');
         outLong = Convert.ToInt64(inString, intBase);
-        return new LongLiteralExpression(outLong); 
+        return outLong; 
     }
     else
     {
         outInt = Convert.ToInt32(inString, intBase);
-        return new IntegerLiteralExpression(outInt);
+        return outInt;
     }
 }
 
-ILiteral parseFloat (string inString, int intBase)
+double parseFloat (string inString, int intBase)
 {	
     float outFloat;
     double outDouble;
@@ -2365,7 +2337,7 @@ ILiteral parseFloat (string inString, int intBase)
     inString = inString.ToUpper().Replace("_","");
 
     // Check if integer is float or double
-    if (inString.EndsWith("F")|| inString.EndsWith("f"))
+    if (inString.EndsWith("F"))
     {
         // This is a bit OTT at the moment. Leave it until we work out exactly what to do with longs
         inString = inString.TrimEnd('F');
@@ -2377,21 +2349,22 @@ ILiteral parseFloat (string inString, int intBase)
 		{
 			outFloat = float.Parse(inString);
 		}
-        return new FloatingLiteralExpression(outFloat); 
+        return outFloat; 
     }
-	// double indicator may not be there but try to remove anyway
-	if(inString.EndsWith("D") || inString.EndsWith("d"))
+    else
+    {
+		// double indicator may not be there but try to remove anyway
 		inString = inString.TrimEnd('D');
-	if (intBase == 16)
-	{
-		outDouble = convertHexFloatToDecFloat(inString);
-	}
-	else
-	{
-		outDouble = Convert.ToSingle(inString);
-	}
-    return new DoubleLiteralExpression(outDouble);
-    
+		if (intBase == 16)
+		{
+			outDouble = convertHexFloatToDecFloat(inString);
+		}
+		else
+		{
+			outDouble = Convert.ToSingle(inString);
+		}
+        return outDouble;
+    }
 }
 
 double convertHexFloatToDecFloat(string inString)
@@ -2466,75 +2439,6 @@ double getHexDecimalPart(string inString)
 
     return outDouble;
 }
-public bool IsValidIdentifier (string s)
-{
-	if(s == null || s.Length == 0)
-		return false;
-	if(!is_identifier_start_character(s[0]))
-		return false;
-	for(int i=1;i<s.Length; i++)
-		if(!is_identifier_body_character(s[i]))
-				return false;
-	return true;
-}
-
-bool is_identifier_start_character(int c)
-{
-	//Identifier can start with character or underscore
-	if((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || c == '_'||c == '$')
-		return true;
-	if (c < 0x80) 
-		return false;
-	return is_identifier_start_character_unicode_part((char)c);
-}
-
-bool is_identifier_start_character_unicode_part(char c)
-{
-	switch(Char.GetUnicodeCategory(c)){
-		case UnicodeCategory.LetterNumber:
-		case UnicodeCategory.UppercaseLetter:
-		case UnicodeCategory.LowercaseLetter:
-		case UnicodeCategory.TitlecaseLetter:
-		case UnicodeCategory.ModifierLetter:
-		case UnicodeCategory.OtherLetter:
-			return true;
-	}
-	return false;
-}
-
-bool is_identifier_body_character(char c)
-{
-	if(c >= 'a' && c <='z')
-		return true;
-
-	if(c >= 'A' && c <= 'Z')
-		return true;
-
-	if(c == '_'|| c == '$' || (c >= '0' && c <= '9')) // Identifier can not start with number but can include number 
-		return true;
-	if(c < 0x80)
-		return false;
-	return is_identifier_body_character_unicode_part(c);
-}
-
-bool is_identifier_body_character_unicode_part(char c)
-{
-	switch(Char.GetUnicodeCategory(c)){
-		case UnicodeCategory.ConnectorPunctuation:		// Unicode character of class Pc
-		case UnicodeCategory.NonSpacingMark:			// Unicode character of class Mn or Mc
-		case UnicodeCategory.SpacingCombiningMark:
-		case UnicodeCategory.DecimalDigitNumber:		// Decimal digit character - class Nd
-		case UnicodeCategory.LetterNumber:
-		case UnicodeCategory.UppercaseLetter:
-		case UnicodeCategory.LowercaseLetter:
-		case UnicodeCategory.TitlecaseLetter:
-		case UnicodeCategory.ModifierLetter:
-		case UnicodeCategory.OtherLetter:
-			return true;	
-	}
-	return false;
-}
-
 public override void yyerror( string format, params object[] args )
 {
     System.Console.Error.WriteLine("Error: line {0}, {1}", lines,
