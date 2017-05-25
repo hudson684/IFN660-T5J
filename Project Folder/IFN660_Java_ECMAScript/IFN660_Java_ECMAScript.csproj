@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 <?xml version="1.0" encoding="utf-8"?>
+=======
+﻿<?xml version="1.0" encoding="utf-8"?>
+>>>>>>> master
 <Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -47,6 +51,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AST\Block.cs" />
+    <Compile Include="AST\CodeGen.cs" />
+    <Compile Include="AST\JavaLang.cs" />
+    <Compile Include="AST\Variables.cs" />
     <Compile Include="AST\CompilationUnitDeclaration.cs" />
     <Compile Include="AST\Declaration.cs" />
     <Compile Include="AST\LexicalScope.cs" />
@@ -102,7 +109,15 @@
   <ItemGroup>
     <Content Include="test1.txt" />
     <Content Include="Tests\auto\test2.java" />
+<<<<<<< HEAD
     <Content Include="Tests\auto\test.java" />
+=======
+    <Content Include="Tests\auto\test.java" />
+    <Content Include="Tests\auto\test_continue.java" />
+    <Content Include="Tests\auto\test_import.java" />
+    <Content Include="Tests\auto\test_return.java" />
+    <Content Include="Tests\test1.txt" />
+>>>>>>> master
     <Content Include="Tests\test2.java" />
     <Content Include="Tests\test_try.java" />
     <Content Include="Tests\test_if.java" />
