@@ -12,9 +12,9 @@ public class HelloWorld
 			System.out.println(x);
 			System.out.println(y);
 		}
-		y = Add(y, x);
-		System.out.println(y);
-
+		y = Add(x, y);
+		String z = "Y equals ";
+		System.out.println(z + y);
 	}
 
 	public int Add(int a, int b)

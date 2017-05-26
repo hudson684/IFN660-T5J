@@ -220,7 +220,7 @@ namespace IFN660_Java_ECMAScript.AST
 
         public override void GenCode(StringBuilder sb)
         {
-
+            cg.emit(sb, "\tldstr\t{0}\n", value);
         }
     }
 

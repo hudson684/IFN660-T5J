@@ -35,6 +35,45 @@ namespace IFN660_Java_ECMAScript.AST
             return -1;
         }
 
+        public class StringConCat: Node
+        {
+            public override bool ResolveNames(LexicalScope scope)
+            {
+                return true; // nothing to do
+            }
+
+            public override void TypeCheck()
+            {
+                // nothing to do
+            }
+
+            public static void GenCallCode(StringBuilder sb, params Expression[] args)
+            {
+                
+                foreach (Expression arg in args)
+                {
+                    arg.GenCode(sb);
+                    if (!arg.type.isTheSameAs(new NamedType("String")))
+                    {
+                        cg.emit(sb, "\tbox\t\t[mscorlib]System.{0}\n", arg.type.GetCorLibName());
+                    }
+                }
+                cg.emit(sb, "\tcall\tstring [mscorlib]System.String::Concat(");
+                String objString = "";
+                for (int i = 0; i<args.Length; i++)
+                {
+                    objString = objString + "object, ";
+                }
+                objString = objString.TrimEnd(',',' ');// remove last ','
+                cg.emit(sb, objString + ")\n");
+            }
+
+            public override void GenCode(StringBuilder sb)
+            {
+                throw new NotImplementedException();
+            }
+        }
+
         public class Println: Node, MethodDec
         {
 

@@ -12,7 +12,7 @@ namespace IFN660_Java_ECMAScript.AST
 		public abstract Boolean ResolveNames(LexicalScope scope);
 		public abstract void TypeCheck();
 
-        public CodeGen cg = new CodeGen();
+        public static CodeGen cg = new CodeGen();
 
         public static int LastLocal;
         public static int LastArgument;

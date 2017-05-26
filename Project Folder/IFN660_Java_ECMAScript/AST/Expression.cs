@@ -166,6 +166,14 @@ namespace IFN660_Java_ECMAScript.AST
 
                 //Mathematical expressions
                 case "+":
+                    // check if strings are involve
+                    var stringType = new NamedType("String");
+                    if (lhs.type.isTheSameAs(stringType) || rhs.type.isTheSameAs(stringType))
+                    {
+                        type = stringType;
+                        break;
+                    }
+                    goto case "-";
                 case "-":
                 case "*":
                 case "%":
@@ -221,7 +229,18 @@ namespace IFN660_Java_ECMAScript.AST
                     cg.emit(sb, "\tceq\n");  
                     break;
                 case "+":
-                    cg.emit(sb, "\tadd\n");
+                    if (type.isTheSameAs(new NamedType("String")))
+                    {
+                        cg.emit(sb, "\tpop\n");
+                        cg.emit(sb, "\tpop\n");
+                        // call java.lang string.concat gencode function
+                        JavaLang.StringConCat.GenCallCode(sb, lhs, rhs);
+                    }
+                    else
+                    {
+                        cg.emit(sb, "\tadd\n");
+                    }
+                    
                     break;
                 case "-":
                     cg.emit(sb, "\tsub\n");
@@ -235,6 +254,7 @@ namespace IFN660_Java_ECMAScript.AST
                 case "/":
                     cg.emit(sb, "\tdiv\n");  
                     break;
+                default:
                     Console.WriteLine("Unexpected binary operator {0}\n", oper);
                     break;
             }

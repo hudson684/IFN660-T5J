@@ -43,6 +43,8 @@ namespace IFN660_Java_ECMAScript.AST
         public abstract bool isTheSameAs(Type type);
         public abstract bool isCompatibleWith(Type type);
         public abstract string GetILName();
+
+        public abstract string GetCorLibName();
         
 
         /*
@@ -208,7 +210,36 @@ namespace IFN660_Java_ECMAScript.AST
                 default:
                     return "";
             }
-            
+        }
+
+        public override string GetCorLibName()
+        {
+            switch (elementType)
+            {
+                case ("VOID"):
+                    return "Void";
+                case ("BOOLEAN"):
+                    return "Boolean";
+                case ("BYTE"):
+                    return "Byte";
+                case ("SHORT"):
+                    return "Int16";
+                case ("INT"):
+                    return "Int32";
+                case ("LONG"):
+                    return "Int64";
+                case ("CHAR"):
+                    return "Char";
+                case ("FLOAT"):
+                    return "Single";
+                case ("DOUBLE"):
+                    return "Double";
+                case ("String"):
+                    return "String";
+                default:
+                    return "";
+            }
+
 
         }
 
@@ -260,6 +291,11 @@ namespace IFN660_Java_ECMAScript.AST
         {
             return elementType.GetILName() + "[]";
         }
+
+        public override string GetCorLibName()
+        {
+            return "Array";
+        }
         public override void GenCode(StringBuilder sb)
         {
 
@@ -267,7 +303,7 @@ namespace IFN660_Java_ECMAScript.AST
     }
 
        
-    public class IntType : Type
+    /*public class IntType : Type
 	{
         public override bool ResolveNames(LexicalScope scope)
 		{
@@ -299,7 +335,7 @@ namespace IFN660_Java_ECMAScript.AST
         {
 
         }
-    }
+    }*/
 
 	/*public class BoolType : Type
 	{

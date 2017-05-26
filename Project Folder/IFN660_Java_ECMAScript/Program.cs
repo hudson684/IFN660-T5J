@@ -101,7 +101,7 @@ namespace IFN660_Java_ECMAScript
             //Console.WriteLine(path);
 
             StringBuilder sb = new StringBuilder();
-            root.cg.emit(sb, ".assembly {0} {{}} {1}", inputFile, Environment.NewLine);
+            Node.cg.emit(sb, ".assembly {0} {{}} {1}", inputFile, Environment.NewLine);
             root.GenCode(sb);
 
             //Console.WriteLine(sb);

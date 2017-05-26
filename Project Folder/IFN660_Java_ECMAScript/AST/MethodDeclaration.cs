@@ -139,7 +139,7 @@ namespace IFN660_Java_ECMAScript.AST
                 }
             }
             fp_list = fp_list.TrimEnd(',');// remove last ','
-            cg.emit(sb, fp_list + ")");
+            cg.emit(sb, fp_list + ")\n");
 
             cg.emit(sb, "{{\n"); // start of method body
             // If the method is called "main" set it as the program entrypoing
