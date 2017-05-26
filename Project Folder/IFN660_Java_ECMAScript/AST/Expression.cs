@@ -1,35 +1,43 @@
 using System;
-
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace IFN660_Java_ECMAScript.AST
 {
-    public abstract class Expression : Node
-    {
-        public Type type;
-    };
 
-    public class AssignmentExpression : Expression
-    {
-        private Expression lhs, rhs;
-
-        public AssignmentExpression(Expression lhs, Expression rhs)
+	public abstract class Expression : Node
+	{
+		public Type type;
+        public abstract Type ObtainType();
+           
+        //public virtual void GenCode(StreamWriter sb) { }
+        public virtual void GenStoreCode(StringBuilder sb, string ex)
         {
-            this.lhs = lhs;
-            this.rhs = rhs;
+            throw new Exception ( "Invalid " + ex );
         }
+	}
 
-        public override bool ResolveNames(LexicalScope scope)
-        {
-            return lhs.ResolveNames(scope) & rhs.ResolveNames(scope);
-        }
+	public class AssignmentExpression : Expression
+	{
+		private Expression lhs, rhs;
 
-        public override void TypeCheck()
-        {
+		public AssignmentExpression(Expression lhs, Expression rhs)
+		{
+			this.lhs = lhs;
+			this.rhs = rhs;
+		}
+
+		public override bool ResolveNames(LexicalScope scope)
+		{
+			return lhs.ResolveNames(scope) & rhs.ResolveNames(scope);
+		}
+		public override void TypeCheck()
+		{
+
             lhs.TypeCheck();
             rhs.TypeCheck();
 
@@ -45,88 +53,133 @@ namespace IFN660_Java_ECMAScript.AST
 
             // set type to the lhs type
             type = lhs.type;
+
+		}
+
+        public override Type ObtainType()
+        {
+            return type;
+        }
+
+        public override void GenCode(StringBuilder sb)
+        {
+            rhs.GenCode(sb);
+            lhs.GenStoreCode(sb,"assignment");
+            lhs.GenCode(sb);
         }
     }
 
-    public class VariableExpression : Expression
-    {
-        private string value;
-        private Declaration declarationRef;
+	public class VariableExpression : Expression
+	{
+		private string value;
+		private Declaration declarationRef;
 
-        public VariableExpression(string value)
-        {
-            this.value = value;
-            this.declarationRef = null;
-        }
+		public VariableExpression(string value)
+		{
+			this.value = value;
+			this.declarationRef = null;
+		}
 
-        public override bool ResolveNames(LexicalScope scope)
-        {
-            // check for valid declaration...
-            if (scope != null)
-            {
-                declarationRef = scope.Resolve(value);
-            }
+		public override bool ResolveNames(LexicalScope scope)
+		{
+			// check for valid declaration...
+			if (scope != null)
+			{
+				declarationRef = scope.Resolve(value);
+			}
 
-            if (declarationRef == null)
-                Debug.WriteLine("Error: Undeclared indentifier", value);
-            else
-                Debug.WriteLine("Found variable in scope", value);
+			if (declarationRef == null)
+				Console.WriteLine("Error: Undeclared indentifier", value);
 
-            return declarationRef != null;
-        }
-        public override void TypeCheck()
-        {
+			return declarationRef != null;
+		}
+		public override void TypeCheck()
+		{
             type = declarationRef.ObtainType();
+			
+		}
 
+        public override Type ObtainType()
+        {
+            return type;
         }
+
+        public override void GenCode(StringBuilder sb)
+        {
+            // if the variable is an argument as opposed to a variable
+            // use the ldarg instruction rather than the ldloc instruction
+            FormalParam fp = declarationRef as FormalParam;
+            if (fp != null)
+            {
+                cg.emit(sb, "\tldarg.{0}\n", fp.GetNumber());
+            }
+            else
+            {
+                cg.emit(sb, "\tldloc.{0}\n", declarationRef.GetNumber());
+            }
+        }
+
+        public override void GenStoreCode(StringBuilder sb, string ex)
+        {
+            cg.emit(sb, "\tstloc.{0}\n", declarationRef.GetNumber());
+        }
+
     }
 
+	//changed made by Josh so that the assignmentStatement is correct
+	public class BinaryExpression : Expression
+	{
+		private Expression lhs, rhs;
+		private string oper;
+		public BinaryExpression(Expression lhs, string oper, Expression rhs)
+		{
+			this.lhs = lhs;
+			this.rhs = rhs;
+			this.oper = oper;
+		}
 
-    //changed made by Josh so that the assignmentStatement is correct
-    public class BinaryExpression : Expression
-    {
-        private Expression lhs, rhs;
-        private string oper;
-        public BinaryExpression(Expression lhs, string oper, Expression rhs)
-        {
-            this.lhs = lhs;
-            this.rhs = rhs;
-            this.oper = oper;
-        }
+		public override bool ResolveNames(LexicalScope scope)
+		{
+			return lhs.ResolveNames(scope) & rhs.ResolveNames(scope);
+		}
+		public override void TypeCheck()
+		{
 
-        public override bool ResolveNames(LexicalScope scope)
-        {
-            return lhs.ResolveNames(scope) & rhs.ResolveNames(scope);
-        }
-
-        public override void TypeCheck()
-        {
             lhs.TypeCheck();
             rhs.TypeCheck();
             switch (oper)
             {
-                case "<":
+
                 case ">":
-                case "<=":
+                case "<":
                 case ">=":
+                case "<=":
                 case "==":
-                case "!=":
-                    if (!lhs.type.isTheSameAs(rhs.type) && !lhs.type.isTheSameAs(new NamedType("BOOLEAN")))
+                    if (!lhs.type.isTheSameAs(new NamedType("INT")) || !rhs.type.isTheSameAs(new NamedType("INT")))
                     {
-                        System.Console.WriteLine("Invalid arguments for less than expression\n");
-                        return;
-                        //throw new Exception("TypeCheck error");
+                        System.Console.WriteLine("Invalid arguments for \"{0}\" expression\n", oper);
+                        throw new Exception("TypeCheck error");
+
                     }
                     type = new NamedType("BOOLEAN");
                     break;
 
                 //Mathematical expressions
                 case "+":
+                    // check if strings are involve
+                    var stringType = new NamedType("String");
+                    if (lhs.type.isTheSameAs(stringType) || rhs.type.isTheSameAs(stringType))
+                    {
+                        type = stringType;
+                        break;
+                    }
+                    goto case "-";
                 case "-":
                 case "*":
                 case "%":
                 case "/":
-                case "^":
+
+
                     if (lhs.type.isTheSameAs(rhs.type) && !lhs.type.isTheSameAs(new NamedType("BOOLEAN")))
                     {
                         type = lhs.type;
@@ -145,13 +198,67 @@ namespace IFN660_Java_ECMAScript.AST
                         throw new Exception("TypeCheck error");
                     }
                     break;
-
+               
                 default:
                     {
                         System.Console.WriteLine("Unexpected binary operator %c \n", oper);
                         throw new Exception("TypeCheck error");
                     }
             }
+
+		}
+
+        public override Type ObtainType()
+        {
+            return type;
+        }
+
+        public override void GenCode(StringBuilder sb)
+        {
+            lhs.GenCode(sb);
+            rhs.GenCode(sb);
+            switch (oper)
+            {
+                case "<":
+                    cg.emit(sb, "\tclt\n");
+                    break;
+                case ">":
+                    cg.emit(sb, "\tcgt\n");  
+                    break;
+                case "==":
+                    cg.emit(sb, "\tceq\n");  
+                    break;
+                case "+":
+                    if (type.isTheSameAs(new NamedType("String")))
+                    {
+                        cg.emit(sb, "\tpop\n");
+                        cg.emit(sb, "\tpop\n");
+                        // call java.lang string.concat gencode function
+                        JavaLang.StringConCat.GenCallCode(sb, lhs, rhs);
+                    }
+                    else
+                    {
+                        cg.emit(sb, "\tadd\n");
+                    }
+                    
+                    break;
+                case "-":
+                    cg.emit(sb, "\tsub\n");
+                    break;
+                case "%":
+                    cg.emit(sb, "\trem\n"); 
+                    break;
+                case "*":
+                    cg.emit(sb, "\tmul\n");  
+                    break;
+                case "/":
+                    cg.emit(sb, "\tdiv\n");  
+                    break;
+                default:
+                    Console.WriteLine("Unexpected binary operator {0}\n", oper);
+                    break;
+            }
+
         }
     }
 
@@ -175,6 +282,16 @@ namespace IFN660_Java_ECMAScript.AST
 
 
         }
+
+        public override Type ObtainType()
+        {
+            return type;
+        }
+
+        public override void GenCode(StringBuilder sb)
+        {
+            lhs.GenCode(sb);
+		}
     }
 
     public class PreUnaryExpression : Expression
@@ -202,8 +319,9 @@ namespace IFN660_Java_ECMAScript.AST
                 case "~":
                 case "!":
                 case "+":
-                case "-":
-                    if (!expression.type.isTheSameAs(new NamedType("BOOLEAN")))
+
+                    if (expression.type.isTheSameAs(new NamedType("INT")) || expression.type.isTheSameAs(new NamedType("DOUBLE")) || expression.type.isTheSameAs(new NamedType("FLOAT")) || expression.type.isTheSameAs(new NamedType("DOUBLE")))
+
                     {
                         type = expression.type;
                     }
@@ -218,6 +336,29 @@ namespace IFN660_Java_ECMAScript.AST
                         System.Console.WriteLine("Unexpected uniary operator %c \n", oper);
                         throw new Exception("TypeCheck error");
                     }
+            }
+
+
+            }
+        public override Type ObtainType()
+        {
+            return type;
+        }
+
+        public override void GenCode(StringBuilder sb)
+        {
+            expression.GenCode(sb);
+            switch (oper)
+            {
+                case "++":
+                    cg.emit(sb, "\tadd\n");  
+                    break;
+                case "--":
+                    cg.emit(sb, "\tsub\n");  
+                    break;
+                default:
+                    Console.WriteLine("Unexpected preunary operator {0}\n", oper);
+                    break;
             }
 
         }
@@ -241,7 +382,57 @@ namespace IFN660_Java_ECMAScript.AST
         public override void TypeCheck()
         {
 
+            expression.TypeCheck();
+            switch (oper)
+            {
+                case "++":
+                case "--":
+                case "~":
+                case "!":
+                case "+":
+                case "-":
+                    if (expression.type.isTheSameAs(new NamedType("INT")) || expression.type.isTheSameAs(new NamedType("DOUBLE")) || expression.type.isTheSameAs(new NamedType("FLOAT")) || expression.type.isTheSameAs(new NamedType("DOUBLE")))
+                    {
+                        type = expression.type;
+                    }
+                    else
+                    {
+                        System.Console.WriteLine("Invalid arguments for expression\n");
+                        throw new Exception("TypeCheck error");
+                    }
+                    break;
+                default:
+                    {
+                        System.Console.WriteLine("Unexpected uniary operator %c \n", oper);
+                        throw new Exception("TypeCheck error");
+                    }
+            }
+
+            }
+
+        public override Type ObtainType()
+        {
+            return type;
+
         }
+
+        public override void GenCode(StringBuilder sb)
+        {
+            expression.GenCode(sb);
+            switch (oper)
+            {
+                case "++":
+                    cg.emit(sb, "\tadd\n"); 
+                    break;
+                case "--":
+                    cg.emit(sb, "\tsub\n");  
+                    break;
+                default:
+                    Console.WriteLine("Unexpected postunary operator {0}\n", oper);
+                    break;
+            }
+        }
+
     }
 
 
@@ -287,5 +478,21 @@ namespace IFN660_Java_ECMAScript.AST
                 }
             }
         }
+
+        public override Type ObtainType()
+        {
+            return type;
+        }
+
+        public override void GenCode(StringBuilder sb)
+        {
+            UnaryExpression.GenCode(sb);
+        }
+
     }
 }
+
+
+	
+
+

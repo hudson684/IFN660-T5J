@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 // Parser Conflict Information for grammar file "parser.y - 23/05/2017 2:23:53 PM"
 
 Reduce/Reduce conflict in state 235 on symbol "IDENTIFIER", parser will reduce production 112
@@ -313,5 +314,8 @@ Reduce/Reduce conflict in state 254 on symbol "ELSE", parser will reduce product
                                 ELSE, StatementNoShortIf
  Reduce 125:	IfThenElseStatementNoShortIf -> IF, '(', Expression, ')', StatementNoShortIf, 
                                 ELSE, StatementNoShortIf
+=======
+// Parser Conflict Information for grammar file "parser.y - 24/05/2017 11:05:00 PM"
+>>>>>>> master
 
 // End conflict information for parser

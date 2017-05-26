@@ -1,14 +1,16 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace IFN660_Java_ECMAScript.AST
 {
-    public class IntegerLiteralExpression : Expression
-    {
-        private long value;
+    public interface ILiteral { }
+    public class IntegerLiteralExpression : Expression, ILiteral
+        private int value;
+        public IntegerLiteralExpression(int value)
         public IntegerLiteralExpression(long value)
         {
             this.value = value;
@@ -21,7 +23,43 @@ namespace IFN660_Java_ECMAScript.AST
         public override void TypeCheck()
         {
             type = new NamedType("INT");
+        public override Type ObtainType()
+        {
+            return type;
         }
+
+        public override void GenCode(StringBuilder sb)
+        {
+            cg.EmitInt(sb,value);
+        }
+
+        }
+    public class LongLiteralExpression : Expression, ILiteral
+    {
+        private long value;
+        public LongLiteralExpression(long value)
+        {
+            this.value = value;
+        }
+
+        public override bool ResolveNames(LexicalScope scope)
+        {
+            return true;
+        }
+        public override void TypeCheck()
+        {
+            type = new NamedType("LONG");
+        }
+         public override Type ObtainType()
+        {
+            return type;
+        }
+
+        public override void GenCode(StringBuilder sb)
+        {
+            cg.EmitLong(sb,value);
+        }
+    }
 
     }
     public class BooleanLiteralExpression : Expression
@@ -55,10 +93,23 @@ namespace IFN660_Java_ECMAScript.AST
         {
             return value ? 1 : 0;
         }
-    }
 
-    public class FloatingPointLiteralExpression : Expression
-    {
+        public override Type ObtainType()
+        {
+            return type;
+        }
+
+        public override void GenCode(StringBuilder sb)
+        {
+            if (value)
+                cg.emit(sb, "\tldc.i4.1\n");
+            else
+                cg.emit(sb, "\tldc.i4.0\n");
+        }
+    public class FloatingLiteralExpression : Expression, ILiteral
+
+        private readonly float value;
+        public FloatingLiteralExpression(float value)
         private readonly double value;
         public FloatingPointLiteralExpression(double value)
         {
@@ -69,10 +120,50 @@ namespace IFN660_Java_ECMAScript.AST
         {
             return true;
         }
+            // A floating-point literal is of type float if it is suffixed with F or f;
+            // otherwise its type is double
+            // Need more check here
         public override void TypeCheck()
         {
-            type = new NamedType("FLOAT");
+        public override Type ObtainType()
+        {
+            return type;
         }
+
+        public override void GenCode(StringBuilder sb)
+        {
+
+        }
+            type = new NamedType("FLOAT");
+    public class DoubleLiteralExpression : Expression, ILiteral
+    {
+        private readonly double value;
+        public DoubleLiteralExpression(double value)
+        {
+            this.value = value;
+        }
+        }
+        public override bool ResolveNames(LexicalScope scope)
+        {
+            return true;
+        }
+        public override void TypeCheck()
+        {
+            // A floating-point literal is of type float if it is suffixed with F or f;
+            // otherwise its type is double
+            // Need more check here
+            type = new NamedType("DOUBLE");
+        }
+        public override Type ObtainType()
+        {
+            return type;
+        }
+
+        public override void GenCode(StringBuilder sb)
+        {
+
+        }
+    }
     }
 
     public class CharacterLiteralExpression : Expression
@@ -89,6 +180,17 @@ namespace IFN660_Java_ECMAScript.AST
         }
         public override void TypeCheck()
         {
+
+        public override Type ObtainType()
+        {
+            return type;
+        }
+
+
+        public override void GenCode(StringBuilder sb)
+        {
+
+        }
             type = new NamedType("CHAR");
         }
     }
@@ -106,9 +208,19 @@ namespace IFN660_Java_ECMAScript.AST
             return true;
         }
 
-        public override void TypeCheck()
+            type = new NamedType("String");
         {
             type = new NamedType("STRING");
+        }
+
+        public override Type ObtainType()
+        {
+            return type;
+        }
+
+        public override void GenCode(StringBuilder sb)
+        {
+            cg.emit(sb, "\tldstr\t{0}\n", value);
         }
     }
 
@@ -128,6 +240,15 @@ namespace IFN660_Java_ECMAScript.AST
         public override void TypeCheck()
         {
             type = new NamedType("NULL");
+        public override Type ObtainType()
+        {
+            return type;
+        }
+
+        public override void GenCode(StringBuilder sb)
+        {
+
+        }
         }
 
     }

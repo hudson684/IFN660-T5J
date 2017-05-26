@@ -4,6 +4,7 @@ using System;
 using System.IO;
 using IFN660_Java_ECMAScript.AST;
 using System.Collections.Generic;
+using System.Text;
 
 namespace IFN660_Java_ECMAScript
 {
@@ -43,22 +44,27 @@ namespace IFN660_Java_ECMAScript
 
             var pro = new CompilationUnitDeclaration(null, null, classes);
 
+            
             // Semantic Analysis
             SemanticAnalysis(pro);
 
             pro.DumpValue(0);
             
-
 #else
             Scanner scanner = new Scanner(
                new FileStream(args[0], FileMode.Open));
             Parser parser = new Parser(scanner);
             parser.Parse();
-
-            SemanticAnalysis(Parser.root);
-
+            if (Parser.root != null)
+            {
+                SemanticAnalysis(Parser.root);
+                CodeGeneration(args[0], Parser.root);
+            }
+            
             Parser.root.DumpValue(0);
+         
 #endif
+
         }
 
         static void SemanticAnalysis(Node root)
@@ -75,6 +81,37 @@ namespace IFN660_Java_ECMAScript
             
             // type checking
             root.TypeCheck();
+           
+            
+        }
+
+        /// <summary>
+        /// CodeGeneration
+        /// path: will return currentProjectPath/bin/Debug
+        /// Use string buider here rather than write directly to a file
+        /// We only write to file when we done 
+        /// Use {{ and to output a { and }} for } otherwise an exception will occur
+        /// </summary>
+        /// <param name="inputFile"></param>
+        /// <param name="root"></param>
+        static void CodeGeneration(string inputFile, Statement root)
+        {
+            string outputFilename = inputFile + @".il"; 
+            string path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, outputFilename);
+            //Console.WriteLine(path);
+
+            StringBuilder sb = new StringBuilder();
+            Node.cg.emit(sb, ".assembly {0} {{}} {1}", inputFile, Environment.NewLine);
+            root.GenCode(sb);
+
+            //Console.WriteLine(sb);
+
+            //Write text to file and set append to false
+            using (StreamWriter wr = new StreamWriter(path,false))
+            {
+                wr.WriteLine(sb);
+               
+            }
         }
     }
 }
