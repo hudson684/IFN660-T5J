@@ -428,11 +428,13 @@ Statement
 		| IfThenElseStatement									{$$ = $1; } // Adon
 		| WhileStatement										{ $$ = $1; } // Nathan
 		| LabeledStatement										 { $$ = $1;} //Vivian
+		| ForStatement											{$$ = $1;}
 		;
 		
 StatementNoShortIf
 		: StatementWithoutTrailingSubstatement					{$$ = $1; } // Adon
 		| IfThenElseStatementNoShortIf							{$$ = $1; } // Adon
+		| ForStatementNoShortIf									{$$ = $1;}
 		;
 
 // Tristan
@@ -486,7 +488,47 @@ SwitchLabel
 DoStatement
 		: DO Statement WHILE '(' Expression ')'	';'				{ $$ = new DoStatement($2, $5); } // Tri
 		;
-		 
+ForStatement
+		: BasicForStatement										{$$ = $1;}
+		| EnhancedForStatement									{$$ = $1;}
+		;
+
+ForStatementNoShortIf
+		: BasicForStatementNoShortIf							{$$ = $1;}
+		| EnhancedForStatementNoShortIf							{$$ = $1;}
+		;
+
+BasicForStatement
+		: FOR '(' ForInit ';' Expression ';' ForUpdate ')' Statement							//{$$ = new ForStatement($3,$5,$7,$9);}
+		;
+
+BasicForStatementNoShortIf
+		: FOR '(' ForInit ';' Expression ';' ForUpdate ')' StatementNoShortIf					//{$$ = new ForStatement($3,$5,$7,$9);}
+		;
+
+ForInit
+		: 
+		//| StatementExpressionList											{$$ = $1;}					
+		//| LocalVariableDeclaration											{$$ = $1;}			
+		;
+
+ForUpdate
+		: 
+		| StatementExpressionList
+		;
+
+StatementExpressionList
+		: StatementExpression												//{$$ = new List<Statement>(){new ExpressionStatement($1)};}
+		| StatementExpressionList ',' StatementExpression					//{$$ = $1; $$.Add(new ExpressionStatement($3));}
+		;
+
+EnhancedForStatement
+		: FOR '(' VariableModifiers UnannType VariableDeclaratorId ':' Expression ')' Statement   {$$= new EnhancedForStatement($3,$4,$5,$7,$9);}
+		;
+
+EnhancedForStatementNoShortIf
+		: FOR '(' VariableModifiers UnannType VariableDeclaratorId ':' Expression ')' StatementNoShortIf
+		;				 
 ThrowStatement
 		: THROW Expression ';'									{ $$ = new ThrowStatement($2); } //KoJo
 		;
