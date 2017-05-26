@@ -53,7 +53,7 @@ namespace IFN660_Java_ECMAScript.AST
             // if initialiser is not null, evaluate the initialiser expression and store in variable
             if (initVal != null)
             {
-                
+
                 initVal.GenCode(sb);
                 cg.emit(sb, "\tstloc.{0}\n", num);
             }
@@ -73,7 +73,7 @@ namespace IFN660_Java_ECMAScript.AST
             {
                 foreach (VariableDeclarator name in names)
                 {
-                    variableDecs.Add(new VariableDeclaration(type, name.getName(), name.getInitVal() ) );
+                    variableDecs.Add(new VariableDeclaration(type, name.getName(), name.getInitVal()));
                 }
             }
         }
@@ -120,7 +120,7 @@ namespace IFN660_Java_ECMAScript.AST
         }
 
         public string getName()
-        { 
+        {
             return name;
         }
         public Expression getInitVal()

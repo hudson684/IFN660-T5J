@@ -556,6 +556,8 @@ namespace IFN660_Java_ECMAScript.AST
             }
 
         }
+        public override void GenCode(StringBuilder sb)
+        { }
     }
 
     public class TryStatement : Statement

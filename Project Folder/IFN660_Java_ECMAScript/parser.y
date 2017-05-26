@@ -11,7 +11,6 @@ public static Statement root;
 {
     public ILiteral num;
 	public ILiteral floatnum;
-
 	public bool boolval;
 	public char charval;
     public string name;
@@ -22,71 +21,55 @@ public static Statement root;
 	public Modifier modf;
 	public List<Modifier> modfs;
 	public ArrayList arrlst;
+	public List<string> strlst;
 	public List<Expression> exprlst;
 	public VariableDeclarator vardec;
 	public List<VariableDeclarator> vardeclst;
-
-	public List<VariableDeclarator> vardeclst;
 }
-%type <expr> Literal, StatementExpression, Assignment, LeftHandSide, ExpressionName, LocalVariableDeclaration
 
-%type <expr> AssignmentExpression, PrimaryNoNewArray
-
+// Types
 %type <expr> Literal, StatementExpression, Assignment, LeftHandSide, ExpressionName, LocalVariableDeclaration
 %type <expr> TypeParameters_opt, Superclass_opt, Superinterfaces_opt
 %type <expr> AssignmentExpression, PrimaryNoNewArray
 %type <expr> Expression, LambdaExpression, LambdaExpression, LambdaBody
-%type <expr> PreIncrementExpression,  PreDecrementExpression, UnaryExpressionNotPlusMinus, ConstantExpression //Josh
-
-%type <expr> MethodInvocation, FormalParameter, VariableInitialiser
+%type <expr> ConditionalExpression, ConditionalOrExpression, ConditionalAndExpression
+%type <expr> InclusiveOrExpression, ExclusiveOrExpression, AndExpression, EqualityExpression
 %type <expr> RelationalExpression, ShiftExpression, AdditiveExpression, MultiplicativeExpression
-%type <exprlst> ArgumentList, ArgumentList_opt
-%type <exprlst> FormalParameters, FormalParameterList, FormalParameterList_Opt 
-
+%type <expr> UnaryExpression, PostfixExpression, Primary //Josh
+%type <expr> PreIncrementExpression,  PreDecrementExpression, UnaryExpressionNotPlusMinus, ConstantExpression //Josh
 %type <expr> CastExpression, PostIncrementExpression, PostDecrementExpression //Josh
-%type <stmt> ExpressionStatement, StatementWithoutTrailingSubstatement, LocalVariableDeclarationStatement
-%type <stmt> BlockStatement, Throws_opt, ClassMemberDeclaration, MethodDeclaration
+%type <expr> MethodInvocation, FormalParameter, VariableInitialiser
 
 %type <exprlst> ArgumentList, ArgumentList_opt
 %type <exprlst> FormalParameters, FormalParameterList, FormalParameterList_Opt 
 
 %type <stmt> Statement, CompilationUnit, TypeDeclaration, ClassDeclaration, NormalClassDeclaration, ClassBodyDeclaration
-%type <stmt> StatementNoShortIf
-
+%type <stmt> ExpressionStatement, StatementWithoutTrailingSubstatement, LocalVariableDeclarationStatement
 %type <stmt> BlockStatement, Throws_opt, ClassMemberDeclaration, MethodDeclaration
 %type <stmt> PackageDeclaration_opt, Block, MethodBody
-%type <stmt> IfThenStatement, IfThenElseStatement, IfThenElseStatementNoShortIf
 %type <stmt> StatementNoShortIf, IfThenElseStatementNoShortIf
-%type <stmt> ForUpdate, BasicForStatement, BasicForStatementNoShortIf, ForStatement, ForStatementNoShortIf
-%type <stmt> EnhancedForStatementNoShortIf, EnhancedForStatement, ForInit
- 
-%type <stmts> TypeDeclarations, ClassBody, ClassBodyDeclarations, BlockStatements, BlockStatements_Opt
-%type <stmts> FormalParameters, FormalParameterList, FormalParameterList_Opt 
-%type <stmts> ImportDeclarations
-
-%type <stmt> ImportDeclaration
-
-
-%type <stmts> TypeDeclarations, ClassBody, ClassBodyDeclarations, BlockStatements, BlockStatements_Opt
-%type <stmts> ImportDeclarations, SwitchLabels, SwitchBlockStatementGroups, SwitchBlock
-
+%type <stmt> IfThenStatement, IfThenElseStatement, WhileStatement 
+%type <stmt> TryStatement, Catches, Catches_opt, CatchClause, Finally
+%type <stmt> PackageDeclaration_opt, Block, MethodBody
+%type <stmt> StatementNoShortIf
+%type <stmt> DoStatement, ThrowStatement, SynchronizedStatement
+%type <stmt> SwitchStatement, SwitchBlockStatementGroup, SwitchLabel
 %type <stmt> AssertStatement
 %type <stmt> LabeledStatement, BreakStatement, ContinueStatement, ReturnStatement
 %type <stmt> ImportDeclaration
-
+%type <stmt> ForUpdate, BasicForStatement, BasicForStatementNoShortIf, ForStatement, ForStatementNoShortIf
+%type <stmt> EnhancedForStatementNoShortIf, EnhancedForStatement, ForInit
 
 %type <stmts> TypeDeclarations, ClassBody, ClassBodyDeclarations, BlockStatements, BlockStatements_Opt
 %type <stmts> ImportDeclarations, SwitchLabels, SwitchBlockStatementGroups, SwitchBlock
-%type <name> VariableDeclaratorId, PackageOrTypeName, MethodName
 
 %type <type> Result, FloatingPointType, IntegralType, NumericType
 %type <type> UnannType, UnannPrimitiveType, UnannReferenceType, UnannArrayType, UnannTypeVariable, ReferenceType, PrimitiveType
-%type <vardec> VariableDeclarator
-%type <vardeclst> VariableDeclaratorList
 
+%type <modf> ClassModifier, MethodModifier, VariableModifier
 
 %type <modfs> ClassModifiers, MethodModifiers, VariableModifiers
-%type <name> TypeName
+
 %type <name> VariableDeclaratorId, PackageOrTypeName, MethodName
 
 %type <arrlst> MethodHeader, MethodDeclarator
@@ -149,25 +132,24 @@ Program : CompilationUnit										{root = $1;}
 
 Empty	:
 		;
-//add import declaration-Vivian
+
 // Group A Start
+CompilationUnit 
+		: PackageDeclaration_opt ImportDeclarations TypeDeclarations	{ $$ = new CompilationUnitDeclaration($1,$2,$3);  } // Josh
+		;
+
+PackageDeclaration_opt
+		: /* empty */											
+		;
+		
+//add import declaration-Vivian
+ImportDeclarations
 		: ImportDeclaration												{ $$ = new List<Statement> {$1};} //Vivian	
 		| ImportDeclarations ImportDeclaration						    { $$ = $1; $$.Add($2);} //Vivian
 		|						
-
-
-ImportDeclaration
-		: IMPORT TypeName ';'											{  $$ = new ImportDeclaration($2); } //Vivian
-		| IMPORT TypeName '.' '*' ';' 									{  $$ = new ImportDeclaration($2); } //Vivian
-		| IMPORT STATIC TypeName '.' IDENTIFIER ';'						{  $$ = new ImportDeclaration($3,$5); } //Vivian
-		| IMPORT STATIC TypeName '.' '*' ';'                            {  $$ = new ImportDeclaration($3); } //Vivian
 		;
 
-TypeName
-		:IDENTIFIER
-		|TypeName '.' IDENTIFIER
-		;								
-
+ImportDeclaration
 		: IMPORT TypeName ';'											{  $$ = new ImportDeclaration($2); } //Vivian
 		| IMPORT TypeName '.' '*' ';' 									{  $$ = new ImportDeclaration($2); } //Vivian
 		| IMPORT STATIC TypeName '.' IDENTIFIER ';'						{  $$ = new ImportDeclaration($3,$5); } //Vivian
@@ -234,8 +216,7 @@ ClassBodyDeclarations
 		| /* empty */											{ $$ = new List<Statement>(); } // Tristan - updated by Nathan
         ;
 
-		: MethodModifiers MethodHeader MethodBody				{ $$ = new MethodDeclaration( (string)((ArrayList)$2[1])[0], $1, $3, (AST.Type)$2[0], (List<Expression>)((ArrayList)$2[1])[1]); } // Vivian - updated by Nathan
-
+ClassBodyDeclaration
 		: ClassMemberDeclaration								{ $$ = $1; } // Tristan - done by Khoa
         ;
 
@@ -283,13 +264,11 @@ MethodDeclarator
 
 //PLACEHOLDER - Josh - Tri
 FormalParameterList_Opt
-		: FormalParameter 										{ $$ = new List<Expression> { $1 }; } // Nathan 
-
+		: FormalParameterList									{ $$ = $1; } // Nathan
 		| /* empty */											{ $$ = null; } // Nathan
 		;
 
-		:  VariableModifiers UnannType VariableDeclaratorId		{ $$ = new FormalParam($2, $3); } // Nathan - doesn't allow VariableModifiers at the moment
-
+// JOSHUA'S WORK END
 
 //Work by Tri
 FormalParameterList 
@@ -357,7 +336,7 @@ NumericType
 		;
 
 IntegralType
-		| UnannTypeVariable										{ $$ = $1; } // Nathan
+		: BYTE													{ $$ = new NamedType("BYTE");  } // Josh - updated by Nathan
 		| SHORT													{ $$ = new NamedType("SHORT");  } // Josh - updated by Nathan
 		| INT													{ $$ = new NamedType("INT");} // Vivian - updated by Nathan
 		| LONG													{ $$ = new NamedType("LONG"); } // Vivian - updated by Nathan
@@ -402,8 +381,7 @@ Block
 
 BlockStatements_Opt
 		: BlockStatements										{ $$ = $1; } // Tristan - done by Khoa
-		: LocalVariableDeclaration ';'							{ $$ = new VariableDeclarationStatement($1); } // Vivian - updated by Nathan
-
+		| /* Empty */											{ $$ = null; } // Tristan - done by Khoa
 		;
 
 BlockStatements
@@ -412,21 +390,18 @@ BlockStatements
 		;
 
 BlockStatement
-		: VariableDeclarator									{ $$ = new List<VariableDeclarator> { $1 }; } // Nathan
-
+		: LocalVariableDeclarationStatement						{ $$ = $1; } // Vivian
 		| Statement												{ $$ = $1; } // Vivian
 		;
 
-		: VariableDeclaratorId									{ $$ = new VariableDeclarator($1, null); } // Nathan
-		| VariableDeclaratorId '=' VariableInitialiser			{ $$ = new VariableDeclarator($1, $3); } // Nathan
-
+LocalVariableDeclarationStatement
+		: LocalVariableDeclaration ';'							{ $$ = new VariableDeclarationStatement($1); } // Vivian - updated by Nathan
 		;
-VariableInitialiser
-		: Expression											{ $$ = $1; } // Nathan
 
+LocalVariableDeclaration
 		: UnannType VariableDeclaratorList						{ $$ = new VariableDeclarationList($1, $2); } // Vivian
 		//: VariableModifiers UnannType VariableDeclaratorList	{ $$ = new VariableDeclarationList($1, $2); } // Vivian - too hard at the moment - Nathan
-		: IDENTIFIER Dims_Opt									{ $$ = $1; } // Nathan
+		;
 
 // Too hard at the moment - Nathan
 VariableDeclaratorList
@@ -434,13 +409,11 @@ VariableDeclaratorList
 		| VariableDeclaratorList ',' VariableDeclarator			{ $$ = $1; $$.Add($3); } // Nathan
 		;
 
-		| ForStatement											{$$ = $1;}
 VariableDeclarator
 		: VariableDeclaratorId									{ $$ = new VariableDeclarator($1, null); } // Nathan
 		| VariableDeclaratorId '=' VariableInitialiser			{ $$ = new VariableDeclarator($1, $3); } // Nathan
 		;
 
-		| ForStatementNoShortIf									{$$ = $1;}
 VariableInitialiser
 		: Expression											{ $$ = $1; } // Nathan
 		;
@@ -464,112 +437,79 @@ StatementNoShortIf
 
 // Tristan
 StatementWithoutTrailingSubstatement
-		: SWITCH '(' Expression ')'	SwitchBlock					{ $$ = new SwitchStatement($3, $5); } //Kojo
-
+		: ExpressionStatement 									{ $$ = $1; } // Nathan - done by Khoa
 		| Block													{ $$ = $1; } // Nathan
+		| BreakStatement										{ $$ = $1;} //Vivian
+		| DoStatement											{ $$ = $1; } //Tri
+		| ContinueStatement										{ $$ = $1;} //Vivian
+		| ReturnStatement										{ $$ = $1;} //Vivian
+		| ThrowStatement										{ $$ = $1;} // KoJo
+		| SynchronizedStatement									{ $$ = $1;} // KoJo
+		| SwitchStatement										{ $$ = $1;} //Tri
+		| AssertStatement										{ $$ = $1;} //Tri
+		| TryStatement											{ $$ = $1;} //Adon
+		;
+
+AssertStatement
+		: ASSERT Expression ';'									{ $$ = new AssertStatement($2);} //Tri
+		| ASSERT Expression ':' Expression ';'					{ $$ = new AssertStatement($2, $4);} //Tri
+		;
+
+SwitchStatement
+		: SWITCH '(' Expression ')'	SwitchBlock					{ $$ = new SwitchStatement($3, $5); } //Kojo
+		;
+
 SwitchBlock
 		: '{' SwitchBlockStatementGroups '}'						{ $$ = $2; } //Kojo
-DoStatement
-		: DO Statement WHILE '(' Expression ')'	';'				{ $$ = new DoStatement($2, $5); } // Tri
-		| ContinueStatement										{ $$ = $1;} //Vivian
-	
-ForStatement
-		: BasicForStatement										{$$ = $1;}
-		| EnhancedForStatement									{$$ = $1;}
 		;
-		| ReturnStatement										{ $$ = $1;} //Vivian
+
 SwitchBlockStatementGroups
 		: SwitchBlockStatementGroup									{ $$ = new List<Statement> {$1}; }  //KoJo
 		| SwitchBlockStatementGroups SwitchBlockStatementGroup		{ $$ = $1; $$.Add($2); }  //KoJo
-ForStatementNoShortIf
-		: BasicForStatementNoShortIf							{$$ = $1;}
-		| EnhancedForStatementNoShortIf							{$$ = $1;}
-		| AssertStatement										{ $$ = $1;} //Tri
-		| TryStatement											{ $$ = $1;} //Adon
+		;
+
 SwitchBlockStatementGroup
 		: SwitchLabels BlockStatements							{ $$ = new SwitchBlockGroup($1, $2); } //Kojo
-BasicForStatement
-		: FOR '(' ForInit ';' Expression ';' ForUpdate ')' Statement							{$$ = new ForStatement($3,$5,$7,$9);}
-AssertStatement
-		: ASSERT Expression ';'									{ $$ = new AssertStatement($2);} //Tri
+		;
+
 SwitchLabels
 		: SwitchLabel												{ $$ = new List<Statement> {$1};} //KoJo
 		| SwitchLabels SwitchLabel									{ $$ = $1; $$.Add($2); }   // KoJo
-BasicForStatementNoShortIf
-		: FOR '(' ForInit ';' Expression ';' ForUpdate ')' StatementNoShortIf					{$$ = new ForStatement($3,$5,$7,$9);}
-SwitchStatement
-		: SWITCH '(' Expression ')'	SwitchBlock					{ $$ = new SwitchStatement($3, $5); } //Kojo
+		;
+
 SwitchLabel
 		: CASE ConstantExpression ':'							{ $$ = new SwitchLabelStatement($2) ;} // KoJo
 		| DEFAULT ':'											{ $$ = new SwitchLabelStatement(); } // KoJo
-ForInit
-		: 
-		//| StatementExpressionList											{$$ = $1;}					
-		| LocalVariableDeclaration											{$$ = $1;}			
-
-		: '{' SwitchBlockStatementGroups '}'						{ $$ = $2; } //Kojo
-ForUpdate
-		: 
-		| StatementExpressionList
-		;
-		;
-StatementExpressionList
-		: StatementExpression												{$$ = new List<Statement>(){new ExpressionStatement($1)};}
-		| StatementExpressionList ',' StatementExpression					{$$ = $1; $$.Add(new ExpressionStatement($3));}
-
-EnhancedForStatement
-		: FOR '(' VariableModifiers UnannType VariableDeclaratorId ':' Expression ')' Statement   {$$= new EnhancedForStatement($3,$4,$5,$7,$9);}
 		;
 
-EnhancedForStatementNoShortIf
-		: FOR '(' VariableModifiers UnannType VariableDeclaratorId ':' Expression ')' StatementNoShortIf
-		;		 
-		| SwitchBlockStatementGroups SwitchBlockStatementGroup		{ $$ = $1; $$.Add($2); }  //KoJo
+
+DoStatement
+		: DO Statement WHILE '(' Expression ')'	';'				{ $$ = new DoStatement($2, $5); } // Tri
+		;
+		 
+ThrowStatement
+		: THROW Expression ';'									{ $$ = new ThrowStatement($2); } //KoJo
 		;
 
-SwitchBlockStatementGroup
-		: SwitchLabels BlockStatements							{ $$ = new SwitchBlockGroup($1, $2); } //Kojo
+SynchronizedStatement
+		: SYNCHRONIZED '(' Expression ')' Block					{ $$ = new SynchronizedStatement($3, $5); }  //KoJo
 		;
 
-SwitchLabels
-		: SwitchLabel												{ $$ = new List<Statement> {$1};} //KoJo
-		| SwitchLabels SwitchLabel									{ $$ = $1; $$.Add($2); }   // KoJo
+ExpressionStatement
+		: StatementExpression ';'								{ $$ = new ExpressionStatement($1); } // Khoa
 		;
 
-SwitchLabel
+StatementExpression
+		: Assignment											{ $$ = $1; } // Khoa - updated by Nathan
 		| MethodInvocation										{ $$ = $1; } // Nathan
 		| PreIncrementExpression								{ $$ = $1; }  //sneha
 		| PreDecrementExpression								{ $$ = $1; }  //sneha
 		| PostIncrementExpression								{ $$ = $1; }	
 		| PostDecrementExpression								{ $$ = $1; }
+		;
 
-DoStatement
 // Start method handling - Nathan
 MethodInvocation
-		: MethodName '(' ArgumentList_opt ')'					{ $$ = new MethodInvocation($1, $3); } // Nathan
-		| PackageOrTypeName '.' IDENTIFIER '(' ArgumentList_opt ')'		{ $$ = new MethodInvocation( $1 + '.' + $3, $5); } // Nathan
-		;
-
-PackageOrTypeName
-		: IDENTIFIER											{ $$ = $1; } // Nathan
-		| PackageOrTypeName '.' IDENTIFIER						{ $$ = $1 + '.' + $3; } // Nathan
-		;
-
-MethodName
-		: IDENTIFIER											{ $$ = $1; } // Nathan
-		;
-
-ArgumentList_opt
-		: ArgumentList											{ $$ = $1; } // Nathan
-		| /* empty */											{ } // Nathan
-		;
-
-ArgumentList
-		: ArgumentList ',' Expression							{ $$ = $1; $$.Add($3); } // Nathan
-		| Expression											{ $$ = new List<Expression> {$1}; } // Nathan
-		;
-// end method handling
-
 		: MethodName '(' ArgumentList_opt ')'					{ $$ = new MethodInvocation($1, $3); } // Nathan
 		| PackageOrTypeName '.' IDENTIFIER '(' ArgumentList_opt ')'		{ $$ = new MethodInvocation( $1 + '.' + $3, $5); } // Nathan
 		;
@@ -697,9 +637,8 @@ Assignment
 LeftHandSide
 		: ExpressionName										{ $$ = $1; } // Khoa
 		;
-		: IntegerLiteral										{ $$ = (Expression) $1;}//new IntegerLiteralExpression($1); } // Nathan
-		| FloatingPointLiteral									{$$ = (Expression)$1;}//{ $$ = new FloatingPointLiteralExpression($1); } // Adon
 
+ExpressionName
 		: IDENTIFIER											{ $$ = new VariableExpression($1);  } // Khoa - updated by Nathan
 		;
 
@@ -848,7 +787,6 @@ PostfixExpression
 		| PostIncrementExpression									{ $$ = $1; } //Josh
 		| PostDecrementExpression									{ $$ = $1; } //Josh
 		;
-		: Expression {$$ = $1;} // Josh
 
 PostIncrementExpression
 		: PostfixExpression INCREMENT									{ $$ = new PostUnaryExpression($1, "++"); } // Khoa & Josh
@@ -856,6 +794,7 @@ PostIncrementExpression
 
 PostDecrementExpression
 		: PostfixExpression DECREMENT									{ $$ = new PostUnaryExpression($1, "--"); } // Khoa & Josh
+		;
 
 CastExpression
 		: '(' PrimitiveType ')' UnaryExpression										{ $$ = new CastExpression($2, $4); } //Khoa
@@ -881,4 +820,3 @@ ConstantExpression
 public Parser(Scanner scanner) : base(scanner)
 {
 }
-

@@ -2,16 +2,6 @@
 {
 	public void Main (String[] args)
 	{
-<<<<<<< HEAD
-		int x;
-		x=42;
-		int y;
-		y = x + 1;
-		boolean z;
-		z = true;
-		float m;
-		m = 0.2;
-=======
 		int x = 1, y = 7;
 		x = 42;
 		//y = 0;
@@ -32,6 +22,6 @@
 		int c = 3;
 		c = a + b + 2;
 		return c;
->>>>>>> master
+
 	}
 }

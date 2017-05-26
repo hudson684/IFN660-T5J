@@ -9,9 +9,9 @@ namespace IFN660_Java_ECMAScript.AST
 {
     public interface ILiteral { }
     public class IntegerLiteralExpression : Expression, ILiteral
+    {
         private int value;
         public IntegerLiteralExpression(int value)
-        public IntegerLiteralExpression(long value)
         {
             this.value = value;
         }
@@ -23,6 +23,8 @@ namespace IFN660_Java_ECMAScript.AST
         public override void TypeCheck()
         {
             type = new NamedType("INT");
+        }
+
         public override Type ObtainType()
         {
             return type;
@@ -30,10 +32,10 @@ namespace IFN660_Java_ECMAScript.AST
 
         public override void GenCode(StringBuilder sb)
         {
-            cg.EmitInt(sb,value);
+            cg.EmitInt(sb, value);
         }
 
-        }
+    }
     public class LongLiteralExpression : Expression, ILiteral
     {
         private long value;
@@ -50,17 +52,15 @@ namespace IFN660_Java_ECMAScript.AST
         {
             type = new NamedType("LONG");
         }
-         public override Type ObtainType()
+        public override Type ObtainType()
         {
             return type;
         }
 
         public override void GenCode(StringBuilder sb)
         {
-            cg.EmitLong(sb,value);
+            cg.EmitLong(sb, value);
         }
-    }
-
     }
     public class BooleanLiteralExpression : Expression
     {
@@ -106,12 +106,12 @@ namespace IFN660_Java_ECMAScript.AST
             else
                 cg.emit(sb, "\tldc.i4.0\n");
         }
-    public class FloatingLiteralExpression : Expression, ILiteral
+    }
 
+    public class FloatingLiteralExpression : Expression, ILiteral
+    {
         private readonly float value;
         public FloatingLiteralExpression(float value)
-        private readonly double value;
-        public FloatingPointLiteralExpression(double value)
         {
             this.value = value;
         }
@@ -120,11 +120,13 @@ namespace IFN660_Java_ECMAScript.AST
         {
             return true;
         }
+        public override void TypeCheck()
+        {
             // A floating-point literal is of type float if it is suffixed with F or f;
             // otherwise its type is double
             // Need more check here
-        public override void TypeCheck()
-        {
+            type = new NamedType("FLOAT");
+        }
         public override Type ObtainType()
         {
             return type;
@@ -134,7 +136,7 @@ namespace IFN660_Java_ECMAScript.AST
         {
 
         }
-            type = new NamedType("FLOAT");
+    }
     public class DoubleLiteralExpression : Expression, ILiteral
     {
         private readonly double value;
@@ -142,7 +144,7 @@ namespace IFN660_Java_ECMAScript.AST
         {
             this.value = value;
         }
-        }
+
         public override bool ResolveNames(LexicalScope scope)
         {
             return true;
@@ -164,8 +166,6 @@ namespace IFN660_Java_ECMAScript.AST
 
         }
     }
-    }
-
     public class CharacterLiteralExpression : Expression
     {
         private char value;
@@ -180,6 +180,8 @@ namespace IFN660_Java_ECMAScript.AST
         }
         public override void TypeCheck()
         {
+            type = new NamedType("CHAR");
+        }
 
         public override Type ObtainType()
         {
@@ -190,8 +192,6 @@ namespace IFN660_Java_ECMAScript.AST
         public override void GenCode(StringBuilder sb)
         {
 
-        }
-            type = new NamedType("CHAR");
         }
     }
 
@@ -208,9 +208,9 @@ namespace IFN660_Java_ECMAScript.AST
             return true;
         }
 
-            type = new NamedType("String");
+        public override void TypeCheck()
         {
-            type = new NamedType("STRING");
+            type = new NamedType("String");
         }
 
         public override Type ObtainType()
@@ -240,6 +240,8 @@ namespace IFN660_Java_ECMAScript.AST
         public override void TypeCheck()
         {
             type = new NamedType("NULL");
+        }
+
         public override Type ObtainType()
         {
             return type;
@@ -249,9 +251,7 @@ namespace IFN660_Java_ECMAScript.AST
         {
 
         }
-        }
-
     }
 
-    
+
 }
