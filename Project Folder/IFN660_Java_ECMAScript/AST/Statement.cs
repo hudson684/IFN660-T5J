@@ -411,6 +411,7 @@ namespace IFN660_Java_ECMAScript.AST
         public override void TypeCheck()
         {
             Expr.TypeCheck();
+           
         }
         public override void GenCode(StringBuilder sb)
         {

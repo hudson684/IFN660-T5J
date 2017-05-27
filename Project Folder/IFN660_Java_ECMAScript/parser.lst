@@ -1,11 +1,10 @@
 
 // ==========================================================================
-//  GPPG error listing for yacc source file <parser.y - 24/05/2017 11:05:00 PM>
+//  GPPG error listing for yacc source file <parser.y - 28/05/2017 1:38:08 AM>
 // ==========================================================================
 //  Version:  1.5.2
-//  Machine:  VDI-VL17-017
-//  DateTime: 24/05/2017 11:58:29 PM
-//  UserName: n9648500
+//  Machine:  VDI-VL17-016
+//  UserName: n9768653
 // ==========================================================================
 
 
@@ -67,6 +66,7 @@ public static Statement root;
 %type <stmt> SwitchStatement, SwitchBlockStatementGroup, SwitchLabel
 %type <stmt> AssertStatement
 %type <stmt> LabeledStatement, BreakStatement, ContinueStatement, ReturnStatement
+%type <stmt> ImportDeclaration
 
 
 %type <stmts> TypeDeclarations, ClassBody, ClassBodyDeclarations, BlockStatements, BlockStatements_Opt
@@ -88,6 +88,7 @@ public static Statement root;
 
 %type <name> Identifier_opt
 %type <expr> Expression_opt
+%type <name> TypeName
 
 // Tokens
 %token <num> NUMBER
@@ -153,9 +154,24 @@ PackageDeclaration_opt
 		: /* empty */											
 		;
 		
+//add import declaration-Vivian
 ImportDeclarations
-		: /*empty*/												
+		: ImportDeclaration												{ $$ = new List<Statement> {$1};} //Vivian	
+		| ImportDeclarations ImportDeclaration						    { $$ = $1; $$.Add($2);} //Vivian
+		|						
 		;
+
+ImportDeclaration
+		: IMPORT TypeName ';'											{  $$ = new ImportDeclaration($2); } //Vivian
+		| IMPORT TypeName '.' '*' ';' 									{  $$ = new ImportDeclaration($2); } //Vivian
+		| IMPORT STATIC TypeName '.' IDENTIFIER ';'						{  $$ = new ImportDeclaration($3,$5); } //Vivian
+		| IMPORT STATIC TypeName '.' '*' ';'                            {  $$ = new ImportDeclaration($3); } //Vivian
+		;
+
+TypeName
+		:IDENTIFIER
+		|TypeName '.' IDENTIFIER
+		;								
 
 TypeDeclarations 
 		: TypeDeclarations TypeDeclaration						{ $$ = $1; $$.Add($2); } // needs work - Josh

@@ -29,18 +29,30 @@ namespace IFN660_Java_ECMAScript.AST
         }
         public override Boolean ResolveNames(LexicalScope scope)
         {
+            // Step 2: Create new scope
+            var newScope = getNewScope(scope, null);
             // Step 1: Add class name to current scope
             //AddItemsToSymbolTable(scope);
             // Step 0: add all class declarations to the current scope
             foreach (Statement each in classBody)
             {
                 Declaration methodDec = each as Declaration;
-                if (methodDec != null)
-                    methodDec.AddItemsToSymbolTable(scope);
-            }
 
-            // Step 2: Create new scope
-            var newScope = getNewScope(scope, null);
+                // Should create new scope and add here. This will allow diffrent class
+                // have a method with similar name.
+                if (methodDec != null)
+                {
+                    if (methodDec is MethodDeclaration)
+                    {
+                        // We want Main method at global scope
+                        var dec = (MethodDeclaration)methodDec;
+                        if (dec.isMainMethod())
+                            methodDec.AddItemsToSymbolTable(scope);
+                       
+                    }
+                    methodDec.AddItemsToSymbolTable(newScope);
+                }
+            }
 
             // Step 3: ResolveNames for each statement in the class
             bool loopResolve = true;
