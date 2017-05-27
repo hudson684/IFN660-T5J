@@ -783,6 +783,7 @@ CastExpression
 		//| '(' ReferenceType AdditionalBounds ')' UnaryExpressionNotPlusMinus
 		//| '(' ReferenceType AdditionalBounds ')' LambdaExpression
 		;
+		//Khoa. ReferenceType was chosen to be out of scope for this assignment. Commented out
 
 AdditionalBounds
 		: AdditionalBounds AdditionalBound

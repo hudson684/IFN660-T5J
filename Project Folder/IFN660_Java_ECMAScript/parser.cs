@@ -3,10 +3,10 @@
 // (see accompanying GPPGcopyright.rtf)
 
 // GPPG version 1.5.2
-// Machine:  VDI-VL17-017
-// DateTime: 24/05/2017 11:58:29 PM
-// UserName: n9648500
-// Input file <parser.y - 24/05/2017 11:05:00 PM>
+// Machine:  VDI-VL17-006
+// DateTime: 27/05/2017 7:49:15 PM
+// UserName: n9540377
+// Input file <parser.y - 27/05/2017 6:26:16 PM>
 
 // options: conflicts lines gplex conflicts
 
@@ -80,11 +80,11 @@ public class ScanObj {
 [GeneratedCodeAttribute( "Gardens Point Parser Generator", "1.5.2")]
 public class Parser: ShiftReduceParser<ValueType, LexLocation>
 {
-  // Verbatim content from parser.y - 24/05/2017 11:05:00 PM
+  // Verbatim content from parser.y - 27/05/2017 6:26:16 PM
 #line 7 "parser.y"
 public static Statement root;
 #line default
-  // End verbatim content from parser.y - 24/05/2017 11:05:00 PM
+  // End verbatim content from parser.y - 27/05/2017 6:26:16 PM
 
 #pragma warning disable 649
   private static Dictionary<int, string> aliases;
@@ -1768,7 +1768,7 @@ public static Statement root;
 #line default
         break;
       case 228: // ConstantExpression -> Expression
-#line 797 "parser.y"
+#line 798 "parser.y"
                {CurrentSemanticValue.expr = ValueStack[ValueStack.Depth-1].expr;}
 #line default
         break;
@@ -1787,6 +1787,7 @@ public static Statement root;
   }
 
 #line 802 "parser.y"
+
 public Parser(Scanner scanner) : base(scanner)
 {
 }

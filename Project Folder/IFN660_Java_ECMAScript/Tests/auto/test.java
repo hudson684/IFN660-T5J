@@ -13,6 +13,12 @@ public class HelloWorld
 			System.out.println(y);
 		}
 		y = Add(y, x);
+		++x;
+		--x;
+		//~x;
+		bool bool_var = true;
+		bool invert_bool_var;
+		invert_bool_var = !bool_var;
 		System.out.println(y);
 
 	}

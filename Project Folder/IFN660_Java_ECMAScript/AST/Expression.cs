@@ -323,6 +323,18 @@ namespace IFN660_Java_ECMAScript.AST
                 case "--":
                     cg.emit(sb, "\tsub\n");  
                     break;
+                case "-":
+                    cg.emit(sb, "\tneg\n");
+                    break;
+                case "+":
+                    cg.emit(sb, "\tpos\n");
+                    break;
+                case "~":
+                    cg.emit(sb, "\tnot\n");
+                    break;
+                case "!":
+                    cg.emit(sb, "\tceq\n");
+                    break;
                 default:
                     Console.WriteLine("Unexpected preunary operator {0}\n", oper);
                     break;
@@ -352,10 +364,7 @@ namespace IFN660_Java_ECMAScript.AST
             {
                 case "++":
                 case "--":
-                case "~":
-                case "!":
-                case "+":
-                case "-":
+                // Khoa, removed "+", "-", "~", and "!" as PostUnaryExpression only take "++" and "--" 
                     if (expression.type.isTheSameAs(new NamedType("INT")) || expression.type.isTheSameAs(new NamedType("DOUBLE")) || expression.type.isTheSameAs(new NamedType("FLOAT")) || expression.type.isTheSameAs(new NamedType("DOUBLE")))
                     {
                         type = expression.type;
@@ -420,18 +429,39 @@ namespace IFN660_Java_ECMAScript.AST
                 {
                     PrimitiveType.TypeCheck();
                     UnaryExpression.TypeCheck();
-                    // Set type to Primitivetype
-                    // We're assuming everything is Int in this compiler
-                    // Therefore there's no need to check if an Expression is FP-strict or not at this point
-                    // If both are not null. Set type to PrimitiveType
-                    type = PrimitiveType;
+                    //First check if Expression.type is Boolean if PrimitiveType is Bool      
+                    if (PrimitiveType.isTheSameAs(new NamedType("BOOLEAN")))
+                    {
+                        if (UnaryExpression.type.isTheSameAs(new NamedType("BOOLEAN")))
+                        {
+                            // If UnaryExpression is indeed in Boolean type, set Type to Boolean
+                            type = PrimitiveType;
+                        }
+                        else
+                        {
+                            throw new Exception("Expression cannot be converted to Boolean!");
+                        }
+                    }
+                    // If Expression.type is anything else but Boolean, check if it's compatible with PrimitiveType
+                    else
+                    {
+                        if (UnaryExpression.type.isCompatibleWith(PrimitiveType))
+                        {
+                            // If yes, set type to PrimititveType
+                            type = PrimitiveType;
+                        }
+                        else
+                        {
+                            throw new Exception("PrimitiveType is not compatible with type of Expression!");
+                        }
+                    }
                 }
             }
             catch
             {
                 if (PrimitiveType == null)
                 {
-                    throw new Exception("Missing PrimitiveType!");
+                    throw new Exception("Missing PrimitiveType!");                  
                 }
                 else
                 {
@@ -448,6 +478,38 @@ namespace IFN660_Java_ECMAScript.AST
         public override void GenCode(StringBuilder sb)
         {
             UnaryExpression.GenCode(sb);
+            // The Casting only happens when Expression.type != PrimitiveType
+            // The is also no Casting for Boolean values as Boolean can only be converted to Boolean
+            if (!UnaryExpression.type.isTheSameAs(PrimitiveType))
+            {
+                switch (PrimitiveType.ToString())
+                {
+                    case "BYTE":
+                        cg.emit(sb, "\tconvert.u1\n");
+                        break;
+                    case "SHORT":
+                        cg.emit(sb, "\tconvert.i2\n");
+                        break;
+                    case "CHAR":
+                        cg.emit(sb, "\tconvert.u2\n");
+                        break;
+                    case "INT":
+                        cg.emit(sb, "\tconvert.i4\n");
+                        break;
+                    case "LONG":
+                        cg.emit(sb, "\tconvert.i8\n");
+                        break;
+                    case "FLOAT":
+                        cg.emit(sb, "\tconvert.r4\n");
+                        break;
+                    case "DOUBLE":
+                        cg.emit(sb, "\tconvert.r8\n");
+                        break;
+                    default:
+                        Console.WriteLine("Unexpected PrimitiveType {0}\n", PrimitiveType);
+                        break;
+                }
+            }
         }
 
     }
