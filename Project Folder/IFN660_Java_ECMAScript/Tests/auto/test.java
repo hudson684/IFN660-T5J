@@ -15,9 +15,10 @@ public class HelloWorld
 		y = Add(y, x);
 		++x;
 		--x;
-		//~x;
-		bool bool_var = true;
-		bool invert_bool_var;
+		double z;
+		z = ~x; 
+		boolean bool_var = true;
+		boolean invert_bool_var;
 		invert_bool_var = !bool_var;
 		System.out.println(y);
 

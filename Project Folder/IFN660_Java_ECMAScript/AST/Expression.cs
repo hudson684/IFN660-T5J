@@ -286,7 +286,6 @@ namespace IFN660_Java_ECMAScript.AST
                 case "++":
                 case "--":
                 case "~":
-                case "!":
                 case "+":
                 case "-":
                     if (expression.type.isTheSameAs(new NamedType("INT")) || expression.type.isTheSameAs(new NamedType("DOUBLE")) || expression.type.isTheSameAs(new NamedType("FLOAT")) || expression.type.isTheSameAs(new NamedType("DOUBLE")))
@@ -295,7 +294,19 @@ namespace IFN660_Java_ECMAScript.AST
                     }
                     else
                     {
-                        System.Console.WriteLine("Invalid arguments for expression\n");
+                        System.Console.WriteLine("Invalid arguments for numeric expression\n");
+                        throw new Exception("TypeCheck error");
+                    }
+                    break;
+                 // Khoa. "!"is only used for Boolean
+                case "!":
+                    if (expression.type.isTheSameAs(new NamedType("BOOLEAN")))
+                    {
+                        type = expression.type;
+                    }
+                    else
+                    {
+                        System.Console.WriteLine("Invalid arguments for Boolean expression\n");
                         throw new Exception("TypeCheck error");
                     }
                     break;
