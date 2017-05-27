@@ -421,62 +421,46 @@ namespace IFN660_Java_ECMAScript.AST
     public class CastExpression : Expression
     {
         private Type PrimitiveType;
-        private Expression UnaryExpression;
-        public CastExpression(Type PrimitiveType, Expression UnaryExpression)
+        private Expression Expression;
+        public CastExpression(Type PrimitiveType, Expression Expression)
         {
             this.PrimitiveType = PrimitiveType;
-            this.UnaryExpression = UnaryExpression;
+            this.Expression = Expression;
         }
 
         public override bool ResolveNames(LexicalScope scope)
         {
-            return UnaryExpression.ResolveNames(scope);
+            return Expression.ResolveNames(scope);
         }
         public override void TypeCheck()
         {
-            try
+            PrimitiveType.TypeCheck();
+            Expression.TypeCheck();
+            //first check if expression.type is boolean if primitivetype is bool      
+            if (PrimitiveType.isTheSameAs(new NamedType("BOOLEAN")))
             {
-                if (PrimitiveType != null & UnaryExpression != null)
+                if (Expression.type.isTheSameAs(new NamedType("BOOLEAN")))
                 {
-                    PrimitiveType.TypeCheck();
-                    UnaryExpression.TypeCheck();
-                    //First check if Expression.type is Boolean if PrimitiveType is Bool      
-                    if (PrimitiveType.isTheSameAs(new NamedType("BOOLEAN")))
-                    {
-                        if (UnaryExpression.type.isTheSameAs(new NamedType("BOOLEAN")))
-                        {
-                            // If UnaryExpression is indeed in Boolean type, set Type to Boolean
-                            type = PrimitiveType;
-                        }
-                        else
-                        {
-                            throw new Exception("Expression cannot be converted to Boolean!");
-                        }
-                    }
-                    // If Expression.type is anything else but Boolean, check if it's compatible with PrimitiveType
-                    else
-                    {
-                        if (UnaryExpression.type.isCompatibleWith(PrimitiveType))
-                        {
-                            // If yes, set type to PrimititveType
-                            type = PrimitiveType;
-                        }
-                        else
-                        {
-                            throw new Exception("PrimitiveType is not compatible with type of Expression!");
-                        }
-                    }
-                }
-            }
-            catch
-            {
-                if (PrimitiveType == null)
-                {
-                    throw new Exception("Missing PrimitiveType!");                  
+                    // if unaryexpression is indeed in boolean type, set type to boolean
+                    type = PrimitiveType;
                 }
                 else
                 {
-                    throw new Exception("Missing Expression!");
+                    throw new Exception("Expression has to be in Boolean Type!");
+                }
+            }
+            // if expression.type is anything else but boolean, check if it's compatible with primitivetype
+            else
+            {
+                // Check if PrimitiveType is compatible with type of Expression
+                if (PrimitiveType.isCompatibleWith(Expression.type))
+                {
+                    // if yes, set type to primititvetype
+                    type = PrimitiveType;
+                }
+                else
+                {
+                    throw new Exception("PrimitiveType is not compatible with type of Expression!");
                 }
             }
         }
@@ -488,32 +472,35 @@ namespace IFN660_Java_ECMAScript.AST
 
         public override void GenCode(StringBuilder sb)
         {
-            UnaryExpression.GenCode(sb);
-            // The Casting only happens when Expression.type != PrimitiveType
-            // The is also no Casting for Boolean values as Boolean can only be converted to Boolean
-            if (!UnaryExpression.type.isTheSameAs(PrimitiveType))
+            Expression.GenCode(sb);
+            // The type casting only happens when Expression.type != PrimitiveType
+            // The is also no type casting for Boolean values as Boolean can only be converted to Boolean
+            if (!PrimitiveType.isTheSameAs(Expression.type) && !PrimitiveType.isTheSameAs(new NamedType("BOOLEAN"))) 
             {
-                switch (PrimitiveType.ToString())
+                // Assuming that GenCode() is reached only when TypeCheck() has been done
+                // Meaning public variable type has already been set to PrimitiveType.
+                // If this is not the case, need to find a way to export PrimitiveType to string
+                switch (PrimitiveType.GetILName())  //Get IL Name of each Named Type. Source: GetILName() in Type.cs
                 {
-                    case "BYTE":
+                    case "uint8": //BYTE
                         cg.emit(sb, "\tconvert.u1\n");
                         break;
-                    case "SHORT":
+                    case "int16":  //SHORT
                         cg.emit(sb, "\tconvert.i2\n");
                         break;
-                    case "CHAR":
+                    case "char":   //CHAR
                         cg.emit(sb, "\tconvert.u2\n");
                         break;
-                    case "INT":
+                    case "int32":  //INT
                         cg.emit(sb, "\tconvert.i4\n");
                         break;
-                    case "LONG":
+                    case "int64":  //LONG
                         cg.emit(sb, "\tconvert.i8\n");
                         break;
-                    case "FLOAT":
+                    case "float32":  //FLOAT
                         cg.emit(sb, "\tconvert.r4\n");
                         break;
-                    case "DOUBLE":
+                    case "float64":  //DOUBLE
                         cg.emit(sb, "\tconvert.r8\n");
                         break;
                     default:
@@ -522,7 +509,6 @@ namespace IFN660_Java_ECMAScript.AST
                 }
             }
         }
-
     }
 }
 

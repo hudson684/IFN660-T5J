@@ -1,10 +1,10 @@
 
 // ==========================================================================
-//  GPPG error listing for yacc source file <parser.y - 27/05/2017 6:26:16 PM>
+//  GPPG error listing for yacc source file <parser.y - 27/05/2017 10:12:20 PM>
 // ==========================================================================
 //  Version:  1.5.2
 //  Machine:  VDI-VL17-006
-//  DateTime: 27/05/2017 8:47:30 PM
+//  DateTime: 27/05/2017 10:57:58 PM
 //  UserName: n9540377
 // ==========================================================================
 
@@ -312,8 +312,8 @@ UnannPrimitiveType
 
 
 PrimitiveType
-		:  NumericType  //Annotations infront 
-		|  BOOLEAN      //Annotations infront
+		:  NumericType  //Annotations infront					{ $$ = $1; } // Khoa
+		|  BOOLEAN      //Annotations infront					{ $$ = new NamedType("BOOLEAN"); } // KHoa
 		;
 
 ReferenceType

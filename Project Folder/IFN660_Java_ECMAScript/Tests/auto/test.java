@@ -13,6 +13,10 @@ public class HelloWorld
 			System.out.println(y);
 		}
 		y = Add(y, x);
+
+		// Testing PreUnaryExpression & PostUnaryExpression
+		y--;
+		y++;
 		++x;
 		--x;
 		double z;
@@ -20,6 +24,11 @@ public class HelloWorld
 		boolean bool_var = true;
 		boolean invert_bool_var;
 		invert_bool_var = !bool_var;
+
+		// Testing CastExpression
+		double x_double = 0; 
+		x_double = (double)x;
+		 
 		System.out.println(y);
 
 	}
