@@ -132,7 +132,7 @@ namespace IFN660_Java_ECMAScript.AST
 
         public override bool ResolveNames(LexicalScope scope)
         {
-            //var newScope = getNewScope(scope, null);
+            var newScope = getNewScope(scope, null);
 
             bool loopResolve = true;
 
@@ -161,9 +161,75 @@ namespace IFN660_Java_ECMAScript.AST
                 System.Console.WriteLine("Type error in SwitchStatement\n");
                 throw new Exception("TypeCheck error");
             }
+
+            foreach(Statement Blk in block)
+            {
+                Blk.TypeCheck();
+            }
+
         }
         public override void GenCode(StringBuilder sb)
         {
+
+            cg.emit(sb, "\tswitch \t (");
+            int labelLabel;
+            bool firstItem = true;
+            bool hasDefault = false;
+            int defaultLabel = 0;
+
+            foreach (Statement each in block)
+            {
+                if (each is SwitchBlockGroup)
+                {
+                    SwitchBlockGroup blocks = each as SwitchBlockGroup;
+                    
+
+
+                    foreach (var item in blocks.getlabels())
+                    {
+                        labelLabel = LastLabel++;
+                        SwitchLabelStatement lab = item as SwitchLabelStatement;
+                        if (!lab.getSwitchLabelNotDefault())
+                        {
+                            hasDefault = true;
+                            defaultLabel = labelLabel;
+                           
+                        } else
+                        {
+                            
+                            if (!firstItem)
+                            {
+                                cg.emit(sb, ",");
+                            }
+                            else
+                            {
+                                firstItem = false;
+                            }
+                            cg.emit(sb, "L{0}", labelLabel);
+
+                        }
+                        lab.switchLabelLabelSet(labelLabel);
+                    }
+                }           
+            }
+            cg.emit(sb, ")\n");
+
+            int finalLabel = LastLabel++;
+            if (hasDefault)
+            {
+                cg.emit(sb, "\tbr.s L{0}\n", defaultLabel);
+            } else
+            {
+                cg.emit(sb, "\tbr.s L{0}\n", finalLabel);
+            }
+
+
+            foreach(Statement sta in block)
+            {
+                sta.GenCode(sb);
+            }
+
+            cg.emit(sb, "L{0}", finalLabel);
 
         }
     }
@@ -177,6 +243,11 @@ namespace IFN660_Java_ECMAScript.AST
         {
             this.labels = labels;
             this.statements = statements;
+        }
+
+        public List<Statement> getlabels()
+        {
+            return labels;
         }
 
         public override bool ResolveNames(LexicalScope scope)
@@ -209,7 +280,15 @@ namespace IFN660_Java_ECMAScript.AST
         }
         public override void GenCode(StringBuilder sb)
         {
+            foreach(Statement lab in labels)
+            {
+                lab.GenCode(sb);
+            }
 
+            foreach (Statement stmt in statements)
+            {
+                stmt.GenCode(sb);
+            }
         }
     }
 
@@ -218,6 +297,9 @@ namespace IFN660_Java_ECMAScript.AST
     {
         private Expression SwitchValue;
         private Boolean SwitchLabelNotDefault;
+
+        private int switchLabelLabel = 0;
+
 
         public Boolean getSwitchLabelNotDefault()
         {
@@ -242,6 +324,12 @@ namespace IFN660_Java_ECMAScript.AST
             SwitchLabelNotDefault = false;
         }
 
+        public void switchLabelLabelSet(int lab)
+        {
+            switchLabelLabel = lab;
+        }
+
+
         public override bool ResolveNames(LexicalScope scope)
         {
             return true;
@@ -252,7 +340,7 @@ namespace IFN660_Java_ECMAScript.AST
         }
         public override void GenCode(StringBuilder sb)
         {
-               
+            cg.emit(sb, "L{0}", switchLabelLabel);
         }
     }
 

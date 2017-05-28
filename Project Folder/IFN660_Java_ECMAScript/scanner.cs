@@ -5,21 +5,10 @@
 //  See accompanying file GPLEXcopyright.rtf.
 //
 //  GPLEX Version:  1.2.2
-<<<<<<< HEAD
-//  Machine:  VDI-VL17-004
-//  DateTime: 23/05/2017 12:16:19 PM
-//  UserName: n9004548
-//  GPLEX input file <scanner.lex - 14/05/2017 9:26:49 AM>
-=======
-//  Machine:  AIR
-//  DateTime: 5/24/2017 0:44:52
-//  UserName: Air
-<<<<<<< HEAD
-//  GPLEX input file <scanner.lex - 5/13/2017 12:03:04>
->>>>>>> master
-=======
-//  GPLEX input file <scanner.lex - 5/23/2017 18:22:26>
->>>>>>> codeGen
+//  Machine:  DESKTOP-1VMC0S8
+//  DateTime: 28/05/2017 9:34:06 PM
+//  UserName: hudso
+//  GPLEX input file <scanner.lex - 28/05/2017 2:18:35 PM>
 //  GPLEX frame file <embedded resource>
 //
 //  Option settings: unicode, parser, minimize
