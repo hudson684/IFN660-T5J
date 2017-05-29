@@ -1,11 +1,20 @@
 
 // ==========================================================================
+<<<<<<< HEAD
 //  GPPG error listing for yacc source file <parser.y - 27/05/2017 4:40:07 AM>
 // ==========================================================================
 //  Version:  1.5.2
 //  Machine:  VDI-VL17-006
 //  DateTime: 27/05/2017 4:40:20 AM
 //  UserName: n9768653
+=======
+//  GPPG error listing for yacc source file <parser.y - 30/05/2017 1:23:08 AM>
+// ==========================================================================
+//  Version:  1.5.2
+//  Machine:  VDI-VL17-035
+//  DateTime: 30/05/2017 1:25:52 AM
+//  UserName: n9540377
+>>>>>>> master
 // ==========================================================================
 
 
@@ -68,8 +77,12 @@ public static Statement root;
 %type <stmt> AssertStatement
 %type <stmt> LabeledStatement, BreakStatement, ContinueStatement, ReturnStatement
 %type <stmt> ImportDeclaration
+<<<<<<< HEAD
 %type <stmt> ForUpdate, BasicForStatement, BasicForStatementNoShortIf, ForStatement, ForStatementNoShortIf
 %type <stmt> EnhancedForStatementNoShortIf, EnhancedForStatement, ForInit
+=======
+
+>>>>>>> master
 
 %type <stmts> TypeDeclarations, ClassBody, ClassBodyDeclarations, BlockStatements, BlockStatements_Opt
 %type <stmts> ImportDeclarations, SwitchLabels, SwitchBlockStatementGroups, SwitchBlock
@@ -161,6 +174,7 @@ ImportDeclarations
 		: ImportDeclaration												{ $$ = new List<Statement> {$1};} //Vivian	
 		| ImportDeclarations ImportDeclaration						    { $$ = $1; $$.Add($2);} //Vivian
 		|						
+<<<<<<< HEAD
 		;
 
 ImportDeclaration
@@ -170,6 +184,17 @@ ImportDeclaration
 		| IMPORT STATIC TypeName '.' '*' ';'                            {  $$ = new ImportDeclaration($3); } //Vivian
 		;
 
+=======
+		;
+
+ImportDeclaration
+		: IMPORT TypeName ';'											{  $$ = new ImportDeclaration($2); } //Vivian
+		| IMPORT TypeName '.' '*' ';' 									{  $$ = new ImportDeclaration($2); } //Vivian
+		| IMPORT STATIC TypeName '.' IDENTIFIER ';'						{  $$ = new ImportDeclaration($3,$5); } //Vivian
+		| IMPORT STATIC TypeName '.' '*' ';'                            {  $$ = new ImportDeclaration($3); } //Vivian
+		;
+
+>>>>>>> master
 TypeName
 		:IDENTIFIER
 		|TypeName '.' IDENTIFIER
@@ -330,8 +355,8 @@ UnannPrimitiveType
 
 
 PrimitiveType
-		:  NumericType  //Annotations infront 
-		|  BOOLEAN      //Annotations infront
+		:  NumericType  //Annotations infront					{ $$ = $1; } // Khoa
+		|  BOOLEAN      //Annotations infront					{ $$ = new NamedType("BOOLEAN"); } // KHoa
 		;
 
 ReferenceType
@@ -857,6 +882,7 @@ CastExpression
 		//| '(' ReferenceType AdditionalBounds ')' UnaryExpressionNotPlusMinus
 		//| '(' ReferenceType AdditionalBounds ')' LambdaExpression
 		;
+		//Khoa. ReferenceType was chosen to be out of scope for this assignment. Commented out
 
 AdditionalBounds
 		: AdditionalBounds AdditionalBound

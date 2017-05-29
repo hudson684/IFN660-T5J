@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Text;
 
@@ -22,7 +23,7 @@ namespace IFN660_Java_ECMAScript.AST
 		private Type returnType;
 		private Statement statementList;
 		private List<Expression> args;
-
+       
         public MethodDeclaration(String methodIdentifier, List<Modifier> methodModifiers, Statement statementList, Type returnType, List<Expression> args)
 		{
 			this.methodIdentifier = methodIdentifier;
@@ -36,6 +37,14 @@ namespace IFN660_Java_ECMAScript.AST
             MethodOffsetArgument = LastArgument;
 		}
 
+        public bool isMainMethod()
+        {
+            if (methodIdentifier == "Main" && methodModifiers.Contains(Modifier.STATIC))
+                return true;
+            else
+                return false;
+        }
+
         public MethodDeclaration()
         {
         }
@@ -48,7 +57,8 @@ namespace IFN660_Java_ECMAScript.AST
 		public override Boolean ResolveNames(LexicalScope scope)
 		{
             // Step 1: Add method name to current scope
-            AddItemsToSymbolTable(scope);
+            // Removed by An. We already add item at ClassDeclaration level
+            //AddItemsToSymbolTable(scope);
 
 			// Step 2: Create new scope and populate the symbol table
 			var newScope = getNewScope(scope, args);
@@ -78,6 +88,9 @@ namespace IFN660_Java_ECMAScript.AST
 		{
             returnType.TypeCheck();
             statementList.TypeCheck();
+            // Check if method return type is something rather than void
+            if (returnType.isPrimitives)
+                //TODO : check here to make sure we have return value..
             args.ForEach(x => x.TypeCheck());
 		}
 
@@ -120,9 +133,16 @@ namespace IFN660_Java_ECMAScript.AST
 
         public override void GenCode(StringBuilder sb)
         {
-            cg.emit(sb, ".method static ");
+            cg.emit(sb, ".method ");
+            // Check if we have static. If yes then we want to emit it first
+            if(methodModifiers.Contains(Modifier.STATIC))
+                cg.emit(sb, "static ");
             foreach (var modif in methodModifiers)
-                cg.emit(sb, "{0} ", modif.ToString().ToLower());
+            {
+                if(modif != Modifier.STATIC)
+                    cg.emit(sb, "{0} ", modif.ToString().ToLower());
+            }
+               
             //returnType.GenCode(sb);
             cg.emit(sb, "{0} ", returnType.GetILName());
             cg.emit(sb, "{0}", methodIdentifier);
@@ -142,8 +162,8 @@ namespace IFN660_Java_ECMAScript.AST
             cg.emit(sb, fp_list + ")\n");
 
             cg.emit(sb, "{{\n"); // start of method body
-            // If the method is called "main" set it as the program entrypoing
-            if (methodIdentifier.ToLower() == "main")
+            // If the method is called "main" and it has to be static Main, set it as the program entrypoing
+            if (methodIdentifier.ToLower() == "main" && methodModifiers.Contains(Modifier.STATIC))
                 cg.emit(sb, "\t.entrypoint\n");
 
             // generate code for the method body statements
