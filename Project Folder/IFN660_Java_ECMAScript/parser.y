@@ -315,8 +315,8 @@ UnannPrimitiveType
 
 
 PrimitiveType
-		:  NumericType  //Annotations infront 
-		|  BOOLEAN      //Annotations infront
+		:  NumericType  //Annotations infront					{ $$ = $1; } // Khoa
+		|  BOOLEAN      //Annotations infront					{ $$ = new NamedType("BOOLEAN"); } // KHoa
 		;
 
 ReferenceType
@@ -800,6 +800,7 @@ CastExpression
 		//| '(' ReferenceType AdditionalBounds ')' UnaryExpressionNotPlusMinus
 		//| '(' ReferenceType AdditionalBounds ')' LambdaExpression
 		;
+		//Khoa. ReferenceType was chosen to be out of scope for this assignment. Commented out
 
 AdditionalBounds
 		: AdditionalBounds AdditionalBound

@@ -1,11 +1,11 @@
 
 // ==========================================================================
-//  GPPG error listing for yacc source file <parser.y - 28/05/2017 2:18:35 PM>
+//  GPPG error listing for yacc source file <parser.y - 30/05/2017 1:23:08 AM>
 // ==========================================================================
 //  Version:  1.5.2
-//  Machine:  DESKTOP-1VMC0S8
-//  DateTime: 29/05/2017 9:17:19 PM
-//  UserName: hudso
+//  Machine:  VDI-VL17-035
+//  DateTime: 30/05/2017 1:25:52 AM
+//  UserName: n9540377
 // ==========================================================================
 
 
@@ -329,8 +329,8 @@ UnannPrimitiveType
 
 
 PrimitiveType
-		:  NumericType  //Annotations infront 
-		|  BOOLEAN      //Annotations infront
+		:  NumericType  //Annotations infront					{ $$ = $1; } // Khoa
+		|  BOOLEAN      //Annotations infront					{ $$ = new NamedType("BOOLEAN"); } // KHoa
 		;
 
 ReferenceType
@@ -814,6 +814,7 @@ CastExpression
 		//| '(' ReferenceType AdditionalBounds ')' UnaryExpressionNotPlusMinus
 		//| '(' ReferenceType AdditionalBounds ')' LambdaExpression
 		;
+		//Khoa. ReferenceType was chosen to be out of scope for this assignment. Commented out
 
 AdditionalBounds
 		: AdditionalBounds AdditionalBound
