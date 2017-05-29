@@ -120,7 +120,54 @@ namespace IFN660_Java_ECMAScript.AST
 
     public class SwitchStatement : Statement
     {
-        // by Tri
+        /// <summary>
+        /// by Joshua
+        /// 
+        /// Switch Statement is quite confusing to for future reference it will be useful for there to be coments on it
+        /// 
+        /// A typical switch statement is seperated into four main parts
+        /// Firstly the overarching switch statement that contains everything else
+        /// 
+        /// in actual code the switch statement part looks like this
+        /// 
+        /// switch(expression expr){
+        /// 
+        /// }
+        /// 
+        /// Inside a swich expression contains switch blocks
+        /// These contain labels and block statements in that order
+        /// never label, block statement, label
+        /// 
+        /// In the real code a typical block statement can look like this
+        /// case 1:
+        /// case 2: int x; x = 2; break;
+        /// 
+        /// note the empty case 1, that is allowed as there is no block statement after it
+        /// 
+        /// the final two parts are the label itself and the block statement, as the block statement is not unique to 
+        /// the swich statement I won't cover it
+        /// 
+        /// the case statement is simple
+        /// it is just a label following one of three rules:
+        ///     either it has a constant value i.e case 42:
+        ///     it has a constant name i.e case constX: (note that this case is not implimented in the code)
+        ///     finally it is the default value i.e default:
+        /// 
+        /// A full example of case is as follows
+        ///     switch(y){
+        ///         //first block
+        ///         case 42:
+        ///         case 2: int x; x = 2; x = y + 2;
+        ///         //second block
+        ///         case 3: int z; z = y + 1;
+        ///         //final block
+        ///         default: int q: q = y + 4;
+        ///      }
+        ///      
+        /// 
+        /// 
+        /// </summary>
+
         private Expression expression;
         private List<Statement> block;
 
@@ -132,6 +179,7 @@ namespace IFN660_Java_ECMAScript.AST
 
         public override bool ResolveNames(LexicalScope scope)
         {
+            //note each switch block is a new scope
             var newScope = getNewScope(scope, null);
 
             bool loopResolve = true;
@@ -152,6 +200,8 @@ namespace IFN660_Java_ECMAScript.AST
             return loopResolve && expression.ResolveNames(scope);
         }
 
+        //for type checking of the case labels to work, the type of expression used above needs to be passed down to the switch blocks.
+
         public override void TypeCheck()
         {
             this.expression.TypeCheck();
@@ -162,14 +212,30 @@ namespace IFN660_Java_ECMAScript.AST
                 throw new Exception("TypeCheck error");
             }
 
-            foreach(Statement Blk in block)
+            foreach(SwitchBlockGroup Blk in block)
             {
+                Blk.setswichExprType(expression.type);
                 Blk.TypeCheck();
             }
 
         }
+
+        /// <summary>
+        /// The tricky part of code generation is the fact that the switch statement needs the labels for all of the label statements, 
+        /// this means that I need to create them and then pass them to any label in the lower switch blocks.
+        /// 
+        /// Also note that if there is a default statement then after the switch block the break statement needs to point to that,
+        /// otherwise it needs to point to the end of the switch block
+        /// 
+        /// 
+        /// the one issue I forsee is that in complicated switch statements the labels might get out of order
+        /// 
+        /// 
+        /// </summary>
+        /// <param name="sb"></param>
         public override void GenCode(StringBuilder sb)
         {
+
 
             cg.emit(sb, "\tswitch \t (");
             int labelLabel;
@@ -239,6 +305,8 @@ namespace IFN660_Java_ECMAScript.AST
         private List<Statement> labels;
         private List<Statement> statements;
 
+        private Type swichExprType;
+
         public SwitchBlockGroup(List<Statement> labels, List<Statement> statements)
         {
             this.labels = labels;
@@ -248,6 +316,11 @@ namespace IFN660_Java_ECMAScript.AST
         public List<Statement> getlabels()
         {
             return labels;
+        }
+
+        public void setswichExprType(Type type)
+        {
+            swichExprType = type;
         }
 
         public override bool ResolveNames(LexicalScope scope)
@@ -273,6 +346,12 @@ namespace IFN660_Java_ECMAScript.AST
 
         public override void TypeCheck()
         {
+            foreach (SwitchLabelStatement lab in labels)
+            {
+                lab.setswichExprType(swichExprType);
+                lab.TypeCheck();
+            }
+
             foreach (Statement stmt in statements)
             {
                 stmt.TypeCheck();
@@ -297,6 +376,7 @@ namespace IFN660_Java_ECMAScript.AST
     {
         private Expression SwitchValue;
         private Boolean SwitchLabelNotDefault;
+        private Type swichExprType;
 
         private int switchLabelLabel = 0;
 
@@ -329,6 +409,10 @@ namespace IFN660_Java_ECMAScript.AST
             switchLabelLabel = lab;
         }
 
+        public void setswichExprType(Type type)
+        {
+            swichExprType = type;
+        }
 
         public override bool ResolveNames(LexicalScope scope)
         {
@@ -336,7 +420,16 @@ namespace IFN660_Java_ECMAScript.AST
         }
         public override void TypeCheck()
         {
-
+            if (SwitchValue != null)
+            {
+                SwitchValue.TypeCheck();
+                if (!SwitchValue.type.isTheSameAs(swichExprType))
+                {
+                    System.Console.WriteLine("Type error in DoStatement\n");
+                    throw new Exception("TypeCheck error");
+                }
+            }
+     
         }
         public override void GenCode(StringBuilder sb)
         {
