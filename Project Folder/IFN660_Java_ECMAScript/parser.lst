@@ -1,10 +1,10 @@
 
 // ==========================================================================
-//  GPPG error listing for yacc source file <parser.y - 30/05/2017 1:23:08 AM>
+//  GPPG error listing for yacc source file <parser.y - 30/05/2017 5:27:01 AM>
 // ==========================================================================
 //  Version:  1.5.2
 //  Machine:  VDI-VL17-035
-//  DateTime: 30/05/2017 1:25:52 AM
+//  DateTime: 30/05/2017 5:27:12 AM
 //  UserName: n9540377
 // ==========================================================================
 
@@ -687,6 +687,7 @@ Literal
 Expression
 		: LambdaExpression										{ $$ = $1; } // Nathan
 		| AssignmentExpression									{ $$ = $1; } // Nathan
+		//| ClassInstanceCreationExpression						{ $$ = $1; } // Khoa, created this on the fly just for ThrowStatement to work
 		;
 
 LambdaExpression
@@ -828,7 +829,6 @@ AdditionalBound
 ConstantExpression
 		: Expression {$$ = $1;} // Josh
 		;
-
 %%
 
 public Parser(Scanner scanner) : base(scanner)

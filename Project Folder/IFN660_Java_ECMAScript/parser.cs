@@ -4,9 +4,9 @@
 
 // GPPG version 1.5.2
 // Machine:  VDI-VL17-035
-// DateTime: 30/05/2017 1:25:44 AM
+// DateTime: 30/05/2017 5:27:05 AM
 // UserName: n9540377
-// Input file <parser.y - 30/05/2017 1:23:08 AM>
+// Input file <parser.y - 30/05/2017 5:27:01 AM>
 
 // options: conflicts lines gplex conflicts
 
@@ -80,11 +80,11 @@ public class ScanObj {
 [GeneratedCodeAttribute( "Gardens Point Parser Generator", "1.5.2")]
 public class Parser: ShiftReduceParser<ValueType, LexLocation>
 {
-  // Verbatim content from parser.y - 30/05/2017 1:23:08 AM
+  // Verbatim content from parser.y - 30/05/2017 5:27:01 AM
 #line 7 "parser.y"
 public static Statement root;
 #line default
-  // End verbatim content from parser.y - 30/05/2017 1:23:08 AM
+  // End verbatim content from parser.y - 30/05/2017 5:27:01 AM
 
 #pragma warning disable 649
   private static Dictionary<int, string> aliases;
@@ -1561,270 +1561,270 @@ public static Statement root;
 #line default
         break;
       case 181: // LambdaExpression -> LambdaParameters, ARROW, LambdaBody
-#line 679 "parser.y"
+#line 680 "parser.y"
                                            { }
 #line default
         break;
       case 182: // LambdaParameters -> /* empty */
-#line 683 "parser.y"
+#line 684 "parser.y"
                           { }
 #line default
         break;
       case 183: // LambdaBody -> /* empty */
-#line 687 "parser.y"
+#line 688 "parser.y"
                           { }
 #line default
         break;
       case 184: // ConditionalExpression -> ConditionalOrExpression
-#line 691 "parser.y"
+#line 692 "parser.y"
                                        { CurrentSemanticValue.expr = ValueStack[ValueStack.Depth-1].expr; }
 #line default
         break;
       case 185: // ConditionalOrExpression -> ConditionalAndExpression
-#line 697 "parser.y"
+#line 698 "parser.y"
                                       { CurrentSemanticValue.expr = ValueStack[ValueStack.Depth-1].expr; }
 #line default
         break;
       case 186: // ConditionalOrExpression -> ConditionalOrExpression, LOGICAL_OR, 
                 //                            ConditionalAndExpression
-#line 698 "parser.y"
+#line 699 "parser.y"
                                                                 { CurrentSemanticValue.expr = new BinaryExpression(ValueStack[ValueStack.Depth-3].expr, "||", ValueStack[ValueStack.Depth-1].expr); }
 #line default
         break;
       case 187: // ConditionalAndExpression -> InclusiveOrExpression
-#line 702 "parser.y"
+#line 703 "parser.y"
                                     { CurrentSemanticValue.expr = ValueStack[ValueStack.Depth-1].expr; }
 #line default
         break;
       case 188: // ConditionalAndExpression -> ConditionalAndExpression, LOGICAL_AND, 
                 //                             InclusiveOrExpression
-#line 703 "parser.y"
+#line 704 "parser.y"
                                                                { CurrentSemanticValue.expr = new BinaryExpression(ValueStack[ValueStack.Depth-3].expr, "&&", ValueStack[ValueStack.Depth-1].expr); }
 #line default
         break;
       case 189: // InclusiveOrExpression -> ExclusiveOrExpression
-#line 707 "parser.y"
+#line 708 "parser.y"
                                     { CurrentSemanticValue.expr = ValueStack[ValueStack.Depth-1].expr; }
 #line default
         break;
       case 190: // InclusiveOrExpression -> InclusiveOrExpression, '|', ExclusiveOrExpression
-#line 708 "parser.y"
+#line 709 "parser.y"
                                                        { CurrentSemanticValue.expr = new BinaryExpression(ValueStack[ValueStack.Depth-3].expr, "|", ValueStack[ValueStack.Depth-1].expr); }
 #line default
         break;
       case 191: // ExclusiveOrExpression -> AndExpression
-#line 712 "parser.y"
+#line 713 "parser.y"
                               { CurrentSemanticValue.expr = ValueStack[ValueStack.Depth-1].expr; }
 #line default
         break;
       case 192: // ExclusiveOrExpression -> ExclusiveOrExpression, '^', AndExpression
-#line 713 "parser.y"
+#line 714 "parser.y"
                                                  { CurrentSemanticValue.expr = new BinaryExpression(ValueStack[ValueStack.Depth-3].expr, "^", ValueStack[ValueStack.Depth-1].expr); }
 #line default
         break;
       case 193: // AndExpression -> EqualityExpression
-#line 717 "parser.y"
+#line 718 "parser.y"
                                  { CurrentSemanticValue.expr = ValueStack[ValueStack.Depth-1].expr; }
 #line default
         break;
       case 194: // AndExpression -> AndExpression, '&', EqualityExpression
-#line 718 "parser.y"
+#line 719 "parser.y"
                                                { CurrentSemanticValue.expr = new BinaryExpression(ValueStack[ValueStack.Depth-3].expr, "&", ValueStack[ValueStack.Depth-1].expr); }
 #line default
         break;
       case 195: // EqualityExpression -> RelationalExpression
-#line 722 "parser.y"
+#line 723 "parser.y"
                                    { CurrentSemanticValue.expr = ValueStack[ValueStack.Depth-1].expr; }
 #line default
         break;
       case 196: // EqualityExpression -> EqualityExpression, EQUAL, RelationalExpression
-#line 723 "parser.y"
+#line 724 "parser.y"
                                                       { CurrentSemanticValue.expr = new BinaryExpression(ValueStack[ValueStack.Depth-3].expr, "==", ValueStack[ValueStack.Depth-1].expr); }
 #line default
         break;
       case 197: // EqualityExpression -> EqualityExpression, NOT_EQUAL, RelationalExpression
-#line 724 "parser.y"
+#line 725 "parser.y"
                                                          { CurrentSemanticValue.expr = new BinaryExpression(ValueStack[ValueStack.Depth-3].expr, "!=", ValueStack[ValueStack.Depth-1].expr); }
 #line default
         break;
       case 198: // RelationalExpression -> ShiftExpression
-#line 728 "parser.y"
+#line 729 "parser.y"
                                { CurrentSemanticValue.expr = ValueStack[ValueStack.Depth-1].expr; }
 #line default
         break;
       case 199: // RelationalExpression -> RelationalExpression, '<', ShiftExpression
-#line 729 "parser.y"
+#line 730 "parser.y"
                                                   { CurrentSemanticValue.expr = new BinaryExpression(ValueStack[ValueStack.Depth-3].expr, "<", ValueStack[ValueStack.Depth-1].expr); }
 #line default
         break;
       case 200: // RelationalExpression -> RelationalExpression, '>', ShiftExpression
-#line 730 "parser.y"
+#line 731 "parser.y"
                                                   { CurrentSemanticValue.expr = new BinaryExpression(ValueStack[ValueStack.Depth-3].expr, ">", ValueStack[ValueStack.Depth-1].expr); }
 #line default
         break;
       case 201: // RelationalExpression -> RelationalExpression, LESS_THAN_OR_EQUAL, 
                 //                         ShiftExpression
-#line 731 "parser.y"
+#line 732 "parser.y"
                                                              { CurrentSemanticValue.expr = new BinaryExpression(ValueStack[ValueStack.Depth-3].expr, "<=", ValueStack[ValueStack.Depth-1].expr); }
 #line default
         break;
       case 202: // RelationalExpression -> RelationalExpression, GREATER_OR_EQUAL, ShiftExpression
-#line 732 "parser.y"
+#line 733 "parser.y"
                                                             { CurrentSemanticValue.expr = new BinaryExpression(ValueStack[ValueStack.Depth-3].expr, ">=", ValueStack[ValueStack.Depth-1].expr); }
 #line default
         break;
       case 203: // RelationalExpression -> RelationalExpression, INSTANCEOF, ReferenceType
-#line 733 "parser.y"
+#line 734 "parser.y"
                                                       { CurrentSemanticValue.expr = new InstanceOfExpression(ValueStack[ValueStack.Depth-3].expr, ValueStack[ValueStack.Depth-1].type); }
 #line default
         break;
       case 204: // ShiftExpression -> AdditiveExpression
-#line 737 "parser.y"
+#line 738 "parser.y"
                                  { CurrentSemanticValue.expr = ValueStack[ValueStack.Depth-1].expr; }
 #line default
         break;
       case 205: // ShiftExpression -> ShiftExpression, LEFT_SHIFT, AdditiveExpression
-#line 738 "parser.y"
+#line 739 "parser.y"
                                                       { CurrentSemanticValue.expr = new BinaryExpression(ValueStack[ValueStack.Depth-3].expr, "<<", ValueStack[ValueStack.Depth-1].expr); }
 #line default
         break;
       case 206: // ShiftExpression -> ShiftExpression, SIGNED_RIGHT_SHIFT, AdditiveExpression
-#line 739 "parser.y"
+#line 740 "parser.y"
                                                             { CurrentSemanticValue.expr = new BinaryExpression(ValueStack[ValueStack.Depth-3].expr, ">>", ValueStack[ValueStack.Depth-1].expr); }
 #line default
         break;
       case 207: // ShiftExpression -> ShiftExpression, UNSIGNED_RIGHT_SHIFT, AdditiveExpression
-#line 740 "parser.y"
+#line 741 "parser.y"
                                                              { CurrentSemanticValue.expr = new BinaryExpression(ValueStack[ValueStack.Depth-3].expr, ">>>", ValueStack[ValueStack.Depth-1].expr); }
 #line default
         break;
       case 208: // AdditiveExpression -> MultiplicativeExpression
-#line 744 "parser.y"
+#line 745 "parser.y"
                                      { CurrentSemanticValue.expr = ValueStack[ValueStack.Depth-1].expr; }
 #line default
         break;
       case 209: // AdditiveExpression -> AdditiveExpression, '+', MultiplicativeExpression
-#line 745 "parser.y"
+#line 746 "parser.y"
                                                       { CurrentSemanticValue.expr = new BinaryExpression(ValueStack[ValueStack.Depth-3].expr, "+", ValueStack[ValueStack.Depth-1].expr); }
 #line default
         break;
       case 210: // AdditiveExpression -> AdditiveExpression, '-', MultiplicativeExpression
-#line 746 "parser.y"
+#line 747 "parser.y"
                                                       { CurrentSemanticValue.expr = new BinaryExpression(ValueStack[ValueStack.Depth-3].expr, "-", ValueStack[ValueStack.Depth-1].expr); }
 #line default
         break;
       case 211: // MultiplicativeExpression -> UnaryExpression
-#line 750 "parser.y"
+#line 751 "parser.y"
                                { CurrentSemanticValue.expr = ValueStack[ValueStack.Depth-1].expr; }
 #line default
         break;
       case 212: // MultiplicativeExpression -> MultiplicativeExpression, '*', UnaryExpression
-#line 751 "parser.y"
+#line 752 "parser.y"
                                                      { CurrentSemanticValue.expr = new BinaryExpression(ValueStack[ValueStack.Depth-3].expr, "*", ValueStack[ValueStack.Depth-1].expr); }
 #line default
         break;
       case 213: // MultiplicativeExpression -> MultiplicativeExpression, '/', UnaryExpression
-#line 752 "parser.y"
+#line 753 "parser.y"
                                                      { CurrentSemanticValue.expr = new BinaryExpression(ValueStack[ValueStack.Depth-3].expr, "/", ValueStack[ValueStack.Depth-1].expr); }
 #line default
         break;
       case 214: // MultiplicativeExpression -> MultiplicativeExpression, '%', UnaryExpression
-#line 753 "parser.y"
+#line 754 "parser.y"
                                                      { CurrentSemanticValue.expr = new BinaryExpression(ValueStack[ValueStack.Depth-3].expr, "%", ValueStack[ValueStack.Depth-1].expr); }
 #line default
         break;
       case 215: // UnaryExpression -> PreIncrementExpression
-#line 757 "parser.y"
+#line 758 "parser.y"
                                     { CurrentSemanticValue.expr = ValueStack[ValueStack.Depth-1].expr; }
 #line default
         break;
       case 216: // UnaryExpression -> PreDecrementExpression
-#line 758 "parser.y"
+#line 759 "parser.y"
                                    { CurrentSemanticValue.expr = ValueStack[ValueStack.Depth-1].expr; }
 #line default
         break;
       case 217: // UnaryExpression -> '+', UnaryExpression
-#line 759 "parser.y"
+#line 760 "parser.y"
                                  { CurrentSemanticValue.expr = new PreUnaryExpression("+", ValueStack[ValueStack.Depth-1].expr); }
 #line default
         break;
       case 218: // UnaryExpression -> '-', UnaryExpression
-#line 760 "parser.y"
+#line 761 "parser.y"
                                  { CurrentSemanticValue.expr = new PreUnaryExpression("-", ValueStack[ValueStack.Depth-1].expr); }
 #line default
         break;
       case 219: // UnaryExpression -> UnaryExpressionNotPlusMinus
-#line 761 "parser.y"
+#line 762 "parser.y"
                                        { CurrentSemanticValue.expr = ValueStack[ValueStack.Depth-1].expr; }
 #line default
         break;
       case 220: // PreIncrementExpression -> INCREMENT, UnaryExpression
-#line 769 "parser.y"
+#line 770 "parser.y"
                                       { CurrentSemanticValue.expr = new PreUnaryExpression("++", ValueStack[ValueStack.Depth-1].expr); }
 #line default
         break;
       case 221: // PreDecrementExpression -> DECREMENT, UnaryExpression
-#line 773 "parser.y"
+#line 774 "parser.y"
                                       { CurrentSemanticValue.expr = new PreUnaryExpression("--", ValueStack[ValueStack.Depth-1].expr); }
 #line default
         break;
       case 222: // UnaryExpressionNotPlusMinus -> PostfixExpression
-#line 777 "parser.y"
+#line 778 "parser.y"
                                 { CurrentSemanticValue.expr = ValueStack[ValueStack.Depth-1].expr;}
 #line default
         break;
       case 223: // UnaryExpressionNotPlusMinus -> '~', UnaryExpression
-#line 778 "parser.y"
+#line 779 "parser.y"
                                  { CurrentSemanticValue.expr = new PreUnaryExpression("~", ValueStack[ValueStack.Depth-1].expr); }
 #line default
         break;
       case 224: // UnaryExpressionNotPlusMinus -> '!', UnaryExpression
-#line 779 "parser.y"
+#line 780 "parser.y"
                                  { CurrentSemanticValue.expr = new PreUnaryExpression("!", ValueStack[ValueStack.Depth-1].expr); }
 #line default
         break;
       case 225: // UnaryExpressionNotPlusMinus -> CastExpression
-#line 780 "parser.y"
+#line 781 "parser.y"
                              { CurrentSemanticValue.expr = ValueStack[ValueStack.Depth-1].expr;}
 #line default
         break;
       case 226: // PostfixExpression -> Primary
-#line 784 "parser.y"
+#line 785 "parser.y"
                         { CurrentSemanticValue.expr = ValueStack[ValueStack.Depth-1].expr; }
 #line default
         break;
       case 227: // PostfixExpression -> ExpressionName
-#line 785 "parser.y"
+#line 786 "parser.y"
                              { CurrentSemanticValue.expr = ValueStack[ValueStack.Depth-1].expr; }
 #line default
         break;
       case 228: // PostfixExpression -> PostIncrementExpression
-#line 786 "parser.y"
-                                    { CurrentSemanticValue.expr = ValueStack[ValueStack.Depth-1].expr; }
-#line default
-        break;
-      case 229: // PostfixExpression -> PostDecrementExpression
 #line 787 "parser.y"
                                     { CurrentSemanticValue.expr = ValueStack[ValueStack.Depth-1].expr; }
 #line default
         break;
+      case 229: // PostfixExpression -> PostDecrementExpression
+#line 788 "parser.y"
+                                    { CurrentSemanticValue.expr = ValueStack[ValueStack.Depth-1].expr; }
+#line default
+        break;
       case 230: // PostIncrementExpression -> PostfixExpression, INCREMENT
-#line 791 "parser.y"
+#line 792 "parser.y"
                                         { CurrentSemanticValue.expr = new PostUnaryExpression(ValueStack[ValueStack.Depth-2].expr, "++"); }
 #line default
         break;
       case 231: // PostDecrementExpression -> PostfixExpression, DECREMENT
-#line 795 "parser.y"
+#line 796 "parser.y"
                                         { CurrentSemanticValue.expr = new PostUnaryExpression(ValueStack[ValueStack.Depth-2].expr, "--"); }
 #line default
         break;
       case 232: // CastExpression -> '(', PrimitiveType, ')', UnaryExpression
-#line 799 "parser.y"
+#line 800 "parser.y"
                                                    { CurrentSemanticValue.expr = new CastExpression(ValueStack[ValueStack.Depth-3].type, ValueStack[ValueStack.Depth-1].expr); }
 #line default
         break;
       case 236: // ConstantExpression -> Expression
-#line 815 "parser.y"
+#line 816 "parser.y"
                {CurrentSemanticValue.expr = ValueStack[ValueStack.Depth-1].expr;}
 #line default
         break;

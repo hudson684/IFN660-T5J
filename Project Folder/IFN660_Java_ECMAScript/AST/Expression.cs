@@ -549,6 +549,54 @@ namespace IFN660_Java_ECMAScript.AST
             }
         }
     }
+    // This class is written just to work with ThrowStatement
+    // Not fully implemented yet
+    public class UnqualifiedClassInstanceCreationExpression : Expression
+    {
+        private string Identifier;
+        private List<Expression> args;
+        public UnqualifiedClassInstanceCreationExpression(string Identifier, List<Expression> args)
+        {
+            this.Identifier = Identifier;
+            this.args = args;
+        }
+        public string getIdentifier()
+        {
+            return Identifier;
+        }
+        public override bool ResolveNames(LexicalScope scope)
+        {
+            bool loopResolve = true;
+            if (args != null)
+            {
+                foreach (Expression argument in args)
+                {
+                    // Only do ResolveNames on non-string argument
+                    // This is currently only designed to work with ThrowStatement
+                    if (!argument.type.isTheSameAs(new NamedType("CHAR")))
+                    {
+                        loopResolve = loopResolve & argument.ResolveNames(scope);
+                    }
+                }
+            }
+            return loopResolve;
+        }
+        public override void TypeCheck()
+        {
+            foreach (Expression argument in args)
+            {
+                argument.TypeCheck();
+            }
+        }
+        public override Type ObtainType()
+        {
+            return type;
+        }
+        public override void GenCode(StringBuilder sb)
+        {
+
+        }
+    }
 }
 
 

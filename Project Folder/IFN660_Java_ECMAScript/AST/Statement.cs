@@ -774,8 +774,22 @@ namespace IFN660_Java_ECMAScript.AST
     }
     public class ThrowStatement : Statement              //KoJo
     {
+        // ThrowStatement only take a very unique type of Expression
+        // which is the UnqualifiedClassInstanceCreationExpression
+        // where a new unchecked exception class is instantiated
+        // Eventually Expression will be changed to UnqualifiedClassInstanceCreationExpression
         private Expression Expr;
+        private List<string> SystemExceptions = new List<string>();  // list of all System Exceptions
+        // This is the case when ThrowStatement exists inside a TryStatement. For Example:
+        // Try
+        //{}
+        //Catch 
+        //{Throw}
+        // This is the only case where Throw can be followed by null 
+        public ThrowStatement()
+        {
 
+        }
         public ThrowStatement(Expression Expr)
         {
             this.Expr = Expr;
@@ -783,25 +797,40 @@ namespace IFN660_Java_ECMAScript.AST
 
         public override bool ResolveNames(LexicalScope scope)
         {
-            bool loopResolve = true;
-
-            return Expr.ResolveNames(scope) & loopResolve;
+            // If Expr = null, then ThrowStatement must be inside a TryStatement
+            // Check if there is a presence of Try & Catch anywhere in LexicalScope
+            // If yes, truen
+            if (Expr == null)
+            {
+                if (scope.Resolve("try") != null && scope.Resolve("catch") != null)
+                {
+                    return true;
+                }
+                else
+                {
+                    throw new Exception("A throw statement with no arguments is only allowed inside a Try-Catch!");
+                }
+            }
+            // If Expre != null, then proceed to typechecking
+            // As Expression in TryStatement doesn't have to be declared anywhere in the current scope
+            // They only need to be an inheritance of the Exception class 
+            else
+            {
+                return true;
+            }
         }
         public override void TypeCheck()
         {
             // Khoa
-            // If Expression was entered, try TypeChecking. If not, return error
-            // Need to figure out how to check if Expression is Reference Type
-            try
+            // Assuming that if Expr = null, it already passed ResolveName()
+            if (Expr == null)
             {
-                if (Expr != null)
-                {
-                    Expr.TypeCheck();
-                }
+                Expr.TypeCheck();
             }
-            catch (Exception e)
+            else // When Expr != null
             {
-                throw new Exception("No Expression was entered: {0}", e);
+                // first check if the identifier is any of the System Exceptions
+
             }
         }
         public override void GenCode(StringBuilder sb)

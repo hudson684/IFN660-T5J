@@ -673,6 +673,7 @@ Literal
 Expression
 		: LambdaExpression										{ $$ = $1; } // Nathan
 		| AssignmentExpression									{ $$ = $1; } // Nathan
+		//| ClassInstanceCreationExpression						{ $$ = $1; } // Khoa, created this on the fly just for ThrowStatement to work
 		;
 
 LambdaExpression
@@ -814,7 +815,6 @@ AdditionalBound
 ConstantExpression
 		: Expression {$$ = $1;} // Josh
 		;
-
 %%
 
 public Parser(Scanner scanner) : base(scanner)
