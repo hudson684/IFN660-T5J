@@ -39,7 +39,7 @@ namespace IFN660_Java_ECMAScript.AST
 		//	return ReferenceEquals(type,this)? base.GetHashCode():type.GetHashCode();
 		//}
         */
-        public bool isPrimitives;
+
         public abstract bool isTheSameAs(Type type);
         public abstract bool isCompatibleWith(Type type);
         public abstract string GetILName();
@@ -80,12 +80,10 @@ namespace IFN660_Java_ECMAScript.AST
 	public class NamedType : Type
 	{
 		private string elementType;
-        
 
         public NamedType(string elementType)
 		{
 			this.elementType = elementType;
-            isPrimitives = false;
 		}
 
 		public override bool ResolveNames(LexicalScope scope)
@@ -112,8 +110,7 @@ namespace IFN660_Java_ECMAScript.AST
 		}
 		public override void TypeCheck()
 		{
-            if (primitives.Contains(elementType))
-                isPrimitives = true;
+           // do nothing
 		}
         public override bool isTheSameAs(Type type)
         {

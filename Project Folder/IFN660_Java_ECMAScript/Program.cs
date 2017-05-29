@@ -110,6 +110,7 @@ namespace IFN660_Java_ECMAScript
             using (StreamWriter wr = new StreamWriter(path,false))
             {
                 wr.WriteLine(sb);
+               
             }
         }
     }
