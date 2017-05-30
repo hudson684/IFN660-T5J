@@ -1,11 +1,11 @@
-// Parser Conflict Information for grammar file "parser.y - 30/05/2017 1:23:08 AM"
+// Parser Conflict Information for grammar file "parser.y - 27/05/2017 4:40:07 AM"
 
 Shift/Reduce conflict on symbol "IMPORT", parser will shift
  Reduce 8:	ImportDeclarations -> /* empty */
- Shift "IMPORT":	State-4 -> State-335
+ Shift "IMPORT":	State-4 -> State-377
   Items for From-state State 4
     4 CompilationUnit: PackageDeclaration_opt . ImportDeclarations TypeDeclarations 
-  Items for Next-state State 335
+  Items for Next-state State 377
     9 ImportDeclaration: IMPORT . TypeName ';' 
     10 ImportDeclaration: IMPORT . TypeName '.' '*' ';' 
     11 ImportDeclaration: IMPORT . STATIC TypeName '.' IDENTIFIER ';' 

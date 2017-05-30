@@ -1,11 +1,11 @@
 
 // ==========================================================================
-//  GPPG error listing for yacc source file <parser.y - 30/05/2017 1:23:08 AM>
+//  GPPG error listing for yacc source file <parser.y - 27/05/2017 4:40:07 AM>
 // ==========================================================================
 //  Version:  1.5.2
-//  Machine:  VDI-VL17-035
-//  DateTime: 30/05/2017 1:25:52 AM
-//  UserName: n9540377
+//  Machine:  VDI-VL17-006
+//  DateTime: 27/05/2017 4:40:20 AM
+//  UserName: n9768653
 // ==========================================================================
 
 
@@ -68,7 +68,8 @@ public static Statement root;
 %type <stmt> AssertStatement
 %type <stmt> LabeledStatement, BreakStatement, ContinueStatement, ReturnStatement
 %type <stmt> ImportDeclaration
-
+%type <stmt> ForUpdate, BasicForStatement, BasicForStatementNoShortIf, ForStatement, ForStatementNoShortIf
+%type <stmt> EnhancedForStatementNoShortIf, EnhancedForStatement, ForInit
 
 %type <stmts> TypeDeclarations, ClassBody, ClassBodyDeclarations, BlockStatements, BlockStatements_Opt
 %type <stmts> ImportDeclarations, SwitchLabels, SwitchBlockStatementGroups, SwitchBlock
@@ -329,8 +330,8 @@ UnannPrimitiveType
 
 
 PrimitiveType
-		:  NumericType  //Annotations infront					{ $$ = $1; } // Khoa
-		|  BOOLEAN      //Annotations infront					{ $$ = new NamedType("BOOLEAN"); } // KHoa
+		:  NumericType  //Annotations infront 
+		|  BOOLEAN      //Annotations infront
 		;
 
 ReferenceType
@@ -441,11 +442,13 @@ Statement
 		| IfThenElseStatement									{$$ = $1; } // Adon
 		| WhileStatement										{ $$ = $1; } // Nathan
 		| LabeledStatement										 { $$ = $1;} //Vivian
+		| ForStatement											{$$ = $1;}
 		;
 		
 StatementNoShortIf
 		: StatementWithoutTrailingSubstatement					{$$ = $1; } // Adon
 		| IfThenElseStatementNoShortIf							{$$ = $1; } // Adon
+		| ForStatementNoShortIf									{$$ = $1;}
 		;
 
 // Tristan
@@ -499,7 +502,47 @@ SwitchLabel
 DoStatement
 		: DO Statement WHILE '(' Expression ')'	';'				{ $$ = new DoStatement($2, $5); } // Tri
 		;
-		 
+ForStatement
+		: BasicForStatement										{$$ = $1;}
+		| EnhancedForStatement									{$$ = $1;}
+		;
+
+ForStatementNoShortIf
+		: BasicForStatementNoShortIf							{$$ = $1;}
+		| EnhancedForStatementNoShortIf							{$$ = $1;}
+		;
+
+BasicForStatement
+		: FOR '(' ForInit ';' Expression ';' ForUpdate ')' Statement							//{$$ = new ForStatement($3,$5,$7,$9);}
+		;
+
+BasicForStatementNoShortIf
+		: FOR '(' ForInit ';' Expression ';' ForUpdate ')' StatementNoShortIf					//{$$ = new ForStatement($3,$5,$7,$9);}
+		;
+
+ForInit
+		: 
+		//| StatementExpressionList											{$$ = $1;}					
+		//| LocalVariableDeclaration											{$$ = $1;}			
+		;
+
+ForUpdate
+		: 
+		| StatementExpressionList
+		;
+
+StatementExpressionList
+		: StatementExpression												//{$$ = new List<Statement>(){new ExpressionStatement($1)};}
+		| StatementExpressionList ',' StatementExpression					//{$$ = $1; $$.Add(new ExpressionStatement($3));}
+		;
+
+EnhancedForStatement
+		: FOR '(' VariableModifiers UnannType VariableDeclaratorId ':' Expression ')' Statement   {$$= new EnhancedForStatement($3,$4,$5,$7,$9);}
+		;
+
+EnhancedForStatementNoShortIf
+		: FOR '(' VariableModifiers UnannType VariableDeclaratorId ':' Expression ')' StatementNoShortIf
+		;				 
 ThrowStatement
 		: THROW Expression ';'									{ $$ = new ThrowStatement($2); } //KoJo
 		;
@@ -814,7 +857,6 @@ CastExpression
 		//| '(' ReferenceType AdditionalBounds ')' UnaryExpressionNotPlusMinus
 		//| '(' ReferenceType AdditionalBounds ')' LambdaExpression
 		;
-		//Khoa. ReferenceType was chosen to be out of scope for this assignment. Commented out
 
 AdditionalBounds
 		: AdditionalBounds AdditionalBound
@@ -834,6 +876,5 @@ ConstantExpression
 public Parser(Scanner scanner) : base(scanner)
 {
 }
-
 // ==========================================================================
 

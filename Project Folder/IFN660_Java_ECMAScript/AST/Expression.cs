@@ -317,6 +317,7 @@ namespace IFN660_Java_ECMAScript.AST
                 case "++":
                 case "--":
                 case "~":
+                case "!":
                 case "+":
 
                     if (expression.type.isTheSameAs(new NamedType("INT")) || expression.type.isTheSameAs(new NamedType("DOUBLE")) || expression.type.isTheSameAs(new NamedType("FLOAT")) || expression.type.isTheSameAs(new NamedType("DOUBLE")))
@@ -326,19 +327,7 @@ namespace IFN660_Java_ECMAScript.AST
                     }
                     else
                     {
-                        System.Console.WriteLine("Invalid arguments for numeric expression\n");
-                        throw new Exception("TypeCheck error");
-                    }
-                    break;
-                 // Khoa. "!"is only used for Boolean
-                case "!":
-                    if (expression.type.isTheSameAs(new NamedType("BOOLEAN")))
-                    {
-                        type = expression.type;
-                    }
-                    else
-                    {
-                        System.Console.WriteLine("Invalid arguments for Boolean expression\n");
+                        System.Console.WriteLine("Invalid arguments for expression\n");
                         throw new Exception("TypeCheck error");
                     }
                     break;
@@ -366,18 +355,6 @@ namespace IFN660_Java_ECMAScript.AST
                     break;
                 case "--":
                     cg.emit(sb, "\tsub\n");  
-                    break;
-                case "-":
-                    cg.emit(sb, "\tneg\n");
-                    break;
-                case "+":
-                    cg.emit(sb, "\tpos\n");
-                    break;
-                case "~":
-                    cg.emit(sb, "\tnot\n");
-                    break;
-                case "!":
-                    cg.emit(sb, "\tceq\n");
                     break;
                 default:
                     Console.WriteLine("Unexpected preunary operator {0}\n", oper);
@@ -410,7 +387,10 @@ namespace IFN660_Java_ECMAScript.AST
             {
                 case "++":
                 case "--":
-                // Khoa, removed "+", "-", "~", and "!" as PostUnaryExpression only take "++" and "--" 
+                case "~":
+                case "!":
+                case "+":
+                case "-":
                     if (expression.type.isTheSameAs(new NamedType("INT")) || expression.type.isTheSameAs(new NamedType("DOUBLE")) || expression.type.isTheSameAs(new NamedType("FLOAT")) || expression.type.isTheSameAs(new NamedType("DOUBLE")))
                     {
                         type = expression.type;
@@ -460,46 +440,41 @@ namespace IFN660_Java_ECMAScript.AST
     public class CastExpression : Expression
     {
         private Type PrimitiveType;
-        private Expression Expression;
-        public CastExpression(Type PrimitiveType, Expression Expression)
+        private Expression UnaryExpression;
+        public CastExpression(Type PrimitiveType, Expression UnaryExpression)
         {
             this.PrimitiveType = PrimitiveType;
-            this.Expression = Expression;
+            this.UnaryExpression = UnaryExpression;
         }
 
         public override bool ResolveNames(LexicalScope scope)
         {
-            return Expression.ResolveNames(scope);
+            return UnaryExpression.ResolveNames(scope);
         }
         public override void TypeCheck()
         {
-            PrimitiveType.TypeCheck();
-            Expression.TypeCheck();
-            //first check if expression.type is boolean if primitivetype is bool      
-            if (PrimitiveType.isTheSameAs(new NamedType("BOOLEAN")))
+            try
             {
-                if (Expression.type.isTheSameAs(new NamedType("BOOLEAN")))
+                if (PrimitiveType != null & UnaryExpression != null)
                 {
-                    // if unaryexpression is indeed in boolean type, set type to boolean
+                    PrimitiveType.TypeCheck();
+                    UnaryExpression.TypeCheck();
+                    // Set type to Primitivetype
+                    // We're assuming everything is Int in this compiler
+                    // Therefore there's no need to check if an Expression is FP-strict or not at this point
+                    // If both are not null. Set type to PrimitiveType
                     type = PrimitiveType;
-                }
-                else
-                {
-                    throw new Exception("Expression has to be in Boolean Type!");
                 }
             }
-            // if expression.type is anything else but boolean, check if it's compatible with primitivetype
-            else
+            catch
             {
-                // Check if PrimitiveType is compatible with type of Expression
-                if (PrimitiveType.isCompatibleWith(Expression.type))
+                if (PrimitiveType == null)
                 {
-                    // if yes, set type to primititvetype
-                    type = PrimitiveType;
+                    throw new Exception("Missing PrimitiveType!");
                 }
                 else
                 {
-                    throw new Exception("PrimitiveType is not compatible with type of Expression!");
+                    throw new Exception("Missing Expression!");
                 }
             }
         }
@@ -511,43 +486,9 @@ namespace IFN660_Java_ECMAScript.AST
 
         public override void GenCode(StringBuilder sb)
         {
-            Expression.GenCode(sb);
-            // The type casting only happens when Expression.type != PrimitiveType
-            // The is also no type casting for Boolean values as Boolean can only be converted to Boolean
-            if (!PrimitiveType.isTheSameAs(Expression.type) && !PrimitiveType.isTheSameAs(new NamedType("BOOLEAN"))) 
-            {
-                // Assuming that GenCode() is reached only when TypeCheck() has been done
-                // Meaning public variable type has already been set to PrimitiveType.
-                // If this is not the case, need to find a way to export PrimitiveType to string
-                switch (PrimitiveType.GetILName())  //Get IL Name of each Named Type. Source: GetILName() in Type.cs
-                {
-                    case "uint8": //BYTE
-                        cg.emit(sb, "\tconvert.u1\n");
-                        break;
-                    case "int16":  //SHORT
-                        cg.emit(sb, "\tconvert.i2\n");
-                        break;
-                    case "char":   //CHAR
-                        cg.emit(sb, "\tconvert.u2\n");
-                        break;
-                    case "int32":  //INT
-                        cg.emit(sb, "\tconvert.i4\n");
-                        break;
-                    case "int64":  //LONG
-                        cg.emit(sb, "\tconvert.i8\n");
-                        break;
-                    case "float32":  //FLOAT
-                        cg.emit(sb, "\tconvert.r4\n");
-                        break;
-                    case "float64":  //DOUBLE
-                        cg.emit(sb, "\tconvert.r8\n");
-                        break;
-                    default:
-                        Console.WriteLine("Unexpected PrimitiveType {0}\n", PrimitiveType);
-                        break;
-                }
-            }
+            UnaryExpression.GenCode(sb);
         }
+
     }
 }
 

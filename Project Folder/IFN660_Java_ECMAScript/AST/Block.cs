@@ -9,7 +9,7 @@ namespace IFN660_Java_ECMAScript.AST
     {
         private List<Statement> statements;
 
-        public BlockStatement (List<Statement> statements)
+        public BlockStatement(List<Statement> statements)
         {
             this.statements = statements;
         }
@@ -41,7 +41,7 @@ namespace IFN660_Java_ECMAScript.AST
             }
 
             return loopResolve;
-            
+
         }
 
         public override void TypeCheck()

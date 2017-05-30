@@ -120,54 +120,7 @@ namespace IFN660_Java_ECMAScript.AST
 
     public class SwitchStatement : Statement
     {
-        /// <summary>
-        /// by Joshua
-        /// 
-        /// Switch Statement is quite confusing to for future reference it will be useful for there to be coments on it
-        /// 
-        /// A typical switch statement is seperated into four main parts
-        /// Firstly the overarching switch statement that contains everything else
-        /// 
-        /// in actual code the switch statement part looks like this
-        /// 
-        /// switch(expression expr){
-        /// 
-        /// }
-        /// 
-        /// Inside a swich expression contains switch blocks
-        /// These contain labels and block statements in that order
-        /// never label, block statement, label
-        /// 
-        /// In the real code a typical block statement can look like this
-        /// case 1:
-        /// case 2: int x; x = 2; break;
-        /// 
-        /// note the empty case 1, that is allowed as there is no block statement after it
-        /// 
-        /// the final two parts are the label itself and the block statement, as the block statement is not unique to 
-        /// the swich statement I won't cover it
-        /// 
-        /// the case statement is simple
-        /// it is just a label following one of three rules:
-        ///     either it has a constant value i.e case 42:
-        ///     it has a constant name i.e case constX: (note that this case is not implimented in the code)
-        ///     finally it is the default value i.e default:
-        /// 
-        /// A full example of case is as follows
-        ///     switch(y){
-        ///         //first block
-        ///         case 42:
-        ///         case 2: int x; x = 2; x = y + 2;
-        ///         //second block
-        ///         case 3: int z; z = y + 1;
-        ///         //final block
-        ///         default: int q: q = y + 4;
-        ///      }
-        ///      
-        /// 
-        /// 
-        /// </summary>
-
+        // by Tri
         private Expression expression;
         private List<Statement> block;
 
@@ -179,8 +132,7 @@ namespace IFN660_Java_ECMAScript.AST
 
         public override bool ResolveNames(LexicalScope scope)
         {
-            //note each switch block is a new scope
-            var newScope = getNewScope(scope, null);
+            //var newScope = getNewScope(scope, null);
 
             bool loopResolve = true;
 
@@ -200,8 +152,6 @@ namespace IFN660_Java_ECMAScript.AST
             return loopResolve && expression.ResolveNames(scope);
         }
 
-        //for type checking of the case labels to work, the type of expression used above needs to be passed down to the switch blocks.
-
         public override void TypeCheck()
         {
             this.expression.TypeCheck();
@@ -211,91 +161,9 @@ namespace IFN660_Java_ECMAScript.AST
                 System.Console.WriteLine("Type error in SwitchStatement\n");
                 throw new Exception("TypeCheck error");
             }
-
-            foreach(SwitchBlockGroup Blk in block)
-            {
-                Blk.setswichExprType(expression.type);
-                Blk.TypeCheck();
-            }
-
         }
-
-        /// <summary>
-        /// The tricky part of code generation is the fact that the switch statement needs the labels for all of the label statements, 
-        /// this means that I need to create them and then pass them to any label in the lower switch blocks.
-        /// 
-        /// Also note that if there is a default statement then after the switch block the break statement needs to point to that,
-        /// otherwise it needs to point to the end of the switch block
-        /// 
-        /// 
-        /// the one issue I forsee is that in complicated switch statements the labels might get out of order
-        /// 
-        /// 
-        /// </summary>
-        /// <param name="sb"></param>
         public override void GenCode(StringBuilder sb)
         {
-
-
-            cg.emit(sb, "\tswitch \t (");
-            int labelLabel;
-            bool firstItem = true;
-            bool hasDefault = false;
-            int defaultLabel = 0;
-
-            foreach (Statement each in block)
-            {
-                if (each is SwitchBlockGroup)
-                {
-                    SwitchBlockGroup blocks = each as SwitchBlockGroup;
-                    
-
-
-                    foreach (var item in blocks.getlabels())
-                    {
-                        labelLabel = LastLabel++;
-                        SwitchLabelStatement lab = item as SwitchLabelStatement;
-                        if (!lab.getSwitchLabelNotDefault())
-                        {
-                            hasDefault = true;
-                            defaultLabel = labelLabel;
-                           
-                        } else
-                        {
-                            
-                            if (!firstItem)
-                            {
-                                cg.emit(sb, ",");
-                            }
-                            else
-                            {
-                                firstItem = false;
-                            }
-                            cg.emit(sb, "L{0}", labelLabel);
-
-                        }
-                        lab.switchLabelLabelSet(labelLabel);
-                    }
-                }           
-            }
-            cg.emit(sb, ")\n");
-
-            int finalLabel = LastLabel++;
-            if (hasDefault)
-            {
-                cg.emit(sb, "\tbr.s L{0}\n", defaultLabel);
-            } else
-            {
-                cg.emit(sb, "\tbr.s L{0}\n", finalLabel);
-            }
-
-
-            foreach(Statement sta in block)
-            {
-                sta.GenCode(sb);
-            }
-
-            cg.emit(sb, "L{0}", finalLabel);
 
         }
     }
@@ -305,22 +173,10 @@ namespace IFN660_Java_ECMAScript.AST
         private List<Statement> labels;
         private List<Statement> statements;
 
-        private Type swichExprType;
-
         public SwitchBlockGroup(List<Statement> labels, List<Statement> statements)
         {
             this.labels = labels;
             this.statements = statements;
-        }
-
-        public List<Statement> getlabels()
-        {
-            return labels;
-        }
-
-        public void setswichExprType(Type type)
-        {
-            swichExprType = type;
         }
 
         public override bool ResolveNames(LexicalScope scope)
@@ -346,12 +202,6 @@ namespace IFN660_Java_ECMAScript.AST
 
         public override void TypeCheck()
         {
-            foreach (SwitchLabelStatement lab in labels)
-            {
-                lab.setswichExprType(swichExprType);
-                lab.TypeCheck();
-            }
-
             foreach (Statement stmt in statements)
             {
                 stmt.TypeCheck();
@@ -359,15 +209,7 @@ namespace IFN660_Java_ECMAScript.AST
         }
         public override void GenCode(StringBuilder sb)
         {
-            foreach(Statement lab in labels)
-            {
-                lab.GenCode(sb);
-            }
 
-            foreach (Statement stmt in statements)
-            {
-                stmt.GenCode(sb);
-            }
         }
     }
 
@@ -376,10 +218,6 @@ namespace IFN660_Java_ECMAScript.AST
     {
         private Expression SwitchValue;
         private Boolean SwitchLabelNotDefault;
-        private Type swichExprType;
-
-        private int switchLabelLabel = 0;
-
 
         public Boolean getSwitchLabelNotDefault()
         {
@@ -404,36 +242,17 @@ namespace IFN660_Java_ECMAScript.AST
             SwitchLabelNotDefault = false;
         }
 
-        public void switchLabelLabelSet(int lab)
-        {
-            switchLabelLabel = lab;
-        }
-
-        public void setswichExprType(Type type)
-        {
-            swichExprType = type;
-        }
-
         public override bool ResolveNames(LexicalScope scope)
         {
             return true;
         }
         public override void TypeCheck()
         {
-            if (SwitchValue != null)
-            {
-                SwitchValue.TypeCheck();
-                if (!SwitchValue.type.isTheSameAs(swichExprType))
-                {
-                    System.Console.WriteLine("Type error in DoStatement\n");
-                    throw new Exception("TypeCheck error");
-                }
-            }
-     
+
         }
         public override void GenCode(StringBuilder sb)
         {
-            cg.emit(sb, "L{0}", switchLabelLabel);
+               
         }
     }
 
@@ -592,7 +411,6 @@ namespace IFN660_Java_ECMAScript.AST
         public override void TypeCheck()
         {
             Expr.TypeCheck();
-           
         }
         public override void GenCode(StringBuilder sb)
         {
@@ -692,9 +510,56 @@ namespace IFN660_Java_ECMAScript.AST
         }
 	}
 
-    /*
-     * This TryStatement is not fully functional, be aware for using it - Adon
-    */
+    public class EnhancedForStatement : Statement
+    {
+        // by Nathan - still testing
+        private List<Modifier> mod;
+        private Type type;
+        private string id;
+        private Expression expr;
+        private Statement Stmt;
+
+        public EnhancedForStatement(List<Modifier> mod, Type type, string id,Expression expr, Statement Stmt)
+        {
+            this.mod = mod;
+            this.type = type;
+            this.id = id;
+            this.expr = expr;
+            this.Stmt = Stmt;
+        }
+
+        public override bool ResolveNames(LexicalScope scope)
+        {
+            // 1. create new scope
+            var newScope = getNewScope(scope, null);
+            bool loopResolve = true;
+            //Stmt.ResolveNames(scope);
+            return  type.ResolveNames(newScope) & expr.ResolveNames(newScope) & loopResolve & Stmt.ResolveNames(newScope);
+        }
+
+        public override void TypeCheck()
+        {
+            type.TypeCheck();
+            Stmt.TypeCheck();
+
+            this.expr.TypeCheck();
+            try
+            {
+                if (!expr.type.Equals(new NamedType("BOOLEAN")))
+                {
+                    Console.WriteLine("Invalid type for if statement condition\n");
+                }
+            }
+            catch (Exception)
+            {
+                throw new Exception("TypeCheck error");
+            }
+
+        }
+        public override void GenCode(StringBuilder sb)
+        { }
+    }
+
     public class TryStatement : Statement
     {
         private Statement TryStmts, CatchStmts, FinallyStmts;

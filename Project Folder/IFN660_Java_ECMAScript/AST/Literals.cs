@@ -32,7 +32,7 @@ namespace IFN660_Java_ECMAScript.AST
 
         public override void GenCode(StringBuilder sb)
         {
-            cg.EmitInt(sb,value);
+            cg.EmitInt(sb, value);
         }
 
     }
@@ -52,14 +52,14 @@ namespace IFN660_Java_ECMAScript.AST
         {
             type = new NamedType("LONG");
         }
-         public override Type ObtainType()
+        public override Type ObtainType()
         {
             return type;
         }
 
         public override void GenCode(StringBuilder sb)
         {
-            cg.EmitLong(sb,value);
+            cg.EmitLong(sb, value);
         }
     }
     public class BooleanLiteralExpression : Expression
@@ -253,5 +253,5 @@ namespace IFN660_Java_ECMAScript.AST
         }
     }
 
-    
+
 }

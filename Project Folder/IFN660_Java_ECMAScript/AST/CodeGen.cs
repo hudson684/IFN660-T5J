@@ -64,7 +64,7 @@ namespace IFN660_Java_ECMAScript.AST
                     }
                     else
                         emit(sb, "\tldc.i4\t{0}\n", i);
-                       
+
                     break;
             }
         }

@@ -4,12 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ConsoleApplication1
+namespace IFN660_Java_ECMAScript
 {
-    class Program
+    public interface Declaration
     {
-        static void Main(string[] args)
-        {
-        }
+        List<string> GetName();
     }
 }

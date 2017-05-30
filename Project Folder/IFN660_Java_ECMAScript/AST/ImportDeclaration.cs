@@ -7,12 +7,12 @@ using System.Threading.Tasks;
 
 namespace IFN660_Java_ECMAScript.AST
 {
-	public class ImportDeclaration : Statement
-	{
+    public class ImportDeclaration : Statement
+    {
         private string TypeName;
         private string Name;
         public ImportDeclaration(string TypeName)
-		{
+        {
             this.TypeName = TypeName;
         }
 
@@ -22,13 +22,13 @@ namespace IFN660_Java_ECMAScript.AST
             this.Name = Name;
         }
         public override bool ResolveNames(LexicalScope scope)
-		{
-			return true;
-		}
-		public override void TypeCheck()
-		{
-			
-		}
+        {
+            return true;
+        }
+        public override void TypeCheck()
+        {
+
+        }
 
         public override void GenCode(StringBuilder sb)
         {

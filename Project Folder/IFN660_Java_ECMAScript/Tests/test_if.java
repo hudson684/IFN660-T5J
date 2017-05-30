@@ -6,7 +6,7 @@ public class HelloWorld
 		int i, j;
 		i = 0;
 
-		if (i > 5)
+		if (i == 5)
 		    j = 10;
 
 		if (i < 4)
