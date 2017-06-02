@@ -295,7 +295,7 @@ namespace IFN660_Java_ECMAScript.AST
                 sta.GenCode(sb);
             }
 
-            cg.emit(sb, "L{0}", finalLabel);
+            cg.emit(sb, "L{0}:", finalLabel);
 
         }
     }
@@ -429,11 +429,14 @@ namespace IFN660_Java_ECMAScript.AST
                     throw new Exception("TypeCheck error");
                 }
             }
-     
+            
         }
         public override void GenCode(StringBuilder sb)
         {
-            cg.emit(sb, "L{0}", switchLabelLabel);
+            
+            cg.emit(sb, "L{0}:", switchLabelLabel);
+
+
         }
     }
 
@@ -522,7 +525,7 @@ namespace IFN660_Java_ECMAScript.AST
 
     public class BreakStatement : Statement
     {
-        //by Vivian
+        //by Vivian - Codegen by Josh
         private String Name;
 
         public BreakStatement(String Name)
@@ -575,7 +578,7 @@ namespace IFN660_Java_ECMAScript.AST
 
     public class ReturnStatement : Statement
     {
-        //by Vivian
+        //by Vivian - Codegen by Josh
         private Expression Expr;
 
         public ReturnStatement(Expression Expr)

@@ -134,7 +134,7 @@ namespace IFN660_Java_ECMAScript.AST
 
         public override void GenCode(StringBuilder sb)
         {
-
+            cg.EmitFloat(sb, value);
         }
     }
     public class DoubleLiteralExpression : Expression, ILiteral
@@ -163,7 +163,7 @@ namespace IFN660_Java_ECMAScript.AST
 
         public override void GenCode(StringBuilder sb)
         {
-
+            cg.EmitDouble(sb, value);
         }
     }
     public class CharacterLiteralExpression : Expression

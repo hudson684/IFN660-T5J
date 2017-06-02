@@ -79,6 +79,23 @@ namespace IFN660_Java_ECMAScript.AST
                 emit(sb, "\tldc.i8\t{0}\n", l);
             }
         }
+
+        public void EmitFloat(StringBuilder sb, float l)
+        {
+            emit(sb, "\tldc.r4\t{0}\n", l);
+        }
+
+        public void EmitDouble(StringBuilder sb, double l)
+        {
+            if (l >= float.MinValue && l <= float.MaxValue)
+            {
+                EmitFloat(sb, (float)l);
+            }
+            else
+            {
+                emit(sb, "\tldc.r8\t{0}\n", l);
+            }
+        }
         public void EmitNull(StringBuilder sb)
         {
             emit(sb, "\tldnull\n");
