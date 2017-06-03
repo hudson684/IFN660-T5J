@@ -35,6 +35,12 @@ public class HelloWorld
 			}	
 		}
 
+		int e;
+		e = 10000;
+		do {
+			e = e - 1;
+			System.out.println(e);
+		} while (e > 0);
 
 	}
 
