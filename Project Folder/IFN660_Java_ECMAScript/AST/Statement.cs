@@ -425,7 +425,7 @@ namespace IFN660_Java_ECMAScript.AST
                 SwitchValue.TypeCheck();
                 if (!SwitchValue.type.isTheSameAs(swichExprType))
                 {
-                    System.Console.WriteLine("Type error in DoStatement\n");
+                    System.Console.WriteLine("Type error in SwitchStatement\n");
                     throw new Exception("TypeCheck error");
                 }
             }
@@ -635,9 +635,15 @@ namespace IFN660_Java_ECMAScript.AST
 
             statement.TypeCheck();
         }
+
         public override void GenCode(StringBuilder sb)
         {
+            int statementLabel = LastLabel++;
 
+            cg.emit(sb, "L{0}:\n", statementLabel);
+            statement.GenCode(sb);
+            expression.GenCode(sb);
+            cg.emit(sb, "\tbrtrue.s\tL{0}\n", statementLabel);
         }
     }
 
