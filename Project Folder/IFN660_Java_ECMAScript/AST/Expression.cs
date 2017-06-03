@@ -111,17 +111,17 @@ namespace IFN660_Java_ECMAScript.AST
             FormalParam fp = declarationRef as FormalParam;
             if (fp != null)
             {
-                cg.emit(sb, "\tldarg.{0}\n", fp.GetNumber());
+                cg.emit(sb, "\tldarg.s {0}\n", fp.GetNumber());
             }
             else
             {
-                cg.emit(sb, "\tldloc.{0}\n", declarationRef.GetNumber());
+                cg.emit(sb, "\tldloc.s {0}\n", declarationRef.GetNumber());
             }
         }
 
         public override void GenStoreCode(StringBuilder sb, string ex)
         {
-            cg.emit(sb, "\tstloc.{0}\n", declarationRef.GetNumber());
+            cg.emit(sb, "\tstloc.s {0}\n", declarationRef.GetNumber());
         }
 
     }

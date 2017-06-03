@@ -55,7 +55,7 @@ namespace IFN660_Java_ECMAScript.AST
             {
                 
                 initVal.GenCode(sb);
-                cg.emit(sb, "\tstloc.{0}\n", num);
+                cg.emit(sb, "\tstloc.s {0}\n", num);
             }
         }
     }
